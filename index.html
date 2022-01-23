@@ -6,8 +6,8 @@
     </head>
     <body>
         <script>
-//header
-document.body.innerHTML = `
+            //header
+            document.body.innerHTML = `
 <style>
 
 .save_button:hover{
@@ -166,19 +166,19 @@ th{
 
 `
 
-function load_main_page() {
-    if (document.getElementById("main_button").dataset.select == "true") {
-        document.getElementById("main_button").addEventListener("click", load_main_page);
-        document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
+            function load_main_page() {
+                if (document.getElementById("main_button").dataset.select == "true") {
+                    document.getElementById("main_button").addEventListener("click", load_main_page);
+                    document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
 
-        return
-    } else {
-        document.getElementById("main_button").dataset.select = "true"
-        document.getElementById("x_button_documentation").dataset.select = "false"
-        document.getElementById("main_button").addEventListener("click", load_main_page);
-        document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
+                    return
+                } else {
+                    document.getElementById("main_button").dataset.select = "true"
+                    document.getElementById("x_button_documentation").dataset.select = "false"
+                    document.getElementById("main_button").addEventListener("click", load_main_page);
+                    document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
 
-        document.getElementById("main_page").innerHTML = `
+                    document.getElementById("main_page").innerHTML = `
 <section id="main" style="
     margin: 2%;
 ">
@@ -232,24 +232,24 @@ function load_main_page() {
     
     
     </section>`
-        document.getElementById("file_input").addEventListener("change", input_file);
-        return
-    }
-}
+                    document.getElementById("file_input").addEventListener("change", input_file);
+                    return
+                }
+            }
 
-function load_x_documentation() {
-    if (document.getElementById("x_button_documentation").dataset.select == "true") {
-        document.getElementById("main_button").addEventListener("click", load_main_page);
-        document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
+            function load_x_documentation() {
+                if (document.getElementById("x_button_documentation").dataset.select == "true") {
+                    document.getElementById("main_button").addEventListener("click", load_main_page);
+                    document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
 
-        return
-    } else {
-        document.getElementById("x_button_documentation").dataset.select = "true"
-        document.getElementById("main_button").dataset.select = "false"
-        document.getElementById("main_button").addEventListener("click", load_main_page);
-        document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
+                    return
+                } else {
+                    document.getElementById("x_button_documentation").dataset.select = "true"
+                    document.getElementById("main_button").dataset.select = "false"
+                    document.getElementById("main_button").addEventListener("click", load_main_page);
+                    document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
 
-        document.getElementById("main_page").innerHTML = `<main style="
+                    document.getElementById("main_page").innerHTML = `<main style="
     margin: 176px;
     border: ridge;
     padding: 10px;">
@@ -367,6 +367,7 @@ function load_x_documentation() {
                         <br> * 6 = world texture
                         <br> * 7 = geometry
                         <br> * 8 = share
+                        <br> * 9 = ???
                         <br> * 10 = music
                         <br><small>credit to ??? on dicord</small>
                     </td>
@@ -377,10 +378,10 @@ function load_x_documentation() {
                         <td> file type index
                         <br> files with different types can have the same index </td>
                     </tr>
-                    <tr>
+                    <tr class='unknown_value'>
                         <td> 12 </td>
                         <td> u32 </td>
-                        <td> always 0 </td>
+                        <td> usually 0 related to amount bytes / offset </td>
                     </tr>
                     <tr>
                         <td> 16 </td>
@@ -595,7 +596,7 @@ function load_x_documentation() {
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="3"> divisible by 32 </th>
+                        <th colspan="3"> append 0 until index divisible by 32 </th>
                     </tr>
                 </tfoot>
 
@@ -713,7 +714,7 @@ function load_x_documentation() {
                     <tr>
                         <td> 00 </td>
                         <td> u32 </td>
-                        <td> ?offset, end texture, start variables ? </td>
+                        <td> offset logic </td>
                     </tr>
                     <tr class='unknown_value'>
                         <td> 04 </td>
@@ -1093,7 +1094,7 @@ function load_x_documentation() {
                         <td> u32 </td>
                         <td> vertex z </td>
                     </tr>
-                    <tr>
+                    <tr class='unknown_value'>
                         <td> 28 </td>
                         <td> u32 </td>
                         <td> unknown usually 1 </td>
@@ -1113,7 +1114,7 @@ function load_x_documentation() {
                         <td> u32 </td>
                         <td> vertex z </td>
                     </tr>
-                    <tr>
+                    <tr class='unknown_value'>
                         <td> 44 </td>
                         <td> u32 </td>
                         <td> unknown usually 1 </td>
@@ -1250,22 +1251,21 @@ u32 0 values split collision types ?
                         <td> u32 </td>
                         <td> amount of data sections </td>
                     </tr>
-                    <tr>
+                    <tr class='unknown_value'>
                         <td> 08 </td>
                         <td> u32 </td>
                         <td> ? large number, most values are the same </td>
                     </tr>
-                    <tr>
-                        <td> 12 </td>
-                        <td> u32 </td>
-                        <td> ... repeat depending on colision table 2 [44] </td>
-                    </tr>
-                    <tr>
-                        <td> 16 </td>
-                        <td> u32 </td>
-                        <td> ...after append CD CD CD CD until index divisible by 16 </td>
-                    </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3"> repeat depending on colision table 2 [44] </th>
+                    </tr>
+                    <tr>
+                        <th colspan="3"> ...after append CD CD CD CD until index divisible by 16 </th>                    
+                    </tr>
+                </tfoot>
+
             </table>
 
             <h3> collision table data </h3>
@@ -1302,12 +1302,12 @@ u32 0 values split collision types ?
                         <td> u32 </td>
                         <td> always 0 </td>
                     </tr>
-                    <tr>
+                    <tr class='unknown_value'>
                         <td> 20 </td>
                         <td> u16 </td>
                         <td> ? usually increments / FF </td>
                     </tr>
-                    <tr>
+                    <tr class='unknown_value'>
                         <td> 22 </td>
                         <td> u16 </td>
                         <td> ? usually increments / FF </td>
@@ -1329,17 +1329,17 @@ u32 0 values split collision types ?
                         <th> Type </th>
                         <th> Description </th>
                     </tr>
-                    <tr>
+                    <tr class='unknown_value'>
                         <td> 00 </td>
                         <td> u32 </td>
                         <td> ? usually increments </td>
                     </tr>
-                    <tr>
-                        <td> 00 </td>
-                        <td> u32 </td>
-                        <td> append CD until index divisible by 16 </td>
-                    </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3"> append CD until index divisible by 16 </th>
+                    </tr>
+                </tfoot>
             </table>
 
 
@@ -1926,140 +1926,140 @@ dxt1 compression format
     </section>
 </main>`
 
-        return
-    }
-}
+                    return
+                }
+            }
 
-document.getElementById("main_button").addEventListener("click", load_main_page);
-document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
+            document.getElementById("main_button").addEventListener("click", load_main_page);
+            document.getElementById("x_button_documentation").addEventListener("click", load_x_documentation);
 
-load_main_page()
+            load_main_page()
 
-function atach_file_to_file_viewer(region, type, index, unknown, amount_bytes, file_offset, id) {
+            function atach_file_to_file_viewer(region, type, index, unknown, amount_bytes, file_offset, id) {
 
-    let file_type_name = ['car', 'interface', 'item', '???', 'world', 'colliders', 'world texture', 'geometry', 'share', 'unknown/not seen', 'music']
+                let file_type_name = ['car', 'interface', 'item', '???', 'world', 'colliders', 'world texture', 'geometry', 'share', 'unknown/not seen', 'music']
 
-    type = file_type_name[type]
+                type = file_type_name[type]
 
-    let div = document.createElement("div")
+                let div = document.createElement("div")
 
-    div.className = 'file noselect'
-    div.dataset.region = region
-    div.dataset.index = index
-    div.dataset.unknown = unknown
-    div.dataset.file_bytes = amount_bytes
-    div.dataset.file_offset = file_offset
-    div.dataset.file = (1 + id)
-    div.dataset.type = type
-    div.dataset.file_select = 'false'
-    div.addEventListener("click", load_file__, false);
-    div.append('🗎 ' + (1 + id) + " " + type)
+                div.className = 'file noselect'
+                div.dataset.region = region
+                div.dataset.index = index
+                div.dataset.unknown = unknown
+                div.dataset.file_bytes = amount_bytes
+                div.dataset.file_offset = file_offset
+                div.dataset.file = (1 + id)
+                div.dataset.type = type
+                div.dataset.file_select = 'false'
+                div.addEventListener("click", load_file__, false);
+                div.append('🗎 ' + (1 + id) + " " + type)
 
-    document.getElementById("file_view").append(div)
-}
+                document.getElementById("file_view").append(div)
+            }
 
-function atach_folder_to_file_viewer(file_name, extension, region, files) {
+            function atach_folder_to_file_viewer(file_name, extension, region, files) {
 
-    let div = document.createElement("div")
+                let div = document.createElement("div")
 
-    div.className = 'folder noselect'
-    div.dataset.file = file_name
-    div.dataset.type = extension
-    div.dataset.region_number = region
-    div.dataset.number_files = files
-    div.append('🗀 ' + file_name)
+                div.className = 'folder noselect'
+                div.dataset.file = file_name
+                div.dataset.type = extension
+                div.dataset.region_number = region
+                div.dataset.number_files = files
+                div.append('🗀 ' + file_name)
 
-    document.getElementById("file_view").append(div)
-}
+                document.getElementById("file_view").append(div)
+            }
 
-function input_file(event) {
+            function input_file(event) {
 
-    // get file name/extension
+                // get file name/extension
 
-    var filename = document.getElementsByTagName("input")[0].files[0].name
-    var fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
-    fileextension = fileextension.toLowerCase()
+                var filename = document.getElementsByTagName("input")[0].files[0].name
+                var fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+                fileextension = fileextension.toLowerCase()
 
-    var file = event.target.files[0];
-    var reader = new FileReader();
+                var file = event.target.files[0];
+                var reader = new FileReader();
 
-    buffer = reader.readAsArrayBuffer(file);
+                buffer = reader.readAsArrayBuffer(file);
 
-    document.getElementById("file_input").value = ''
+                document.getElementById("file_input").value = ''
 
-    reader.onload = function(e) {
+                reader.onload = function(e) {
 
-        buffer = e.target.result
-        u8 = new DataView(buffer).getUint8.bind(new DataView(buffer))
-        u16 = new DataView(buffer).getUint16.bind(new DataView(buffer))
-        u32 = new DataView(buffer).getUint32.bind(new DataView(buffer))
-        f32 = new DataView(buffer).getFloat32.bind(new DataView(buffer))
+                    buffer = e.target.result
+                    u8 = new DataView(buffer).getUint8.bind(new DataView(buffer))
+                    u16 = new DataView(buffer).getUint16.bind(new DataView(buffer))
+                    u32 = new DataView(buffer).getUint32.bind(new DataView(buffer))
+                    f32 = new DataView(buffer).getFloat32.bind(new DataView(buffer))
 
-        document.getElementById("file_view").textContent = ''
-        document.getElementById("main_program").textContent = ''
+                    document.getElementById("file_view").textContent = ''
+                    document.getElementById("main_program").textContent = ''
 
-        // check magic
-        if (u32(0, true) == 33620128) {
-            is_little_endian = true
-        } else if (u32(0, true) == 2684354818) {
-            is_little_endian = false
-        } else {
-            wrong_file_type()
-            return
-        }
+                    // check magic
+                    if (u32(0, true) == 33620128) {
+                        is_little_endian = true
+                    } else if (u32(0, true) == 2684354818) {
+                        is_little_endian = false
+                    } else {
+                        wrong_file_type()
+                        return
+                    }
 
-        document.getElementById("save_button").addEventListener("click", save_buffer);
+                    document.getElementById("save_button").addEventListener("click", save_buffer);
 
-        //any file past here is a .x* file
+                    //any file past here is a .x* file
 
-        var region_numer = u32(8, is_little_endian)
-        var number_files = u32(12, is_little_endian)
+                    var region_numer = u32(8, is_little_endian)
+                    var number_files = u32(12, is_little_endian)
 
-        atach_folder_to_file_viewer(filename, fileextension, region_numer, number_files)
+                    atach_folder_to_file_viewer(filename, fileextension, region_numer, number_files)
 
-        for (files_i = 0; files_i < number_files; files_i++) {
-            var offset = (files_i * 24) + 16
+                    for (files_i = 0; files_i < number_files; files_i++) {
+                        var offset = (files_i * 24) + 16
 
-            var region = u32(offset + 0, is_little_endian)
-            var type = u32(offset + 4, is_little_endian)
-            var index = u32(offset + 8, is_little_endian)
-            var unknown = u32(offset + 12, is_little_endian)
-            var amount_bytes = u32(offset + 16, is_little_endian)
-            var file_offset = u32(offset + 20, is_little_endian)
+                        var region = u32(offset + 0, is_little_endian)
+                        var type = u32(offset + 4, is_little_endian)
+                        var index = u32(offset + 8, is_little_endian)
+                        var unknown = u32(offset + 12, is_little_endian)
+                        var amount_bytes = u32(offset + 16, is_little_endian)
+                        var file_offset = u32(offset + 20, is_little_endian)
 
-            atach_file_to_file_viewer(region, type, index, unknown, amount_bytes, file_offset, files_i)
-        }
+                        atach_file_to_file_viewer(region, type, index, unknown, amount_bytes, file_offset, files_i)
+                    }
 
-    }
+                }
 
-}
+            }
 
-function wrong_file_type() {
-    alert('wrong file type')
-    buffer = null
-    u8 = null
-    u16 = null
-    u32 = null
-    f32 = null
-}
+            function wrong_file_type() {
+                alert('wrong file type')
+                buffer = null
+                u8 = null
+                u16 = null
+                u32 = null
+                f32 = null
+            }
 
-function load_file__() {
+            function load_file__() {
 
-    region = this.dataset.region
-    file_type = this.dataset.type
-    file_index = this.dataset.index
-    _0usually = this.dataset.unknown
-    number_of_bytes = this.dataset.file_bytes
-    offset = this.dataset.file_offset
+                region = this.dataset.region
+                file_type = this.dataset.type
+                file_index = this.dataset.index
+                _0usually = this.dataset.unknown
+                number_of_bytes = this.dataset.file_bytes
+                offset = this.dataset.file_offset
 
-    index = this.dataset.file - 1
-    file = document.body.getElementsByClassName("folder")[0].dataset.type
-    number_files = document.body.getElementsByClassName("folder")[0].dataset.number_files
-    game = document.querySelector('input[name="a"]:checked').id
+                index = this.dataset.file - 1
+                file = document.body.getElementsByClassName("folder")[0].dataset.type
+                number_files = document.body.getElementsByClassName("folder")[0].dataset.number_files
+                game = document.querySelector('input[name="a"]:checked').id
 
-    get_offset()
+                get_offset()
 
-    console.log(`
+                console.log(`
                  region ${region} 
                  file type: ${file_type}
                  file index: ${file_index}
@@ -2072,328 +2072,258 @@ function load_file__() {
                  number files ${number_files}
                `)
 
-    for (files_i = 0; files_i < number_files; files_i++) {
-        document.getElementsByClassName("file")[files_i].dataset.file_select = 'false'
-    }
-    document.getElementsByClassName("file")[index].dataset.file_select = 'true'
+                for (files_i = 0; files_i < number_files; files_i++) {
+                    document.getElementsByClassName("file")[files_i].dataset.file_select = 'false'
+                }
+                document.getElementsByClassName("file")[index].dataset.file_select = 'true'
 
-    _3_00__offset__end_file_offset_list = u32(offset + 00, is_little_endian)
-    _3_04__offset__end_sound_offset_list = u32(offset + 04, is_little_endian)
-    number_sounds = u32(offset + 08, is_little_endian)
-    _3_12__unknown = u32(offset + 12, is_little_endian)
-    _3_16__amount__end_sound_list = u32(offset + 16, is_little_endian)
-    _3_20__amount__btf_textures = u32(offset + 20, is_little_endian)
-    _3_24__offset__btf_textures = u32(offset + 24, is_little_endian)
-    _3_28__unknown = u32(offset + 28, is_little_endian)
-    _3_32__amount__sound_offset = u32(offset + 32, is_little_endian)
-    _3_36__always__0 = u32(offset + 36, is_little_endian)
-    _3_40__always__0 = u32(offset + 40, is_little_endian)
-    _3_44__always__0 = u32(offset + 44, is_little_endian)
-    _3_48__unknown = u32(offset + 48, is_little_endian)
-    _3_52__unknown = u32(offset + 52, is_little_endian)
-    _3_56__amount__animation_unknown = u32(offset + 56, is_little_endian)
-    _3_60__offset__start_animation = u32(offset + 60, is_little_endian)
+                _3_00__offset__end_file_offset_list = u32(offset + 00, is_little_endian)
+                _3_04__offset__end_sound_offset_list = u32(offset + 04, is_little_endian)
+                number_sounds = u32(offset + 08, is_little_endian)
+                _3_12__unknown = u32(offset + 12, is_little_endian)
+                _3_16__amount__end_sound_list = u32(offset + 16, is_little_endian)
+                _3_20__amount__btf_textures = u32(offset + 20, is_little_endian)
+                _3_24__offset__btf_textures = u32(offset + 24, is_little_endian)
+                _3_28__unknown = u32(offset + 28, is_little_endian)
+                _3_32__amount__sound_offset = u32(offset + 32, is_little_endian)
+                _3_36__always__0 = u32(offset + 36, is_little_endian)
+                _3_40__always__0 = u32(offset + 40, is_little_endian)
+                _3_44__always__0 = u32(offset + 44, is_little_endian)
+                _3_48__unknown = u32(offset + 48, is_little_endian)
+                _3_52__unknown = u32(offset + 52, is_little_endian)
+                _3_56__amount__animation_unknown = u32(offset + 56, is_little_endian)
+                _3_60__offset__start_animation = u32(offset + 60, is_little_endian)
 
-    get_offset_to_sounds()
+                get_offset_to_sounds()
 
-    sound_offset_array = []
-    for (number_sounds_i = 0; number_sounds_i < number_sounds; number_sounds_i++) {
-        sound_offset_array.push(u32(offset + (number_sounds_i * 4), is_little_endian))
-    }
+                sound_offset_array = []
+                for (number_sounds_i = 0; number_sounds_i < number_sounds; number_sounds_i++) {
+                    sound_offset_array.push(u32(offset + (number_sounds_i * 4), is_little_endian))
+                }
 
-    while ((number_sounds_i * 4) % 32 !== 0) {
-        number_sounds_i++
-    }
+                while ((number_sounds_i * 4) % 32 !== 0) {
+                    number_sounds_i++
+                }
 
-    offset_audio = (number_sounds_i * 4) + offset
+                offset_audio = (number_sounds_i * 4) + offset
 
-    _3_04__offset__end_sound_offset_list + offset_audio
+                _3_04__offset__end_sound_offset_list + offset_audio
 
-    console.log(_3_04__offset__end_sound_offset_list + offset_audio)
-    //get to main offset
-    offset_mid = (_3_28__unknown + _3_16__amount__end_sound_list + _3_52__unknown) * 8
-    while (offset_mid % 32 !== 0) {
-        offset_mid++
-    }
-    offset_mid = offset_mid + _3_04__offset__end_sound_offset_list + offset_audio
-    console.log(offset_mid, "mid")
+                console.log(_3_04__offset__end_sound_offset_list + offset_audio)
+                //get to main offset
+                offset_mid = (_3_28__unknown + _3_16__amount__end_sound_list + _3_52__unknown) * 8
+                while (offset_mid % 32 !== 0) {
+                    offset_mid++
+                }
+                offset_mid = offset_mid + _3_04__offset__end_sound_offset_list + offset_audio
+                console.log(offset_mid, "mid")
 
-    append_buttons_to_main_program()
+                append_buttons_to_main_program()
 
-}
+            }
 
-function get_offset() {
+            function get_offset() {
 
-    let header_offset = (u32(12, is_little_endian) * 24) + 16
+                let header_offset = (u32(12, is_little_endian) * 24) + 16
 
-    offset = header_offset + Number(offset)
+                offset = header_offset + Number(offset)
 
-}
+            }
 
-function get_offset_to_sounds() {
-    if (file == "xps") {
-        offset += 2048
-    } else if (file == "xpp") {
-        offset += 128
-    } else if (game == "baron") {
-        offset += 128
-    } else {
-        offset += 120
-    }
+            function get_offset_to_sounds() {
+                if (file == "xps") {
+                    offset += 2048
+                } else if (file == "xpp") {
+                    offset += 128
+                } else if (game == "baron") {
+                    offset += 128
+                } else {
+                    offset += 120
+                }
 
-}
+            }
 
-function append_buttons_to_main_program() {
-    document.getElementById("main_program").innerHTML = `
+            function append_buttons_to_main_program() {
+                document.getElementById("main_program").innerHTML = `
         <div class='data_types_bar noselect' id='data_types_bar'></div>
         <div style='display:flex;' id='outer_program'>
         </div>
         `
 
-    document.getElementById("data_types_bar").innerHTML = `
+                document.getElementById("data_types_bar").innerHTML = `
     <a data-is_active='false' class='data_bar_options' id='main_program__audio_button'>${number_sounds} sounds </a>
     <a data-is_active='false' class='data_bar_options' id='main_program__texture_button'>${_3_20__amount__btf_textures} textures </a>
     <a data-is_active='false' class='data_bar_options' id='main_program__logic_button'> logic </a>
     `
-    document.getElementById("main_program__audio_button").addEventListener("click", load_audio);
-    document.getElementById("main_program__texture_button").addEventListener("click", load_textures);
-    document.getElementById("main_program__logic_button").addEventListener("click", load_logic);
+                document.getElementById("main_program__audio_button").addEventListener("click", load_audio);
+                document.getElementById("main_program__texture_button").addEventListener("click", load_textures);
+                document.getElementById("main_program__logic_button").addEventListener("click", load_logic);
 
-}
+            }
 
-function load_audio() {
+            function load_audio() {
 
-    //div.dataset.region
-    check_if_other_element_loaded(this)
-    if (temp_flag == "false") {
-        return
-    }
+                //div.dataset.region
+                check_if_other_element_loaded(this)
+                if (temp_flag == "false") {
+                    return
+                }
 
-    document.getElementById("outer_program").innerHTML = `
+                document.getElementById("outer_program").innerHTML = `
                     <div style='padding-left:25px;padding-bottom:5px;padding-top:5px;width:50%;height:705px;overflow-y: auto;' id='inner_program'></div>
                     <div style='padding-left:25px;padding-bottom:5px;padding-top:5px;width:50%;height:705px;overflow-y: auto;' id='edit_program'><p style='margin:auto;'> choose a sound to display edit options here </p></div>
 `
 
-    if (file == "xpp" || file == "xps") {
-        document.getElementById("inner_program").innerHTML = "<p> warning psp / ps2 audio formats are unknown </p><br>"
-    }
+                if (file == "xpp" || file == "xps") {
+                    document.getElementById("inner_program").innerHTML = "<p> warning psp / ps2 audio formats are unknown </p><br>"
+                }
 
-    load_inner_program_table()
+                load_inner_program_table()
 
-    load_wav()
-}
-
-function load_wav() {
-    endian = is_little_endian
-    i_offset = offset_audio
-    sound_main_list = offset_audio
-
-    for (i = 0; i < number_sounds; i++,
-    i_offset += 32) {
-        sound_offset = u32(i_offset, endian)
-        sound_length = u32(i_offset + 4, endian)
-        sound_ff_ff_ff_ff = u32(i_offset + 8, endian)
-        sound_sample_rate = u32(i_offset + 12, endian)
-        sound_16 = u32(i_offset + 16, endian)
-        sound_20 = u16(i_offset + 20, endian)
-        sound_22 = u16(i_offset + 22, endian)
-
-        //create wav file
-        wav_ = new ArrayBuffer(sound_length + 44)
-
-        //wav header
-        new DataView(wav_).setUint8(0, 82)
-        new DataView(wav_).setUint8(1, 73)
-        new DataView(wav_).setUint8(2, 70)
-        new DataView(wav_).setUint8(3, 70)
-        // RIFF
-
-        new DataView(wav_).setUint32(4, wav_.byteLength - 8, true)
-        //file size - 8(riff header)
-
-        new DataView(wav_).setUint8(8, 87)
-        new DataView(wav_).setUint8(9, 65)
-        new DataView(wav_).setUint8(10, 86)
-        new DataView(wav_).setUint8(11, 69)
-        // WAVE
-
-        new DataView(wav_).setUint8(12, 102)
-        new DataView(wav_).setUint8(13, 109)
-        new DataView(wav_).setUint8(14, 116)
-        new DataView(wav_).setUint8(15, 32)
-        // fmt.
-
-        new DataView(wav_).setUint32(16, 16, true)
-        //always 16
-
-        new DataView(wav_).setUint16(20, 1, true)
-        //1 = pcm format
-
-        new DataView(wav_).setUint16(22, 1, true)
-        //channels
-
-        new DataView(wav_).setUint32(24, sound_sample_rate, true)
-        //sample rate
-
-        new DataView(wav_).setUint32(28, sound_sample_rate * 16 * 2 / 8, true)
-
-        new DataView(wav_).setUint16(32, 4, true)
-
-        new DataView(wav_).setUint16(34, 16, true)
-        //bit per sample
-
-        new DataView(wav_).setUint8(36, 100)
-        new DataView(wav_).setUint8(37, 97)
-        new DataView(wav_).setUint8(38, 116)
-        new DataView(wav_).setUint8(39, 97)
-        // data
-
-        new DataView(wav_).setUint32(40, sound_length, true)
-        //sound length
-
-        for (ii_length = 0,
-        ii = sound_offset + sound_main_list; ii_length < sound_length; ii += 2,
-        ii_length += 2) {
-            temp = u16(sound_main_list + sound_offset + ii_length, endian)
-            new DataView(wav_).setUint16(44 + ii_length, temp, true)
-        }
-
-        var objectURL = URL.createObjectURL(new Blob([wav_]))
-
-        document.getElementById("sound_row_select_" + i).addEventListener("click", load_edit_sound);
-
-        var link = document.createElement("audio");
-        link.src = objectURL
-        link.controls = true
-        document.getElementById("sound_table_" + i).appendChild(link)
-
-        var download_sound = document.createElement("a")
-        download_sound.href = objectURL
-        download_sound.download = objectURL + ".wav"
-        download_sound.innerText = "download as .wav"
-        document.getElementById("sound_table_" + i + "_download").appendChild(download_sound)
-
-    }
-}
-
-function load_textures() {
-
-    check_if_other_element_loaded(this)
-    if (temp_flag == "false") {
-        return
-    }
-
-    load_dtx1()
-}
-
-function load_dtx1() {
-
-    let temp_canvas = document.createElement("canvas")
-    temp_canvas.id = 'canvas'
-    temp_canvas.style = 'width: 0px;'
-    document.getElementById("outer_program").appendChild(temp_canvas)
-
-    canvas = document.getElementById('canvas');
-    ctx = canvas.getContext('2d');
-
-    _8__offset = offset_mid
-    canvas_html = ""
-
-    btf_start = _3_24__offset__btf_textures + _8__offset
-    entries = _3_20__amount__btf_textures
-    each_entry_bytes = 64
-    for (btf_ii = 0,
-    btf_i = 0; btf_ii < entries; btf_i += 64,
-    btf_ii++) {
-
-        texture_type_value = u8(btf_start + btf_i)
-        alpha_loop = 0
-        while (alpha_loop < 2) {
-
-            if (texture_type_value == 193 && alpha_loop == 0) {
-                btf_offset = u32(btf_start + btf_i + 4, is_little_endian)
-                alpha_loop++
-                divide_2 = false
-            } else if (texture_type_value == 194 && alpha_loop == 0) {
-                btf_offset = u32(btf_start + btf_i + 4, is_little_endian)
-                alpha_loop++
-                divide_2 = true
-            } else {
-                btf_offset = u32(btf_start + btf_i + 8, is_little_endian)
-                alpha_loop += 2
-                divide_2 = false
+                load_wav()
             }
 
-            btf_x = u8(btf_start + btf_i + 2)
-            btf_y = u8(btf_start + btf_i + 3)
+            function load_wav() {
+                endian = is_little_endian
+                i_offset = offset_audio
 
-            btf_x = Math.pow(2, btf_x)
-            btf_y = Math.pow(2, btf_y)
+                for (i = 0; i < number_sounds; i++,
+                i_offset += 32) {
+                    sound_offset = u32(i_offset, is_little_endian)
+                    sound_length = u32(i_offset + 4, is_little_endian)
+                    //         sound_ff_ff_ff_ff = u32(i_offset + 8, is_little_endian)
+                    sound_sample_rate = u32(i_offset + 12, is_little_endian)
+                    //         sound_16 = u32(i_offset + 16, is_little_endian)
+                    //         sound_20 = u16(i_offset + 20, is_little_endian)
+                    //         sound_22 = u16(i_offset + 22, is_little_endian)
 
-            if (divide_2 == true) {
-                btf_y = btf_y / 2
-                btf_x = btf_x / 2
-            }
-            canvas.width = btf_x
-            canvas.height = btf_y
+                    generate_and_attach_wav(sound_offset, sound_length, sound_sample_rate, i)
 
-            // 65 = no alpha
-            //193 = with alpha
-            for (string_i = 12,
-            btf_string = ""; string_i < 64; string_i++) {
-                btf_string += String.fromCharCode(u8(btf_start + btf_i + string_i))
-            }
-            image_offset = btf_offset + _8__offset
-
-            for (outer_2_y = 0; outer_2_y < btf_y; outer_2_y += 8) {
-                for (outer_2_x = 0; outer_2_x < btf_x; outer_2_x += 8) {
-                    for (outer_y = 0; outer_y < 8; outer_y += 4) {
-                        for (outer_x = 0; outer_x < 8; outer_x += 4) {
-
-                            get_color()
-                            get_pixel_data()
-
-                            image_offset += 8
-
-                            for (i = 0,
-                            y = 0; y < 4; y++) {
-                                for (x = 0; x < 4; x++,
-                                i++) {
-
-                                    if (temp_pixel_array[i] == "00") {
-                                        ctx.fillStyle = "#" + color_1
-                                        ctx.fillRect(x + outer_x + outer_2_x, y + outer_y + outer_2_y, 1, 1)
-                                    } else if (temp_pixel_array[i] == "01") {
-                                        ctx.fillStyle = "#" + color_2
-                                        ctx.fillRect(x + outer_x + outer_2_x, y + outer_y + outer_2_y, 1, 1)
-                                    } else if (temp_pixel_array[i] == "10") {
-                                        ctx.fillStyle = "#" + color_3
-                                        ctx.fillRect(x + outer_x + outer_2_x, y + outer_y + outer_2_y, 1, 1)
-                                    } else if (temp_pixel_array[i] == "11") {
-                                        ctx.fillStyle = "#" + color_4
-                                        ctx.fillRect(x + outer_x + outer_2_x, y + outer_y + outer_2_y, 1, 1)
-                                    }
-                                }
-
-                            }
-                        }
-                    }
                 }
             }
-            data_ = canvas.toDataURL()
-            raw_bytes = buffer.slice((btf_offset + _8__offset), image_offset)
-            raw_bytes = URL.createObjectURL(new Blob([raw_bytes]))
 
-            if (texture_type_value == 193) {
-                texture_type = "1 Alpha texture, 1 solid color texture"
-            } else if (texture_type_value == 194) {
-                texture_type = "1 half sized Alpha texture, 1 solid color texture"
-            } else if (texture_type_value == 65) {
-                texture_type = "1 solid color texture"
-            } else {
-                texture_type = "???"
+            function load_textures() {
+
+                check_if_other_element_loaded(this)
+                if (temp_flag == "false") {
+                    return
+                }
+                document.getElementById("outer_program").innerHTML = `
+                    <div style='padding-left:25px;padding-bottom:5px;padding-top:5px;width:50%;height:705px;overflow-y: auto;' id='inner_program'></div>
+                    <div style='padding-left:25px;padding-bottom:5px;padding-top:5px;width:50%;height:705px;overflow-y: auto;' id='edit_program'><p style='margin:auto;'> choose a texture to display edit options here </p></div>
+`
+
+                load_dtx1()
             }
-            canvas_html += "<img width='256' height='256' src='" + data_ + "'></img>" + `<br>
+
+            function load_dtx1() {
+
+                let temp_canvas = document.createElement("canvas")
+                temp_canvas.id = 'canvas'
+                temp_canvas.style = 'width: 0px;'
+                document.getElementById("inner_program").appendChild(temp_canvas)
+
+                canvas = document.getElementById('canvas');
+                ctx = canvas.getContext('2d');
+
+                _8__offset = offset_mid
+                canvas_html = ""
+
+                btf_start = _3_24__offset__btf_textures + _8__offset
+                entries = _3_20__amount__btf_textures
+                each_entry_bytes = 64
+                for (btf_ii = 0,
+                btf_i = 0; btf_ii < entries; btf_i += 64,
+                btf_ii++) {
+
+                    texture_type_value = u8(btf_start + btf_i)
+                    alpha_loop = 0
+                    while (alpha_loop < 2) {
+
+                        if (texture_type_value == 193 && alpha_loop == 0) {
+                            btf_offset = u32(btf_start + btf_i + 4, is_little_endian)
+                            alpha_loop++
+                            divide_2 = false
+                        } else if (texture_type_value == 194 && alpha_loop == 0) {
+                            btf_offset = u32(btf_start + btf_i + 4, is_little_endian)
+                            alpha_loop++
+                            divide_2 = true
+                        } else {
+                            btf_offset = u32(btf_start + btf_i + 8, is_little_endian)
+                            alpha_loop += 2
+                            divide_2 = false
+                        }
+
+                        btf_x = u8(btf_start + btf_i + 2)
+                        btf_y = u8(btf_start + btf_i + 3)
+
+                        btf_x = Math.pow(2, btf_x)
+                        btf_y = Math.pow(2, btf_y)
+
+                        if (divide_2 == true) {
+                            btf_y = btf_y / 2
+                            btf_x = btf_x / 2
+                        }
+                        canvas.width = btf_x
+                        canvas.height = btf_y
+
+                        // 65 = no alpha
+                        //193 = with alpha
+                        for (string_i = 12,
+                        btf_string = ""; string_i < 64; string_i++) {
+                            btf_string += String.fromCharCode(u8(btf_start + btf_i + string_i))
+                        }
+                        image_offset = btf_offset + _8__offset
+
+                        for (outer_2_y = 0; outer_2_y < btf_y; outer_2_y += 8) {
+                            for (outer_2_x = 0; outer_2_x < btf_x; outer_2_x += 8) {
+                                for (outer_y = 0; outer_y < 8; outer_y += 4) {
+                                    for (outer_x = 0; outer_x < 8; outer_x += 4) {
+
+                                        get_color()
+                                        get_pixel_data()
+
+                                        image_offset += 8
+
+                                        for (i = 0,
+                                        y = 0; y < 4; y++) {
+                                            for (x = 0; x < 4; x++,
+                                            i++) {
+
+                                                if (temp_pixel_array[i] == "00") {
+                                                    ctx.fillStyle = "#" + color_1
+                                                    ctx.fillRect(x + outer_x + outer_2_x, y + outer_y + outer_2_y, 1, 1)
+                                                } else if (temp_pixel_array[i] == "01") {
+                                                    ctx.fillStyle = "#" + color_2
+                                                    ctx.fillRect(x + outer_x + outer_2_x, y + outer_y + outer_2_y, 1, 1)
+                                                } else if (temp_pixel_array[i] == "10") {
+                                                    ctx.fillStyle = "#" + color_3
+                                                    ctx.fillRect(x + outer_x + outer_2_x, y + outer_y + outer_2_y, 1, 1)
+                                                } else if (temp_pixel_array[i] == "11") {
+                                                    ctx.fillStyle = "#" + color_4
+                                                    ctx.fillRect(x + outer_x + outer_2_x, y + outer_y + outer_2_y, 1, 1)
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        data_ = canvas.toDataURL()
+                        raw_bytes = buffer.slice((btf_offset + _8__offset), image_offset)
+                        raw_bytes = URL.createObjectURL(new Blob([raw_bytes]))
+
+                        if (texture_type_value == 193) {
+                            texture_type = "1 Alpha texture, 1 solid color texture"
+                        } else if (texture_type_value == 194) {
+                            texture_type = "1 half sized Alpha texture, 1 solid color texture"
+                        } else if (texture_type_value == 65) {
+                            texture_type = "1 solid color texture"
+                        } else {
+                            texture_type = "???"
+                        }
+                        canvas_html += "<img width='256' height='256' src='" + data_ + "'></img>" + `<br>
             <table class='binary_table'>
                 <tbody>
                     <tr>
@@ -2429,227 +2359,227 @@ function load_dtx1() {
                 </tbody>
            </table>
 */
-            `
+                        `
            <a href='` + raw_bytes + `' download=' ` + raw_bytes + `.raw'>download raw bytes</a><br>
            <a href='` + data_ + `' download=' ` + data_ + `.png'>download as png</a><br><br>
 
 `
-        }
-    }
-    document.getElementById("outer_program").innerHTML = canvas_html
-}
+                    }
+                }
+                document.getElementById("inner_program").innerHTML = canvas_html
+            }
 
-function get_pixel_data() {
-    var i = 0
-    var temp_1 = 0
-    var iii = 0
-    for (temp_pixel_array = []; iii < 16; iii += 4,
-    i++) {
-        var pixel_row = u8(image_offset + i + 4)
-        for (ii = 7; ii > 0; ii -= 2,
-        temp_1++) {
-            let pixel_1 = (pixel_row >> ii) & 0x1;
-            let pixel_2 = (pixel_row >> ii - 1) & 0x1;
+            function get_pixel_data() {
+                var i = 0
+                var temp_1 = 0
+                var iii = 0
+                for (temp_pixel_array = []; iii < 16; iii += 4,
+                i++) {
+                    var pixel_row = u8(image_offset + i + 4)
+                    for (ii = 7; ii > 0; ii -= 2,
+                    temp_1++) {
+                        let pixel_1 = (pixel_row >> ii) & 0x1;
+                        let pixel_2 = (pixel_row >> ii - 1) & 0x1;
 
-            temp_pixel_array[temp_1] = pixel_1 + "" + pixel_2
-        }
-    }
-}
+                        temp_pixel_array[temp_1] = pixel_1 + "" + pixel_2
+                    }
+                }
+            }
 
-function get_color() {
-    var i = 0
-    var ii = 0
-    for (; ii < 2; ii++,
-    i += 2) {
-        var color_byte1 = u8(image_offset + i)
-        var color_byte2 = u8(image_offset + 1 + i)
+            function get_color() {
+                var i = 0
+                var ii = 0
+                for (; ii < 2; ii++,
+                i += 2) {
+                    var color_byte1 = u8(image_offset + i)
+                    var color_byte2 = u8(image_offset + 1 + i)
 
-        let red_bit_1 = (color_byte1 >> 7) & 0x1;
-        let red_bit_2 = (color_byte1 >> 6) & 0x1;
-        let red_bit_3 = (color_byte1 >> 5) & 0x1;
-        let red_bit_4 = (color_byte1 >> 4) & 0x1;
-        let red_bit_5 = (color_byte1 >> 3) & 0x1;
+                    let red_bit_1 = (color_byte1 >> 7) & 0x1;
+                    let red_bit_2 = (color_byte1 >> 6) & 0x1;
+                    let red_bit_3 = (color_byte1 >> 5) & 0x1;
+                    let red_bit_4 = (color_byte1 >> 4) & 0x1;
+                    let red_bit_5 = (color_byte1 >> 3) & 0x1;
 
-        red_bit_1 = red_bit_1 * 16
-        red_bit_2 = red_bit_2 * 8
-        red_bit_3 = red_bit_3 * 4
-        red_bit_4 = red_bit_4 * 2
-        red_bit_5 = red_bit_5 * 1
+                    red_bit_1 = red_bit_1 * 16
+                    red_bit_2 = red_bit_2 * 8
+                    red_bit_3 = red_bit_3 * 4
+                    red_bit_4 = red_bit_4 * 2
+                    red_bit_5 = red_bit_5 * 1
 
-        var red_color = red_bit_1 + red_bit_2 + red_bit_3 + red_bit_4 + red_bit_5
+                    var red_color = red_bit_1 + red_bit_2 + red_bit_3 + red_bit_4 + red_bit_5
 
-        red_color = Math.round(red_color * 8.2257)
+                    red_color = Math.round(red_color * 8.2257)
 
-        let green_bit_1 = (color_byte1 >> 2) & 0x1;
-        let green_bit_2 = (color_byte1 >> 1) & 0x1;
-        let green_bit_3 = (color_byte1 >> 0) & 0x1;
-        let green_bit_4 = (color_byte2 >> 7) & 0x1;
-        let green_bit_5 = (color_byte2 >> 6) & 0x1;
-        let green_bit_6 = (color_byte2 >> 5) & 0x1;
+                    let green_bit_1 = (color_byte1 >> 2) & 0x1;
+                    let green_bit_2 = (color_byte1 >> 1) & 0x1;
+                    let green_bit_3 = (color_byte1 >> 0) & 0x1;
+                    let green_bit_4 = (color_byte2 >> 7) & 0x1;
+                    let green_bit_5 = (color_byte2 >> 6) & 0x1;
+                    let green_bit_6 = (color_byte2 >> 5) & 0x1;
 
-        green_bit_1 = green_bit_1 * 32
-        green_bit_2 = green_bit_2 * 16
-        green_bit_3 = green_bit_3 * 8
-        green_bit_4 = green_bit_4 * 4
-        green_bit_5 = green_bit_5 * 2
-        green_bit_6 = green_bit_6 * 1
+                    green_bit_1 = green_bit_1 * 32
+                    green_bit_2 = green_bit_2 * 16
+                    green_bit_3 = green_bit_3 * 8
+                    green_bit_4 = green_bit_4 * 4
+                    green_bit_5 = green_bit_5 * 2
+                    green_bit_6 = green_bit_6 * 1
 
-        var green_color = green_bit_1 + green_bit_2 + green_bit_3 + green_bit_4 + green_bit_5 + green_bit_6
+                    var green_color = green_bit_1 + green_bit_2 + green_bit_3 + green_bit_4 + green_bit_5 + green_bit_6
 
-        green_color = Math.round(green_color * 4.048)
+                    green_color = Math.round(green_color * 4.048)
 
-        let blue_bit_1 = (color_byte2 >> 4) & 0x1;
-        let blue_bit_2 = (color_byte2 >> 3) & 0x1;
-        let blue_bit_3 = (color_byte2 >> 2) & 0x1;
-        let blue_bit_4 = (color_byte2 >> 1) & 0x1;
-        let blue_bit_5 = (color_byte2 >> 0) & 0x1;
+                    let blue_bit_1 = (color_byte2 >> 4) & 0x1;
+                    let blue_bit_2 = (color_byte2 >> 3) & 0x1;
+                    let blue_bit_3 = (color_byte2 >> 2) & 0x1;
+                    let blue_bit_4 = (color_byte2 >> 1) & 0x1;
+                    let blue_bit_5 = (color_byte2 >> 0) & 0x1;
 
-        blue_bit_1 = blue_bit_1 * 16
-        blue_bit_2 = blue_bit_2 * 8
-        blue_bit_3 = blue_bit_3 * 4
-        blue_bit_4 = blue_bit_4 * 2
-        blue_bit_5 = blue_bit_5 * 1
+                    blue_bit_1 = blue_bit_1 * 16
+                    blue_bit_2 = blue_bit_2 * 8
+                    blue_bit_3 = blue_bit_3 * 4
+                    blue_bit_4 = blue_bit_4 * 2
+                    blue_bit_5 = blue_bit_5 * 1
 
-        var blue_color = blue_bit_1 + blue_bit_2 + blue_bit_3 + blue_bit_4 + blue_bit_5
+                    var blue_color = blue_bit_1 + blue_bit_2 + blue_bit_3 + blue_bit_4 + blue_bit_5
 
-        blue_color = Math.round(blue_color * 8.2257)
+                    blue_color = Math.round(blue_color * 8.2257)
 
-        red_color = red_color.toString(16);
-        green_color = green_color.toString(16);
-        blue_color = blue_color.toString(16);
+                    red_color = red_color.toString(16);
+                    green_color = green_color.toString(16);
+                    blue_color = blue_color.toString(16);
 
-        if (red_color.length == 1) {
-            red_color = '0' + red_color
-        }
-        if (green_color.length == 1) {
-            green_color = '0' + green_color
-        }
-        if (blue_color.length == 1) {
-            blue_color = '0' + blue_color
-        }
+                    if (red_color.length == 1) {
+                        red_color = '0' + red_color
+                    }
+                    if (green_color.length == 1) {
+                        green_color = '0' + green_color
+                    }
+                    if (blue_color.length == 1) {
+                        blue_color = '0' + blue_color
+                    }
 
-        if (ii == 0) {
-            color_1 = red_color + green_color + blue_color
-            red_color_1 = red_color
-            green_color_1 = green_color
-            blue_color_1 = blue_color
-        } else {
-            color_2 = red_color + green_color + blue_color
+                    if (ii == 0) {
+                        color_1 = red_color + green_color + blue_color
+                        red_color_1 = red_color
+                        green_color_1 = green_color
+                        blue_color_1 = blue_color
+                    } else {
+                        color_2 = red_color + green_color + blue_color
 
-            red_color_1 = parseInt(red_color_1, 16)
-            green_color_1 = parseInt(green_color_1, 16)
-            blue_color_1 = parseInt(blue_color_1, 16)
+                        red_color_1 = parseInt(red_color_1, 16)
+                        green_color_1 = parseInt(green_color_1, 16)
+                        blue_color_1 = parseInt(blue_color_1, 16)
 
-            red_color = parseInt(red_color, 16)
-            green_color = parseInt(green_color, 16)
-            blue_color = parseInt(blue_color, 16)
+                        red_color = parseInt(red_color, 16)
+                        green_color = parseInt(green_color, 16)
+                        blue_color = parseInt(blue_color, 16)
 
-            if (color_1 > color_2) {
+                        if (color_1 > color_2) {
 
-                red_color_3 = (2 * red_color_1 + red_color) / 3
-                green_color_3 = (2 * green_color_1 + green_color) / 3
-                blue_color_3 = (2 * blue_color_1 + blue_color) / 3
+                            red_color_3 = (2 * red_color_1 + red_color) / 3
+                            green_color_3 = (2 * green_color_1 + green_color) / 3
+                            blue_color_3 = (2 * blue_color_1 + blue_color) / 3
 
-                red_color_4 = (red_color_1 + 2 * red_color) / 3
-                green_color_4 = (green_color_1 + 2 * green_color) / 3
-                blue_color_4 = (blue_color_1 + 2 * blue_color) / 3
+                            red_color_4 = (red_color_1 + 2 * red_color) / 3
+                            green_color_4 = (green_color_1 + 2 * green_color) / 3
+                            blue_color_4 = (blue_color_1 + 2 * blue_color) / 3
 
-            } else {
+                        } else {
 
-                red_color_3 = (red_color_1 + red_color) / 2
-                green_color_3 = (green_color_1 + green_color) / 2
-                blue_color_3 = (blue_color_1 + blue_color) / 2
+                            red_color_3 = (red_color_1 + red_color) / 2
+                            green_color_3 = (green_color_1 + green_color) / 2
+                            blue_color_3 = (blue_color_1 + blue_color) / 2
 
-                red_color_4 = 0
-                green_color_4 = 0
-                blue_color_4 = 0
+                            red_color_4 = 0
+                            green_color_4 = 0
+                            blue_color_4 = 0
+
+                        }
+
+                        red_color_3 = Math.round(red_color_3)
+                        green_color_3 = Math.round(green_color_3)
+                        blue_color_3 = Math.round(blue_color_3)
+
+                        red_color_4 = Math.round(red_color_4)
+                        green_color_4 = Math.round(green_color_4)
+                        blue_color_4 = Math.round(blue_color_4)
+
+                        red_color_3 = red_color_3.toString(16);
+                        green_color_3 = green_color_3.toString(16);
+                        blue_color_3 = blue_color_3.toString(16);
+
+                        red_color_4 = red_color_4.toString(16);
+                        green_color_4 = green_color_4.toString(16);
+                        blue_color_4 = blue_color_4.toString(16);
+
+                        if (red_color_3.length == 1) {
+                            red_color_3 = '0' + red_color_3
+                        }
+                        if (green_color_3.length == 1) {
+                            green_color_3 = '0' + green_color_3
+                        }
+                        if (blue_color_3.length == 1) {
+                            blue_color_3 = '0' + blue_color_3
+                        }
+
+                        if (parseInt(red_color_3, 16) > 255) {
+                            red_color_3 = "FF"
+                        }
+                        if (parseInt(green_color_3, 16) > 255) {
+                            green_color_3 = "FF"
+                        }
+                        if (parseInt(blue_color_3, 16) > 255) {
+                            blue_color_3 = "FF"
+                        }
+                        //
+                        //
+                        if (red_color_4.length == 1) {
+                            red_color_4 = '0' + red_color_4
+                        }
+                        if (green_color_4.length == 1) {
+                            green_color_4 = '0' + green_color_4
+                        }
+                        if (blue_color_4.length == 1) {
+                            blue_color_4 = '0' + blue_color_4
+                        }
+
+                        color_3 = red_color_3 + green_color_3 + blue_color_3
+
+                        color_4 = red_color_4 + green_color_4 + blue_color_4
+
+                    }
+                }
 
             }
 
-            red_color_3 = Math.round(red_color_3)
-            green_color_3 = Math.round(green_color_3)
-            blue_color_3 = Math.round(blue_color_3)
+            function check_if_other_element_loaded(tag) {
+                if (tag.dataset.is_active == 'true') {
+                    return temp_flag = "false"
+                }
 
-            red_color_4 = Math.round(red_color_4)
-            green_color_4 = Math.round(green_color_4)
-            blue_color_4 = Math.round(blue_color_4)
+                for (var i = 0; i < document.getElementsByClassName("data_bar_options").length; i++) {
+                    document.getElementsByClassName("data_bar_options")[i].dataset.is_active = 'false'
+                }
 
-            red_color_3 = red_color_3.toString(16);
-            green_color_3 = green_color_3.toString(16);
-            blue_color_3 = blue_color_3.toString(16);
-
-            red_color_4 = red_color_4.toString(16);
-            green_color_4 = green_color_4.toString(16);
-            blue_color_4 = blue_color_4.toString(16);
-
-            if (red_color_3.length == 1) {
-                red_color_3 = '0' + red_color_3
-            }
-            if (green_color_3.length == 1) {
-                green_color_3 = '0' + green_color_3
-            }
-            if (blue_color_3.length == 1) {
-                blue_color_3 = '0' + blue_color_3
+                tag.dataset.is_active = 'true'
+                temp_flag = "true"
             }
 
-            if (parseInt(red_color_3, 16) > 255) {
-                red_color_3 = "FF"
-            }
-            if (parseInt(green_color_3, 16) > 255) {
-                green_color_3 = "FF"
-            }
-            if (parseInt(blue_color_3, 16) > 255) {
-                blue_color_3 = "FF"
-            }
-            //
-            //
-            if (red_color_4.length == 1) {
-                red_color_4 = '0' + red_color_4
-            }
-            if (green_color_4.length == 1) {
-                green_color_4 = '0' + green_color_4
-            }
-            if (blue_color_4.length == 1) {
-                blue_color_4 = '0' + blue_color_4
+            function load_logic() {
+                check_if_other_element_loaded(this)
+                if (temp_flag == "false") {
+                    return
+                }
+
+                document.getElementById("outer_program").innerHTML = "no idea how to parse this"
+
             }
 
-            color_3 = red_color_3 + green_color_3 + blue_color_3
-
-            color_4 = red_color_4 + green_color_4 + blue_color_4
-
-        }
-    }
-
-}
-
-function check_if_other_element_loaded(tag) {
-    if (tag.dataset.is_active == 'true') {
-        return temp_flag = "false"
-    }
-
-    for (var i = 0; i < document.getElementsByClassName("data_bar_options").length; i++) {
-        document.getElementsByClassName("data_bar_options")[i].dataset.is_active = 'false'
-    }
-
-    tag.dataset.is_active = 'true'
-    temp_flag = "true"
-}
-
-function load_logic() {
-    check_if_other_element_loaded(this)
-    if (temp_flag == "false") {
-        return
-    }
-
-    document.getElementById("outer_program").innerHTML = "no idea how to parse this"
-
-}
-
-function load_inner_program_table() {
-    var table = document.createElement('table');
-    table.className = 'binary_table noselect'
-    table.style.textAlign = 'center'
-    table.innerHTML = `
+            function load_inner_program_table() {
+                var table = document.createElement('table');
+                table.className = 'binary_table noselect'
+                table.style.textAlign = 'center'
+                table.innerHTML = `
                       <thead>
                           <tr>
                               <th>index</th>
@@ -2658,44 +2588,51 @@ function load_inner_program_table() {
                           </tr>
                       </thead>
     `
-    table.createTBody()
+                table.createTBody()
 
-    for (let temp_i = 0; temp_i < number_sounds; temp_i++) {
+                for (let temp_i = 0; temp_i < number_sounds; temp_i++) {
 
-        table.getElementsByTagName("tbody")[0].innerHTML += `<tr data-sound_row_select='false' class='sound_row_select' id='sound_row_select_${temp_i}'>
+                    table.getElementsByTagName("tbody")[0].innerHTML += `<tr data-sound_row_select='false' class='sound_row_select' id='sound_row_select_${temp_i}'>
         <td> ${temp_i + 1} </td>
         <td id='sound_table_${temp_i}'></td>
         <td id='sound_table_${temp_i}_download'></td>
     </tr>`
-    }
+                }
 
-    table.innerHTML += `</tbody>`
+                table.innerHTML += `</tbody>`
 
-    document.getElementById("inner_program").appendChild(table);
+                document.getElementById("inner_program").appendChild(table);
 
-}
-function load_edit_sound() {
+            }
+            function load_edit_sound() {
 
-    for (var i = 0; i < document.getElementsByClassName("binary_table")[0].children[1].children.length; i++) {
-        document.getElementsByClassName("binary_table")[0].children[1].children[i].dataset.sound_row_select = 'false'
-    }
-    let select_row_index = this.getElementsByTagName('td')[0].innerText - 1
-    document.getElementsByClassName("binary_table")[0].children[1].children[select_row_index].dataset.sound_row_select = 'true'
+                for (var i = 0; i < document.getElementsByClassName("binary_table")[0].children[1].children.length; i++) {
+                    document.getElementsByClassName("binary_table")[0].children[1].children[i].dataset.sound_row_select = 'false'
+                }
+                let select_row_index = this.getElementsByTagName('td')[0].innerText - 1
+                document.getElementsByClassName("binary_table")[0].children[1].children[select_row_index].dataset.sound_row_select = 'true'
 
-    i_offset = offset_audio + (32 * select_row_index)
+                i_offset = offset_audio + (32 * select_row_index)
 
-    sound_offset = u32(i_offset, endian)
-    sound_length = u32(i_offset + 4, endian)
-    sound_ff_ff_ff_ff = u32(i_offset + 8, endian)
-    sound_sample_rate = u32(i_offset + 12, endian)
-    sound_16 = u32(i_offset + 16, endian)
-    sound_20 = u16(i_offset + 20, endian)
-    sound_22 = u16(i_offset + 22, endian)
-    sound_24 = u32(i_offset + 24, endian)
-    sound_28 = u32(i_offset + 28, endian)
+                sound_offset = u32(i_offset, endian)
+                sound_length = u32(i_offset + 4, endian)
+                sound_ff_ff_ff_ff = u32(i_offset + 8, endian)
+                sound_sample_rate = u32(i_offset + 12, endian)
+                sound_16 = u32(i_offset + 16, endian)
+                sound_20 = u16(i_offset + 20, endian)
+                sound_22 = u16(i_offset + 22, endian)
+                sound_24 = u32(i_offset + 24, endian)
+                sound_28 = u32(i_offset + 28, endian)
 
-    // get values from sound
-    document.getElementById("edit_program").innerHTML = `
+                // get values from sound
+                document.getElementById("edit_program").innerHTML = `
+
+    <p> sound header offset: ${i_offset}
+    <br> start sound data offset: <a id='start_sound_offset'>${offset_audio + sound_offset}</a>
+    <br> end sound data offset: <a id='end_sound_offset'>${offset_audio + sound_length}</a></p>
+
+    <hr>
+
     <label for='sound_box_offset'> offset </label>
     <input id='sound_box_offset' type='text'></input><br>
 
@@ -2722,174 +2659,273 @@ function load_edit_sound() {
     
     <label for='sound_box_28'> padding ? always 0</label>
     <input id='sound_box_28' type='text'></input><br>
+
+    <br><br><button id='save_sound_file'> save new values </button>
+
     <hr>
-    <input type='file' id='replace_sound_file'> replace wav file
-    <a id='save_sound_file'> save new value </a>
+    <a>replace with new wav file: </a>
+    <input type='file' id='replace_sound_file'> 
     `
 
-    document.getElementById("sound_box_offset").value = sound_offset;
-    document.getElementById("sound_box_length").value = sound_length;
-    document.getElementById("sound_box_ff").value = sound_ff_ff_ff_ff;
-    document.getElementById("sound_box_sample_rate").value = sound_sample_rate;
-    document.getElementById("sound_box_16").value = sound_16;
-    document.getElementById("sound_box_20").value = sound_20;
-    document.getElementById("sound_box_22").value = sound_22;
-    document.getElementById("sound_box_24").value = sound_24;
-    document.getElementById("sound_box_28").value = sound_28;
+                document.getElementById("sound_box_offset").value = sound_offset;
+                document.getElementById("sound_box_length").value = sound_length;
+                document.getElementById("sound_box_ff").value = sound_ff_ff_ff_ff;
+                document.getElementById("sound_box_sample_rate").value = sound_sample_rate;
+                document.getElementById("sound_box_16").value = sound_16;
+                document.getElementById("sound_box_20").value = sound_20;
+                document.getElementById("sound_box_22").value = sound_22;
+                document.getElementById("sound_box_24").value = sound_24;
+                document.getElementById("sound_box_28").value = sound_28;
 
-    document.getElementById("replace_sound_file").addEventListener("change", load_replace_sound_file);
-    document.getElementById("save_sound_file").addEventListener("click", load_save_sound_file);
+                document.getElementById("replace_sound_file").addEventListener("change", load_replace_sound_file);
+                document.getElementById("save_sound_file").addEventListener("click", load_save_sound_file);
+                document.getElementById("sound_box_offset").addEventListener("input", change_sound_offset);
+                document.getElementById("sound_box_length").addEventListener("input", change_sound_offset);
 
-}
-
-function load_replace_sound_file(event) {
-    document.getElementById("replace_sound_file")
-
-    var filename = document.getElementById("replace_sound_file").files[0].name
-    var fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
-    fileextension = fileextension.toLowerCase()
-
-    var file = event.target.files[0];
-    var reader = new FileReader();
-
-    replace_sound_buffer = reader.readAsArrayBuffer(file);
-
-    document.getElementById("replace_sound_file").value = ''
-
-    console.log(fileextension)
-
-    reader.onload = function(e) {
-        replace_sound_buffer = e.target.result
-
-        if (new DataView(replace_sound_buffer).getUint32(0, true) != 1179011410) {
-            console.log('not wav')
-            return
-        }
-        let audio_replace_sample_rate = new DataView(replace_sound_buffer).getUint32(24, true)
-        // samplerate
-
-        //get index
-        let node = document.querySelector(`tr[data-sound_row_select="true"]`)
-        let temp_index = Array.prototype.indexOf.call(node.parentNode.childNodes, node);
-
-        offset_audio_replace = offset_audio + (32 * temp_index)
-
-        new DataView(buffer).setUint32(offset_audio_replace + 12, audio_replace_sample_rate, is_little_endian)
-
-        //get offset /lengtyh box
-        old_sound_offset = document.getElementById("sound_box_offset").value
-        old_sound_length = document.getElementById("sound_box_length").value
-
-        old_sound_offset = Number(old_sound_offset) + offset_audio
-
-        //get new dataview?
-
-        replace_sound_buffer = replace_sound_buffer.slice(44)
-
-        temp_sound_buffer = new ArrayBuffer(old_sound_length)
-        temp_sound_buffer = replace_sound_buffer
-
-        //replace buffer with new wav
-
-        if (replace_sound_buffer.byteLength >= old_sound_length) {
-
-            for (ii_length = 0; ii_length < old_sound_length; ii_length += 2) {
-                let temp = new DataView(temp_sound_buffer).getUint16(ii_length, true)
-                new DataView(buffer).setUint16(old_sound_offset + ii_length, temp, is_little_endian)
             }
 
-        } else {
-            for (ii_length = 0; ii_length < replace_sound_buffer.byteLength; ii_length += 2) {
-                let temp = new DataView(temp_sound_buffer).getUint16(ii_length, true)
-                new DataView(buffer).setUint16(old_sound_offset + ii_length, temp, is_little_endian)
+            function change_sound_offset() {
+
+                if (isNumeric(sound_box_offset.value) && sound_box_offset.value >= 0) {
+                    if (isNumeric(sound_box_length.value) && sound_box_length.value >= 0) {
+
+                        start_sound_offset_value = Number(offset_audio) + Number(sound_box_offset.value)
+                        end_sound_offset_value = Number(sound_box_length.value) + start_sound_offset_value
+
+                        if (this.id == 'sound_box_offset') {
+                            console.log(this.value, offset_audio, sound_box_length.value)
+
+                            document.getElementById("start_sound_offset").innerText = ''
+                            document.getElementById("end_sound_offset").innerText = ''
+
+                            document.getElementById("start_sound_offset").innerText = start_sound_offset_value
+                            document.getElementById("end_sound_offset").innerText = end_sound_offset_value
+
+                        } else if (this.id == 'sound_box_length') {
+                            document.getElementById("end_sound_offset").innerText = ''
+
+                            document.getElementById("end_sound_offset").innerText = end_sound_offset_value
+
+                        }
+                    }
+                }
             }
 
-            for (ii_length = replace_sound_buffer.byteLength; ii_length < old_sound_length; ii_length += 2) {
-                new DataView(buffer).setUint16(old_sound_offset + ii_length, 0, is_little_endian)
+            function isNumeric(str) {
+                if (typeof str != "string")
+                    return false
+                // we only process strings!  
+                return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+                !isNaN(parseFloat(str))
+                // ...and ensure strings of whitespace fail
             }
 
-        }
+            function load_replace_sound_file(event) {
 
-    }
+                var filename = document.getElementById("replace_sound_file").files[0].name
+                var fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+                fileextension = fileextension.toLowerCase()
 
-}
-function load_save_sound_file() {}
+                var file = event.target.files[0];
+                var reader = new FileReader();
 
-function generate_wav_header(sound_length, sound_sample_rate) {
-    //create wav file
-    wav_ = new ArrayBuffer(sound_length + 44)
+                replace_sound_buffer = reader.readAsArrayBuffer(file);
 
-    //wav header
-    new DataView(wav_).setUint8(0, 82)
-    new DataView(wav_).setUint8(1, 73)
-    new DataView(wav_).setUint8(2, 70)
-    new DataView(wav_).setUint8(3, 70)
-    // RIFF
+                document.getElementById("replace_sound_file").value = ''
 
-    new DataView(wav_).setUint32(4, wav_.byteLength - 8, true)
-    //file size - 8(riff header)
+                console.log(fileextension)
 
-    new DataView(wav_).setUint8(8, 87)
-    new DataView(wav_).setUint8(9, 65)
-    new DataView(wav_).setUint8(10, 86)
-    new DataView(wav_).setUint8(11, 69)
-    // WAVE
+                reader.onload = function(e) {
+                    replace_sound_buffer = e.target.result
 
-    new DataView(wav_).setUint8(12, 102)
-    new DataView(wav_).setUint8(13, 109)
-    new DataView(wav_).setUint8(14, 116)
-    new DataView(wav_).setUint8(15, 32)
-    // fmt.
+                    if (new DataView(replace_sound_buffer).getUint32(0, true) != 1179011410) {
+                        console.log('not wav')
+                        return
+                    }
+                    let audio_replace_sample_rate = new DataView(replace_sound_buffer).getUint32(24, true)
+                    // samplerate
 
-    new DataView(wav_).setUint32(16, 16, true)
-    //always 16
+                    //get index
+                    let node = document.querySelector(`tr[data-sound_row_select="true"]`)
+                    let temp_index = Array.prototype.indexOf.call(node.parentNode.childNodes, node);
 
-    new DataView(wav_).setUint16(20, 1, true)
-    //1 = pcm format
+                    document.getElementById("sound_table_" + temp_index).innerHTML = ""
+                    document.getElementById("sound_table_" + temp_index + "_download").innerHTML = ""
 
-    new DataView(wav_).setUint16(22, 1, true)
-    //channels
+                    offset_audio_replace = offset_audio + (32 * temp_index)
 
-    new DataView(wav_).setUint32(24, sound_sample_rate, true)
-    //sample rate
+                    new DataView(buffer).setUint32(offset_audio_replace + 12, audio_replace_sample_rate, is_little_endian)
 
-    new DataView(wav_).setUint32(28, sound_sample_rate * 16 * 2 / 8, true)
+                    //get offset /lengtyh box
+                    old_sound_offset = document.getElementById("sound_box_offset").value
+                    old_sound_length = document.getElementById("sound_box_length").value
 
-    new DataView(wav_).setUint16(32, 4, true)
+                    old_sound_offset = Number(old_sound_offset) + offset_audio
 
-    new DataView(wav_).setUint16(34, 16, true)
-    //bit per sample
+                    //get new dataview?
 
-    new DataView(wav_).setUint8(36, 100)
-    new DataView(wav_).setUint8(37, 97)
-    new DataView(wav_).setUint8(38, 116)
-    new DataView(wav_).setUint8(39, 97)
-    // data
+                    replace_sound_buffer = replace_sound_buffer.slice(44)
 
-    new DataView(wav_).setUint32(40, sound_length, true)
-    //sound length
+                    temp_sound_buffer = new ArrayBuffer(old_sound_length)
+                    temp_sound_buffer = replace_sound_buffer
 
-}
+                    //replace buffer with new wav
 
-function save_buffer() {
+                    if (replace_sound_buffer.byteLength >= old_sound_length) {
 
-    if (buffer == null) {} else {
+                        for (ii_length = 0; ii_length < old_sound_length; ii_length += 2) {
+                            let temp = new DataView(temp_sound_buffer).getUint16(ii_length, true)
+                            new DataView(buffer).setUint16(old_sound_offset + ii_length, temp, is_little_endian)
+                        }
 
-        var objectURL = URL.createObjectURL(new Blob([buffer]))
+                    } else {
+                        for (ii_length = 0; ii_length < replace_sound_buffer.byteLength; ii_length += 2) {
+                            let temp = new DataView(temp_sound_buffer).getUint16(ii_length, true)
+                            new DataView(buffer).setUint16(old_sound_offset + ii_length, temp, is_little_endian)
+                        }
 
-        let download_file = document.createElement("a")
-        download_file.id = 'temp_download_file'
-        download_file.href = objectURL
-        download_file.download = document.body.getElementsByClassName("folder")[0].dataset.file
-        document.getElementById("save_button").appendChild(download_file)
+                        for (ii_length = replace_sound_buffer.byteLength; ii_length < old_sound_length; ii_length += 2) {
+                            new DataView(buffer).setUint16(old_sound_offset + ii_length, 0, is_little_endian)
+                        }
 
-        document.getElementById("temp_download_file").click()
+                    }
+                    old_sound_offset = old_sound_offset - offset_audio
+                    generate_and_attach_wav(old_sound_offset, old_sound_length, audio_replace_sample_rate, temp_index)
 
-        document.getElementById("temp_download_file").remove()
-    }
+                    document.getElementById("sound_row_select_" + temp_index).click()
 
-}
+                }
 
+            }
+            function load_save_sound_file() {
+                console.log("real")
+
+                let node = document.querySelector(`tr[data-sound_row_select="true"]`)
+                let temp_index = Array.prototype.indexOf.call(node.parentNode.childNodes, node);
+
+                temp_sound_offset = offset_audio + (32 * temp_index)
+
+                console.log(temp_index)
+
+                new DataView(buffer).setUint32(temp_sound_offset, document.getElementById("sound_box_offset").value, is_little_endian)
+                new DataView(buffer).setUint32(temp_sound_offset + 4, document.getElementById("sound_box_length").value, is_little_endian)
+                new DataView(buffer).setUint32(temp_sound_offset + 8, document.getElementById("sound_box_ff").value, is_little_endian)
+                new DataView(buffer).setUint32(temp_sound_offset + 12, document.getElementById("sound_box_sample_rate").value, is_little_endian)
+                new DataView(buffer).setUint32(temp_sound_offset + 16, document.getElementById("sound_box_16").value, is_little_endian)
+                new DataView(buffer).setUint16(temp_sound_offset + 20, document.getElementById("sound_box_20").value, is_little_endian)
+                new DataView(buffer).setUint16(temp_sound_offset + 22, document.getElementById("sound_box_22").value, is_little_endian)
+                new DataView(buffer).setUint32(temp_sound_offset + 24, document.getElementById("sound_box_24").value, is_little_endian)
+                new DataView(buffer).setUint32(temp_sound_offset + 28, document.getElementById("sound_box_28").value, is_little_endian)
+
+                document.getElementById("sound_row_select_" + temp_index).click()
+
+                old_sound_offset = document.getElementById("sound_box_offset").value
+                old_sound_length = document.getElementById("sound_box_length").value
+                old_sound_sample_rate = document.getElementById("sound_box_sample_rate").value
+
+                document.getElementById("sound_table_" + temp_index).innerHTML = ""
+                document.getElementById("sound_table_" + temp_index + "_download").innerHTML = ""
+
+                generate_and_attach_wav(Number(old_sound_offset), old_sound_length, old_sound_sample_rate, temp_index)
+
+            }
+
+            function generate_and_attach_wav(old_sound_offset, sound_length, sound_sample_rate, sound_index) {
+                //create wav file
+                wav_ = new ArrayBuffer(sound_length + 44)
+
+                //wav header
+                new DataView(wav_).setUint8(0, 82)
+                new DataView(wav_).setUint8(1, 73)
+                new DataView(wav_).setUint8(2, 70)
+                new DataView(wav_).setUint8(3, 70)
+                // RIFF
+
+                new DataView(wav_).setUint32(4, wav_.byteLength - 8, true)
+                //file size - 8(riff header)
+
+                new DataView(wav_).setUint8(8, 87)
+                new DataView(wav_).setUint8(9, 65)
+                new DataView(wav_).setUint8(10, 86)
+                new DataView(wav_).setUint8(11, 69)
+                // WAVE
+
+                new DataView(wav_).setUint8(12, 102)
+                new DataView(wav_).setUint8(13, 109)
+                new DataView(wav_).setUint8(14, 116)
+                new DataView(wav_).setUint8(15, 32)
+                // fmt.
+
+                new DataView(wav_).setUint32(16, 16, true)
+                //always 16
+
+                new DataView(wav_).setUint16(20, 1, true)
+                //1 = pcm format
+
+                new DataView(wav_).setUint16(22, 1, true)
+                //channels
+
+                new DataView(wav_).setUint32(24, sound_sample_rate, true)
+                //sample rate
+
+                new DataView(wav_).setUint32(28, sound_sample_rate * 16 * 2 / 8, true)
+
+                new DataView(wav_).setUint16(32, 4, true)
+
+                new DataView(wav_).setUint16(34, 16, true)
+                //bit per sample
+
+                new DataView(wav_).setUint8(36, 100)
+                new DataView(wav_).setUint8(37, 97)
+                new DataView(wav_).setUint8(38, 116)
+                new DataView(wav_).setUint8(39, 97)
+                // data
+
+                new DataView(wav_).setUint32(40, sound_length, true)
+                //sound length
+
+                for (ii_length = 0,
+                ii = old_sound_offset + offset_audio; ii_length < sound_length; ii += 2,
+                ii_length += 2) {
+                    temp = u16(offset_audio + old_sound_offset + ii_length, is_little_endian)
+                    new DataView(wav_).setUint16(44 + ii_length, temp, true)
+                }
+
+                var objectURL = URL.createObjectURL(new Blob([wav_]))
+
+                document.getElementById("sound_row_select_" + sound_index).addEventListener("click", load_edit_sound);
+
+                var link = document.createElement("audio");
+                link.src = objectURL
+                link.controls = true
+                document.getElementById("sound_table_" + sound_index).appendChild(link)
+
+                var download_sound = document.createElement("a")
+                download_sound.href = objectURL
+                download_sound.download = objectURL + ".wav"
+                download_sound.innerText = "download as .wav"
+                document.getElementById("sound_table_" + sound_index + "_download").appendChild(download_sound)
+
+            }
+
+            function save_buffer() {
+
+                if (buffer == null) {} else {
+
+                    var objectURL = URL.createObjectURL(new Blob([buffer]))
+
+                    let download_file = document.createElement("a")
+                    download_file.id = 'temp_download_file'
+                    download_file.href = objectURL
+                    download_file.download = document.body.getElementsByClassName("folder")[0].dataset.file
+                    document.getElementById("save_button").appendChild(download_file)
+
+                    document.getElementById("temp_download_file").click()
+
+                    document.getElementById("temp_download_file").remove()
+                }
+
+            }
         </script>
     </body>
 </html>
