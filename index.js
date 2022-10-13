@@ -2487,7 +2487,6 @@ function load_replace_sound_file(event) {
         let temp_index = Array.prototype.indexOf.call(node.parentNode.childNodes, node);
 
         document.getElementById("sound_table_" + temp_index).innerHTML = ""
-        document.getElementById("sound_table_" + temp_index + "_download").innerHTML = ""
 
         offset_audio_replace = offset_audio + (32 * temp_index)
 
@@ -2561,7 +2560,6 @@ function load_save_sound_file() {
     old_sound_sample_rate = document.getElementById("sound_box_sample_rate").value
 
     document.getElementById("sound_table_" + temp_index).innerHTML = ""
-    document.getElementById("sound_table_" + temp_index + "_download").innerHTML = ""
 
     generate_and_attach_wav(Number(old_sound_offset), old_sound_length, old_sound_sample_rate, temp_index)
 
@@ -2697,7 +2695,32 @@ function load_animations() {
     if (temp_flag == "false") {
         return
     }
+
     document.getElementById("outer_program").innerHTML = "wip"
+
+//     animation_html = ""
+//     animation_header = _3_60__offset__start_animation + offset_mid
+
+//     for(animation_header_i = 0;animation_header_i < (_3_48__unknown *12);animation_header_i+=12){
+//         animation_header_offset = u32(animation_header + animation_header_i,is_little_endian) + offset_mid
+
+//        animation_html+= `| 00: ${u32(animation_header_offset + 0,is_little_endian)}
+//        | 04: ${u32(animation_header_offset + 4,is_little_endian)}
+//        | 08: ${u32(animation_header_offset + 8,is_little_endian)}
+//        | 12: ${u32(animation_header_offset + 12,is_little_endian)}
+//        | 16: ${u32(animation_header_offset + 16,is_little_endian)}
+//        | 20: ${u32(animation_header_offset + 20,is_little_endian)}
+//        | 24: ${u32(animation_header_offset + 24,is_little_endian)}
+//        | 28: ${u32(animation_header_offset + 28,is_little_endian)}
+//        | 32: ${u32(animation_header_offset + 32,is_little_endian)}
+//        | 36: ${u32(animation_header_offset + 36,is_little_endian)}
+//        | 40: ${u32(animation_header_offset + 40,is_little_endian)}
+//        | 44: ${u32(animation_header_offset + 44,is_little_endian)}
+// <br>`
+    // }
+
+    //     document.getElementById("outer_program").innerHTML = animation_html
+
 }
 function load_collision() {
     check_if_other_element_loaded(this)
