@@ -2,10 +2,10 @@
 
 function load_main_page() {
 
-        document.getElementById("show_debug").addEventListener("click", check_debug_box);
+    document.getElementById("show_debug").addEventListener("click", check_debug_box);
 
-        document.getElementById("file_input").addEventListener("change", input_file);
-        return
+    document.getElementById("file_input").addEventListener("change", input_file);
+    return
 }
 
 load_main_page()
@@ -598,11 +598,11 @@ function image_import_file(event) {
             return;
         }
 
-        if(new DataView(dds_buffer).getUint32(12, true) !== texture_y){
+        if (new DataView(dds_buffer).getUint32(12, true) !== texture_y) {
             alert("wrong y dimensions")
             return;
         }
-        if(new DataView(dds_buffer).getUint32(16, true) !== texture_x){
+        if (new DataView(dds_buffer).getUint32(16, true) !== texture_x) {
             alert("wrong x dimensions")
             return;
         }
@@ -611,9 +611,7 @@ function image_import_file(event) {
 
         // calculate_mips
         dds_mips = new DataView(dds_buffer).getUint32(28, true)
-        
-        
-    
+
         temp_y = texture_y
         temp_x = texture_x
         dds_offset = 128
@@ -632,7 +630,7 @@ function image_import_file(event) {
             temp_y = temp_y / 2
 
         }
-            document.querySelector(`tr[data-sound_row_select="true"]`).click()
+        document.querySelector(`tr[data-sound_row_select="true"]`).click()
 
     }
 
@@ -1659,7 +1657,6 @@ function get_pixels_to_dtx1_gc() {
         }
     }
 
-
     document.querySelector(`tr[data-sound_row_select="true"]`).click()
 
 }
@@ -2479,8 +2476,13 @@ function load_replace_sound_file(event) {
             console.log('not wav')
             return
         }
+
+        let audio_replace_channels = new DataView(replace_sound_buffer).getUint16(22, true)
+
         let audio_replace_sample_rate = new DataView(replace_sound_buffer).getUint32(24, true)
         // samplerate
+
+        audio_replace_sample_rate = audio_replace_sample_rate * audio_replace_channels
 
         //get index
         let node = document.querySelector(`tr[data-sound_row_select="true"]`)
@@ -2500,7 +2502,16 @@ function load_replace_sound_file(event) {
 
         //get new dataview?
 
-        replace_sound_buffer = replace_sound_buffer.slice(44)
+        for (data_i = 0,
+        data_string = 0; data_string !== 1635017060; data_i++) {
+            data_string = new DataView(replace_sound_buffer).getUint32(data_i, true)
+        }
+
+        wav_data_amount = new DataView(replace_sound_buffer).getUint32(data_i + 3, true)
+
+        wav_data_end = (wav_data_amount + data_i + 7)
+
+        replace_sound_buffer = replace_sound_buffer.slice(data_i + 7, wav_data_end)
 
         temp_sound_buffer = new ArrayBuffer(old_sound_length)
         temp_sound_buffer = replace_sound_buffer
@@ -2513,7 +2524,7 @@ function load_replace_sound_file(event) {
                 let temp = new DataView(temp_sound_buffer).getUint16(ii_length, true)
                 new DataView(buffer).setUint16(old_sound_offset + ii_length, temp, is_little_endian)
             }
-
+            alert("the sound imported is longer\nthan the current sound\nit may be cutoff!")
         } else {
             for (ii_length = 0; ii_length < replace_sound_buffer.byteLength; ii_length += 2) {
                 let temp = new DataView(temp_sound_buffer).getUint16(ii_length, true)
@@ -2698,25 +2709,25 @@ function load_animations() {
 
     document.getElementById("outer_program").innerHTML = "wip"
 
-//     animation_html = ""
-//     animation_header = _3_60__offset__start_animation + offset_mid
+    //     animation_html = ""
+    //     animation_header = _3_60__offset__start_animation + offset_mid
 
-//     for(animation_header_i = 0;animation_header_i < (_3_48__unknown *12);animation_header_i+=12){
-//         animation_header_offset = u32(animation_header + animation_header_i,is_little_endian) + offset_mid
+    //     for(animation_header_i = 0;animation_header_i < (_3_48__unknown *12);animation_header_i+=12){
+    //         animation_header_offset = u32(animation_header + animation_header_i,is_little_endian) + offset_mid
 
-//        animation_html+= `| 00: ${u32(animation_header_offset + 0,is_little_endian)}
-//        | 04: ${u32(animation_header_offset + 4,is_little_endian)}
-//        | 08: ${u32(animation_header_offset + 8,is_little_endian)}
-//        | 12: ${u32(animation_header_offset + 12,is_little_endian)}
-//        | 16: ${u32(animation_header_offset + 16,is_little_endian)}
-//        | 20: ${u32(animation_header_offset + 20,is_little_endian)}
-//        | 24: ${u32(animation_header_offset + 24,is_little_endian)}
-//        | 28: ${u32(animation_header_offset + 28,is_little_endian)}
-//        | 32: ${u32(animation_header_offset + 32,is_little_endian)}
-//        | 36: ${u32(animation_header_offset + 36,is_little_endian)}
-//        | 40: ${u32(animation_header_offset + 40,is_little_endian)}
-//        | 44: ${u32(animation_header_offset + 44,is_little_endian)}
-// <br>`
+    //        animation_html+= `| 00: ${u32(animation_header_offset + 0,is_little_endian)}
+    //        | 04: ${u32(animation_header_offset + 4,is_little_endian)}
+    //        | 08: ${u32(animation_header_offset + 8,is_little_endian)}
+    //        | 12: ${u32(animation_header_offset + 12,is_little_endian)}
+    //        | 16: ${u32(animation_header_offset + 16,is_little_endian)}
+    //        | 20: ${u32(animation_header_offset + 20,is_little_endian)}
+    //        | 24: ${u32(animation_header_offset + 24,is_little_endian)}
+    //        | 28: ${u32(animation_header_offset + 28,is_little_endian)}
+    //        | 32: ${u32(animation_header_offset + 32,is_little_endian)}
+    //        | 36: ${u32(animation_header_offset + 36,is_little_endian)}
+    //        | 40: ${u32(animation_header_offset + 40,is_little_endian)}
+    //        | 44: ${u32(animation_header_offset + 44,is_little_endian)}
+    // <br>`
     // }
 
     //     document.getElementById("outer_program").innerHTML = animation_html
@@ -2991,4 +3002,3 @@ function load_music() {
     }
     document.getElementById("outer_program").innerHTML = "wip"
 }
-
