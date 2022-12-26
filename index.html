@@ -1,39 +1,59 @@
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Pac Kart</title>
-        <link href="index.css" rel="stylesheet" />
-        <link rel="icon" href="favicon.ico" type="image/x-icon" />
-        <script defer type="text/javascript" src="index.js"></script>
-    </head>
-    <body>
-        <style id="debug_style">
-            [data-debug="true"] {
-                display: none;
-            }
-        </style>
-        <div id="main_page"></div>
-        <section id="main" style="margin: 2%;">
-            <input id="file_input" type="file" />
-            <div id="radio">
-                <input type="radio" id="rally" name="a" checked />
-                <label for="rally">Pac Man World Rally</label>
-                <input name="a" type="radio" id="baron" />
-                <label for="baron">Snoopy vs The Red Baron</label>
-                <input id="hot" name="a" type="radio" />
-                <label for="hot">Hot Wheels Velocity X</label>
+   <head>
+      <meta charset="UTF-8"/>
+      <title>Pac Kart</title>
+      <link href="index.css" rel="stylesheet"/>
+      <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+      <script defer type="text/javascript" src="index.js"></script>
+      <script defer type="text/javascript" src="spider.js"></script>
+      <script defer type="text/javascript" src="save_format/circuit_records.js"></script>
+      <script defer type="text/javascript" src="save_format/clockbuster.js"></script>
+      <script defer type="text/javascript" src="save_format/letter_hunt.js"></script>
+      <script defer type="text/javascript" src="save_format/save_import.js"></script>
+      <script defer type="text/javascript" src="save_format/settings.js"></script>
+      <script defer type="text/javascript" src="save_format/time_trials.js"></script>
+      <script defer type="text/javascript" src="save_format/unlockables.js"></script>
+      <script defer type="text/javascript" src="save_format/save_folder.js"></script> 
+      <script defer type="text/javascript" src="x_format/file_header.js"></script>
+      <script defer type="text/javascript" src="x_format/sub_file.js"></script>
+      <script defer type="text/javascript" src="x_format/sub_file_header.js"></script>
+      <script defer type="text/javascript" src="x_format/animations.js"></script>
+      <script defer type="text/javascript" src="x_format/logic.js"></script>
+      <script defer type="text/javascript" src="x_format/models.js"></script>
+      <script defer type="text/javascript" src="x_format/music.js"></script>
+      <script defer type="text/javascript" src="x_format/world_options.js"></script>
+      <script defer type="text/javascript" src="x_format/collision.js"></script>
+      <script defer type="text/javascript" src="x_format/sounds.js"></script>
+      <script defer type="text/javascript" src="x_format/texture.js"></script>
+      <script defer type="text/javascript" src="x_format/varible.js"></script>
+      <script defer type="text/javascript" src="x_format/font.js"></script>
+   </head>
+   <body style='padding-top:3%'>
+      <style id="debug_style">
+         [data-debug="true"] {
+         display: none;
+         }
+      </style>
+      <div id="main_page"></div>
+      <section id="main" style="margin: 2%;">
+         <input style='display:none;' id="file_input" type="file">
+         <div style="display: flex; height: 84%;">
+            <div id="main_program" style="flex: 1 1 0%;">
+               <div class="data_types_bar noselect" id="data_types_bar" style="
+                  border-left: solid 1px #9d9898;
+                  border-top: solid 1px #9d9898;
+                  border-right: solid 1px #9d9898;
+                  width: 100%;box-sizing:border-box;">
+                  <label for='file_input' data-is_active="false" class="data_bar_options" id="main_program__audio_button">New File</label>
+               </div>
+               <div style="white-space:nowrap" id="outer_program">
+                  <div class='noselect' style="padding-left:5px;width: 30%;height: 100%;overflow-y: auto;border: solid 1px #9d9898;display: inline-block;height:100%;box-sizing: border-box;" id="file_viewer" tabindex="0">
+                  </div><div style="background: #f2f2f2;width:0.5%;cursor: col-resize;display: inline-block;height:100%;" id="drag_bar">
+                  </div><div id="file_editor" style="padding-left:25px;width:69.5%;border:solid 1px #9d9898;display: inline-block;height:100%;overflow:auto;box-sizing: border-box;"></div>
+               </div>
+             <div class="bar" style="border-left:solid 1px #9d9898;border-bottom:solid 1px #9d9898;border-right:solid 1px #9d9898;width: 100%;box-sizing:border-box;"><input id="show_debug" type="checkbox" style=""><label for="show_debug">show extra information</label></div>
             </div>
-            <div class="bar"></div>
-            <div style="display: flex; height: 750px;">
-                <div id="left_bar" style="flex: 0 0 10%;">
-                    <div id="file_view" style="background: #e6e6e6; overflow-y: auto; height: 90%;"></div>
-                    <div class="save_button noselect" id="save_button">save</div>
-                </div>
-                <div id="main_program" style="flex: 1;"></div>
-            </div>
-            <div class="bar"></div>
-            <input id="show_debug" type="checkbox" />
-            <label for="show_debug">show extra information</label>
-        </section>
-    </body>
+         </div>
+      </section>
+   </body>
 </html>

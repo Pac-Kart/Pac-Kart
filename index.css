@@ -75,7 +75,7 @@ html {
 .data_types_bar {
     width: 100%;
     height: 35px;
-    background: #cacaca;
+    background: #f2f2f2;
 }
 
 .noselect {
@@ -96,8 +96,8 @@ html {
 
 .bar {
     width: 100%;
-    height: 15px;
-    background: #9a9a9a;
+    height: 20px;;
+    background:#f2f2f2;
 }
 
 .folder {
@@ -166,4 +166,81 @@ th {
 .unknown_value {
     color: #000000;
     background-color: #d0d0d0
+}
+
+.save_records_row {
+    height: 25%;
+    padding-left: 2.5%;
+    display: flex;
+    justify-content: space-evenly
+}
+
+.save_records_time_row {
+    padding-left: 2.5%;
+    display: flex;
+    justify-content: space-evenly
+    
+}
+
+.save_records_clockbuster_row {
+    padding-left: 2.5%;
+    display: flex;
+    justify-content: space-evenly
+}
+
+
+.save_records_boarder {
+    border: black solid 1px;
+    overflow: hidden;
+}
+
+.save_records_cup {
+    height: 15%;
+    width: 99%;
+    padding-bottom: 3%;
+}
+
+.save_records_time {
+    width: 99%;
+    padding-bottom: 3%;
+}
+
+.save_records_row_in {
+    width: 12%;
+}
+
+.radio_button{
+    white-space:nowrap;
+}
+.no_border{
+    border:0px;
+}
+
+.known{
+    color:blue;
+}
+.file_arrow:hover{
+    color:red;
+    cursor:pointer;
+}
+.no_arrow{
+    color:white;
+    padding-right:6px;
+    padding-left:4px;
+}
+.file_hover_not_selected:hover{
+    text-decoration:underline;
+    color:#0000ff;
+    cursor:pointer;
+}
+.sub_file_div{
+    padding-left: 20px;
+    white-space:nowrap;
+    font-size:20px;
+}
+.file_is_highlighted{
+    background:#9898ff;
+}.file_is_highlighted:hover{
+    color:black;
+    text-decoration:none;
 }

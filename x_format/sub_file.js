@@ -1,0 +1,3 @@
+function load_sub_file(offset) {
+            document.getElementById("file_editor").innerHTML = `    <div data-debug='true'><br>---> magic ${u32(offset,is_little_endian)}<br> | type of file ${u32(offset +4,is_little_endian)}<br> | file type index ${u32(offset + 8,is_little_endian)} <br>| usually 0 offset of some kind ${u32(offset + 12,is_little_endian)} |<br>amount bytes  ${u32(offset + 16,is_little_endian)}| <br>offset to Sub File header ${u32(offset + 20,is_little_endian)}</div>`
+}
