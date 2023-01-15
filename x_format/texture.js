@@ -473,8 +473,13 @@ function rgba64_to_canvas() {
         height = texture_y
     }
 
+    temp_style = 'border:1px solid;background:white;'
+    if(game === "hot_wheels_velocity_x"){
+        temp_style+= 'transform:rotateX(180deg);'
+    }
+
     data_ = canvas.toDataURL()
-    document.getElementById("file_editor").innerHTML += `<img style="border:1px solid;background:white;" width='${width}' height='${height}' src='${data_}'></img>`
+    document.getElementById("file_editor").innerHTML += `<img style="${temp_style}" width='${width}' height='${height}' src='${data_}'></img>`
 
 }
 

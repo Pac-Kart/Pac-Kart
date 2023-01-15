@@ -96,8 +96,8 @@ html {
 
 .bar {
     width: 100%;
-    height: 20px;;
-    background:#f2f2f2;
+    height: 20px;
+    ; background: #f2f2f2;
 }
 
 .folder {
@@ -179,7 +179,6 @@ th {
     padding-left: 2.5%;
     display: flex;
     justify-content: space-evenly
-    
 }
 
 .save_records_clockbuster_row {
@@ -187,7 +186,6 @@ th {
     display: flex;
     justify-content: space-evenly
 }
-
 
 .save_records_boarder {
     border: black solid 1px;
@@ -209,38 +207,67 @@ th {
     width: 12%;
 }
 
-.radio_button{
-    white-space:nowrap;
-}
-.no_border{
-    border:0px;
+.radio_button {
+    white-space: nowrap;
 }
 
-.known{
-    color:blue;
+.no_border {
+    border: 0px;
 }
-.file_arrow:hover{
-    color:red;
-    cursor:pointer;
+
+.known {
+    color: blue;
 }
-.no_arrow{
-    color:white;
-    padding-right:6px;
-    padding-left:4px;
+
+.file_arrow:hover {
+    color: red;
+    cursor: pointer;
 }
-.file_hover_not_selected:hover{
-    text-decoration:underline;
-    color:#0000ff;
-    cursor:pointer;
+
+.no_arrow {
+    color: white;
+    padding-right: 6px;
+    padding-left: 4px;
 }
-.sub_file_div{
+
+.file_hover_not_selected:hover {
+    text-decoration: underline;
+    color:  #00dbff;
+    cursor: pointer;
+}
+
+.sub_file_div {
     padding-left: 20px;
-    white-space:nowrap;
-    font-size:20px;
+    white-space: nowrap;
+    font-size: 20px;
 }
-.file_is_highlighted{
-    background:#9898ff;
-}.file_is_highlighted:hover{
-    color:black;
-    text-decoration:none;
+
+.file_is_highlighted {
+    background: #00dbff;
+}
+
+.file_is_highlighted:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.text_input {
+    width: 100%;
+}
+
+.data_bar_options_canvas {
+    width: 20px;
+    font-size: larger;
+    padding-top:5%;
+    padding-bottom:5%;
+    padding-right: 1%;
+    padding-left: 1%;
+    line-height: 35px;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: center;
+}
+.data_bar_options_canvas:hover {
+    color:white;
+    background:#787878;
 }

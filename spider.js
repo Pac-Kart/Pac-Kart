@@ -23,6 +23,7 @@ function get_x_sub_files(offset, index) {
     type = file_type_name[u32(offset + 4, is_little_endian)]
 
     let html = ''
+    console.log(type)
 
     if (type === 'geometry' || type === 'music' || game === "bigfoot_collision_course") {
         is_arrow_needed = `<a class='no_arrow'>↓</a>`
@@ -43,18 +44,19 @@ function get_x_sub_files(offset, index) {
         number_sounds = u32(temp_offset + 8, is_little_endian)
         number_textures = u32(temp_offset + 20, is_little_endian)
 
-        console.log(temp_offset,number_sounds,number_textures)
+        console.log(temp_offset, number_sounds, number_textures)
 
         if (number_sounds == 0 && number_textures == 0) {
-            console.log("????")
-        html += `<div style='display: block;' class='sub_file_div'><a class='no_arrow'>↓</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a></div>`
+            html += `<div style='display: block;' class='sub_file_div'><a class='no_arrow'>↓</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a></div>`
 
         } else {
+
             html += `<div style='display: block;' class='sub_file_div'><a class='file_arrow'>→</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a>`
 
             html += get_x_sub_file_header(u32(offset + 20, is_little_endian) + (u32(12, is_little_endian) * 24) + 16)
 
             html += `</div>`
+
         }
         // }
     }
@@ -213,27 +215,33 @@ function get_x_sub_file_header(offset) {
         html += "</div>"
     }
 
-    // if (game == "pac_man_world_rally") {
+    if (game == "pac_man_world_rally") {
 
-    if (type === 'interface') {// let temp = u32(offset_mid + 4, is_little_endian)
-    // offset_logic = u32(offset_mid + temp, is_little_endian)
+        if (type === 'interface') {// let temp = u32(offset_mid + 4, is_little_endian)
+        // offset_logic = u32(offset_mid + temp, is_little_endian)
 
-    // html += get_80byteblock(offset_logic + offset_mid)
-    } else if (type === 'link') {// let temp = u32(offset_mid + 4, is_little_endian)
-    // offset_logic = u32(offset_mid + temp, is_little_endian)
+        // html += get_80byteblock(offset_logic + offset_mid)
+        } else if (type === 'link') {
+            let temp = u32(offset_mid + 4, is_little_endian)
+            offset_logic = u32(offset_mid + temp, is_little_endian)
 
-    // html += get_logic(offset_logic + offset_mid)
-    } else if (type === 'world') {// offset_logic = u32(offset_mid, is_little_endian) + offset_mid
+            html += get_logic(offset_logic + offset_mid)
+        } else if (type === 'world') {
+            // offset_logic = u32(offset_mid, is_little_endian) + offset_mid
 
-    // html += get_colision(u32(offset_mid + 4, is_little_endian) + offset_mid)
-    // html += get_world_options(u32(offset_mid + 20, is_little_endian) + offset_mid)
-
-    // if (fileextension == "xdx") {
-    //     offset_logic = u32(offset_mid + 188, is_little_endian) + offset_mid
-    // }
-    // html += get_logic(offset_logic)
+            // html += get_colision(u32(offset_mid + 4, is_little_endian) + offset_mid)
+            if (fileextension == 'xdx') {
+                console.log("SXD", u32(offset_mid + 152, is_little_endian) + offset_mid)
+                html += get_world_options(u32(offset_mid + 152, is_little_endian) + offset_mid)
+            } else {
+                html += get_world_options(u32(offset_mid + 20, is_little_endian) + offset_mid)
+            }
+            // if (fileextension == "xdx") {
+            //     offset_logic = u32(offset_mid + 188, is_little_endian) + offset_mid
+            // }
+            // html += get_logic(offset_logic)
+        }
     }
-    // }
     // html += "</div>"
 
     // colision
@@ -242,15 +250,53 @@ function get_x_sub_file_header(offset) {
 }
 
 function get_world_options(offset) {
-    let html = `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ? </a> <a data-type="x_world" data-offset="${offset}" class='file_hover_not_selected'>World</a>`
-    for (let i = 0; i < 16; i++) {
+    let html = `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> 🗀 </a> <a data-type="x_world" data-offset="${offset}" class='file_hover_not_selected'>World</a>`
 
-        if ((u32(offset + (i * 16), is_little_endian)) == 1) {
-            console.log(offset + (i * 16))
-            html += get_world_options_camera(u32(offset + (i * 16) + 12, is_little_endian) + offset_mid)
+    // html += get_world_weird(u32(offset_mid + 8, is_little_endian) + offset_mid)
+    if (fileextension == 'xdx') {
+        html += get_world_routes(u32(offset_mid + 152, is_little_endian) + offset_mid)
+    } else if (u32(8, is_little_endian) == 249) {
+        html += get_world_routes(u32(offset_mid + 120, is_little_endian) + offset_mid)
+    } else {
+        html += get_world_routes(u32(offset_mid + 12, is_little_endian) + offset_mid)
+    }
+    // html += get_world_flags(u32(offset_mid + 24, is_little_endian) + offset_mid)
+
+    if (u32(8, is_little_endian) == 249) {
+        html += get_world_options_starting_points(u32(offset_mid + 12, is_little_endian) + offset_mid, u32(offset_mid + 8, is_little_endian))
+    } else if (fileextension == 'xdx') {
+        html += get_world_options_starting_points(u32(offset_mid + 12, is_little_endian) + offset_mid, u32(offset_mid + 8, is_little_endian))
+    } else {
+        for (let i = 0; i < 16; i++) {
+
+            if (u32(offset + (i * 16) + 8, is_little_endian) != 0) {
+                world_options_type = u32(offset + (i * 16), is_little_endian)
+                world_options_amount = u32(offset + (i * 16) + 8, is_little_endian)
+                world_options_offset = u32(offset + (i * 16) + 12, is_little_endian) + offset_mid
+            } else {
+                world_options_type = null
+            }
+
+            if (world_options_type === 0) {
+                html += get_world_options_starting_points(world_options_offset, world_options_amount)
+            } else if (world_options_type === 1) {// html += get_world_options_camera(world_options_offset, world_options_amount)
+            } else if (world_options_type === 2) {// html += get_world_options_camera(world_options_offset, world_options_amount)
+            } else if (world_options_type === 3) {// html += get_world_options_3(world_options_offset, world_options_amount)
+            } else if (world_options_type === 15) {// html += get_world_options_object(world_options_offset, world_options_amount)
+            }
+
+            // u32(offset, is_little_endian)
+
         }
-        // u32(offset, is_little_endian)
+    }
 
+    if (fileextension == 'xdx') {
+        html += get_world_gate(u32(offset_mid + 224, is_little_endian) + offset_mid, u32(offset_mid + 220, is_little_endian))
+    } else if (u32(8, is_little_endian) == 249) {
+        html += get_world_gate(u32(offset_mid + 192, is_little_endian) + offset_mid, u32(offset_mid + 188, is_little_endian))
+    } else {
+
+        html += get_world_gate(u32(offset_mid + 32, is_little_endian) + offset_mid, u32(offset_mid + 28, is_little_endian))
     }
     // calculate from sound offset list
     html += "</div>"
@@ -258,8 +304,85 @@ function get_world_options(offset) {
 
 }
 
-function get_world_options_camera(offset) {
-    let html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>→</a><a> ? </a> <a data-type="x_cam" data-offset="${offset}" class='file_hover_not_selected'>cam</a></div>`
+function get_world_flags(offset) {
+    let html = `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ? </a> <a data-type="x_world_weird_2" data-offset="${offset}" class='file_hover_not_selected'>Flags</a>`
+    for (let i = 0; i < u32(offset + 8, is_little_endian); i++) {
+        html += get_world_flags_2(u32(offset + 12, is_little_endian) + offset_mid + (i * 4))
+    }
+    html += '</div>'
+    return html
+}
+
+function get_world_flags_2(offset) {
+    let html = get_world_flags_2_2(u32(offset + 0, is_little_endian) + offset_mid)
+
+    return html
+}
+
+function get_world_flags_2_2(offset) {
+    // let html = `<br>--->---> ${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | [ ${u8(offset + 8, is_little_endian)}, ${u8(offset + 9, is_little_endian)}, ${u8(offset + 10, is_little_endian)}, ${u8(offset + 11, is_little_endian)} ] | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)} | ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | ${u32(offset + 44, is_little_endian)} | ${u32(offset + 48, is_little_endian)} | ${u32(offset + 52, is_little_endian)} | ${u32(offset + 56, is_little_endian)} | ${u32(offset + 60, is_little_endian)} | ${u32(offset + 64, is_little_endian)} | ${u32(offset + 68, is_little_endian)} | ${u32(offset + 72, is_little_endian)} | ${u32(offset + 76, is_little_endian)} | ${u32(offset + 80, is_little_endian)} | ${u32(offset + 84, is_little_endian)} | ${u32(offset + 88, is_little_endian)} | ${u32(offset + 92, is_little_endian)} | ${u32(offset + 96, is_little_endian)} | ${u32(offset + 100, is_little_endian)} | ${u32(offset + 104, is_little_endian)} | ${u32(offset + 108, is_little_endian)} | ${u32(offset + 112, is_little_endian)} | ${u32(offset + 116, is_little_endian)} | ${u32(offset + 120, is_little_endian)} | ${u32(offset + 124, is_little_endian)} | ${u32(offset + 128, is_little_endian)} | ${u32(offset + 132, is_little_endian)} | ${u32(offset + 136, is_little_endian)} | ${u32(offset + 140, is_little_endian)} | ${u32(offset + 144, is_little_endian)} | ${u32(offset + 148, is_little_endian)} | ${u32(offset + 152, is_little_endian)} | ${u32(offset + 156, is_little_endian)} | ${u32(offset + 160, is_little_endian)} | ${u32(offset + 164, is_little_endian)} | ${u32(offset + 168, is_little_endian)} | ${u32(offset + 172, is_little_endian)}`
+    let html = `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ? </a> <a data-type="x_world_flags_2" data-offset="${offset}" class='file_hover_not_selected'>${get_string(u32(offset + 140, is_little_endian) + offset_mid, 0, false)}</a></div>`
+    // if (u32(offset + 140, is_little_endian) != 0) {
+    //     html += `<br>--->--->---?${get_string(u32(offset + 140, is_little_endian) + offset_mid, 0, false)}`
+    // }
+    // if (u32(offset + 152, is_little_endian) != 0) {
+    //     html += `<br>--->--->---?${get_string(u32(offset + 152, is_little_endian) + offset_mid, 0, false)}`
+    // }
+
+    // html += load_world_x_world_weird_2_2_2_1(u32(offset + 164, is_little_endian) + offset_mid)
+    // html += load_world_x_world_weird_2_2_2_2(u32(offset + 168, is_little_endian) + offset_mid)
+    return html
+}
+
+function get_world_weird(offset) {
+    let html = `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ? </a> <a data-type="x_world_weird" data-offset="${offset}" class='file_hover_not_selected'>werid</a></div>`
+
+    return html
+}
+
+function get_world_gate(offset, amount) {
+    let html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>↓</a><a> ⚙ </a> <a data-type="x_world_gate" data-offset="${offset}" data-amount="${amount}" class='file_hover_not_selected'>Road Properties</a></div>`
+
+    return html
+}
+
+function get_world_routes(offset) {
+    let html = ''
+    if (u32(offset, is_little_endian) != 0) {
+        html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>↓</a><a> ⚙ </a> <a data-type="x_routes" data-offset="${offset}" class='file_hover_not_selected'>World Route</a></div>`
+    } else {}
+
+    return html
+
+}
+
+function get_world_options_object(offset, amount) {
+    let html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>↓</a><a> ? </a> <a data-type="x_object" data-amount="${amount}" data-offset="${offset}" class='file_hover_not_selected'>Objects</a></div>`
+
+    // calculate from sound offset list
+
+    return html
+
+}
+function get_world_options_starting_points(offset, amount) {
+    let html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>↓</a><a> ⚙ </a> <a data-type="x_starting_points" data-amount="${amount}" data-offset="${offset}" class='file_hover_not_selected'>Start Points</a></div>`
+
+    // calculate from sound offset list
+
+    return html
+
+}
+
+function get_world_options_camera(offset, amount) {
+    let html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>↓</a><a> ? </a> <a data-type="x_cam" data-amount="${amount}" data-offset="${offset}" class='file_hover_not_selected'>cam</a></div>`
+
+    // calculate from sound offset list
+
+    return html
+
+}
+function get_world_options_3(offset, amount) {
+    let html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>↓</a><a> ? </a> <a data-type="x_world_3" data-amount="${amount}" data-offset="${offset}" class='file_hover_not_selected'>3 /???</a></div>`
 
     // calculate from sound offset list
 
@@ -1310,6 +1433,26 @@ function file_click() {
         load_varible(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
     } else if (this.dataset.type === "x_font") {
         load_font(parseInt(this.dataset.offset))
+    } else if (this.dataset.type === "x_object") {
+        load_world_object(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
+    } else if (this.dataset.type === "x_starting_points") {
+        load_world_start_points(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
+    } else if (this.dataset.type === "x_world_weird") {
+        load_world_x_world_weird(parseInt(this.dataset.offset))
+    } else if (this.dataset.type === "x_world_weird_2") {
+        load_world_x_world_weird_2(parseInt(this.dataset.offset))
+    } else if (this.dataset.type === "x_world_gate") {
+        load_world_x_world_gate((parseInt(this.dataset.offset)), (parseInt(this.dataset.amount)))
+    } else if (this.dataset.type === "x_cam") {
+        load_world_camera(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
+    } else if (this.dataset.type === "x_world_3") {
+        load_world_3(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
+    } else if (this.dataset.type === "x_routes") {
+        load_world_routes(parseInt(this.dataset.offset))
+    } else if (this.dataset.type === "x_routes_2") {
+        load_world_routes(parseInt(this.dataset.offset))
+    } else if (this.dataset.type === "x_world_flags_2") {
+        load_world_x_world_weird_2_2_2(parseInt(this.dataset.offset))
     } else if (this.dataset.type === "x_texture") {
         load_texture(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
     } else if (this.dataset.type === "save_pac_folder") {

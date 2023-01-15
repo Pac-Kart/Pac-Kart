@@ -51,7 +51,7 @@ function load_unlockables() {
             <tbody>
                 <tr>
                     <td class='no_border'>
-                        <input type='checkbox' id='check${save_offset.unlockables + 28}'> Pac-Man
+                        <input type='checkbox' id='check${save_offset.unlockables + 28}'>
                         <label for='check${save_offset.unlockables + 28}'> Pac-Man</label>
                     <td class='no_border'>
                         <input type='checkbox' id='check${save_offset.unlockables + 32}'> 
