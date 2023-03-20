@@ -1,9 +1,5 @@
 function save_file_import(file_name, fileextension) {
 
-    // atach_folder_to_file_viewer(filename, fileextension, 0, 1)
-
-    // document.getElementById("save_button").addEventListener("click", save_buffer);
-
     let html = `
     <div style='display:block'>
         <a class='file_arrow' style='padding-right:4px;padding-left:4px;' id='arrow'>↓</a><a> 🗀 </a> <a id='save_pac_folder' data-type="save_pac_folder" data-offset="0" class='file_hover_not_selected'>${file_name}</a>
@@ -32,7 +28,7 @@ function save_file_import(file_name, fileextension) {
     if (document.getElementById("save_button") == null) {
         document.getElementById("data_types_bar").innerHTML += `<a data-is_active="false" class="data_bar_options" id="save_button">Save</a>`
     }
-    document.getElementById("save_button").addEventListener("click", save_buffer);
+    document.getElementById("save_button").addEventListener("click", save_file);
 
     document.getElementById("arrow").addEventListener("click", arrow_click);
     document.getElementById("save_pac_folder").addEventListener("click", file_click);
@@ -75,6 +71,7 @@ function save_file_import(file_name, fileextension) {
         clockbuster: (3104 + is_gc),
         unlockables: (4512 + is_gc),
     }
+    
     document.getElementsByClassName('file_hover_not_selected')[0].click()
     document.getElementById("file_viewer").addEventListener("keydown", file_move_with_key);
 
@@ -187,37 +184,4 @@ function save_time_format_focus(e) {
 function save_time_format_blur(e) {
     console.log(e.target.dataset.actual_time)
     e.target.value = msToTime(e.target.dataset.actual_time)
-}
-
-function calculate_crc() {
-
-    amount_in_save = u32(8 + is_gc, is_little_endian) - 12
-    register_1 = new ArrayBuffer(4)
-    register_2 = new ArrayBuffer(4)
-
-    for (byte_i = 0; byte_i < amount_in_save; byte_i++) {
-        new DataView(register_1).setUint32(0, u8(12 + is_gc + byte_i))
-
-        new DataView(register_1).setUint32(0, new DataView(register_1).getUint32(0) << 24)
-
-        new DataView(register_2).setUint32(0, new DataView(register_1).getUint32(0) ^ new DataView(register_2).getUint32(0))
-
-        for (let i = 0; i < 8; i++) {
-            new DataView(register_1).setUint32(0, new DataView(register_2).getUint32(0))
-
-            new DataView(register_2).setUint32(0, new DataView(register_2).getUint32(0) + new DataView(register_2).getUint32(0))
-
-            flag_1 = new DataView(register_1).getUint32(0) & new DataView(register_1).getUint32(0)
-            if (flag_1 < 0) {
-                new DataView(register_2).setUint32(0, new DataView(register_2).getUint32(0) ^ 0x04C11DB7)
-
-            }
-
-        }
-
-    }
-
-    new DataView(buffer).setUint32(is_gc, new DataView(register_2).getUint32(0), is_little_endian)
-
-    console.log(new DataView(register_2).getUint32(0))
 }

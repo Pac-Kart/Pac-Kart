@@ -232,7 +232,7 @@ th {
 
 .file_hover_not_selected:hover {
     text-decoration: underline;
-    color:  #00dbff;
+    color: #00dbff;
     cursor: pointer;
 }
 
@@ -258,8 +258,8 @@ th {
 .data_bar_options_canvas {
     width: 20px;
     font-size: larger;
-    padding-top:5%;
-    padding-bottom:5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
     padding-right: 1%;
     padding-left: 1%;
     line-height: 35px;
@@ -267,7 +267,31 @@ th {
     text-align: center;
     vertical-align: center;
 }
+
 .data_bar_options_canvas:hover {
-    color:white;
-    background:#787878;
+    color: white;
+    background: #787878;
+}
+
+.x_button {
+    border: 0px;
+    text-align: center;
+    width: 5%;
+    cursor: pointer;
+}
+
+.x_button:hover {
+    background:red;
+    color: slateblue;
+}
+
+.plus_button {
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    border: 0px;
+}
+
+.plus_button:hover {
+    background:#00dbff;
 }

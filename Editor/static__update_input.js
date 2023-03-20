@@ -2,7 +2,7 @@
 // all inputs have these datasets: type, offset
 // types: u32 | u16 | u8 | Float | custom
 function update_input(e) {
-    console.log(this.tagName, e)
+    // console.log(this.tagName, e)
     if (this.tagName === "INPUT") {
         if (this.dataset.type === "u32") {
             let new_val = this.value

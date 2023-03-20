@@ -1,6 +1,57 @@
-function load_world_routes(offset) {
+function load_world_routes(offset, model_offset, model_amount) {
+    // console.log(model_offset, model_amount)
 
     route_points_array = []
+    route_obj_array = []
+
+    for (let i = 0; i < model_amount; i++) {
+        obj_offset = u32(model_offset + 100 + (i * 112), is_little_endian) + offset_mid
+        let temp_array = []
+        let temp_name_offset = u32(obj_offset + 8, is_little_endian) + offset_mid
+        let temp_name = get_string(temp_name_offset, 0, false)
+        for (let ii = 0; ii < u16(obj_offset + 2, is_little_endian); ii++) {
+            obj_offset_1 = u32(obj_offset + 4, is_little_endian) + offset_mid
+
+            for (let iii = 0; iii < u32(obj_offset_1, is_little_endian); iii++) {
+                obj_offset_1_1 = u32(obj_offset_1 + 4, is_little_endian) + offset_mid
+                obj_offset_1_1_1 = u32(obj_offset_1_1, is_little_endian) + offset_mid
+                obj_offset_1_1_1_1 = u32(obj_offset_1_1_1 + 92, is_little_endian) + offset_mid
+                obj_amount = u32(obj_offset_1_1_1_1 + 0, is_little_endian)
+                obj_vertex_offset = u32(obj_offset_1_1_1 + 68, is_little_endian) + offset_mid
+                for (let iiii = 0; iiii < obj_amount; iiii++) {
+                    if (iiii % 2 === 0) {
+                        temp_array.push({
+                            x1: f32(obj_vertex_offset + (iiii * 36), is_little_endian),
+                            z1: f32(obj_vertex_offset + 8 + (iiii * 36), is_little_endian),
+                            x2: f32(obj_vertex_offset + 12 + (iiii * 36), is_little_endian),
+                            z2: f32(obj_vertex_offset + 20 + (iiii * 36), is_little_endian),
+                            x3: f32(obj_vertex_offset + 24 + (iiii * 36), is_little_endian),
+                            z3: f32(obj_vertex_offset + 32 + (iiii * 36), is_little_endian)
+                        })
+                    } else {
+                        // vertecies_obj += "\nf " + (face_vertex_array[face_ii] + 1) + "/" +  " " + (face_vertex_array[face_ii + 1] + 1) + "/"  " " + (face_vertex_array[face_ii + 2] + 1) + "/" 
+                        // vertecies_obj += "\nf " + (face_vertex_array[face_ii + 1] + 1) + "/" + + (face_vertex_array[face_ii + 2 + 1] + 1) + "/"  + (face_vertex_array[face_ii + 1 + 1] + 1) + "/"
+                        temp_array.push({
+                            x1: f32(obj_vertex_offset + (iiii * 36), is_little_endian),
+                            z1: f32(obj_vertex_offset + 8 + (iiii * 36), is_little_endian),
+                            x2: f32(obj_vertex_offset + 12 + (iiii * 36), is_little_endian),
+                            z2: f32(obj_vertex_offset + 20 + (iiii * 36), is_little_endian),
+                            x3: f32(obj_vertex_offset + 24 + (iiii * 36), is_little_endian),
+                            z3: f32(obj_vertex_offset + 32 + (iiii * 36), is_little_endian)
+                        })
+                    }
+                }
+
+            }
+        }
+
+        route_obj_array.push({
+            data: temp_array,
+            visible: true,
+            color: '#80808020',
+            name: temp_name
+        })
+    }
 
     for (let i = 0; i < u32(offset + 4, is_little_endian); i++) {
         get_world_route_list(u32(offset, is_little_endian) + offset_mid + (i * 128), i)
@@ -85,8 +136,8 @@ function canvas_2() {
                             <canvas id='canvas'</canvas>
                     </div>
                 </span>
-                <span id='file_editor_side_panel' class='data_types_bar' style='overflow-x:hidden;padding:3%;height:100%;width:20%;float: right;border-left:solid 1px #9d9898;box-sizing:border-box;'>
-                    <a>Choose a point...</a>
+                <span id='file_editor_side_panel_outer' class='data_types_bar' style='overflow-x:hidden;height:100%;width:20%;float: right;border-left:solid 1px #9d9898;box-sizing:border-box;'>
+                    <div style='padding:3%;' id='file_editor_side_panel'></div>
                 </span>
 `
 
@@ -97,10 +148,9 @@ function canvas_2() {
     let ctx = canvas.getContext('2d')
 
     let cameraOffset = {
-        x: (-f32(route_points_array[0].offset + 32,is_little_endian) /2),
-        y: (-f32(route_points_array[0].offset + 40,is_little_endian) /2)
+        x: (-f32(route_points_array[0].offset + 32, is_little_endian) / 2),
+        y: (-f32(route_points_array[0].offset + 40, is_little_endian) / 2)
     }
-
 
     var BB = canvas.getBoundingClientRect();
     offsetX = BB.left;
@@ -115,10 +165,12 @@ function canvas_2() {
     let MIN_ZOOM = 0.1
     let SCROLL_SENSITIVITY = 0.0002
 
+
     function draw() {
         draw_canvas(cameraOffset.x, cameraOffset.y, cameraZoom, const_index, temp_x, temp_y)
 
         requestAnimationFrame(draw)
+
     }
 
     // Gets the relevant location from a mouse or single touch event
@@ -255,7 +307,7 @@ function canvas_2() {
             new DataView(buffer).setFloat32(route_points_array[selected_index].offset + 32, temp_x - startX - 5, is_little_endian)
             new DataView(buffer).setFloat32(route_points_array[selected_index].offset + 40, temp_y - startY - 5, is_little_endian)
 
-            draw_canvas(startX, startY, cameraZoom, selected_index)
+            // draw_canvas(startX, startY, cameraZoom, selected_index)
             append_to_file_editor_side_panel(route_points_array[selected_index].offset)
             return;
 
@@ -264,6 +316,7 @@ function canvas_2() {
         if (isDragging) {
             cameraOffset.x = (getEventLocation(e).x / cameraZoom - dragStart.x)
             cameraOffset.y = (getEventLocation(e).y / cameraZoom - dragStart.y)
+
         } else {
             let is_dragging_element = false
             const rect = canvas.getBoundingClientRect()
@@ -305,7 +358,7 @@ function canvas_2() {
                     new DataView(buffer).setFloat32(route_points_array[selected_index].offset + 32, startX - 5 - netPanningX, is_little_endian)
                     new DataView(buffer).setFloat32(route_points_array[selected_index].offset + 40, startY - 5 - netPanningY, is_little_endian)
 
-                    draw_canvas(netPanningX, netPanningY)
+                    draw_canvas(startX, startY, cameraZoom, selected_index)
                     return;
                 }
                 return
@@ -358,19 +411,19 @@ function canvas_2() {
     }
 
     function adjustZoom(zoomAmount, zoomFactor) {
-        // if (!isDragging) {
-        //     if (zoomAmount) {
-        //         cameraZoom += zoomAmount
-        //     } else if (zoomFactor) {
-        //         // console.log(zoomFactor)
-        //         cameraZoom = zoomFactor * lastZoom
-        //     }
+        if (!isDragging) {
+            if (zoomAmount) {
+                // cameraZoom += zoomAmount
+            } else if (zoomFactor) {
+                // console.log(zoomFactor)
+                // cameraZoom = zoomFactor * lastZoom
+            }
 
-        //     cameraZoom = Math.min(cameraZoom, MAX_ZOOM)
-        //     cameraZoom = Math.max(cameraZoom, MIN_ZOOM)
+            cameraZoom = Math.min(cameraZoom, MAX_ZOOM)
+            cameraZoom = Math.max(cameraZoom, MIN_ZOOM)
 
-        //     // console.log(zoomAmount)
-        // }
+            // console.log(zoomAmount,canvas.width,canvas.height)
+        }
     }
 
     canvas.addEventListener('mousedown', onPointerDown)
@@ -398,12 +451,30 @@ function draw_canvas(netPanningX, netPanningY, cameraZoom, element_selected, tem
     canvas.width = document.getElementById("outer_canvas").getBoundingClientRect().width
     canvas.height = document.getElementById("outer_canvas").getBoundingClientRect().height
 
+    // console.log(canvas.width,'1')
+
     // Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
     ctx.translate(document.getElementById("outer_canvas").getBoundingClientRect().width / 2, document.getElementById("outer_canvas").getBoundingClientRect().height / 2)
     ctx.scale(cameraZoom, cameraZoom)
     ctx.translate(-document.getElementById("outer_canvas").getBoundingClientRect().width / 2 + netPanningX, -document.getElementById("outer_canvas").getBoundingClientRect().height / 2 + netPanningY)
     ctx.clearRect(0, 0, document.getElementById("outer_canvas").getBoundingClientRect().width, document.getElementById("outer_canvas").getBoundingClientRect().height)
 
+        // console.log(canvas.width /cameraZoom,'2')
+    
+    // for (let i = 0; i < route_obj_array.length; i++) {
+    //     if (route_obj_array[i].visible == true) {
+    //         ctx.fillStyle = route_obj_array[i].color
+    //         for (let ii = 0; ii < route_obj_array[i].data.length; ii++) {
+    //             ctx.beginPath();
+    //             // Start a new path
+    //             ctx.moveTo(route_obj_array[i].data[ii].x1 + netPanningX, route_obj_array[i].data[ii].z1 + netPanningY);
+    //             ctx.lineTo(route_obj_array[i].data[ii].x2 + netPanningX, route_obj_array[i].data[ii].z2 + netPanningY);
+    //             ctx.lineTo(route_obj_array[i].data[ii].x3 + netPanningX, route_obj_array[i].data[ii].z3 + netPanningY);
+    //             ctx.lineWidth = 2 / cameraZoom;
+    //             ctx.fill();
+    //         }
+    //     }
+    // }
 
     ctx.fillStyle = '#00dbff'
     for (let i = 0; i < route_points_array.length; i++) {
@@ -414,8 +485,6 @@ function draw_canvas(netPanningX, netPanningY, cameraZoom, element_selected, tem
             let route = u32((u32(route_points_array[i].offset + 64, is_little_endian) + offset_mid) + (ii * 4), is_little_endian)
             let new_x = f32(route_points_array[route].offset + 32, is_little_endian) + netPanningX
             let new_z = f32(route_points_array[route].offset + 40, is_little_endian) + netPanningY
-
-
 
             ctx.strokeStyle = "#59e6fd";
             ctx.beginPath();
@@ -429,18 +498,19 @@ function draw_canvas(netPanningX, netPanningY, cameraZoom, element_selected, tem
         }
         if (i === element_selected) {
             ctx.fillStyle = '#2eef0b'
-            ctx.fillRect(x, z, 10 / cameraZoom, 10 / cameraZoom)
+            ctx.fillRect(x, z, 10 , 10)
             ctx.fillStyle = '#00dbff'
         } else {
-            if(u16(route_points_array[i].offset + 72, is_little_endian) == 8){
-            ctx.fillStyle = '#ff00ff'
-            ctx.fillRect(x, z, 10 / cameraZoom, 10 / cameraZoom)
-            ctx.fillStyle = '#00dbff'
-            }else{
-            ctx.fillRect(x, z, 10 / cameraZoom, 10 / cameraZoom)
+            if (u16(route_points_array[i].offset + 72, is_little_endian) == 8) {
+                ctx.fillStyle = '#ff00ff'
+                ctx.fillRect(x, z, 10 / cameraZoom, 10 / cameraZoom)
+                ctx.fillStyle = '#00dbff'
+            } else {
+                ctx.fillRect(x, z, 10 / cameraZoom, 10 / cameraZoom)
             }
         }
     }
+    ctx.fillStyle = '#000000ff'
 
 }
 
@@ -527,13 +597,13 @@ function append_to_file_editor_side_panel(offset) {
     for (let i = 0; i < side_panel_array.length; i++) {
         if (side_panel_array[i].dataset.is_prev == null && side_panel_array[i].dataset.is_next == null) {
             side_panel_array[i].addEventListener('change', update_input)
-        }else{
+        } else {
             side_panel_array[i].addEventListener('change', custom_input)
         }
     }
 
     document.getElementById("prev_list").value = u32(offset + 48, is_little_endian)
-    console.log(u32(offset + 48, is_little_endian))
+    // console.log(u32(offset + 48, is_little_endian))
     document.getElementById("prev_list").addEventListener('change', update_side_view)
 
     document.getElementById("next_list").value = u32(offset + 60, is_little_endian)
@@ -542,28 +612,27 @@ function append_to_file_editor_side_panel(offset) {
 
 function custom_input(e) {
     //check maximum input
-        if (e.target.value >= route_points_array.length) {
-        console.log('high')
+    if (e.target.value >= route_points_array.length) {
+        // console.log('high')
         e.target.value = 0
         let new_val = this.value
 
         new DataView(buffer).setUint32(e.target.dataset.offset, 4, is_little_endian)
-        }else{
-        console.log('low')
-            let new_val = this.value
+    } else {
+        // console.log('low')
+        let new_val = this.value
 
-            new DataView(buffer).setUint32(this.dataset.offset, new_val, is_little_endian)
+        new DataView(buffer).setUint32(this.dataset.offset, new_val, is_little_endian)
 
-            this.value = u32(this.dataset.offset, is_little_endian)
-        }
+        this.value = u32(this.dataset.offset, is_little_endian)
+    }
 
-    
 }
 
 function update_side_view(e) {
 
     if (e.target.value > 4) {
-        console.log('over')
+        // console.log('over')
         e.target.value = 4
         let new_val = this.value
 
@@ -592,7 +661,7 @@ function update_side_view(e) {
     if (e.target.id === "next_list") {
 
         if (e.target.value > 4) {
-            console.log('over')
+            // console.log('over')
             e.target.value = 4
             update_side_view(e)
             return;
@@ -604,7 +673,7 @@ function update_side_view(e) {
         append_to_file_editor_side_panel(e.target.dataset.offset - 60)
     } else {
         if (e.target.value > 4) {
-            console.log('over')
+            // console.log('over')
             e.target.value = 4
             update_side_view(e)
             return;
@@ -623,4 +692,30 @@ function update_side_view(e) {
 
     }
 
+}
+
+function side_panel_view(e) {
+    let html = ''
+
+    for (let i = 0; i < route_obj_array.length; i++) {
+        let checked = route_obj_array[i].visible ? 'checked' : ''
+        html += `<input type='color' value="${route_obj_array[i].color}" data-index="${i}" style="width:20%"><input type='checkbox' data-index="${i}" ${checked} value="${route_obj_array[i].visible}">${route_obj_array[i].name}<br>`
+    }
+
+    let side_panel = document.getElementById('file_editor_side_panel');
+    side_panel.innerHTML = html
+    let side_panel_array = side_panel.getElementsByTagName('INPUT')
+
+    for (let i = 0; i < side_panel_array.length; i++) {
+        side_panel_array[i].addEventListener('change', side_panel_view_change)
+    }
+
+}
+
+function side_panel_view_change(e) {
+    if (e.srcElement.type == "checkbox") {
+        route_obj_array[e.srcElement.dataset.index].visible = e.srcElement.checked
+    } else {
+        route_obj_array[e.srcElement.dataset.index].color = e.srcElement.value
+    }
 }

@@ -12,11 +12,6 @@ sidebar
     find out what float
     update input on click canvas
 
-check other versions
- ps2 demo/xbox broke
-
-
-
 
 
 
