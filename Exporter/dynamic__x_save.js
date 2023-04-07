@@ -13,10 +13,10 @@ function dynamic_save() {
 
     dynamic_buffer = new ArrayBuffer(binary_size)
 
-    var set_u8 = new DataView(dynamic_buffer).setUint8.bind(new DataView(dynamic_buffer))
-    var set_u16 = new DataView(dynamic_buffer).setUint16.bind(new DataView(dynamic_buffer))
-    var set_u32 = new DataView(dynamic_buffer).setUint32.bind(new DataView(dynamic_buffer))
-    var set_f32 = new DataView(dynamic_buffer).setFloat32.bind(new DataView(dynamic_buffer))
+    set_u8 = new DataView(dynamic_buffer).setUint8.bind(new DataView(dynamic_buffer))
+    set_u16 = new DataView(dynamic_buffer).setUint16.bind(new DataView(dynamic_buffer))
+    set_u32 = new DataView(dynamic_buffer).setUint32.bind(new DataView(dynamic_buffer))
+    set_f32 = new DataView(dynamic_buffer).setFloat32.bind(new DataView(dynamic_buffer))
 
     //set magics
     set_u32(0, 33620128, is_little_endian)
@@ -38,13 +38,18 @@ function dynamic_save() {
     block_i += 24) {
         global_offset = dyn_file_directory(block_i, global_offset)
     }
-    // global_offset+=100000
 
-    //idk
+    let i = 0
+    for (; i < 128; i++) {
+        set_u8(global_offset + i, 32)
+    }
+    global_offset += i
+
+    return dynamic_buffer.slice(0, global_offset)
+
     ////////////////////////////////////////////////////
     function dyn_file_directory(block_offset, offset) {
         let end_block = ((XFA.length - 1) * 24) + 16
-        console.log(end_block, 'end')
         set_u32(block_offset, XFA[f_i].version, is_little_endian)
         set_u32(block_offset + 4, XFA[f_i].type, is_little_endian)
         set_u32(block_offset + 8, XFA[f_i].index, is_little_endian)
@@ -52,7 +57,7 @@ function dynamic_save() {
         set_u32(block_offset + 20, global_offset - end_block, is_little_endian)
         global_offset = dyn_sub_file_header(offset)
 
-        console.log(block_offset, offset, end_block, global_offset, 'file:', f_i)
+        // console.log(block_offset, offset, end_block, global_offset, 'file:', f_i)
 
         set_u32(block_offset + 16, global_offset - offset, is_little_endian)
 
@@ -67,8 +72,12 @@ function dynamic_save() {
         global_offset_array = []
         let block_i = 80
         set_u32(offset + 8, XFA[f_i].sounds.length, is_little_endian)
+        set_u32(offset + 20, XFA[f_i].textures.length, is_little_endian)
         set_u32(offset + 32, XFA[f_i].sounds.length, is_little_endian)
 
+        set_u32(offset + 48, XFA[f_i].texture_animations.length, is_little_endian)
+
+        // linked string
         for (let ii = 0; ii < 2; ii++) {
 
             for (let iii = 0; iii < XFA[f_i].linked_strings[ii].string.length; iii++) {
@@ -82,16 +91,34 @@ function dynamic_save() {
         }
         //
         let temp_offset = offset + 120
+
+        let temp_i = (XFA[f_i].sounds.length)
+        temp_i = divisible(temp_i, 8)
+        temp_i = block_i + (temp_i * 4) + offset
         if (XFA[f_i].sounds.length != 0) {
             temp_offset = dyn_sound_offset_list(offset, block_i)
+
+            // get divisibility ?
+
         }
-        //
+        // console.log(temp_i, 'temp_offset 1')
+        // console.log(temp_offset - temp_i, 'temp_offset 2')
+        // FIX temp 4+ for gshare
+        // let patch_list_1 = divisible(temp_offset, 32)
+        if (XFA[0].name === 'gShared.xpc') {
+            temp_offset += 4
+            //FIX i have no idea why its +4
+        }
+
         let patch_list_1 = temp_offset
+        set_u32(offset + 4, temp_offset - temp_i, is_little_endian)
+        // divisibility FIX 
 
         let patch_1_i = XFA[f_i].patcher_texutre[0].amount + XFA[f_i].patcher_texture_animation[0].amount + XFA[f_i].patcher_sounds[0].amount
-        patch_1_i = divisible(patch_1_i, 4)
+        patch_1_i = divisible(patch_1_i, 4) * 8
         // console.log(patch_1_i,temp_offset)
-        temp_offset = patch_1_i * 8 + temp_offset
+        temp_offset = patch_1_i+temp_offset
+        console.log(temp_offset, 'temp_offset')
 
         //file patch 1
         //calculate offset out
@@ -103,20 +130,34 @@ function dynamic_save() {
         set_u32(offset + 52, XFA[f_i].patcher_texture_animation[0].amount, is_little_endian)
         set_u32(offset + 56, XFA[f_i].patcher_models[0].amount, is_little_endian)
 
+        set_u32(offset + 56, XFA[f_i].patcher_models[0].amount, is_little_endian)
+
         let mid = temp_offset
         offset_mid = temp_offset
-        set_u32(temp_offset + 0, 1, is_little_endian)
-        set_u32(temp_offset + 4, 16, is_little_endian)
-        global_offset_array.push(temp_offset + 4 - mid)
-        temp_offset += 16
 
-        //offset to link header
-        global_offset_array.push(temp_offset - mid)
-        set_u32(temp_offset, 224, is_little_endian)
-        temp_offset += 208
+        console.log(mid, f_i)
+
+        //mid section header
+        if (XFA[f_i].type_s === "link") {
+
+            set_u32(temp_offset + 0, 1, is_little_endian)
+            set_u32(temp_offset + 4, 16, is_little_endian)
+            global_offset_array.push(temp_offset + 4 - mid)
+            temp_offset += 16
+
+            //offset to link header
+            global_offset_array.push(temp_offset - mid)
+            set_u32(temp_offset, 224, is_little_endian)
+            temp_offset += 208
+        }
+
+        let end_offset = temp_offset
 
         if (XFA[f_i].type_s === "link") {
             end_offset = dyn_link_header(temp_offset, mid)
+        } else if (XFA[f_i].type_s === "share") {
+            // console.log('end_offset',end_offset)
+            end_offset = dyn_share_mid_section(temp_offset, mid, XFA[f_i], offset)
         }
 
         if (global_offset_array.length != 0) {
@@ -156,7 +197,7 @@ function dynamic_save() {
             temp_offset = divisible(XFA[f_i].sounds[ii].sound_data[0].byteLength, 16)
             i_offset += temp_offset
 
-            // console.log(i_offset + (XFA[f_i].sounds.length * 32) + start_sound_list)
+            // console.log(i_offset + (XFA[f_i].sounds.length * 32) + start_sound_list,ii)
         }
         for (let ii = 0; ii < XFA[f_i].sounds.length; ii++) {
             for (let iii = 0; iii < XFA[f_i].sounds[ii].sound_data[0].byteLength; iii++) {
@@ -165,6 +206,9 @@ function dynamic_save() {
             temp_offset = divisible(XFA[f_i].sounds[ii].sound_data[0].byteLength, 16)
             block_i += temp_offset
         }
+
+        // console.log(block_i,'block_i',offset,'offset',f_i)
+        // console.log(block_i,'block_i')
         // console.log(block_i + offset)
         // for (let iii = 0; iii < XFA[f_i].sounds[ii].sound_data[0].byteLength; iii++) {
         //     set_u8(block_i + offset + iii, new DataView(XFA[f_i].sounds[ii].sound_data[0]).getUint8(iii))
@@ -182,7 +226,7 @@ function dynamic_save() {
         if (XFA[f_i].type_data[0].section_1.length === 1) {
             end_offset = dyn_link_header_1(offset + 80, mid)
         } else {
-            end_offset = offset+80
+            end_offset = offset + 80
         }
         new_offset = end_offset
         if (XFA[f_i].type_data[0].section_intro.length != 0) {
@@ -538,28 +582,39 @@ function dynamic_save() {
         return offset + (i * 4)
     }
     function dyn_file_patcher_1(offset, mid) {
-        for (let i = 0; i < texture_offset_index_array.length; i++) {
-            set_u32(offset + (i * 8), texture_offset_index_array[i][0], is_little_endian)
-            set_u16(offset + (i * 8) + 4, texture_offset_index_array[i][1], is_little_endian)
-            set_u16(offset + (i * 8) + 6, texture_offset_index_array[i][2], is_little_endian)
+        let i = 0
+        for (let t_i = 0; t_i < texture_offset_index_array.length; t_i++,
+        i++) {
+            set_u32(offset + (i * 8), texture_offset_index_array[t_i][0], is_little_endian)
+            set_u16(offset + (i * 8) + 4, texture_offset_index_array[t_i][1], is_little_endian)
+            set_u16(offset + (i * 8) + 6, texture_offset_index_array[t_i][2], is_little_endian)
+        }
+        for (let ta_i = 0; ta_i < texture_anim_offset_index_array.length; ta_i++,
+        i++) {
+            set_u32(offset + (i * 8), texture_anim_offset_index_array[ta_i][0], is_little_endian)
+            set_u16(offset + (i * 8) + 4, texture_anim_offset_index_array[ta_i][1], is_little_endian)
+            set_u16(offset + (i * 8) + 6, texture_anim_offset_index_array[ta_i][2], is_little_endian)
+        }
+        for (let s_i = 0; s_i < sound_offset_index_array.length; s_i++,
+        i++) {
+            set_u32(offset + (i * 8), sound_offset_index_array[s_i][0], is_little_endian)
+            set_u16(offset + (i * 8) + 4, sound_offset_index_array[s_i][1], is_little_endian)
+            set_u16(offset + (i * 8) + 6, sound_offset_index_array[s_i][2], is_little_endian)
         }
     }
     function dyn_file_patcher_2(offset, mid) {
         let i = 0
-        for (; i < global_offset_array.length; i++) {
-            set_u32(offset + (i * 4), global_offset_array[i], is_little_endian)
+        for (let m_i = 0; m_i < model_offset_index_array.length; m_i++,
+        i += 8) {
+            // set_u32(offset + (i * 8), model_offset_index_array[i], is_little_endian)
+            set_u32(offset + i, model_offset_index_array[m_i][0], is_little_endian)
+            set_u16(offset + i + 4, model_offset_index_array[m_i][1], is_little_endian)
+            set_u16(offset + i + 6, model_offset_index_array[m_i][2], is_little_endian)
         }
-        return offset + (i * 4)
-    }
-
-    function dyn_string(offset, XFA_string, mid) {
-        let i = 0
-
-        for (; i < XFA_string.length; i++) {
-            set_u8(offset + i, XFA_string[i].charCodeAt())
+        for (let g_i = 0; g_i < global_offset_array.length; g_i++,
+        i += 4) {
+            set_u32(offset + i, global_offset_array[g_i], is_little_endian)
         }
-        i = divisible(i, 16)
-
         return offset + i
     }
 
@@ -567,22 +622,27 @@ function dynamic_save() {
     ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
-    function divisible(value, divisibility) {
-        let temp_value = value
-        while ((temp_value) % divisibility !== 0) {
-            temp_value++
-        }
-        return temp_value
-    }
     ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
 
+}
+
+function divisible(value, divisibility) {
+    let temp_value = value
+    while ((temp_value) % divisibility !== 0) {
+        temp_value++
+    }
+    return temp_value
+}
+function dyn_string(offset, XFA_string, mid) {
     let i = 0
-    for (; i < 128; i++) {
-        set_u8(global_offset + i, 32)
-    }
-    global_offset += i
 
-    return dynamic_buffer.slice(0,global_offset)
+    for (; i < XFA_string.length; i++) {
+        set_u8(offset + i, XFA_string[i].charCodeAt())
+    }
+    i++
+    i = divisible(i, 16)
+
+    return offset + i
 }

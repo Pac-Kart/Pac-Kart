@@ -1,8 +1,7 @@
-function save_file() {
+function save_file(e) {
 
     //calculate what type of file is being saved
     if (XFA.length != 0) {
-        
         temp_buffer = dynamic_save()
     } else {
         temp_buffer = buffer
@@ -17,7 +16,7 @@ function save_file() {
     download_file.id = 'temp_download_file'
     download_file.href = objectURL
     download_file.download = file.name
-    document.getElementById("save_button").appendChild(download_file)
+    document.getElementById("_2nd_data_bar").appendChild(download_file)
 
     document.getElementById("temp_download_file").click()
 

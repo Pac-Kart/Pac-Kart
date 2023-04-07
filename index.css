@@ -14,6 +14,21 @@ img {
     -ms-interpolation-mode: nearest-neighbor;
     /* IE8+                           */
 }
+.img {
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    /* Firefox                        */
+    image-rendering: -o-crisp-edges;
+    /* Opera                          */
+    image-rendering: -webkit-optimize-contrast;
+    /* Chrome (and eventually Safari) */
+    image-rendering: pixelated;
+    /* Chrome                         */
+    image-rendering: optimize-contrast;
+    /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;
+    /* IE8+                           */
+}
 
 html {
     background: white;
@@ -294,4 +309,7 @@ th {
 
 .plus_button:hover {
     background:#00dbff;
+}
+.content_select{
+    flex:auto;
 }

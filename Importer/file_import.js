@@ -1,4 +1,3 @@
-console.log('aa')
 function input_file(event) {
 
     // get file name/extension

@@ -34,13 +34,16 @@ function choose_file_type() {
         document.getElementById("save_button").addEventListener("click", save_file);
     }
 
-
     game = this.id
     console.log(this)
     let html = ''
-    if (this.parentNode.children[0].dataset.file_name === "mcp.xpc" && game === "pac_man_world_rally") {
-        get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, true)
-        html = dynamic__x_generator()
+    if (this.parentNode.children[0].dataset.file_name === "mcp.xpc" || this.parentNode.children[0].dataset.file_name === "gShared.xpc") {
+        if (game === "pac_man_world_rally") {
+            get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, true)
+            html = dynamic__x_generator()
+        } else {
+            html = get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, false)
+        }
     } else {
         html = get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, false)
     }
@@ -58,10 +61,15 @@ function choose_file_type() {
 }
 
 function generate_file_view() {
-        if (file.name === "mcp.xpc" && game === "pac_man_world_rally") {
-        html = dynamic__x_generator()
+    if (file.name === "gShared.xpc" || file.name === "mcp.xpc") {
+        if (game === "pac_man_world_rally") {
+            html = dynamic__x_generator()
+        } else {
+            html = get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, false)
+        }
     } else {
         html = get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, false)
+
     }
 
     document.getElementById("file_viewer").innerHTML = html

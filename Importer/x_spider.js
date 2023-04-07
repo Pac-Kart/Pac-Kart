@@ -8,6 +8,7 @@ function get_x_file_list(selected_game, file_name, is_dynamic) {
 
     // folder
     if (is_dynamic === true) {
+        id_list = [];
         XFA.push({
             id: gen_id(),
             game: selected_game,
@@ -56,6 +57,7 @@ function get_x_sub_files(offset, index, is_dynamic, file_name) {
             patcher_general_offsets: [],
             models: [],
             textures: [],
+            texture_animations: [],
             type_data: []
         })
     }
@@ -160,6 +162,10 @@ function get_x_sub_file_header(offset, is_dynamic, index) {
     offset_audio_temp = (sound_offset_array.length * 32) + offset_audio
     // offset_audio_temp = (number_sounds_i * 32) + offset_audio
 
+    // console.log('offset_audio', offset_audio)
+    // console.log('offset_1st patch list prelim', u32(old_offset + 4, is_little_endian))
+    // console.log('offset_audio_1st patch list ?', offset_audio + u32(old_offset + 4, is_little_endian))
+
     // console.log(type)
     if (number_sounds === 0) {
         is_arrow_needed = `<a class='no_arrow'>↓</a>`
@@ -208,14 +214,20 @@ function get_x_sub_file_header(offset, is_dynamic, index) {
         }
     }
 
-    texture_patch = extract_patcher(u32(old_offset + 4, is_little_endian) + offset_audio, u32(old_offset + 16, is_little_endian))
+    let temp_patcher_offset = u32(old_offset + 4, is_little_endian) + offset_audio
+
+    texture_patch = extract_patcher(temp_patcher_offset, u32(old_offset + 16, is_little_endian))
+    temp_patcher_offset = temp_patcher_offset + (u32(old_offset + 16, is_little_endian) * 8)
+
+    texture_animation_patch = extract_patcher(temp_patcher_offset, u32(old_offset + 52, is_little_endian))
+    temp_patcher_offset = temp_patcher_offset + (u32(old_offset + 52, is_little_endian) * 8)
+
+    sound_patch = extract_patcher(temp_patcher_offset, u32(old_offset + 28, is_little_endian))
+
+    model_patch = extract_patcher(u32(old_offset, is_little_endian) + offset_mid, u32(old_offset + 56, is_little_endian))
     //texture
 
-    // html += `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ? </a> <a data-type="x_1st_offset_list" data-offset="${u32(old_offset + 4, is_little_endian) + offset_audio}" data-amount_1="${u32(old_offset + 16, is_little_endian)}" data-amount_2="${u32(old_offset + 28, is_little_endian)}" data-mid="${offset_mid}"  data-amount_3="${u32(old_offset + 52, is_little_endian)}" class='file_hover_not_selected'>1st list</a></div>`
-    // html += `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ? </a> <a data-type="x_2nd_offset_list" data-offset="${u32(old_offset, is_little_endian) + offset_mid}" data-amount_1="${u32(old_offset + 56, is_little_endian)}" data-amount_2="${u32(old_offset + 12, is_little_endian)}" data-mid="${offset_mid}" class='file_hover_not_selected'>2nd list</a></div>`
-
-    // html += `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ⚙ </a> <a data-type="x_mid_section_header" data-offset="${offset}" class='file_hover_not_selected'>Mid Section Header</a>`
-
+    let end_offset = 0
     if (number_textures != 0) {
         texture_offset_list = (offset_mid + offset_textures)
 
@@ -234,7 +246,10 @@ function get_x_sub_file_header(offset, is_dynamic, index) {
         i_offset += i_offset_plus) {
 
             if (game == 'pac_man_world_rally') {
-
+                if (is_dynamic === true) {
+                    end_offset = get_texture(i_offset + texture_offset_list, XFA[index].textures, i)
+                    // console.log(end_offset,i)
+                }
                 for (string_i = 12,
                 btf_string = ""; string_i < 64; string_i++) {
                     btf_string += String.fromCharCode(u8(i_offset + texture_offset_list + string_i))
@@ -283,13 +298,15 @@ function get_x_sub_file_header(offset, is_dynamic, index) {
 
         html += "</div>"
     }
+    // console.log('test')
 
     if (game == "pac_man_world_rally") {
         let offset_collision
-        if (amount_animations != 0) {// html += get_animations(offset_animations + offset_mid, amount_animations)
-
+        if (is_dynamic === true) {
+            for (let i = 0; i < amount_animations; i++) {
+                html += get_texture_animations(offset_animations + (i * 12) + offset_mid, XFA[index].texture_animations, i)
+            }
         }
-
         if (type === 'interface') {
             let temp = u32(offset_mid + 4, is_little_endian)
             temp_offset = (offset_mid + temp + 16)
@@ -299,6 +316,7 @@ function get_x_sub_file_header(offset, is_dynamic, index) {
             // html += get_models(temp_offset, offset_animations)
 
         } else if (type === 'link') {
+
             let temp = u32(offset_mid + 4, is_little_endian)
             offset_logic = u32(offset_mid + temp, is_little_endian)
 
@@ -336,7 +354,18 @@ function get_x_sub_file_header(offset, is_dynamic, index) {
             //     offset_logic = u32(offset_mid + 188, is_little_endian) + offset_mid
             // }
             // html += get_logic(offset_logic)
-        } else if (type === 'share') {// html += get_models(u32(offset_mid, is_little_endian) + offset_mid, 0, is_dynamic, index)
+        } else if (type === 'share') {
+            // console.log(end_offset, 'share')
+            if (is_dynamic === true) {
+
+                get_share(end_offset, XFA[index].type_data)
+
+                let end_model_share_list_offset = u32(offset_mid, is_little_endian)
+                for (let i = 0, ii = 0; i < end_model_share_list_offset && u32(offset_mid + i, is_little_endian) !== 0; i += 4,
+                ii++) {
+                    get_model(u32(offset_mid + i, is_little_endian) + offset_mid, XFA[index].models, ii)
+                }
+            }
 
         } else if (type === 'car') {
             let temp = u32(offset_mid + 4, is_little_endian) + offset_mid
@@ -364,15 +393,6 @@ function get_car_main(offset, mid) {
     }
 
     return html
-}
-
-function get_animations(offset, amount) {
-    let html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>→</a><a> ? </a> <a data-type="x_animations" data-offset="${offset}" data-amount="${amount}" data-mid="${offset_mid}" class='file_hover_not_selected'>animations</a></div>`
-
-    // calculate from sound offset list
-
-    return html
-
 }
 
 function get_models(start, end, is_dynamic, index) {
@@ -642,7 +662,9 @@ function get_colision(offset) {
 
 function get_x_sound(offset, index, is_dynamic, index_dynamic) {
     if (is_dynamic === true) {
+        // console.log(u32(offset + 0, is_little_endian), u32(offset + 4, is_little_endian), 'both', u32(offset + 0, is_little_endian) + u32(offset + 4, is_little_endian))
 
+        // console.log(offset, index, index_dynamic, 'sound_offset0')
         XFA[index_dynamic].sounds.push({
             id: gen_id(),
             unknown1: u32(offset + 8, is_little_endian),
@@ -654,20 +676,25 @@ function get_x_sound(offset, index, is_dynamic, index_dynamic) {
 
         let temp_sound_array = new ArrayBuffer(u32(offset + 4, is_little_endian))
 
-        let temp_sound_offset = u32(offset + 4, is_little_endian) + offset_audio_start
+        let temp_sound_offset = u32(offset + 0, is_little_endian) + offset_audio_start
+        // console.log(offset_audio_start, u32(offset + 4, is_little_endian), 'sound_offset1')
 
-        for (let i = 0; i < u32(offset + 4, is_little_endian); i++) {
+        let i = 0
+        for (; i < u32(offset + 4, is_little_endian); i++) {
             new DataView(temp_sound_array).setUint8(i, u8(i + temp_sound_offset))
         }
+        // console.log(u8(i + temp_sound_offset), 'sound_offset2')
 
         XFA[index_dynamic].sounds[index].sound_data.push(temp_sound_array)
 
+    } else {
+
+        let html = `<div style='display:none;' class='sub_file_div'><a class='file_arrow'></a><a> 🕪 </a> <a data-type="x_sound" data-offset="${offset}" data-sound_start_offset='${offset_audio_start}' data-sound_data_offset='${offset_audio_temp}' class='file_hover_not_selected'>Sound ${index}</a></div>`
+
+        // calculate from sound offset list
+
+        return html
     }
-    let html = `<div style='display:none;' class='sub_file_div'><a class='file_arrow'></a><a> 🕪 </a> <a data-type="x_sound" data-offset="${offset}" data-sound_start_offset='${offset_audio_start}' data-sound_data_offset='${offset_audio_temp}' class='file_hover_not_selected'>Sound ${index}</a></div>`
-
-    // calculate from sound offset list
-
-    return html
 }
 
 function get_link_main(offset, is_dynamic) {
@@ -1535,12 +1562,16 @@ function extract_patcher(offset, amount) {
 
 }
 
-function get_patch_offset_index(array, n) {
+function get_patch_offset_index(array, n, is_model) {
+
+    let patched_index = 0
+    if (is_model === true) {
+        patched_index = 1
+    }
 
     let temp_array = []
     for (let i = 0; i < array.length; i++) {
-        if (array[i][0] !== n) {
-            // console.log('not', array[i])
+        if (array[i][patched_index] !== n) {// console.log('not', array[i])
         } else {
             temp_array.push(array[i])
             i = array.length
@@ -1635,131 +1666,4 @@ function arrow_click() {
         }
 
     }
-}
-function file_click() {
-
-    // check class
-    if (document.getElementsByClassName('file_is_highlighted').length === 1) {
-        document.getElementsByClassName('file_is_highlighted')[0].classList.remove('file_is_highlighted')
-    }
-    let path = ''
-    this.classList.add('file_is_highlighted')
-
-    if (this.dataset.type === 'x_folder') {
-        load_folder()
-    } else if (this.dataset.type === 'x_sub_file') {
-        load_sub_file(parseInt(this.dataset.offset));
-    } else if (this.dataset.type === 'x_sub_file_header') {
-        load_sub_file_header(parseInt(this.dataset.offset));
-    } else if (this.dataset.type === "x_sound") {
-        load_audio(parseInt(this.dataset.offset), parseInt(this.dataset.sound_data_offset), parseInt(this.dataset.sound_start_offset))
-    } else if (this.dataset.type === "x_logic_header") {
-        load_logic(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid), this.dataset.file_type)
-    } else if (this.dataset.type === "x_link") {
-        load_link(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
-    } else if (this.dataset.type === "x_varible") {
-        load_varible(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
-    } else if (this.dataset.type === "x_font") {
-        load_font(parseInt(this.dataset.offset))
-    } else if (this.dataset.type === "x_1st_offset_list") {
-        load_1st_offset_list(parseInt(this.dataset.offset), parseInt(this.dataset.amount_1), parseInt(this.dataset.amount_2), parseInt(this.dataset.amount_3), parseInt(this.dataset.mid))
-    } else if (this.dataset.type === "x_2nd_offset_list") {
-        load_2nd_offset_list(parseInt(this.dataset.offset), parseInt(this.dataset.amount_1), parseInt(this.dataset.amount_2), parseInt(this.dataset.mid))
-    } else if (this.dataset.type === "x_world_low_header") {
-        load_world_low_header(parseInt(this.dataset.offset))
-    } else if (this.dataset.type === "x_object") {
-        load_world_object(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
-    } else if (this.dataset.type === "x_starting_points") {
-        load_world_start_points(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
-    } else if (this.dataset.type === "x_animations") {
-        load_animations(parseInt(this.dataset.offset), parseInt(this.dataset.amount), parseInt(this.dataset.mid))
-    } else if (this.dataset.type === "x_world_weird") {
-        load_world_x_world_weird(parseInt(this.dataset.offset))
-    } else if (this.dataset.type === "x_world_weird_2") {
-        load_world_x_world_weird(parseInt(this.dataset.offset))
-    } else if (this.dataset.type === "x_collision") {
-        load_world_x_collision(parseInt(this.dataset.offset))
-    } else if (this.dataset.type === "x_layer_text") {
-        load_text(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
-    } else if (this.dataset.type === "x_world_gate") {
-        load_world_x_world_gate((parseInt(this.dataset.offset)), (parseInt(this.dataset.amount)))
-    } else if (this.dataset.type === "x_cam") {
-        load_world_camera(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
-    } else if (this.dataset.type === "x_world_2") {
-        load_world_2(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
-    } else if (this.dataset.type === "x_world_3") {
-        load_world_3(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
-    } else if (this.dataset.type === "x_world_5") {
-        load_world_5(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
-    } else if (this.dataset.type === "x_world_8") {
-        load_world_8(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
-    } else if (this.dataset.type === "x_world_13") {
-        load_world_13(parseInt(this.dataset.offset), parseInt(this.dataset.amount))
-    } else if (this.dataset.type === "x_routes") {
-        load_world_routes(parseInt(this.dataset.offset), parseInt(this.dataset.model_offset), parseInt(this.dataset.model_amount))
-    } else if (this.dataset.type === "x_routes_2") {
-        load_world_routes(parseInt(this.dataset.offset))
-    } else if (this.dataset.type === "x_world_flags_2") {
-        load_world_x_world_weird_2_2_2(parseInt(this.dataset.offset))
-    } else if (this.dataset.type === "x_model") {
-        load_model(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
-    } else if (this.dataset.type === "x_car_main") {
-        load_kart(parseInt(this.dataset.offset), parseInt(this.dataset.mid))
-    } else if (this.dataset.type === "x_texture") {
-        load_texture(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
-    }/*
-        save file
-        */
-    else if (this.dataset.type === "save_pac_folder") {
-        load_save_folder()
-    } else if (this.dataset.type === 'save_pac_save_settings') {
-        load_save_settings()
-    } else if (this.dataset.type === 'save_pac_circuit_settings') {
-        load_circuit_records()
-    } else if (this.dataset.type === 'save_pac_time_trials') {
-        load_time_trials()
-    } else if (this.dataset.type === 'save_pac_letter_hunt') {
-        load_letter_hunt()
-    } else if (this.dataset.type === 'save_pac_clockbuster') {
-        load_clockbuster()
-    } else if (this.dataset.type === 'save_pac_unlockables') {
-        load_unlockables()
-    } else if (this.dataset.type === 'save_pac_unlockables') {
-        load_unlockables()
-    }/*
-        dynamic
-        */
-    else if (this.dataset.type === 'x_d_folder') {
-        path = find_id(this.dataset.xfa, 'x_d_folder')
-
-        load_x_d_folder(path)
-    } else if (this.dataset.type === 'x_d_sub_file') {
-        path = find_id(this.dataset.xfa, 'x_d_sub_file')
-        load_x_d_sub_file(path[0],path[1])
-    } else if (this.dataset.type === 'x_d_link_folder') {
-        path = find_id(this.dataset.xfa, 'x_d_link_folder')
-        load_x_d_link_header(path)
-    } else if (this.dataset.type === 'x_d_link_intro') {
-        path = find_id(this.dataset.xfa, 'x_d_link_intro')
-        load_x_d_link_intro(path[0],path[1])
-    } else if (this.dataset.type === 'x_d_link_demo') {
-        path = find_id(this.dataset.xfa, 'x_d_link_demo')
-        load_x_d_link_demo(path[0],path[1])
-    } else if (this.dataset.type === 'x_d_link_main') {
-        path = find_id(this.dataset.xfa, 'x_d_link_main')
-        load_x_d_link_main(path[0],path[1])
-    } else if (this.dataset.type === 'x_d_link_main_group') {
-        path = find_id(this.dataset.xfa, 'x_d_link_main_group')
-        load_x_d_link_main_group(path[0], path[1], path[2])
-    } else if (this.dataset.type === 'x_d_link_main_sub_group') {
-        path = find_id(this.dataset.xfa, 'x_d_link_main_sub_group')
-        load_x_d_link_main_sub_group(path[0], path[1], path[2])
-    }/*
-        idk
-        */
-    else {
-        document.getElementById('file_editor').innerHTML = "    <div data-debug='true'>" + this.dataset.type + ", " + parseInt(this.dataset.offset) + '</div>'
-        // console.log(this.dataset.offset)
-    }
-
 }

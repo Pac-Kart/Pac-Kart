@@ -35,8 +35,7 @@ function get_link_header(offset, file_index) {
 
     // xdx is 64 bytes
     html = ''
-    // html += `<br> ${u32(offset, is_little_endian)} |  ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} |  ${u32(offset + 24, is_little_endian)}  | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)} |  ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | ${u32(offset + 44, is_little_endian)} |  ${u32(offset + 48, is_little_endian)} | [ ${u16(offset + 52, is_little_endian)}, ${u8(offset + 54, is_little_endian)}, ${u8(offset + 55, is_little_endian)} ] |  [ ${u16(offset + 56, is_little_endian)}, ${u8(offset + 58, is_little_endian)}, ${u8(offset + 59, is_little_endian)} ] |  ${u32(offset + 60, is_little_endian)} |  ${u32(offset + 64, is_little_endian)} |  ${u32(offset + 68, is_little_endian)} |  ${u32(offset + 72, is_little_endian)} |  ${u32(offset + 76, is_little_endian)}`
-
+    
     if (u32(offset, is_little_endian) != 0) {
         console.log(offset,offset_mid)
         html += get_link_1(u32(offset, is_little_endian) + offset_mid, file_index)
