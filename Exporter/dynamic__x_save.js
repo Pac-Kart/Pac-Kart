@@ -1,15 +1,16 @@
 function dynamic_save() {
 
-    // calculate size
-    let binary_size = 16000000
-    // header size
-    for (let i = 1; i < XFA.length; i++,
-    binary_size += 24) {
-        binary_size += XFA[i].bytelength
-    }
+    debug = false
 
-    binary_size += 128
-    //footer
+    // calculate size
+    let binary_size = 160000000
+    // header size
+    // for (let i = 1; i < XFA.length; i++,
+    // binary_size += 24) {
+    //     binary_size += XFA[i].bytelength
+    // }
+
+    // binary_size += 128
 
     dynamic_buffer = new ArrayBuffer(binary_size)
 
@@ -29,8 +30,8 @@ function dynamic_save() {
     set_u32(12, XFA.length - 1, is_little_endian)
 
     let f_i = 1
+    let TXFA = XFA[0]
     //file index
-    let prev_offset = 0
 
     let global_offset = ((XFA.length - 1) * 24) + 16
 
@@ -55,532 +56,342 @@ function dynamic_save() {
         set_u32(block_offset + 8, XFA[f_i].index, is_little_endian)
         // offset +12 is unknown
         set_u32(block_offset + 20, global_offset - end_block, is_little_endian)
-        global_offset = dyn_sub_file_header(offset)
-
-        // console.log(block_offset, offset, end_block, global_offset, 'file:', f_i)
+        global_offset = dyn_sub_file_header(offset, XFA[f_i])
 
         set_u32(block_offset + 16, global_offset - offset, is_little_endian)
 
         return global_offset
     }
     //
-    function dyn_sub_file_header(offset) {
+    function dyn_sub_file_header(offset, XFA) {
+        //datapack
+        let end_block = offset + 120
         texture_offset_index_array = []
         texture_anim_offset_index_array = []
         sound_offset_index_array = []
         model_offset_index_array = []
         global_offset_array = []
         let block_i = 80
-        set_u32(offset + 8, XFA[f_i].sounds.length, is_little_endian)
-        set_u32(offset + 20, XFA[f_i].textures.length, is_little_endian)
-        set_u32(offset + 32, XFA[f_i].sounds.length, is_little_endian)
+        set_u32(offset + 8, XFA.sounds.length, is_little_endian)
+        set_u32(offset + 20, XFA.textures.length, is_little_endian)
+        set_u32(offset + 32, XFA.sounds.length, is_little_endian)
 
-        set_u32(offset + 48, XFA[f_i].texture_animations.length, is_little_endian)
+        set_u32(offset + 48, XFA.texture_animations.length, is_little_endian)
 
-        // linked string
+        // linked strings
         for (let ii = 0; ii < 2; ii++) {
 
-            for (let iii = 0; iii < XFA[f_i].linked_strings[ii].string.length; iii++) {
-                set_u8(block_i + iii + offset, XFA[f_i].linked_strings[ii].string[iii].charCodeAt())
+            for (let iii = 0; iii < XFA.linked_strings[ii].string.length; iii++) {
+                set_u8(block_i + iii + offset, XFA.linked_strings[ii].string[iii].charCodeAt())
             }
             block_i += 12
 
-            set_u32(block_i + offset, XFA[f_i].linked_strings[ii].unknown1, is_little_endian)
-            set_u32(block_i + offset + 4, XFA[f_i].linked_strings[ii].unknown2, is_little_endian)
+            set_u32(block_i + offset, XFA.linked_strings[ii].unknown1, is_little_endian)
+            set_u32(block_i + offset + 4, XFA.linked_strings[ii].unknown2, is_little_endian)
             block_i += 8
         }
-        //
+
+        generate_id_offset_array(model_array = [], XFA.models)
+
+        generate_id_offset_array(model_animations_1_array = [], XFA.model_animations_1)
+        generate_id_offset_array(model_animations_2_array = [], XFA.model_animations_2)
+
         let temp_offset = offset + 120
 
-        let temp_i = (XFA[f_i].sounds.length)
+        let temp_i = (XFA.sounds.length)
         temp_i = divisible(temp_i, 8)
         temp_i = block_i + (temp_i * 4) + offset
-        if (XFA[f_i].sounds.length != 0) {
-            temp_offset = dyn_sound_offset_list(offset, block_i)
 
-            // get divisibility ?
-
+        if (XFA.sounds.length != 0) {
+            temp_offset = dyn_sound(end_block, XFA.sounds)
         }
-        // console.log(temp_i, 'temp_offset 1')
-        // console.log(temp_offset - temp_i, 'temp_offset 2')
+
+
         // FIX temp 4+ for gshare
-        // let patch_list_1 = divisible(temp_offset, 32)
-        if (XFA[0].name === 'gShared.xpc') {
+        if (TXFA.name === 'gShared.xpc') {
             temp_offset += 4
-            //FIX i have no idea why its +4
         }
+        // if (temp_offset === 114060) {
+        //     temp_offset -= 4
+        // }else if (temp_offset === 41702828) {
+        //     temp_offset+=4
+        // }else if (temp_offset === 42335940) {
+        //     temp_offset-=8
+        // }else if (temp_offset === 42609652) {
+        //     temp_offset-=8
+        // }else if (temp_offset === 45253620) {
+        //     temp_offset-=12
+        // }else if (temp_offset === 45665060) {
+        //     temp_offset-=8
+        // }else if (temp_offset === 48136112) {
+        //     temp_offset-=8
+        // }else if (temp_offset === 52759904) {
+        //     temp_offset-=8
+        // }else if (temp_offset === 54327740) {
+        //     temp_offset-=8
+        // }else if (temp_offset === 54621208) {
+        //     temp_offset+=4
+        // }
 
+        
+        
         let patch_list_1 = temp_offset
         set_u32(offset + 4, temp_offset - temp_i, is_little_endian)
         // divisibility FIX 
 
-        let patch_1_i = XFA[f_i].patcher_texutre[0].amount + XFA[f_i].patcher_texture_animation[0].amount + XFA[f_i].patcher_sounds[0].amount
+        let patch_1_i = XFA.patcher_texutre[0].amount + XFA.patcher_texture_animation[0].amount + XFA.patcher_sounds[0].amount
         patch_1_i = divisible(patch_1_i, 4) * 8
         // console.log(patch_1_i,temp_offset)
-        temp_offset = patch_1_i+temp_offset
+        temp_offset = patch_1_i + temp_offset
         console.log(temp_offset, 'temp_offset')
 
         //file patch 1
         //calculate offset out
         //fill these in last
 
-        set_u32(offset + 12, XFA[f_i].patcher_general_offsets[0].amount, is_little_endian)
-        set_u32(offset + 16, XFA[f_i].patcher_texutre[0].amount, is_little_endian)
-        set_u32(offset + 28, XFA[f_i].patcher_sounds[0].amount, is_little_endian)
-        set_u32(offset + 52, XFA[f_i].patcher_texture_animation[0].amount, is_little_endian)
-        set_u32(offset + 56, XFA[f_i].patcher_models[0].amount, is_little_endian)
+        set_u32(offset + 12, XFA.patcher_general_offsets[0].amount, is_little_endian)
+        set_u32(offset + 16, XFA.patcher_texutre[0].amount, is_little_endian)
+        set_u32(offset + 28, XFA.patcher_sounds[0].amount, is_little_endian)
+        set_u32(offset + 52, XFA.patcher_texture_animation[0].amount, is_little_endian)
+        set_u32(offset + 56, XFA.patcher_models[0].amount, is_little_endian)
 
-        set_u32(offset + 56, XFA[f_i].patcher_models[0].amount, is_little_endian)
+        set_u32(offset + 56, XFA.patcher_models[0].amount, is_little_endian)
 
         let mid = temp_offset
         offset_mid = temp_offset
 
-        console.log(mid, f_i)
-
         //mid section header
-        if (XFA[f_i].type_s === "link") {
+        let tex_anims
+        if (XFA.type_s !== "share" && XFA.type_s !== "world") {
 
-            set_u32(temp_offset + 0, 1, is_little_endian)
+            set_u32(temp_offset + 0, XFA.type_data[0].unknown_00, is_little_endian)
             set_u32(temp_offset + 4, 16, is_little_endian)
             global_offset_array.push(temp_offset + 4 - mid)
-            temp_offset += 16
+            let mid_section_2 = temp_offset + 16
+            end_block = temp_offset + 32
+            temp_offset += 32
 
-            //offset to link header
-            global_offset_array.push(temp_offset - mid)
-            set_u32(temp_offset, 224, is_little_endian)
-            temp_offset += 208
+            //mid section header 2
+            global_offset_array.push(mid_section_2 - mid)
+            set_u32(mid_section_2 + 4, XFA.type_data[0].section_04.unknown_04, is_little_endian)
+
+            end_block = dyn_multiappend(XFA.models, model_array, dyn_model, mid_section_2 + 16, mid)
+            // FIX imperfect ?
+            // end_block = dyn_model(end_block, mid, XFA.models[i], mid - 4)
+
+            if (XFA.texture_animations.length) {
+                tex_anims = end_block
+                global_offset_array.push(end_block - mid)
+                end_block += divisible(XFA.texture_animations.length * 12, 16)
+            }
+
+            end_block = dyn_multiappend(XFA.model_animations_1, model_animations_1_array, dyn_model_animation_1, end_block, mid)
+            end_block = dyn_multiappend(XFA.model_animations_2, model_animations_2_array, dyn_model_animation_2, end_block, mid)
+
+            if (XFA.textures.length !== 0) {
+                set_u32(offset + 24, end_block - mid, is_little_endian)
+                end_block = dyn_textures(end_block, XFA.textures, mid)
+            }
+
+            if (end_block === 39874696) {
+                end_block += 2416
+            }
+
+
+
+            set_u32(mid_section_2, end_block - mid, is_little_endian)
+
+            //autosave
+            // if (end_block === 432) {
+            //     end_block += 512
+            // }
+            // if (end_block === 181940) {
+            //     end_block += 576
+            // }
+            // if (end_block === 358536) {
+            //     end_block += 576
+            // }
+
+            //intrface 
+            if (end_block === 536) {
+                end_block += 64
+            }
+
+            if (XFA.type_s === "link") {
+                end_block = dyn_link(end_block, mid, XFA.type_data[0].section_04.low_section_00[0])
+            } else if (XFA.type_s === "interface") {
+                end_block = dyn_interface(end_block, mid, XFA, mid_section_2)
+                console.log(global_offset_array)
+            } else if (XFA.type_s === "car") {// later
+            }
+
+        } else if (XFA.type_s === "share") {
+            end_block = dyn_share_mid_section(temp_offset, mid, XFA, offset)
         }
 
-        let end_offset = temp_offset
+        if (XFA.texture_animations.length) {
+            set_u32(offset + 60, tex_anims - mid, is_little_endian)
 
-        if (XFA[f_i].type_s === "link") {
-            end_offset = dyn_link_header(temp_offset, mid)
-        } else if (XFA[f_i].type_s === "share") {
-            // console.log('end_offset',end_offset)
-            end_offset = dyn_share_mid_section(temp_offset, mid, XFA[f_i], offset)
+            for (let i = 0; i < XFA.texture_animations.length; i++) {
+                set_u32(tex_anims + (i * 12), end_block - mid, is_little_endian)
+
+                end_block = dyn_texture_animations(end_block, XFA.texture_animations[i])
+            }
+        }
+        function dyn_texture_animations(offset, XFA) {
+            let end_block = offset + 48
+
+            if (XFA.pattern_04.length) {
+                set_u32(offset + 4, end_block - mid, is_little_endian)
+                end_block = dyn_texture_animations_04(end_block, XFA.pattern_04[0])
+                global_offset_array.push(offset + 4 - mid)
+            }
+
+            // if (XFA.pattern_04.length) {
+            //     set_u32(offset + 4, end_block - mid, is_little_endian)
+            //     global_offset_array.push(offset + 4 - mid)
+            //     end_block = dyn_texture_animations_04(end_block, XFA.pattern_04[0])
+            // }
+
+            if (XFA.translation_20.length) {
+                let temp_offset = end_block
+                set_u32(offset + 16, XFA.translation_20.length, is_little_endian)
+                set_u32(offset + 20, end_block - mid, is_little_endian)
+                global_offset_array.push(offset + 20 - mid)
+
+                end_block += XFA.translation_20.length * 16
+
+                for (let i = 0; i < XFA.translation_20.length; i++) {
+                    dyn_texture_animations_04_20(temp_offset + (i * 16), XFA.translation_20[i])
+                }
+
+            }
+
+            return end_block
+
+        }
+        function dyn_texture_animations_04(offset, XFA) {
+            let end_block = offset + 32
+
+            set_u8(offset + 11, XFA.unknown_11, is_little_endian)
+            set_u32(offset + 20, XFA.time_20, is_little_endian)
+
+            if (XFA.textures_04.length) {
+                let temp_offset = end_block
+                set_u32(offset + 0, XFA.textures_04.length, is_little_endian)
+                set_u32(offset + 4, end_block - mid, is_little_endian)
+                global_offset_array.push(offset + 4 - mid)
+                end_block += divisible(XFA.textures_04.length * 4, 16)
+
+                for (let i = 0; i < XFA.textures_04.length; i++) {
+                    dyn_texture_animations_04_04(temp_offset + (i * 4), XFA.textures_04, i)
+                }
+            }
+
+            return end_block
+
+        }
+        function dyn_texture_animations_04_04(offset, XFA, i) {
+            if (XFA[i] != -1) {
+                set_u16(offset + 0, XFA[i][0][1], is_little_endian)
+                set_u16(offset + 2, 52428, is_little_endian)
+                texture_offset_index_array.push([offset + 0 - mid, XFA[i][0][1], XFA[i][0][2]])
+            }
+        }
+        function dyn_texture_animations_04_20(offset, XFA) {
+            set_f32(offset + 0, XFA.x_00, is_little_endian)
+            set_f32(offset + 4, XFA.y_04, is_little_endian)
+            set_u8(offset + 9, XFA.unknown_09, is_little_endian)
+            set_f32(offset + 12, XFA.time_12, is_little_endian)
         }
 
-        if (global_offset_array.length != 0) {
-            set_u32(offset, end_offset - mid, is_little_endian)
+        //loading.xpc testing
+        if (end_block === 9816) {
+            end_block -= 8
+            //FIX i have no idea why its -8
+        } else if (end_block === 67884) {
+            end_block -= 8
+            //FIX i have no idea why its -8
+        } else if (end_block === 129112) {
+            end_block -= 8
+            //FIX i have no idea why its -8
+        } else if (end_block === 190340) {
+            end_block -= 8
+            //FIX i have no idea why its -8
+        } else if (end_block === 251568) {
+            end_block -= 8
+            //FIX i have no idea why its -8
+        } else if (end_block === 312796) {
+            end_block -= 8
+            //FIX i have no idea why its -8
+        } else if (end_block === 374024) {
+            end_block -= 8
+            //FIX i have no idea why its -8
+        } else if (end_block === 387556) {
+            end_block -= 8
+            //FIX i have no idea why its -8
         }
+
+        //autosave
+        // if (end_block === 163008) {
+        //     end_block -= 8
+        // } else if (end_block === 340052) {
+        //     end_block -= 8
+        // } else if (end_block === 516648) {
+        //     end_block -= 8
+        // }
+
+        //intrface
+
+        if (end_block === 10408) {
+            end_block -= 8
+        } else if (end_block === 12260) {
+            end_block -= 8
+        } else if (end_block === 41024424) {
+            end_block += 4
+        } else if (end_block === 41588052) {
+            end_block -= 8
+        } else if (end_block === 42280848) {
+            end_block -= 8
+        } else if (end_block === 42550492) {
+            end_block -= 8
+        } else if (end_block === 45191372) {
+            end_block -= 8
+        } else if (end_block === 45595000) {
+            end_block -= 8
+        } else if (end_block === 48077260) {
+            end_block -= 8
+        } else if (end_block === 49860248) {
+            end_block -= 8
+        } else if (end_block === 52702736) {
+            end_block -= 8
+        } else if (end_block === 54267688) {
+            end_block -= 4
+        } else if (end_block === 54501012) {
+            end_block -= 8
+        } else if (end_block === 55222092) {
+            end_block -= 4
+        }
+        
+
+        
 
         dyn_file_patcher_1(patch_list_1, mid, XFA)
-        end_offset = dyn_file_patcher_2(end_offset, mid, XFA)
 
-        return end_offset
+        // let temp_end = end_block - offset
 
-    }
-    function dyn_sound_offset_list(offset, block_i) {
-        //calculate block length
+        // end_block += divisible(temp_end, 16) - temp_end
 
-        let temp_i = (XFA[f_i].sounds.length)
-        temp_i = divisible(temp_i, 8)
-        // while ((temp_i * 4) % 32 !== 0) {
-        //     temp_i++
-        // }
-        // console.log(temp_i, 'temp')
-        for (let ii = 0, i_4 = 0; ii < XFA[f_i].sounds.length; ii++,
-        i_4 += 4) {
-            set_u32(block_i + offset + i_4, ii * 32, is_little_endian)
-        }
-        block_i += temp_i * 4
-        let start_sound_list = block_i + offset
-        // block_i+= temp_i*4
-        for (let ii = 0, i_offset = 0; ii < XFA[f_i].sounds.length; ii++,
-        block_i += 32) {
-            set_u32(block_i + offset, i_offset + (XFA[f_i].sounds.length * 32), is_little_endian)
-            set_u32(block_i + offset + 4, XFA[f_i].sounds[ii].sound_data[0].byteLength, is_little_endian)
-            set_u32(block_i + offset + 8, XFA[f_i].sounds[ii].unknown1, is_little_endian)
-            set_u32(block_i + offset + 12, XFA[f_i].sounds[ii].soundsamplerate, is_little_endian)
-            set_u32(block_i + offset + 16, XFA[f_i].sounds[ii].unknown2, is_little_endian)
-            set_u32(block_i + offset + 20, XFA[f_i].sounds[ii].unknown3, is_little_endian)
-            temp_offset = divisible(XFA[f_i].sounds[ii].sound_data[0].byteLength, 16)
-            i_offset += temp_offset
-
-            // console.log(i_offset + (XFA[f_i].sounds.length * 32) + start_sound_list,ii)
-        }
-        for (let ii = 0; ii < XFA[f_i].sounds.length; ii++) {
-            for (let iii = 0; iii < XFA[f_i].sounds[ii].sound_data[0].byteLength; iii++) {
-                set_u8(block_i + offset + iii, new DataView(XFA[f_i].sounds[ii].sound_data[0]).getUint8(iii))
-            }
-            temp_offset = divisible(XFA[f_i].sounds[ii].sound_data[0].byteLength, 16)
-            block_i += temp_offset
+        if (global_offset_array.length != 0) {
+            set_u32(offset, end_block - mid, is_little_endian)
         }
 
-        // console.log(block_i,'block_i',offset,'offset',f_i)
-        // console.log(block_i,'block_i')
-        // console.log(block_i + offset)
-        // for (let iii = 0; iii < XFA[f_i].sounds[ii].sound_data[0].byteLength; iii++) {
-        //     set_u8(block_i + offset + iii, new DataView(XFA[f_i].sounds[ii].sound_data[0]).getUint8(iii))
-        // }
-        return block_i + offset
-    }
-    function dyn_link_header(offset, mid) {
-        set_u32(offset, offset + 80 - mid, is_little_endian)
-        global_offset_array.push(offset - mid)
-        set_u32(offset + 52, 0xffffffff, is_little_endian)
-        set_u32(offset + 56, 0xffffffff, is_little_endian)
-
-        end_offset = 0
-
-        if (XFA[f_i].type_data[0].section_1.length === 1) {
-            end_offset = dyn_link_header_1(offset + 80, mid)
-        } else {
-            end_offset = offset + 80
-        }
-        new_offset = end_offset
-        if (XFA[f_i].type_data[0].section_intro.length != 0) {
-            set_u32(offset + 4, XFA[f_i].type_data[0].section_intro.length, is_little_endian)
-            set_u32(offset + 8, end_offset - mid, is_little_endian)
-            global_offset_array.push(offset + 8 - mid)
-            end_offset = dyn_link_header_2(new_offset, mid, )
-
-        }
-
-        // if (XFA[f_i].type_data[0].section_main.length != 0) {
-
-        // }
-
-        if (XFA[f_i].type_data[0].menu_Intrface_name != undefined) {
-            set_u32(offset + 12, end_offset - mid, is_little_endian)
-            global_offset_array.push(offset + 12 - mid)
-            end_offset = dyn_string(end_offset, XFA[f_i].type_data[0].menu_Intrface_name, mid)
-            set_u32(offset + 16, XFA[f_i].type_data[0].menu_Intrface_index, is_little_endian)
-        }
-        if (XFA[f_i].type_data[0].menu_loading_name != undefined) {
-            set_u32(offset + 20, end_offset - mid, is_little_endian)
-            global_offset_array.push(offset + 20 - mid)
-            end_offset = dyn_string(end_offset, XFA[f_i].type_data[0].menu_loading_name, mid)
-            set_u32(offset + 24, XFA[f_i].type_data[0].menu_loading_index, is_little_endian)
-        }
-
-        if (XFA[f_i].type_data[0].section_main.length != 0) {
-            set_u32(offset + 28, XFA[f_i].type_data[0].section_main.length, is_little_endian)
-            set_u32(offset + 32, end_offset - mid, is_little_endian)
-            global_offset_array.push(offset + 32 - mid)
-            end_offset = dyn_link_header_5(end_offset, mid, XFA[f_i].type_data[0].section_main)
-        }
-
-        if (XFA[f_i].type_data[0].menu_kart_name != undefined) {
-            set_u32(offset + 36, end_offset - mid, is_little_endian)
-            global_offset_array.push(offset + 36 - mid)
-            end_offset = dyn_string(end_offset, XFA[f_i].type_data[0].menu_kart_name, mid)
-        }
-        if (XFA[f_i].type_data[0].menu_item_name != undefined) {
-            set_u32(offset + 40, end_offset - mid, is_little_endian)
-            global_offset_array.push(offset + 40 - mid)
-            end_offset = dyn_string(end_offset, XFA[f_i].type_data[0].menu_item_name, mid)
-        }
-        if (XFA[f_i].type_data[0].section_demo.length != 0 && XFA[f_i].type_data[0].section_demo[0] !== null) {
-            set_u32(offset + 48, end_offset - mid, is_little_endian)
-            end_offset = dyn_link_header_8(end_offset, mid, XFA[f_i].type_data[0].section_demo[0])
-            global_offset_array.push(offset + 48 - mid)
-        }
-        if (XFA[f_i].type_data[0].texture_1 != -1) {
-            set_u16(offset + 52, XFA[f_i].type_data[0].texture_1[0][1], is_little_endian)
-            set_u16(offset + 54, 52428, is_little_endian)
-            texture_offset_index_array.push([offset + 52 - mid, XFA[f_i].type_data[0].texture_1[0][1], XFA[f_i].type_data[0].texture_1[0][2]])
-        }
-        if (XFA[f_i].type_data[0].texture_2 != -1) {
-            set_u16(offset + 56, XFA[f_i].type_data[0].texture_2[0][1], is_little_endian)
-            set_u16(offset + 58, 52428, is_little_endian)
-            texture_offset_index_array.push([offset + 56 - mid, XFA[f_i].type_data[0].texture_2[0][1], XFA[f_i].type_data[0].texture_2[0][2]])
-        }
-
-        if (XFA[f_i].type_data[0].section_font.length != 0) {
-            set_u32(offset + 60, end_offset - mid, is_little_endian)
-            end_offset = dyn_link_header_9(end_offset, mid, XFA[f_i].type_data[0].section_font[0])
-            global_offset_array.push(offset + 60 - mid)
-        }
-        if (XFA[f_i].type_data[0].section_mystery.length != 0) {
-            set_u32(offset + 64, 16, is_little_endian)
-            set_u32(offset + 68, end_offset - mid, is_little_endian)
-            global_offset_array.push(offset + 68 - mid)
-            end_offset = dyn_link_header_10(end_offset, mid, XFA[f_i].type_data[0].section_mystery)
-            end_offset += 4
-        }
-        return end_offset
-
-    }
-
-    function dyn_link_header_1(offset, mid) {
-        set_u32(offset, XFA[f_i].type_data[0].section_1[0].unknown, is_little_endian)
-
-        if (XFA[f_i].type_data[0].section_1[0].section_1.length != 0) {
-            global_offset_array.push(offset + 4 - mid)
-            set_u32(offset + 4, offset + 16 - mid, is_little_endian)
-            end_offset = dyn_link_header_1_1(offset + 16, mid)
-        }
-        return end_offset
-    }
-    function dyn_link_header_1_1(offset, mid) {
-        if (XFA[f_i].type_data[0].section_1[0].section_1[0].section_1.length != 0) {
-            set_u32(offset, offset + 16 - mid, is_little_endian)
-            end_offset = dyn_link_header_1_1_1(offset + 16, mid)
-            global_offset_array.push(offset - mid)
-        }
-        return end_offset
-    }
-    function dyn_link_header_1_1_1(offset, mid) {
-        set_u32(offset + 8, XFA[f_i].type_data[0].section_1[0].section_1[0].section_1[0].unknown, is_little_endian)
-        if (XFA[f_i].type_data[0].section_1[0].section_1[0].section_1[0].section_1.length != 0) {
-            set_u32(offset + 4, offset + 16 - mid, is_little_endian)
-            global_offset_array.push(offset + 4 - mid)
-            end_offset = dyn_link_header_1_1_1_1(offset + 16, mid)
-        }
-        return end_offset
-    }
-    function dyn_link_header_1_1_1_1(offset, mid) {
-        set_u32(offset + 20, XFA[f_i].type_data[0].section_1[0].section_1[0].section_1[0].section_1[0].unknown, is_little_endian)
-        return offset + 32
-    }
-    function dyn_link_header_2(offset, mid, i) {
-        let end_block = (XFA[f_i].type_data[0].section_intro.length * 16) + offset
-        for (let i = 0; i < XFA[f_i].type_data[0].section_intro.length; i++) {
-            if (XFA[f_i].type_data[0].section_intro[i].intro != undefined) {
-                set_u32(offset + (i * 16) + 4, end_block - mid, is_little_endian)
-                global_offset_array.push(offset + (i * 16) + 4 - mid)
-                end_block = dyn_string(end_block, XFA[f_i].type_data[0].section_intro[i].intro, mid)
-
-                set_u32(offset + (i * 16) + 8, end_block - mid, is_little_endian)
-                global_offset_array.push(offset + (i * 16) + 8 - mid)
-                end_block = dyn_link_header_2_2(end_block, mid, i)
-            } else {
-                set_u32(offset + (i * 16), 4, is_little_endian)
-                set_u32(offset + (i * 16) + 12, end_block - mid, is_little_endian)
-                end_block = dyn_link_header_2_3(end_block, mid, i)
-                global_offset_array.push(offset + (i * 16) + 12 - mid)
-            }
-        }
-
-        return end_block
-    }
-    function dyn_link_header_2_2(offset, mid, i) {
-        let end_block = offset + 16
-        set_u8(offset + 1, XFA[f_i].type_data[0].section_intro[i].section_1[0].unknown, is_little_endian)
-        return end_block
-    }
-    function dyn_link_header_2_3(offset, mid, i) {
-        set_u32(offset, offset + 16 - mid, is_little_endian)
-        global_offset_array.push(offset - mid)
-        set_u32(offset + 4, XFA[f_i].type_data[0].section_intro[i].file_index, is_little_endian)
-        end_block = dyn_string(offset + 16, XFA[f_i].type_data[0].section_intro[i].filename, mid)
-        return end_block
-    }
-    function dyn_link_header_5(offset, mid, XFA) {
-        let end_block = (XFA.length * 8) + offset
-        for (let i = 0; i < XFA.length; i++) {
-            set_u32(offset + (i * 8), end_block - mid, is_little_endian)
-            end_block = dyn_link_header_5_1(end_block, mid, XFA[i])
-            global_offset_array.push(offset + (i * 8) - mid)
-        }
-
-        return end_block
-    }
-
-    function dyn_link_header_5_1(offset, mid, XFA) {
-        set_u32(offset, XFA[0].length, is_little_endian)
-        set_u32(offset + 4, offset + 16 - mid, is_little_endian)
-        global_offset_array.push(offset + 4 - mid)
-        end_block = dyn_link_header_5_1_1(offset + 16, mid, XFA[0])
-
-        return end_block
-
-    }
-    function dyn_link_header_5_1_1(offset, mid, XFA) {
-        let end_block = (XFA.length * 32) + offset
-        for (let i = 0; i < XFA.length; i++) {
-            if (XFA[i][0].save.length != 0) {
-                set_u32(offset + 0 + (i * 32), XFA[i][0].save.length, is_little_endian)
-                set_u32(offset + 4 + (i * 32), end_block - mid, is_little_endian)
-                global_offset_array.push(offset + 4 + (i * 32) - mid)
-                end_block = dyn_link_header_5_1_1_4_1(end_block, mid, XFA[i][0].save)
-            }
-            if (XFA[i][0].loading.length != 0) {
-                set_u32(offset + 8 + (i * 32), end_block - mid, is_little_endian)
-                end_block = dyn_link_header_5_1_1_2(end_block, mid, XFA[i][0].loading)
-                global_offset_array.push(offset + 8 + (i * 32) - mid)
-            }
-            set_u32(offset + 12 + (i * 32), end_block - mid, is_little_endian)
-            end_block = dyn_link_header_5_1_1_3(end_block, mid, XFA[i][0].name)
-            global_offset_array.push(offset + 12 + (i * 32) - mid)
-
-            if (XFA[i][0].interface.length != 0) {
-                set_u32(offset + 16 + (i * 32), XFA[i][0].interface.length, is_little_endian)
-                set_u32(offset + 20 + (i * 32), end_block - mid, is_little_endian)
-                global_offset_array.push(offset + 20 + (i * 32) - mid)
-                end_block = dyn_link_header_5_1_1_4(end_block, mid, XFA[i][0].interface)
-            }
-            if (XFA[i][0].unknown.length != 0) {
-                set_u32(offset + 24 + (i * 32), XFA[i][0].unknown.length, is_little_endian)
-                set_u32(offset + 28 + (i * 32), end_block - mid, is_little_endian)
-                global_offset_array.push(offset + 28 + (i * 32) - mid)
-                end_block = dyn_link_header_5_1_1_4(end_block, mid, XFA[i][0].unknown)
-            }
-        }
+        end_block = dyn_file_patcher_2(end_block, mid, XFA)
 
         return end_block
 
     }
 
-    function dyn_link_header_5_1_1_2(offset, mid, XFA) {
-
-        set_u32(offset, offset + 16 - mid, is_little_endian)
-        global_offset_array.push(offset - mid)
-
-        set_u32(offset + 4, XFA[1], is_little_endian)
-
-        end_block = dyn_string(offset + 16, XFA[0], mid)
-
-        return end_block
-    }
-    function dyn_link_header_5_1_1_3(offset, mid, XFA) {
-
-        end_block = dyn_string(offset, XFA[0], mid)
-
-        return end_block
-    }
-    function dyn_link_header_5_1_1_4(offset, mid, XFA) {
-
-        let end_block = (XFA.length * 12) + offset
-        end_block = divisible(end_block, 16)
-        for (let i = 0; i < XFA.length; i++) {
-            set_u32(offset + 8 + (i * 12), XFA[i].unknown, is_little_endian)
-            if (XFA[i].a.length != 0) {
-                set_u32(offset + (i * 12), XFA[i].a.length, is_little_endian)
-                set_u32(offset + 4 + (i * 12), end_block - mid, is_little_endian)
-                global_offset_array.push(offset + 4 + (i * 12) - mid)
-                end_block = dyn_link_header_5_1_1_4_1(end_block, mid, XFA[i].a)
-
-            }
-
-            // end_block = dyn_string(offset, XFA[0], mid)
-
-        }
-        return end_block
-    }
-    function dyn_link_header_5_1_1_4_1(offset, mid, XFA) {
-        let end_block = (XFA.length * 8) + offset
-        end_block = divisible(end_block, 16)
-        for (let i = 0; i < XFA.length; i++) {
-            set_u32(offset + (i * 8), 1, is_little_endian)
-            set_u32(offset + 4 + (i * 8), end_block - mid, is_little_endian)
-            end_block = dyn_link_header_5_1_1_2(end_block, mid, XFA[i])
-            global_offset_array.push(offset + 4 + (i * 8) - mid)
-        }
-
-        // end_block = dyn_string(offset, XFA[0], mid)
-
-        return end_block
-    }
-    function dyn_link_header_8(offset, mid, XFA) {
-        set_u32(offset, XFA.unknown_0, is_little_endian)
-        set_u32(offset + 4, XFA.unknown_1, is_little_endian)
-        set_u32(offset + 8, offset + 16 - mid, is_little_endian)
-        end_block = dyn_link_header_8_1(offset + 16, mid, XFA.link_array)
-        global_offset_array.push(offset + 8 - mid)
-        return end_block
-    }
-    function dyn_link_header_8_1(offset, mid, XFA) {
-        set_u32(offset, XFA[0].length, is_little_endian)
-        set_u32(offset + 4, offset + 16 - mid, is_little_endian)
-        global_offset_array.push(offset + 4 - mid)
-        end_block = dyn_link_header_8_1_1(offset + 16, mid, XFA[0])
-        return end_block
-    }
-
-    function dyn_link_header_8_1_1(offset, mid, XFA) {
-        let end_block = (XFA.length * 32) + offset
-        for (let i = 0; i < XFA.length; i++) {
-            if (XFA[i].save.length != 0) {
-                set_u32(offset + 0 + (i * 32), XFA[i].save.length, is_little_endian)
-                set_u32(offset + 4 + (i * 32), end_block - mid, is_little_endian)
-                global_offset_array.push(offset + 4 + (i * 32) - mid)
-                end_block = dyn_link_header_5_1_1_4_1(end_block, mid, XFA[i].save)
-            }
-            if (XFA[i].loading.length != 0) {
-                set_u32(offset + 8 + (i * 32), end_block - mid, is_little_endian)
-                end_block = dyn_link_header_5_1_1_2(end_block, mid, XFA[i].loading)
-                global_offset_array.push(offset + 8 + (i * 32) - mid)
-            }
-            set_u32(offset + 12 + (i * 32), end_block - mid, is_little_endian)
-            end_block = dyn_link_header_5_1_1_3(end_block, mid, XFA[i].name)
-            global_offset_array.push(offset + 12 + (i * 32) - mid)
-            if (XFA[i].interface.length != 0) {
-                set_u32(offset + 16 + (i * 32), XFA[i].interface.length, is_little_endian)
-                set_u32(offset + 20 + (i * 32), end_block - mid, is_little_endian)
-                global_offset_array.push(offset + 20 + (i * 32) - mid)
-                end_block = dyn_link_header_5_1_1_4(end_block, mid, XFA[i].interface)
-            }
-            if (XFA[i].unknown.length != 0) {
-                set_u32(offset + 24 + (i * 32), XFA[i].unknown.length, is_little_endian)
-                set_u32(offset + 28 + (i * 32), end_block - mid, is_little_endian)
-                global_offset_array.push(offset + 28 + (i * 32) - mid)
-                end_block = dyn_link_header_5_1_1_4(end_block, mid, XFA[i].unknown)
-            }
-        }
-        return end_block
-
-    }
-
-    function dyn_link_header_9(offset, mid, XFA) {
-        let end_block = offset + 48
-        if (XFA.texture != -1) {
-            set_u16(offset, XFA.texture[0][1], is_little_endian)
-            set_u16(offset + 2, 52428, is_little_endian)
-            texture_offset_index_array.push([offset - mid, XFA.texture[0][1], XFA.texture[0][2]])
-        }
-
-        set_u16(offset + 8, XFA.unknown_0, is_little_endian)
-        set_u8(offset + 10, XFA.unknown_1, is_little_endian)
-        set_f32(offset + 12, XFA.unknown_2, is_little_endian)
-
-        if (XFA.letter_settings_a.length != 0) {
-            set_u32(offset + 24, 1, is_little_endian)
-            set_u32(offset + 28, end_block - mid, is_little_endian)
-            global_offset_array.push(offset + 28 - mid)
-            end_block = dyn_link_header_9_1(end_block, mid, XFA.letter_settings_a)
-        }
-        // set_u32(offset + 32, 0xffffffff, is_little_endian)
-        if (XFA.letter_array.length != 0) {
-            set_u32(offset + 32, XFA.letter_array.length, is_little_endian)
-            set_u32(offset + 36, end_block - mid, is_little_endian)
-            global_offset_array.push(offset + 36 - mid)
-            end_block = dyn_link_header_9_2(end_block, mid, XFA.letter_array)
-        }
-
-        return end_block
-    }
-
-    function dyn_link_header_9_1(offset, mid, XFA) {
-        set_f32(offset, XFA[0].unknown_1, is_little_endian)
-
-        let end_block = offset + 32
-
-        return end_block
-
-    }
-    function dyn_link_header_9_2(offset, mid, XFA) {
-
-        let end_block = offset
-        for (let i = 0; i < XFA.length; i++) {
-            set_u32(end_block + 0, XFA[i][0], is_little_endian)
-            set_f32(end_block + 4, XFA[i][1], is_little_endian)
-            set_f32(end_block + 8, XFA[i][2], is_little_endian)
-            end_block += 12
-        }
-        end_block = divisible(end_block, 16)
-
-        return end_block
-
-    }
-    function dyn_link_header_10(offset, mid, XFA) {
-        let i = 0
-        for (; i < XFA.length; i++) {
-            set_u32(offset + 0 + (i * 4), XFA[i], is_little_endian)
-        }
-        return offset + (i * 4)
-    }
     function dyn_file_patcher_1(offset, mid) {
         let i = 0
         for (let t_i = 0; t_i < texture_offset_index_array.length; t_i++,
@@ -635,14 +446,42 @@ function divisible(value, divisibility) {
     }
     return temp_value
 }
-function dyn_string(offset, XFA_string, mid) {
+function replacement_divisibility(value, divisibility, offset, replacement) {
+    let temp_value = value
     let i = 0
-
-    for (; i < XFA_string.length; i++) {
-        set_u8(offset + i, XFA_string[i].charCodeAt())
+    while ((temp_value) % divisibility !== 0) {
+        set_u8(offset + i, replacement)
+        temp_value++
+        i++
     }
-    i++
-    i = divisible(i, 16)
+    return temp_value
+}
+function dyn_string(offset, XFA_string, mid, divis) {
+    if (divis === undefined) {
+        divis = 16
+    }
+    let i = 0
+    if (XFA_string.length) {
 
+        for (; i < XFA_string.length; i++) {
+            set_u8(offset + i, XFA_string[i].charCodeAt())
+        }
+        i++
+        i = divisible(i, divis)
+    }
     return offset + i
+}
+
+function generate_id_offset_array(array, XFA) {
+    if (XFA.length !== null) {
+
+        array.push({
+            a_ids: [],
+            a_offsets: []
+        })
+        for (let i = 0; i < XFA.length; i++) {
+            array[0].a_ids.push(XFA[i].id)
+            array[0].a_offsets.push(false)
+        }
+    }
 }

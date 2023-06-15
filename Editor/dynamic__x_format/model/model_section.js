@@ -22,9 +22,11 @@ function load_x_d_model_section(id, outerid, sub_group_index) {
     document.getElementById("file_editor").innerHTML = html
 
     // document.getElementById("new_entry").addEventListener("click", generate_texture);
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
+    document.getElementById("_2nd_data_bar").innerHTML = ''
 
-    document.getElementById("main_delete").addEventListener("click", splice_entry);
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
+
+    // document.getElementById("main_delete").addEventListener("click", splice_entry);
     document.getElementById("render").addEventListener("change", dyn_update_input);
 
     function generate_texture() {

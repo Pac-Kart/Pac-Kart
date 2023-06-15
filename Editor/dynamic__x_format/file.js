@@ -26,9 +26,10 @@ function load_x_d_sub_file(id, id_index) {
    </div>
 `
     document.getElementById("file_editor").innerHTML = html
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="file_splice">X</a>'
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="file_splice">X</a>'
 
-    document.getElementById("file_splice").addEventListener('click', delete_file)
+    // document.getElementById("file_splice").addEventListener('click', delete_file)
 
     let input_field = file_editor.getElementsByTagName('INPUT')
     for (let i = 0; i < input_field.length; i++) {

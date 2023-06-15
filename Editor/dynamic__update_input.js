@@ -9,6 +9,7 @@ function dyn_update_input(e) {
             new_value = this.value.slice(0, this.dataset.byte_amount)
         } else {
             new_value = this.value
+
         }
     } else if (this.dataset.type === 'color') {
         new_value = this.value
@@ -41,8 +42,7 @@ function dyn_update_input(e) {
             new_value = f32(this.dataset.offset, is_little_endian)
         }
 
-        if (Number.isInteger(new_value)) {
-        } else {
+        if (Number.isInteger(new_value)) {} else {
             new_value = Number(new_value.toFixed(2))
         }
     }
@@ -72,7 +72,6 @@ Object.byString = function(o, s, z, x) {
     return o;
 }
 
-
 function x_d_splice_list(html_generator, outer_xfa, entry_index) {
     let outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement.parentElement
     let html = ''
@@ -90,7 +89,7 @@ function x_d_splice_list(html_generator, outer_xfa, entry_index) {
     } else {
 
         for (let i = 0; i < OXFA.length; i++) {
-            html += html_generator(OXFA[i],i)
+            html += html_generator(OXFA[i], i)
         }
 
         outer_html.innerHTML += html
@@ -104,4 +103,28 @@ function x_d_splice_list(html_generator, outer_xfa, entry_index) {
         outer_html.children[entry_index + 2].children[2].click()
     }
     file_viewer.focus()
+}
+
+//add entry
+//remove entry
+function edit_generate_file(element) {}
+
+function edit_change_name() {
+    let temp_name = this.value
+
+    if (this.maxlength !== undefined) {
+        temp_name = temp_name.substr(0, this.maxlength)
+    }
+    temp_name = temp_name.trim()
+
+    if (temp_name == "") {
+        temp_name = "Blank"
+    } else {
+        temp_name = temp_name
+    }
+
+    Object.byString(XFA, this.dataset.outer_xfa, this.dataset.inner_xfa, temp_name)
+    this.value = temp_name
+    document.getElementsByClassName("file_is_highlighted")[0].innerText = temp_name
+
 }

@@ -39,14 +39,15 @@ function load_x_d_sound(id, outer_id, sub_group_index) {
     html += `${generate_and_attach_wav(TXFA.sound_data[0].byteLength, TXFA.soundsamplerate)} <br><a style="color:#939393;">Byte Length: ${TXFA.sound_data[0].byteLength}</a></div>`
 
     document.getElementById("file_editor").innerHTML = html
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="splice_sound">X</a>'
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="splice_sound">X</a>'
 
     document.getElementById("Sound_Sample_Rate").addEventListener('change', Sound_Sample_Rate_update)
     document.getElementById("unknown_1").addEventListener('change', dyn_update_input)
     document.getElementById("unknown_2").addEventListener('change', dyn_update_input)
     document.getElementById("unknown_3").addEventListener('change', dyn_update_input)
 
-    document.getElementById("splice_sound").addEventListener('click', splice_entry)
+    // document.getElementById("splice_sound").addEventListener('click', splice_entry)
     document.getElementById("replace_sound_file").addEventListener("change", replace_sound_file);
 
     // let input_field = file_editor.getElementsByTagName('INPUT')

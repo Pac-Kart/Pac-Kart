@@ -1,4 +1,5 @@
 function get_texture(offset, XFA, texture_index) {
+    let end_offset = offset
 
     let texture_name = get_string(offset + 12, 0, false)
     texture_name = texture_name.substr(0, 51)
@@ -23,10 +24,14 @@ function get_texture(offset, XFA, texture_index) {
         type = 'dxt1'
         temp_value = texture_x * texture_y / 2
 
-    } else if (type === 160 || type === 24) {
+    } else if (type === 160) {
         //rgba888
         temp_value = texture_x * texture_y * 4
-        type = 'rgba888'
+        type = 'rgba8888'
+    } else if (type === 24) {
+        //rgba888
+        temp_value = texture_x * texture_y * 3
+        type = 'rgb888'
     } else if (type === 197) {
         //dxt5
         type = 'dxt5'
@@ -38,61 +43,47 @@ function get_texture(offset, XFA, texture_index) {
     if (u8(offset + 1) === 0) {
 
         texture_offset = u32(offset + 8, is_little_endian) + offset_mid
-        temp_texture_array = new ArrayBuffer(temp_value)
-        for (let i = 0; i < temp_texture_array.byteLength; i++) {
-            new DataView(temp_texture_array).setUint8(i, u8(i + texture_offset))
-        }
+        temp_texture_array = buffer.slice(texture_offset,texture_offset + temp_value)
+        
         XFA[texture_index].texture.push(temp_texture_array)
+        end_offset = texture_offset + temp_value
     } else {
+
+        let mip_map_idk = 1
+
+        if (type === "rgb888") {
+            mip_map_idk = 0
+        }
+
+        let mipmap_start = u32(offset + 8, is_little_endian) + offset_mid
+        let mipmap_end = mipmap_start + temp_value
+        
         let temp_mipmap_offset = 0
-
+        
+        let texture_offset = u32(offset + 8, is_little_endian) + offset_mid
         for (let i = 0; i < u8(offset + 1) + 1; i++) {
-            let texture_offset = u32(offset + 8, is_little_endian) + offset_mid + temp_mipmap_offset
-            let temp_texture_array = new ArrayBuffer(temp_2)
 
-            let i = 0;
-            for (; i < temp_texture_array.byteLength; i++) {
-                new DataView(temp_texture_array).setUint8(i, u8(i + texture_offset))
-            }
+            let temp_texture_array = buffer.slice(mipmap_start,mipmap_end)
+           
+            // let temp_texture_array = new ArrayBuffer(temp_2)
+
+            // let ii = 0;
+            // for (; ii < temp_texture_array.byteLength; ii++) {
+            //     new DataView(temp_texture_array).setUint8(ii, u8(ii + texture_offset))
+            // }
 
             XFA[texture_index].texture.push(temp_texture_array)
-
-            temp_2 = temp_2 / 4
-            temp_value += temp_2
-            temp_mipmap_offset+= i
+            mipmap_start+= temp_2
+            temp_mipmap_offset+= temp_2
+            temp_2 = Math.round(temp_2 / 4)
+            mipmap_end += temp_2
             
         }
+         end_offset = mipmap_end
         
     }
-        // console.log(XFA[texture_index].name,temp_value + u32(offset + 8, is_little_endian) + offset_mid)
-    let temp_temp_value = divisible(temp_value, 16)
-    let end_offset = temp_temp_value + u32(offset + 8, is_little_endian) + offset_mid
-
-    // let temp_2 = temp_value
-    is_same_offset = end_offset
-
-    // for (let i = 0; i < u8(offset + 1); i++) {
-    //     temp_2 = temp_2 /2
-    //     temp_value+= temp_2
-    // }
-
-    // console.log(u8(offset), u8(offset + 1), texture_x, texture_y, u32(offset + 8, is_little_endian) + offset_mid, 'calculated:', temp_value, XFA[texture_index].name)
-
-    // let texture_offset = u32(offset + 8, is_little_endian) + offset_mid
-    // let temp_texture_array = new ArrayBuffer(temp_value)
-
-    // let i = 0;
-    // for (; i < temp_texture_array.byteLength; i++) {
-    //     new DataView(temp_texture_array).setUint8(i, u8(i + texture_offset))
-    // }
-
-    // if(texture_index === 2){
-    //     a = b
-    // }
-
-    // XFA[texture_index].texture.push(temp_texture_array)
+    end_offset+= divisible(end_offset - offset,16) - (end_offset - offset)
 
     return end_offset
 }
 
-is_same_offset = 0

@@ -1,6 +1,6 @@
 //returns rgba8888 from a raw dxt1 buffer
 function dxt1(buffer,width,height) {
-    console.log(buffer)
+    // console.log(buffer)
         image_offset = 0
 
     for (outer_y = 0; outer_y < height; outer_y += 4) {

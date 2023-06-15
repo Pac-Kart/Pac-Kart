@@ -1,16 +1,19 @@
 function load_x_d_textures_folder(id) {
-    console.log(id)
+    // console.log(id)
     TXFA = Object.byString(XFA, id);
-    let html = `<div style="display:flex;text-align:center;" class='save_records_boarder' data-type="[]" data-xfa='${id}'>
-             <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_entry'>+ Texture</span>
-             </div>`
+    // let html = `<div style="display:flex;text-align:center;" class='save_records_boarder' data-type="[]" data-xfa='${id}'>
+    //          <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_entry'>+ Texture</span>
+    //          </div>`
+
+    let html = ''
 
     document.getElementById("file_editor").innerHTML = html
 
-    document.getElementById("new_entry").addEventListener("click", generate_texture);
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
+    // document.getElementById("new_entry").addEventListener("click", generate_texture);
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
 
-    document.getElementById("main_delete").addEventListener("click", delete_texture_folder);
+    // document.getElementById("main_delete").addEventListener("click", delete_texture_folder);
 
     function generate_texture() {
         let xid = gen_id()

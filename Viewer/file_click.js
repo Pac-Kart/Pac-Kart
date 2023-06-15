@@ -43,6 +43,8 @@ function file_click() {
         load_world_x_collision(parseInt(this.dataset.offset))
     } else if (this.dataset.type === "x_layer_text") {
         load_text(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_layer") {
+        load_layer(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
     } else if (this.dataset.type === "x_world_gate") {
         load_world_x_world_gate((parseInt(this.dataset.offset)), (parseInt(this.dataset.amount)))
     } else if (this.dataset.type === "x_cam") {
@@ -102,36 +104,36 @@ function file_click() {
         load_x_d_sound_folder(path)
     } else if (this.dataset.type === 'x_d_sound') {
         path = find_id(this.dataset.xfa, 'x_d_sound')
-        load_x_d_sound(path[0],path[1],path[2])
+        load_x_d_sound(path[0], path[1], path[2])
     } else if (this.dataset.type === 'x_d_model_folder') {
         path = find_id(this.dataset.xfa, 'x_d_model_folder')
         load_x_d_model_folder(path)
         // wip
     } else if (this.dataset.type === 'x_d_model_header') {
         path = find_id(this.dataset.xfa, 'x_d_model_header')
-        load_x_d_model_header(path[0],path[1],path[2])
+        load_x_d_model_header(path[0], path[1], path[2])
         // wip
     } else if (this.dataset.type === 'x_d_model_section') {
         path = find_id(this.dataset.xfa, 'x_d_model_section')
-        load_x_d_model_section(path[0],path[1],path[2])
+        load_x_d_model_section(path[0], path[1], path[2])
         // wip
     } else if (this.dataset.type === 'x_d_model') {
         path = find_id(this.dataset.xfa, 'x_d_model')
-        load_x_d_model(path[0],path[1],path[2])
+        load_x_d_model(path[0], path[1], path[2])
         // wip
     } else if (this.dataset.type === 'x_d_textures_folder') {
         path = find_id(this.dataset.xfa, 'x_d_textures_folder')
         load_x_d_textures_folder(path)
     } else if (this.dataset.type === 'x_d_textures') {
         path = find_id(this.dataset.xfa, 'x_d_textures')
-        load_x_d_texture(path[0],path[1],path[2],0)
+        load_x_d_texture(path[0], path[1], path[2], 0)
     } else if (this.dataset.type === 'x_d_texture_animations_folder') {
         path = find_id(this.dataset.xfa, 'x_d_texture_animations_folder')
         load_x_d_textures_animation_folder(path)
         // wip
     } else if (this.dataset.type === 'x_d_texture_animation') {
         path = find_id(this.dataset.xfa, 'x_d_texture_animation')
-        load_x_d_textures_animation(path[0],path[1],path[2])
+        load_x_d_textures_animation(path[0], path[1], path[2])
         // wip
     } else if (this.dataset.type === 'x_d_texture_animation_pattern') {
         path = find_id(this.dataset.xfa, 'x_d_texture_animation_pattern')
@@ -167,10 +169,80 @@ function file_click() {
         path = find_id(this.dataset.xfa, 'x_d_link_main_sub_group')
         load_x_d_link_main_sub_group(path[0], path[1], path[2])
     }/*
-        idk
+        interface testing
         */
-    else {
-        document.getElementById('file_editor').innerHTML = "    <div data-debug='true'>" + this.dataset.type + ", " + parseInt(this.dataset.offset) + '</div>'
+    else if (this.dataset.type === "x_80blockbyte") {
+        load_frame(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_layer_1") {
+        load_x_layer_1(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_layer_2") {
+        load_x_layer_2(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid), parseInt(this.dataset.data))
+    } else if (this.dataset.type === "x_layer_3") {
+        load_x_layer_3(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_layer_4") {
+        load_x_layer_4(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_layer_5") {
+        load_x_layer_5(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_layer_6") {
+        load_x_layer_6(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_layer_7") {
+        load_x_layer_7(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_settings_2") {
+        load_settings_2(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_settings_2_3_2") {
+        load_settings_2_3_2(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_setting_3") {
+        load_settings_3(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_text") {
+        load_x_text(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_spark") {
+        load_x_spark(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_interface_model") {
+        load_x_interface_model(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_sub_model") {
+        load_x_sub_model(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_model_animation_1") {
+        load_x_model_animation_1(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    } else if (this.dataset.type === "x_model_animation_2") {
+        load_x_model_animation_2(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))
+    /*
+        interface      
+        */
+       } else if (this.dataset.type === "x_d_interface_folder") {
+        path = find_id(this.dataset.xfa, 'x_d_interface_folder')
+        load_x_d_interface_folder(path)
+       } else if (this.dataset.type === "x_d_frames_folder") {
+        path = find_id(this.dataset.xfa, 'x_d_frames_folder')
+        load_x_d_frames_folder(path)
+       } else if (this.dataset.type === "x_d_frame") {
+        path = find_id(this.dataset.xfa, 'x_d_frame')
+        load_x_d_frame(path)
+       } else if (this.dataset.type === "x_d_varibles_folder") {
+        path = find_id(this.dataset.xfa, 'x_d_varibles_folder')
+        load_x_d_varibles_folder(path)
+       } else if (this.dataset.type === "x_d_varible") {
+        path = find_id(this.dataset.xfa, 'x_d_varible')
+        load_x_d_varible(path)
+       } else if (this.dataset.type === "x_d_layers_folder") {
+        path = find_id(this.dataset.xfa, 'x_d_layers_folder')
+        load_x_d_layers_folder(path)
+       } else if (this.dataset.type === "x_d_layer") {
+        path = find_id(this.dataset.xfa, 'x_d_layer')
+        load_x_d_layer(path)
+       } else if (this.dataset.type === "x_d_texts_folder") {
+        path = find_id(this.dataset.xfa, 'x_d_texts_folder')
+        load_x_d_texts_folder(path)
+       } else if (this.dataset.type === "x_d_text") {
+        path = find_id(this.dataset.xfa, 'x_d_text')
+        load_x_d_text(path)
+
+        
+        
+        /*
+        idk      
+        */
+    } else {
+        document.getElementById('file_editor').innerHTML = `<div data-debug='true'>${this.dataset.type}, " + parseInt(this.dataset.offset) + '</div>`
         // console.log(this.dataset.offset)
     }
 

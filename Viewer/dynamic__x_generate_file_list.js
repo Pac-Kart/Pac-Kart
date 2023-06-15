@@ -22,28 +22,130 @@ function dynamic__x_generator_file_list(XFA, i) {
                     <a class='file_arrow'>→</a>
                     <a> 🗎 </a> <a data-type="x_d_sub_file" data-xfa="${XFA.id}" class='file_hover_not_selected'>${i} ${XFA.type_s}</a>`
 
-    if (XFA.type_s === "car") {
+    if (XFA.sounds.length) {
         html += dynamic__sounds_folder(XFA.sounds, XFA.id)
+    }
+    if (XFA.textures.length) {
         html += dynamic__texture_folder(XFA.textures, XFA.id)
+    }
+    if (XFA.texture_animations.length) {
         html += dynamic__texture_animations_folder(XFA.texture_animations, XFA.id)
-    } else if (XFA.type_s === "interface") {
-        html += dynamic__sounds_folder(XFA.sounds, XFA.id)
-        html += dynamic__texture_folder(XFA.textures, XFA.id)
-    } else if (XFA.type_s === 'link') {
-        html += dynamic__link_folder(XFA.type_data[0])
-    } else if (XFA.type_s === 'world') {
-        html += dynamic__sounds_folder(XFA.sounds, XFA.id)
-        html += dynamic__texture_folder(XFA.textures, XFA.id)
-    } else if (XFA.type_s === 'share') {
-        html += dynamic__sounds_folder(XFA.sounds, XFA.id)
+    }
+    if (XFA.models.length) {
         html += dynamic__models_folder(XFA.models, XFA.id)
-        html += dynamic__texture_folder(XFA.textures, XFA.id)
-        html += dynamic__texture_animations_folder(XFA.texture_animations, XFA.id)
+    }
+
+    if (XFA.type_s === "car") {} else if (XFA.type_s === "interface") {
+        html += dynamic__interface(XFA.type_data[0].section_04.low_section_00[0], XFA.id)
+    } else if (XFA.type_s === 'link') {
+        html += dynamic__link_folder(XFA.type_data[0].section_04.low_section_00[0])
+    } else if (XFA.type_s === 'world') {} else if (XFA.type_s === 'share') {
         html += dynamic__share(XFA.type_data[0])
     }
 
     html += "</div>"
 
+    return html
+}
+
+function dynamic__interface(XFA, XFA_ID) {
+    let html = `<div style='display: none;' class='sub_file_div'>
+                    <a class='file_arrow'>→</a>
+                    <a> 🗀 </a>
+                    <a data-type="x_d_interface_folder" data-XFA="${XFA_ID}" class='file_hover_not_selected'> Interface </a>`
+
+    if (XFA.frames.length !== 0) {
+        html += `<div style='display: none;' class='sub_file_div'>
+                    <a class='file_arrow'>→</a>
+                    <a> 🗀 </a>
+                    <a data-type="x_d_frames_folder" data-XFA="${XFA_ID}" class='file_hover_not_selected'> Frames </a>`
+        for (let i = 0; i < XFA.frames.length; i++) {
+            html += dynamic__frames(XFA.frames[i], i)
+        }
+
+        html += "</div>"
+    }
+    if (XFA.texts.length !== 0) {
+        html += `<div style='display: none;' class='sub_file_div'>
+                    <a class='file_arrow'>→</a>
+                    <a> 🗀 </a>
+                    <a data-type="x_d_texts_folder" data-XFA="${XFA_ID}" class='file_hover_not_selected'> Text </a>`
+        for (let i = 0; i < XFA.texts.length; i++) {
+            html += dynamic__texts(XFA.texts[i], i)
+        }
+
+        html += "</div>"
+    }
+
+    html += "</div>"
+    return html
+}
+function dynamic__frames(XFA, i) {
+    let html = `<div style='display: none;' class='sub_file_div'>
+                    <a class='file_arrow'>→</a>
+                    <a> 🗀 </a>
+                    <a data-type="x_d_frame" data-XFA="${XFA.id}" class='file_hover_not_selected'> Frame ${i + 1} </a>`
+
+    if (XFA.varibles_04[0].section_04.length !== 0) {
+        html += `<div style='display: none;' class='sub_file_div'>
+                    <a class='file_arrow'>→</a>
+                    <a> 🗀 </a>
+                    <a data-type="x_d_varibles_folder" data-XFA="${XFA.id}" class='file_hover_not_selected'> Varibles </a>`
+
+        for (let i = 0; i < XFA.varibles_04[0].section_04.length; i++) {
+            html += dynamic__varible(XFA.varibles_04[0].section_04[i], i)
+        }
+        html += "</div>"
+
+    }
+    if (XFA.layers_72.length !== 0) {
+        html += `<div style='display: none;' class='sub_file_div'>
+                    <a class='file_arrow'>→</a>
+                    <a> 🗀 </a>
+                    <a data-type="x_d_layers_folder" data-XFA="${XFA.id}" class='file_hover_not_selected'> Layers </a>`
+
+        for (let i = 0; i < XFA.layers_72.length; i++) {
+            html += dynamic__layer(XFA.layers_72[i], i)
+        }
+        html += "</div>"
+
+    }
+    html += "</div>"
+    return html
+}
+function dynamic__varible(XFA, i) {
+
+    let temp_name
+    if (XFA.name_00 !== "") {
+        temp_name = XFA.name_00
+    }else{
+        temp_name = "Blank"
+    }
+    let html = `<div style='display: none;' class='sub_file_div'>
+                    <a class='no_arrow'>↓</a>
+                    <a> / </a>
+                    <a data-type="x_d_varible" data-XFA="${XFA.id}" class='file_hover_not_selected'> ${temp_name} </a>
+                </div>`
+
+    return html
+}
+function dynamic__layer(XFA, i) {
+    let html = `<div style='display: none;' class='sub_file_div'>
+                    <a class='no_arrow'>↓</a>
+                    <a> / </a>
+                    <a data-type="x_d_layer" data-XFA="${XFA.id}" class='file_hover_not_selected'> ${XFA.name_00} </a>
+                </div>`
+
+    return html
+}
+
+function dynamic__texts(XFA, i) {
+    let html = `<div style='display: none;' class='sub_file_div'>
+                    <a class='no_arrow'>↓</a>
+                    <a> ㄒ </a>
+                    <a data-type="x_d_text" data-XFA="${XFA.id}" class='file_hover_not_selected'> Text ${i + 1} </a>`
+
+    html += "</div>"
     return html
 }
 
@@ -67,27 +169,23 @@ function dynamic__texture_animations_folder(XFA, XFA_ID) {
     return html
 }
 
-
-function dynamic__texture_animations(XFA,i) {
+function dynamic__texture_animations(XFA, i) {
     let texture_name
 
     let html = `<div style='display: none;' class='sub_file_div'>
                     <a class='file_arrow'>→</a>
                     <a> / </a>
-                    <a data-type="x_d_texture_animation" data-XFA="${XFA.id}" class='file_hover_not_selected'> animation ${i+1} </a>`
+                    <a data-type="x_d_texture_animation" data-XFA="${XFA.id}" class='file_hover_not_selected'> animation ${i + 1} </a>`
 
-    let temp_array=['pattern','color','translation']
+    let temp_array = ['pattern', 'color', 'translation']
     for (let i = 0; i < 3; i++) {
-    html+= `<div style='display: none;' class='sub_file_div'>
+        html += `<div style='display: none;' class='sub_file_div'>
                     <a class='no_arrow'>↓</a>
                     <a> / </a>
-                    <a data-type="x_d_texture_animation_${temp_array[i]}" data-XFA="${XFA.id}" class='file_hover_not_selected'> ${temp_array[i]} </a></div>`
+                    <a data-type="x_d_texture_animation_ ${temp_array[i]}" data-XFA="${XFA.id}" class='file_hover_not_selected'> ${temp_array[i]} </a></div>`
     }
 
-    
-
-    
-    html+='</div>'
+    html += '</div>'
     return html
 }
 

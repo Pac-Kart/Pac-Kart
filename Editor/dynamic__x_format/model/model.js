@@ -14,8 +14,10 @@ function load_x_d_model(id, outerid, sub_group_index) {
 
     document.getElementById("file_editor").innerHTML = html
 
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
-    document.getElementById("main_delete").addEventListener("click", splice_entry);
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
+    // document.getElementById("main_delete").addEventListener("click", splice_entry);
 
 
     

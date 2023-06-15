@@ -1,21 +1,19 @@
 function load_x_d_folder(id) {
 
-    // if(Array.isArray(id)){
-    // document.getElementById("file_editor").innerHTML = 'file is broke'
-    // }
-
     TXFA = Object.byString(XFA, id);
 
-    let html = `<div style="display:flex;text-align:center;" class='save_records_boarder' data-xfa='${id}'>
-             <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='link'>+ Link</span>
-             <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='share'>+ Share</span>
-               </div>`
+    // let html = `<div style="display:flex;text-align:center;" class='save_records_boarder' data-xfa='${id}'>
+    //          <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='link'>+ Link</span>
+    //          <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='share'>+ Share</span>
+    //            </div>`
+
+    let html = ''
 
     document.getElementById("file_editor").innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
 
-    document.getElementById("link").addEventListener('click', generate_file)
-    document.getElementById("share").addEventListener('click', generate_file)
+    // document.getElementById("link").addEventListener('click', generate_file)
+    // document.getElementById("share").addEventListener('click', generate_file)
 
     function generate_file() {
         let type_data = []

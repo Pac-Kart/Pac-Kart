@@ -9,7 +9,7 @@ function file_move_with_key(e,is_not_arrow) {
         // const index = [...position.parentElement.parentElement].indexOf(position);
         // console.log(index)
 
-        if (position.parentElement.children[0].innerHTML == '↓' && position.parentElement.children[0].classList[0] != 'no_arrow') {
+        if (position.parentElement.children[0].innerHTML == '↓' && position.parentElement.children[0].classList[0] != 'no_arrow' && position.nextElementSibling !== null) {
             // try to go in
             // position.nextElementSibling.style.display == 'block';
             if (position.nextElementSibling.style.display == 'block') {

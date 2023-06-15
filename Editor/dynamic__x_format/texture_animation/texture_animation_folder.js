@@ -9,9 +9,10 @@ function load_x_d_textures_animation_folder(id) {
     document.getElementById("file_editor").innerHTML = html
 
     // document.getElementById("new_entry").addEventListener("click", generate_texture);
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
 
-    document.getElementById("main_delete").addEventListener("click", delete_texture_folder);
+    // document.getElementById("main_delete").addEventListener("click", delete_texture_folder);
 
     function generate_texture() {
         let xid = gen_id()

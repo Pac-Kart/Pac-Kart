@@ -32,8 +32,7 @@ function input_file(event) {
             is_little_endian = true
         } else if (u32(0, true) == 2684354818) {
             is_little_endian = false
-        } else if (u32(4, true) == 4 && u32(284, true) == 1
-        ) {
+        } else if (u32(4, true) == 4 && u32(284, true) == 1) {
             //pc save file
             is_little_endian = true;
             save_file_import(filename, fileextension)
@@ -59,28 +58,10 @@ function input_file(event) {
         <div id='pac_man_world_rally' class="data_bar_options" style="width: 85%;">Pac Man World Rally</div>
         <div id='bigfoot_collision_course' class="data_bar_options" style="width: 85%;">Bigfoot: Collision Course</div>
         `
-        document.getElementById("hot_wheels_velocity_x").addEventListener("click", choose_file_type);
-        document.getElementById("snoopy_vs_the_red_baron").addEventListener("click", choose_file_type);
-        document.getElementById("pac_man_world_rally").addEventListener("click", choose_file_type);
-        document.getElementById("bigfoot_collision_course").addEventListener("click", choose_file_type);
-
-        // var region_numer = u32(8, is_little_endian)
-        // var number_files = u32(12, is_little_endian)
-
-        // atach_folder_to_file_viewer(filename, fileextension, region_numer, number_files)
-
-        // for (files_i = 0; files_i < number_files; files_i++) {
-        //     var offset = (files_i * 24) + 16
-
-        //     var region = u32(offset + 0, is_little_endian)
-        //     var type = u32(offset + 4, is_little_endian)
-        //     var index = u32(offset + 8, is_little_endian)
-        //     var unknown = u32(offset + 12, is_little_endian)
-        //     var amount_bytes = u32(offset + 16, is_little_endian)
-        //     var file_offset = u32(offset + 20, is_little_endian)
-
-        //     atach_file_to_file_viewer(region, type, index, unknown, amount_bytes, file_offset, files_i)
-        // }
+        document.getElementById("hot_wheels_velocity_x").addEventListener("click", choose_game_type);
+        document.getElementById("snoopy_vs_the_red_baron").addEventListener("click", choose_game_type);
+        document.getElementById("pac_man_world_rally").addEventListener("click", choose_game_type);
+        document.getElementById("bigfoot_collision_course").addEventListener("click", choose_game_type);
 
     }
 
@@ -95,4 +76,60 @@ function wrong_file_type() {
     f32 = null
     XFA = null
 }
+
+function choose_game_type() {
+    if (document.getElementById("save_button") === null) {
+        document.getElementById("data_types_bar").innerHTML += `<a data-is_active="false" class="data_bar_options" id="save_button">Save</a>`
+        document.getElementById("save_button").addEventListener("click", save_file);
+    }
+
+    game = this.id
+    // console.log(this)
+    let html = ''
+    if (fileextension === 'xpc') {
+
+        if (this.parentNode.children[0].dataset.file_name === "mcp.xpc" || this.parentNode.children[0].dataset.file_name === "gShared.xpc" || u32(20, is_little_endian) === 1) {
+            if (game === "pac_man_world_rally") {
+                get_X(this.id, 0, this.parentNode.children[0].dataset.file_name)
+                html = dynamic__x_generator()
+            } else {
+                html = get_x_static(this.id, this.parentNode.children[0].dataset.file_name, false)
+            }
+        } else {
+            html = get_x_static(this.id, this.parentNode.children[0].dataset.file_name, false)
+        }
+    } else {
+        html = get_x_static(this.id, this.parentNode.children[0].dataset.file_name, false)
+    }
+
+    document.getElementById("file_viewer").innerHTML = html
+
+    // now addEventListener
+    x_addEventListener();
+
+    document.getElementsByClassName('file_hover_not_selected')[0].click()
+
+    document.getElementById("file_viewer").addEventListener("keydown", file_move_with_key);
+
+    document.getElementById("file_viewer").focus();
+}
+
+function generate_file_view() {
+    // if (file.name === "gShared.xpc" || file.name === "mcp.xpc") {
+    if (game === "pac_man_world_rally") {
+        html = dynamic__x_generator()
+    } else {
+        html = get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, false)
+    }
+    // } else {
+    //     html = get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, false)
+
+    // }
+
+    document.getElementById("file_viewer").innerHTML = html
+
+    // now addEventListener
+    x_addEventListener();
+}
+
 document.getElementById("file_input").addEventListener("change", input_file);

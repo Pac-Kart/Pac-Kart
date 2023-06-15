@@ -2,15 +2,14 @@ function gen_id() {
 
     let id_check = false
     while (id_check === false) {
-        id = id_factory()
+        id = temp()
 
         if (id_list.includes(id)) {} else {
             id_check = true
         }
-    }
-    function id_factory() {
-        var id = "id|" + Math.random().toString(16).slice(2)
-        return id
+        function temp() {
+            return id = "id|" + Math.random().toString(16).slice(2)
+        }
     }
 
     id_list.push(id)
@@ -48,7 +47,12 @@ function find_id(id, type) {
         }
 
     }
+    return temp
 
+    //////////////
+    //////////////
+    //////////////
+    //////////////
     function find_id__file_list(XFA, i) {
         let html = `[${i}]`
         if (type === 'x_d_sub_file') {
@@ -66,9 +70,11 @@ function find_id(id, type) {
                 html += find_id__texture_animation_folder(XFA.texture_animations, html, XFA.id)
             }
             if (XFA.type_s === 'link') {
-                html += find_id__link_folder(XFA.type_data[0], html)
+                html += find_id__link_folder(XFA.type_data[0].section_04.low_section_00[0], html)
             } else if (XFA.type_s === 'share') {
                 html += find_id__share(XFA.type_data[0], html)
+            } else if (XFA.type_s === 'interface') {
+                html += find_id__interface(XFA.type_data[0].section_04.low_section_00[0], html, XFA.id)
             }
         }
 
@@ -99,11 +105,11 @@ function find_id(id, type) {
             }
         } else if (type === "x_d_texture_animation_color") {
             if (XFA.id === id) {
-                return temp = path_string + html+ ".color"
+                return temp = path_string + html + ".color"
             }
         } else if (type === "x_d_texture_animation_translation") {
             if (XFA.id === id) {
-                return temp = path_string + html+ ".translation"
+                return temp = path_string + html + ".translation"
             }
         }
     }
@@ -205,7 +211,7 @@ function find_id(id, type) {
         }
     }
     function find_id__link_folder(XFA, path_string) {
-        let html = '.type_data[0]'
+        let html = '.type_data[0].section_04.low_section_00[0]'
 
         if (type === 'x_d_link_folder') {
             if (XFA.id === id) {
@@ -295,11 +301,127 @@ function find_id(id, type) {
 
             }
 
-        } else {}
+        }
+    }
+    function find_id__interface(XFA, path_string, xfaid) {
+        let html = `.type_data[0].section_04.low_section_00[0]`
+        if (type === 'x_d_interface_folder') {
+            if (xfaid === id) {
+                return temp = path_string + html
+
+            }
+
+        } else {
+            if (type === 'x_d_frames_folder' || type === 'x_d_frame' || type === 'x_d_varibles_folder' || type === 'x_d_varible' || type === 'x_d_layers_folder' || type === 'x_d_layer') {
+                html += find_id__interface_frames_folder(XFA.frames, path_string + html, xfaid)
+            } else if (type === 'x_d_texts_folder' || type === 'x_d_text') {
+                html += find_id__interface_texts_folder(XFA.texts, path_string + html, xfaid)
+            }
+        }
+    }
+    function find_id__interface_frames_folder(XFA, path_string, xfaid) {
+        let html = `.frames`
+        if (type === 'x_d_frames_folder') {
+            if (xfaid === id) {
+                return temp = path_string + html
+
+            }
+
+        } else {
+            for (let i = 0; i < XFA.length; i++) {
+                find_id__interface_frame(XFA[i], path_string + html, i)
+            }
+        }
+    }
+    function find_id__interface_frame(XFA, path_string, i) {
+        let html = `[${i}]`
+        if (type === 'x_d_frame') {
+            if (XFA.id === id) {
+                return temp = path_string + html
+
+            }
+
+        } else if (type === 'x_d_varibles_folder' || type === 'x_d_varible') {
+            html += find_id__interface_varibles_folder(XFA.varibles_04[0].section_04, path_string + html, XFA.id)
+        } else if (type === 'x_d_layers_folder' || type === 'x_d_layer') {
+            html += find_id__interface_layers_folder(XFA.layers_72, path_string + html, XFA.id)
+        }
+    }
+    function find_id__interface_varibles_folder(XFA, path_string, xfaid) {
+        let html = `.varibles_04[0].section_04`
+        if (type === 'x_d_varibles_folder') {
+            if (xfaid === id) {
+                return temp = path_string + html
+
+            }
+
+        } else if (type === 'x_d_varible') {
+            let temp = path_string + html
+            for (let i = 0; i < XFA.length; i++) {
+                html += find_id__interface_varible(XFA[i], temp, i)
+            }
+        }
+    }
+    function find_id__interface_varible(XFA, path_string, i) {
+        let html = `[${i}]`
+        if (type === 'x_d_varible') {
+            if (XFA.id === id) {
+                return temp = path_string + html
+
+            }
+
+        }
     }
 
-    return temp
+    function find_id__interface_layers_folder(XFA, path_string, xfaid) {
+        let html = `.layers_72`
+        if (type === 'x_d_layers_folder') {
+            if (xfaid === id) {
+                return temp = path_string + html
 
+            }
+
+        } else if (type === 'x_d_layer') {
+            let temp = path_string + html
+            for (let i = 0; i < XFA.length; i++) {
+                html += find_id__interface_layer(XFA[i], temp, i)
+            }
+        }
+    }
+    function find_id__interface_layer(XFA, path_string, i) {
+        let html = `[${i}]`
+        if (type === 'x_d_layer') {
+            if (XFA.id === id) {
+                return temp = path_string + html
+
+            }
+
+        }
+    }
+    function find_id__interface_texts_folder(XFA, path_string, xfaid) {
+        let html = `.texts`
+        if (type === 'x_d_texts_folder') {
+            if (xfaid === id) {
+                return temp = path_string + html
+
+            }
+
+        } else {
+            for (let i = 0; i < XFA.length; i++) {
+                find_id__interface_text(XFA[i], path_string + html, i)
+            }
+        }
+    }
+
+    function find_id__interface_text(XFA, path_string, i) {
+        let html = `[${i}]`
+        if (type === 'x_d_text') {
+            if (XFA.id === id) {
+                return temp = path_string + html
+            }
+
+        }
+    }
 }
 
 id_list = []

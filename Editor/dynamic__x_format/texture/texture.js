@@ -2,8 +2,6 @@
 // load texture after asycronyss
 // alpha mat fix size
 function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
-    // level =
-    // console.log(mipmap_level, 'mipmap_level')
     TXFA = Object.byString(XFA, id);
     OTXFA = Object.byString(XFA, outer_id);
 
@@ -49,11 +47,12 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
    `
 
     document.getElementById("file_editor").innerHTML = html
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="splice_texture">X</a>'
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="splice_texture">X</a>'
 
     document.getElementById("replace_texture_file").addEventListener('change', replace_texture)
-    document.getElementById("splice_texture").addEventListener('click', splice_entry)
-    document.getElementById("image_name").addEventListener('change', change_name);
+    // document.getElementById("splice_texture").addEventListener('click', splice_entry)
+    document.getElementById("image_name").addEventListener('change', edit_change_name);
 
     mip_map_eventlistener()
     generate_texture();
@@ -65,25 +64,19 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
         canvas.width = get_dimension_int(TXFA.x)
         canvas.height = get_dimension_int(TXFA.y)
 
-        // create checkerboard so alpha is easier to see
-        // for (outer_2_y = 0; outer_2_y < height; outer_2_y += 4) {
-        //     for (outer_2_x = 0; outer_2_x < width; outer_2_x += 4) {
-        //         ctx.fillStyle = "#FF00FF00"
-        //         ctx.fillRect(outer_2_x, outer_2_y, 4, 4)
-        //     }
-        // }
-
-        if (TXFA.type === 65) {
+        if (TXFA.type === 24) {
+            rgba8888(TXFA.texture[mipmap_level], canvas.width, canvas.height, false)
+        } else if (TXFA.type === 65) {
             dxt1(TXFA.texture[mipmap_level], canvas.width, canvas.height)
-        } else if (TXFA.type === 160 || TXFA.type === 24) {
-            rgba8888(TXFA.texture[mipmap_level], canvas.width, canvas.height)
+        } else if (TXFA.type === 160) {
+            rgba8888(TXFA.texture[mipmap_level], canvas.width, canvas.height, true)
         } else if (TXFA.type === 197) {
             dxt5(TXFA.texture[mipmap_level], canvas.width, canvas.height)
         }
 
         document.getElementById("canvas_img").src = data_
 
-        if (TXFA.type === 65) {
+        if (TXFA.type === 24 || TXFA.type === 65) {
             //no alpha
             canvas.width = 0
             canvas.height = 0
@@ -440,10 +433,16 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
             if (mipmap_level === 0) {
                 return '⟳ Replace Texture'
             } else {
-                return '⟳ Replace Mipmap'
+                if (TXFA.type === 24 || TXFA.type === 160) {
+                    return '⚠️ not replaceable ⚠️'
+                } else {
+                    return '⟳ Replace Mipmap'
+                }
             }
         } else if (s === "box_after") {
-            if (mipmap_level !== 0) {
+            if (TXFA.type === 24 || TXFA.type === 160) {
+                return ''
+            } else if (mipmap_level !== 0) {
                 return `⚠️ warning file must be ${get_type_string(TXFA.type)} & ${get_dimension_int(TXFA.x)} x ${get_dimension_int(TXFA.y)}`
             } else {
                 return ""
@@ -484,8 +483,10 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
     function get_type_string(type) {
         if (type === 65) {
             return "DDS DXT1"
-        } else if (type === 160 || type === 24) {
+        } else if (type === 160) {
             return "RGBA8888"
+        } else if (type === 24) {
+            return "RGB888"
         } else if (type === 197) {
             return "DDS DXT5"
         } else {
@@ -507,24 +508,6 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
         }
 
         return dim
-    }
-
-    function change_name() {
-        let temp_texture_name = this.value
-        temp_texture_name = temp_texture_name.substr(0, 52)
-        temp_texture_name = temp_texture_name.trim()
-
-        let file_string
-        if (temp_texture_name == "") {
-            file_string = "Blank"
-        } else {
-            file_string = temp_texture_name
-        }
-
-        Object.byString(XFA, this.dataset.outer_xfa, this.dataset.inner_xfa, temp_texture_name)
-        this.value = temp_texture_name
-        position = document.getElementsByClassName("file_is_highlighted")[0].innerText = file_string
-
     }
 
     function splice_entry() {
@@ -561,5 +544,3 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
 
     }
 }
-
-////////// work on this later

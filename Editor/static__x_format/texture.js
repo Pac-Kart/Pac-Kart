@@ -119,7 +119,8 @@ function load_edit_texture(offset, offset_mid) {
     <br> texture header data amount: <a id='start_texture_offset'>${i_offset_plus}</a>
     <br> 
     <p>data offset ${texture_data_offset + offset_mid} </p>
-    <p>type? ${texture_type_value} /mip? ${texture_mipmap_value}  </p>
+    <p>texture type ${texture_type_value} <br>
+    Mipmaps: ${texture_mipmap_value}  </p>
 
 
     </div>
@@ -366,6 +367,8 @@ function get_texture_settings(texture_offset) {
         texture_format = "DDS (dxt1 compression)"
     } else if (texture_type_value === 5) {
         texture_format = "DDS (dxt5 compression)"
+    } else if (texture_type_value === 24) {
+        texture_format = "RGB888 (no aplha)"
     } else if (texture_type_value === 65) {
         texture_format = "DDS (dxt1 compression)"
     } else if (texture_type_value === 68) {

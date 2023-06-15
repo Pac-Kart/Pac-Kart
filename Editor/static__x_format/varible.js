@@ -1,6 +1,6 @@
 function load_varible(offset,offset_mid) {
 
-    let html ='<div data-debug="true">'
+    let html =''
 
      let setting_04 = `[ ${u8(offset + 4, is_little_endian)} ,${u8(offset + 5, is_little_endian)} ,${u8(offset + 6, is_little_endian)}, ${u8(offset + 7, is_little_endian)} ]`
     let setting_08 = u32(offset + 8, is_little_endian)

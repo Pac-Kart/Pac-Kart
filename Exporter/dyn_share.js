@@ -13,7 +13,7 @@ function dyn_share_mid_section(offset, mid, XFA, header_offset) {
         model_offset_index_array.push([offset + (i * 4) - mid, i, 0])
         share_model_offset_index_list.push(end_block - mid)
         // FIX imperfect ?
-        end_block = dyn_model(end_block, mid, XFA.models[i],mid -4)
+        end_block = dyn_model(end_block, XFA_main.models[i])
 
     }
 

@@ -23,6 +23,7 @@ function get_share(offset, XFA) {
             XFA[0].sound_array.push(patch_array)
         }
     }
+    
     let model_offset = u32(offset + 24, is_little_endian) + offset_mid
     for (let i = 0; i < u32(offset + 20, is_little_endian); i++) {
         let patch_array = get_patch_offset_index(model_patch, model_offset - offset_mid + (i*4))
