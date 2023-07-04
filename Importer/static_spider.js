@@ -245,53 +245,52 @@ function get_x_sub_file_header(offset, index) {
     if (game == "pac_man_world_rally") {
 
         let offset_collision
-        if (type === 'interface') {
-            // let temp = u32(offset_mid + 4, is_little_endian)
-            // offset_logic = u32(offset_mid + temp, is_little_endian)
+        if (type === 'interface') {// let temp = u32(offset_mid + 4, is_little_endian)
+        // offset_logic = u32(offset_mid + temp, is_little_endian)
 
-            // frames = [offset_logic + offset_mid]
-            // settings_3 = []
-            // fonts = []
-            // texts = []
-            // interface_model = []
-            // interface_model_2 = []
-            // interface_sub_model = []
-            // model_animation_1 = []
-            // model_animation_2 = []
+        // frames = [offset_logic + offset_mid]
+        // settings_3 = []
+        // fonts = []
+        // texts = []
+        // interface_model = []
+        // interface_model_2 = []
+        // interface_sub_model = []
+        // model_animation_1 = []
+        // model_animation_2 = []
 
-            // sparkler = []
+        // sparkler = []
 
-            // get_80byteblock(offset_logic + offset_mid)
+        // get_80byteblock(offset_logic + offset_mid)
 
-            // for (let i = 0; i < frames.length; i++) {
-            //     html += get_80byteblock(frames[i])
-            // }
-            // for (let i = 0; i < settings_3.length; i++) {
-            //     html += get_settings_header_3(settings_3[i], i)
-            // }
-            // for (let i = 0; i < fonts.length; i++) {
-            //     html += get_fonts(fonts[i], i)
-            // }
-            // for (let i = 0; i < texts.length; i++) {
-            //     html += get_texts(texts[i], i)
-            // }
-            // for (let i = 0; i < sparkler.length; i++) {
-            //     html += get_spark(sparkler[i], i)
-            // }
-            // for (let i = 0; i < interface_model.length; i++) {
-            //     html += get_interface_model(interface_model[i], i)
-            // }
-            // for (let i = 0; i < model_animation_1.length; i++) {
-            //     html += get_model_animation_1(model_animation_1[i], i)
-            // }
-            // for (let i = 0; i < model_animation_2.length; i++) {
-            //     html += get_model_animation_2(model_animation_2[i], i)
-            // }
-            // for (let i = 0; i < interface_sub_model.length; i++) {
-            //     html += get_interface__sub_model(interface_sub_model[i], i)
-            // }
+        // for (let i = 0; i < frames.length; i++) {
+        //     html += get_80byteblock(frames[i])
+        // }
+        // for (let i = 0; i < settings_3.length; i++) {
+        //     html += get_settings_header_3(settings_3[i], i)
+        // }
+        // for (let i = 0; i < fonts.length; i++) {
+        //     html += get_fonts(fonts[i], i)
+        // }
+        // for (let i = 0; i < texts.length; i++) {
+        //     html += get_texts(texts[i], i)
+        // }
+        // for (let i = 0; i < sparkler.length; i++) {
+        //     html += get_spark(sparkler[i], i)
+        // }
+        // for (let i = 0; i < interface_model.length; i++) {
+        //     html += get_interface_model(interface_model[i], i)
+        // }
+        // for (let i = 0; i < model_animation_1.length; i++) {
+        //     html += get_model_animation_1(model_animation_1[i], i)
+        // }
+        // for (let i = 0; i < model_animation_2.length; i++) {
+        //     html += get_model_animation_2(model_animation_2[i], i)
+        // }
+        // for (let i = 0; i < interface_sub_model.length; i++) {
+        //     html += get_interface__sub_model(interface_sub_model[i], i)
+        // }
 
-            // html += get_models(temp_offset, offset_animations)
+        // html += get_models(temp_offset, offset_animations)
 
         } else if (type === 'link') {
 
@@ -307,8 +306,7 @@ function get_x_sub_file_header(offset, index) {
             if (u32(offset_mid + 24, is_little_endian) !== 0) {// world_24(u32(offset_mid + 24, is_little_endian) + offset_mid)
             }
 
-            for (let i = 0; i < u32(offset_mid + 28, is_little_endian); i++) {
-                // world_32(u32(offset_mid + 32, is_little_endian) + offset_mid + (i * 4))
+            for (let i = 0; i < u32(offset_mid + 28, is_little_endian); i++) {// world_32(u32(offset_mid + 32, is_little_endian) + offset_mid + (i * 4))
             }
 
             //calculate model offset -> 
@@ -521,12 +519,12 @@ function get_car_main(offset, mid) {
         html = `<div style='display:none' class='sub_file_div'><a class='no_arrow'>↓</a><a style="margin:2px;"> ⚙ </a> <a data-type="x_car_main" data-offset="${offset}" data-mid="${mid}" class='file_hover_not_selected'>Car Stats</a></div>`
     }
 
-    if (u32(offset + 0, is_little_endian) === 0 || u8(offset + 4, is_little_endian) !== 4 || u8(offset + 5, is_little_endian) || u16(offset + 6, is_little_endian) || u32(offset + 8, is_little_endian) || u32(offset + 12, is_little_endian)) {
-        // console.log(`${u32(offset + 0, is_little_endian)} | [ ${u8(offset + 4, is_little_endian)}, ${u8(offset + 5, is_little_endian)}, ${u8(offset + 6, is_little_endian)}, ${u8(offset + 7, is_little_endian)} ] | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} offset:${offset} -mid:${offset_mid}`)
-    }
-    if (u32(offset, is_little_endian)) {
-        // get_car_00(u32(offset, is_little_endian) + offset_mid)
-    }
+    // if (u32(offset + 0, is_little_endian) === 0 || u8(offset + 4, is_little_endian) !== 4 || u8(offset + 5, is_little_endian) || u16(offset + 6, is_little_endian) || u32(offset + 8, is_little_endian) || u32(offset + 12, is_little_endian)) {
+    //     console.log(`${u32(offset + 0, is_little_endian)} | [ ${u8(offset + 4, is_little_endian)}, ${u8(offset + 5, is_little_endian)}, ${u8(offset + 6, is_little_endian)}, ${u8(offset + 7, is_little_endian)} ] | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} offset:${offset} -mid:${offset_mid}`)
+    // }
+    // if (u32(offset, is_little_endian)) {
+    //     get_car_00(u32(offset, is_little_endian) + offset_mid)
+    // }
 
     return html
 }
@@ -543,10 +541,141 @@ function get_car_00(offset) {
 
 function get_car_00_180(offset) {
 
-    // if (u32(offset + 0, is_little_endian)) {
-    console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)} | ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | ${u32(offset + 44, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    if (u32(offset + 0, is_little_endian)) {
+        // console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)} | ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | ${u32(offset + 44, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+        get_car_00_180_00(u32(offset + 0, is_little_endian) + offset_mid)
+    }
+
+}
+function get_car_00_180_00(offset) {
+
+    if (u32(offset + 8, is_little_endian)) {
+        get_car_00_180_00_08(u32(offset + 8, is_little_endian) + offset_mid)
+    }
+
+    for (let i = 0; i < u32(offset + 12, is_little_endian); i++) {
+        get_car_00_180_00_16(u32(offset + 16, is_little_endian) + offset_mid + (i * 20), i)
+    }
+
+    // console.log(`F${f32(offset + 0, is_little_endian)} | T[ ${u8(offset + 4, is_little_endian)}, ${u8(offset + 5, is_little_endian)}, ${u8(offset + 6, is_little_endian)}, ${u8(offset + 7, is_little_endian)} ] | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)} | ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | ${u32(offset + 44, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+
+}
+function get_car_00_180_00_08(offset) {
+
+    if (u8(offset + 0, is_little_endian) !== 10 || u8(offset + 1, is_little_endian) !== 10 || u8(offset + 2, is_little_endian) !== 10 || u8(offset + 3, is_little_endian) !== 128 || u32(offset + 4, is_little_endian) || u32(offset + 8, is_little_endian) || u32(offset + 12, is_little_endian)) {
+        console.log(`[ ${u8(offset + 0, is_little_endian)}, ${u8(offset + 1, is_little_endian)}, ${u8(offset + 2, is_little_endian)}, ${u8(offset + 3, is_little_endian)} ] | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    }
+        console.log(`[ ${u8(offset + 0, is_little_endian)}, ${u8(offset + 1, is_little_endian)}, ${u8(offset + 2, is_little_endian)}, ${u8(offset + 3, is_little_endian)} ] | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+}
+function get_car_00_180_00_16(offset, i) {
+
+    // if (u8(offset + 0, is_little_endian) !== 10 ||u8(offset + 1, is_little_endian) !== 10 ||u8(offset + 2, is_little_endian) !== 10 ||u8(offset + 3, is_little_endian) !==128 ||u32(offset + 4, is_little_endian)||u32(offset + 8, is_little_endian)||u32(offset + 12, is_little_endian)) {
+    // console.log(`${i}-> ${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
     // }
 
+    if (u32(offset + 8, is_little_endian)) {
+        get_car_00_180_00_16_08(u32(offset + 8, is_little_endian) + offset_mid)
+    }
+    if (u32(offset + 12, is_little_endian)) {
+        get_car_00_180_00_16_12(u32(offset + 12, is_little_endian) + offset_mid)
+    }
+
+}
+
+function get_car_00_180_00_16_08(offset) {
+
+    if (u32(offset + 0, is_little_endian) || u32(offset + 4, is_little_endian) !== 1000 || u32(offset + 8, is_little_endian) || u16(offset + 14, is_little_endian) || u32(offset + 16, is_little_endian) || u32(offset + 20, is_little_endian) !== 2 || u32(offset + 24, is_little_endian) || u32(offset + 28, is_little_endian) !== 2147483647 || u32(offset + 32, is_little_endian) || u32(offset + 36, is_little_endian) || u32(offset + 40, is_little_endian) || u32(offset + 44, is_little_endian)) {
+        console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)}  | ${u32(offset + 8, is_little_endian)} | ${u16(offset + 12, is_little_endian)}, ${u8(offset + 14, is_little_endian)}, ${u8(offset + 15, is_little_endian)} ] | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)} | ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | ${u32(offset + 44, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    }
+    // _Tx(temp_array___, u32, 28, offset)
+}
+function get_car_00_180_00_16_12(offset) {
+
+    if (u32(offset + 8, is_little_endian) || u32(offset + 12, is_little_endian)) {
+        console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    }
+
+    for (let i = 0; i < u32(offset + 0, is_little_endian); i++) {
+        get_car_00_180_00_16_12_04(u32(offset + 4, is_little_endian)+offset_mid + (i*64))
+    }
+    
+    // _Tx(temp_array___, u32, 0, offset)
+}
+
+function get_car_00_180_00_16_12_04(offset) {
+
+
+    if (u8(offset + 1, is_little_endian) || u16(offset + 2, is_little_endian) ||u32(offset + 8, is_little_endian) || u32(offset + 12, is_little_endian) || u32(offset + 16, is_little_endian)|| u32(offset + 20, is_little_endian)|| u32(offset + 24, is_little_endian)|| u32(offset + 28, is_little_endian)|| u32(offset + 32, is_little_endian)|| u32(offset + 36, is_little_endian)|| u32(offset + 40, is_little_endian)||  u32(offset + 48, is_little_endian)|| u32(offset + 52, is_little_endian)|| u32(offset + 56, is_little_endian)|| u32(offset + 60, is_little_endian)) {
+        console.log(`[ ${u8(offset + 0, is_little_endian)}, ${u8(offset + 1, is_little_endian)}, ${u8(offset + 2, is_little_endian)}, ${u8(offset + 3, is_little_endian)} ] | ${u32(offset + 4, is_little_endian)}  | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)} | ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | F${f32(offset + 44, is_little_endian)} | ${u32(offset + 48, is_little_endian)} | ${u32(offset + 52, is_little_endian)} | ${u32(offset + 56, is_little_endian)} | ${u32(offset + 60, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    }
+    if (u32(offset + 4, is_little_endian)) {
+        if (u8(offset + 0, is_little_endian) === 2) {
+        get_car_00_180_00_16_12_04_04t2(u32(offset + 4, is_little_endian)+offset_mid,u8(offset + 0, is_little_endian))
+        }else{
+        get_car_00_180_00_16_12_04_04t5(u32(offset + 4, is_little_endian)+offset_mid,u8(offset + 0, is_little_endian))
+        }
+    }
+    
+
+
+
+}
+
+function get_car_00_180_00_16_12_04_04t2(offset) {
+
+        if (u8(offset + 9, is_little_endian) ||u16(offset + 10, is_little_endian) || u32(offset + 12, is_little_endian) || u32(offset + 28, is_little_endian) || u32(offset + 36, is_little_endian)|| u32(offset + 40, is_little_endian)|| u32(offset + 44, is_little_endian)) {
+        console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | [ ${u8(offset + 8, is_little_endian)}, ${u8(offset + 9, is_little_endian)}, ${u8(offset + 10, is_little_endian)}, ${u8(offset + 11, is_little_endian)} ] | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | F${f32(offset + 32, is_little_endian)} | ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | ${u32(offset + 44, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+        }
+    if (u32(offset + 4, is_little_endian)) {
+        get_car_00_180_00_16_12_04_04t2_04(u32(offset + 4, is_little_endian)+offset_mid)
+    }
+            // _Tx(temp_array___, f32, 32, offset)
+}
+
+function get_car_00_180_00_16_12_04_04t2_04(offset) {
+
+    if (u32(offset + 4, is_little_endian) || u32(offset + 8, is_little_endian) || u32(offset + 12, is_little_endian)) {
+        console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    }
+
+    if (u32(offset + 0, is_little_endian)) {
+        get_car_00_180_00_16_12_04_04t2_04_00(u32(offset + 0, is_little_endian)+offset_mid)
+    }
+}
+
+
+function get_car_00_180_00_16_12_04_04t2_04_00(offset) {
+    if (u32(offset +0, is_little_endian) !==1 || u32(offset + 8, is_little_endian) || u32(offset + 12, is_little_endian)) {
+        console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    }
+
+    if (u32(offset +4, is_little_endian)) {
+        get_car_00_180_00_16_12_04_04t2_04_00_04(u32(offset +4, is_little_endian)+offset_mid)
+    }
+
+    
+}
+
+function get_car_00_180_00_16_12_04_04t2_04_00_04(offset) {
+    if (u32(offset +0, is_little_endian) !==1  || u32(offset + 12, is_little_endian)) {
+        console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    }
+
+    if (u32(offset +4, is_little_endian)) {
+        get_car_00_180_00_16_12_04_04t2_04_00_04_04(u32(offset +4, is_little_endian)+offset_mid)
+    }
+
+    
+}
+
+function get_car_00_180_00_16_12_04_04t2_04_00_04_04(offset) {
+    if (u32(offset +0, is_little_endian) !==1  || u32(offset + 12, is_little_endian)) {
+        console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
+    }
+}
+
+function get_car_00_180_00_16_12_04_04t5(offset) {
+        // console.log(`${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)} | ${u32(offset + 36, is_little_endian)} | ${u32(offset + 40, is_little_endian)} | ${u32(offset + 44, is_little_endian)} | ${u32(offset + 48, is_little_endian)} | ${u32(offset + 52, is_little_endian)} | ${u32(offset + 56, is_little_endian)} | ${u32(offset + 60, is_little_endian)} || offset:${offset} -mid:${offset_mid}`)
 }
 
 function get_models(offset, index) {
@@ -1567,7 +1696,7 @@ function get_model_animation_1_52(offset, temp_val) {
     }
     let diff = u32(offset + 28, is_little_endian) - u32(offset + 16, is_little_endian)
 
-    console.log(`__start: ${u32(offset + 28, is_little_endian) + offset_mid} || end: ${u32(offset + 16, is_little_endian) + offset_mid} | Dif: ${diff} | calculated: ${(diff / 8 ) / 6}`)
+    console.log(`__start: ${u32(offset + 28, is_little_endian) + offset_mid} || end: ${u32(offset + 16, is_little_endian) + offset_mid} | Dif: ${diff} | calculated: ${(diff / 8) / 6}`)
     console.log(`-> ${u32(offset + 0, is_little_endian)} _0 | ${u32(offset + 4, is_little_endian)} _4 | ${u32(offset + 8, is_little_endian)} _8 | ${_12} | ${u32(offset + 16, is_little_endian)} | ${_20} | ${_24} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)}  offset:${offset} ; mid: ${offset_mid} ||| \n\n`)
 
     if (u32(offset + 28, is_little_endian) === 0) {// console.log(`-> ${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | ${u32(offset + 8, is_little_endian)} | ${_12} | ${u32(offset + 16, is_little_endian)} | ${_20} | ${_24} | ${u32(offset + 28, is_little_endian)} | ${u32(offset + 32, is_little_endian)}  offset:${offset} ; mid: ${offset_mid}   `)
@@ -1946,13 +2075,9 @@ function get_layer_3(offset) {
         get_layer_3_2(u32(offset + 28, is_little_endian) + offset_mid + (i * 12), 2)
     }
 
-    //FIX
-
     for (let i = 0; i < u32(offset + 32, is_little_endian); i++) {
         html += get_settings_header_2(u32(offset + 36, is_little_endian) + offset_mid + (i * 28))
     }
-
-    // html += '</div>'
     return html
 }
 
@@ -1970,7 +2095,6 @@ function get_layer_3_1_36(offset) {
     // }
     for (let i = 0; i < u32(offset + 20, is_little_endian); i++) {
         get_settings_2_3(u32(offset + 24, is_little_endian) + offset_mid + (i * 36))
-        /////////////////////////////aaaaaaaaaaaaaaaaaaaaa
     }
 }
 function get_layer_3_1_36_16(offset) {
@@ -2674,7 +2798,6 @@ function get_LAYER_byte_block_any_3_1text_3_1(offset) {
     return html
 
 }
-temp_array___ = []
 
 function get_LAYER_byte_block_any_3_1text_2(offset) {
     let html = ''
@@ -3048,8 +3171,7 @@ function get_texture_animas(offset) {
     if (u32(offset + 4, is_little_endian)) {// get_texture_animas_04(u32(offset + 4, is_little_endian)+offset_mid)
     }
 
-    for (let i = 0; i < u32(offset + 16, is_little_endian); i++) {
-        // get_texture_animas_20(u32(offset + 20, is_little_endian) + offset_mid + (i * 12))
+    for (let i = 0; i < u32(offset + 16, is_little_endian); i++) {// get_texture_animas_20(u32(offset + 20, is_little_endian) + offset_mid + (i * 12))
 
     }
 
@@ -3059,8 +3181,7 @@ function get_texture_animas_04(offset) {
     console.log(`-> ${u32(offset + 0, is_little_endian)} | ${u32(offset + 4, is_little_endian)} | [ ${u8(offset + 8, is_little_endian)}, ${u8(offset + 9, is_little_endian)}, ${u8(offset + 10, is_little_endian)}, ${u8(offset + 11, is_little_endian)} ] | ${u32(offset + 12, is_little_endian)} | ${u32(offset + 16, is_little_endian)} | ${u32(offset + 20, is_little_endian)} | ${u32(offset + 24, is_little_endian)} | ${u32(offset + 28, is_little_endian)} | offset:${offset} ; mid: ${offset_mid}   `)
 
 }
-function get_texture_animas_20(offset) {
-    // console.log(`-> F ${f32(offset + 0, is_little_endian)} | F ${f32(offset + 4, is_little_endian)} | [ ${u8(offset + 8, is_little_endian)}, ${u8(offset + 9, is_little_endian)}, ${u8(offset + 10, is_little_endian)}, ${u8(offset + 11, is_little_endian)} ] | F ${f32(offset + 12, is_little_endian)} offset:${offset} ; mid: ${offset_mid}   `)
+function get_texture_animas_20(offset) {// console.log(`-> F ${f32(offset + 0, is_little_endian)} | F ${f32(offset + 4, is_little_endian)} | [ ${u8(offset + 8, is_little_endian)}, ${u8(offset + 9, is_little_endian)}, ${u8(offset + 10, is_little_endian)}, ${u8(offset + 11, is_little_endian)} ] | F ${f32(offset + 12, is_little_endian)} offset:${offset} ; mid: ${offset_mid}   `)
 
 }
 
@@ -3117,10 +3238,6 @@ function get_string(begin, end, is_no_end) {
     return temp_string
 }
 
-///////////////////
-///////////////////
-///////////////////
-///////////////////
 function x_addEventListener() {
     temp_div = document.getElementById('file_viewer').children[0]
 
@@ -3180,12 +3297,9 @@ function arrow_click() {
     }
 }
 
-///////////////
-///////////////
-///temp
-
 function _Tx(array, f, n, offset) {
     if (array.includes(f(offset + n, is_little_endian))) {} else {
         array.push(f(offset + n, is_little_endian))
     }
 }
+temp_array___ = []

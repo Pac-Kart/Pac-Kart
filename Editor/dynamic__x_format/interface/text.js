@@ -18,7 +18,7 @@ function load_x_d_text(id) {
    // </div>`
 
    let html =`<div style='overflow:hidden;padding:1%;height:95%;'>
-   <textarea style='height:100%;width:100%;resize:none;' data-type="string" data-outer_xfa="${id}.section_00[0]" data-inner_xfa="string" id='text'>${TXFA.section_00[0].string}</textarea>
+   <textarea style='height:100%;width:100%;resize:none;' maxlength="515" data-type="string" data-outer_xfa="${id}.section_00[0]" data-inner_xfa="string" id='text'>${TXFA.section_00[0].string}</textarea>
    </div>
    `
 

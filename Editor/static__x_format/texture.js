@@ -1,11 +1,11 @@
-function load_texture(offset, offset_mid) {
-    offset_mid = offset_mid
+function load_texture(offset, mid) {
+    offset_mid = mid
+    
     load_edit_texture(offset, offset_mid)
 
-        if (fileextension == 'xps' || fileextension == "xpp") {
-            document.getElementById("file_editor").innerHTML += "<br><br>⚠️ warning PSP/PS2 format is not currently parsed correctly"
-        }
-
+    if (fileextension == 'xps' || fileextension == "xpp") {
+        document.getElementById("file_editor").innerHTML += "<br><br>⚠️ warning PSP/PS2 format is not currently parsed correctly"
+    }
 
 }
 
@@ -113,12 +113,14 @@ function load_edit_texture(offset, offset_mid) {
 
     get_texture_settings(offset, offset_mid)
 
+    texture_data_offset = texture_data_offset + offset_mid
+
     document.getElementById("file_editor").innerHTML = `
         <div data-debug='true'>
     <p> texture header offset: ${offset}
     <br> texture header data amount: <a id='start_texture_offset'>${i_offset_plus}</a>
     <br> 
-    <p>data offset ${texture_data_offset + offset_mid} </p>
+    <p>data offset ${texture_data_offset} </p>
     <p>texture type ${texture_type_value} <br>
     Mipmaps: ${texture_mipmap_value}  </p>
 
@@ -136,11 +138,14 @@ function load_edit_texture(offset, offset_mid) {
 
 function image_file_input() {
     if (fileextension == "xpc" || fileextension == "xdx") {
-        if (texture_type_value === 160) {
-            document.getElementById("file_editor").innerHTML += "<hr><p>file format not currently supported </p>"
-        } else {
+        if (texture_type_value === 24 || texture_type_value === 160) {
+            document.getElementById("file_editor").innerHTML += "<hr><input id='rgba_file' type='file'>"
+            document.getElementById("rgba_file").addEventListener("change", image_import_file)
+        } else if (texture_type_value === 4 ||texture_type_value === 5 ||texture_type_value === 65 || texture_type_value === 197) {
             document.getElementById("file_editor").innerHTML += "<hr><p>⚠️ compression format / width and height must be the same<br></p><input id='dds_file' type='file'>"
             document.getElementById("dds_file").addEventListener("change", image_import_file)
+        } else {
+            document.getElementById("file_editor").innerHTML += "<hr><p>file format not currently supported </p>"
         }
 
     }
@@ -149,7 +154,7 @@ function image_file_input() {
 function image_import_file(event) {
 
     console.log('save')
-    if (texture_type_value == 160) {
+    if (texture_type_value === 24 || texture_type_value === 160) {
         console.log(this, event)
         generate_canvas_replacement_pc(event)
         return;
@@ -205,7 +210,7 @@ function image_import_file(event) {
         temp_y = texture_y
         temp_x = texture_x
         dds_offset = 128
-        x_texture_offset = texture_data_offset + offset_mid
+        x_texture_offset = texture_data_offset
 
         if (texture_mipmap_value == 0) {
             texture_mipmap_value = 1
@@ -220,7 +225,7 @@ function image_import_file(event) {
             temp_y = temp_y / 2
 
         }
-                document.getElementsByClassName("file_is_highlighted")[0].click()
+        document.getElementsByClassName("file_is_highlighted")[0].click()
 
     }
 
@@ -229,7 +234,7 @@ function image_import_file(event) {
 function generate_canvas_replacement_pc(ev) {
 
     file_temp = ev.target.files[0];
-    // get the file
+
     blobURL = URL.createObjectURL(file_temp);
     img_temp = new Image();
     img_temp.src = blobURL;
@@ -237,41 +242,122 @@ function generate_canvas_replacement_pc(ev) {
     img_temp.onerror = function() {
         URL.revokeObjectURL(this.src);
         // Handle the failure properly
-        console.log("Cannot load image");
+        alert("not an image file");
     }
-    ;
 
     img_temp.onload = function() {
+
+        let img_width = width
+        let img_height = height
+
+        // let is_power_of_2 = powerOfTwo(img_width)
+        // while (is_power_of_2 === false) {
+        //     img_width--
+        //     is_power_of_2 = powerOfTwo(img_width)
+        // }
+        // is_power_of_2 = powerOfTwo(img_height)
+        // while (is_power_of_2 === false) {
+        //     img_height--
+        //     is_power_of_2 = powerOfTwo(img_height)
+        // }
+
+        // console.log('true',img_width,img_height)
+
+        // I'm using a <input type="file"> for demonstrating
+
         URL.revokeObjectURL(this.src);
         mime_type = "image/jpeg";
         quality = qualityRate(file_temp.size);
         canvas_temp = document.createElement("canvas");
-        canvas_temp.width = texture_x;
-        canvas_temp.height = texture_y;
+        canvas_temp.width = img_width
+        canvas_temp.height = img_height
         ctx_temp = canvas_temp.getContext("2d");
         ctx_temp.imageSmoothingEnabled = false
-        ctx_temp.drawImage(img_temp, 0, 0, texture_x, texture_y);
+        ctx_temp.drawImage(img_temp, 0, 0, canvas_temp.width, canvas_temp.height);
 
-        document.getElementById("dds_file").append(canvas_temp);
+        document.getElementById("file_editor").append(canvas_temp);
 
-        canvas_temp.toBlob(blob=>{
-            let localfile = new File([blob],'import.png',{
-                type: "image/jpeg",
-                lastModified: new Date().getTime()
-            },'utf-8');
-            let container = new DataTransfer();
-            container.items.add(localfile);
-            aaaaaaaaa = container
-            console.log(container)
-            console.log(container.files)
-            canvas_temp.files = container.files;
-            canvas_temp.toDataURL(canvas_temp.files[0])
+        let temp_array = ctx_temp.getImageData(0, 0, canvas_temp.width, canvas_temp.height).data
+
+        var arrayBuffer = temp_array.buffer.slice(temp_array.byteOffset, temp_array.byteLength + temp_array.byteOffset);
+
+        //
+
+        let array_length = arrayBuffer.byteLength
+        let data_off = texture_data_offset
+
+        if (texture_type_value === 24) {
+            array_length = Math.floor(array_length / 1.333333333333333333)
+
+            for (let i = 0, ii = 0; i < array_length; i += 3,
+            ii += 4) {
+                new DataView(buffer).setUint8(data_off + i, new DataView(arrayBuffer).getUint8(ii))
+                new DataView(buffer).setUint8(data_off + i + 1, new DataView(arrayBuffer).getUint8(ii + 1))
+                new DataView(buffer).setUint8(data_off + i + 2, new DataView(arrayBuffer).getUint8(ii + 2))
+            }
+        }else{
+            for (let i = 0; i < array_length; i += 4) {
+                new DataView(buffer).setUint8(data_off + i, new DataView(arrayBuffer).getUint8(i))
+                new DataView(buffer).setUint8(data_off + i + 1, new DataView(arrayBuffer).getUint8(i + 1))
+                new DataView(buffer).setUint8(data_off + i + 2, new DataView(arrayBuffer).getUint8(i + 2))
+                new DataView(buffer).setUint8(data_off + i + 3, new DataView(arrayBuffer).getUint8(i + 3))
+            }
         }
-        , mime_type, quality);
+        console.log(arrayBuffer)
+        // TXFA.texture.push(arrayBuffer)
 
-        console.log("?")
+        // canvas_temp.toBlob(blob=>{
+        //     let localfile = new File([blob],'import.png',{
+        //         type: "image/jpeg",
+        //         lastModified: new Date().getTime()
+        //     },'utf-8');
+        //     let container = new DataTransfer();
+        //     container.items.add(localfile);
+        //     aaaaaaaaa = container
+        //     console.log(container)
+        //     console.log(container.files)
+        //     canvas_temp.files = container.files;
+        //     canvas_temp.toDataURL(canvas_temp.files[0])
+        // }
+        // , mime_type, quality);
+
+        // console.log("?")
+        let position = document.getElementsByClassName("file_is_highlighted")[0]
+        position.click()
+
     }
-    ;
+
+    // img_temp.onload = function() {
+    //     URL.revokeObjectURL(this.src);
+    //     mime_type = "image/jpeg";
+    //     quality = qualityRate(file_temp.size);
+    //     canvas_temp = document.createElement("canvas");
+    //     canvas_temp.width = texture_x;
+    //     canvas_temp.height = texture_y;
+    //     ctx_temp = canvas_temp.getContext("2d");
+    //     ctx_temp.imageSmoothingEnabled = false
+    //     ctx_temp.drawImage(img_temp, 0, 0, texture_x, texture_y);
+
+    //     document.getElementById("dds_file").append(canvas_temp);
+
+    //     canvas_temp.toBlob(blob=>{
+    //         let localfile = new File([blob],'import.png',{
+    //             type: "image/jpeg",
+    //             lastModified: new Date().getTime()
+    //         },'utf-8');
+    //         let container = new DataTransfer();
+    //         container.items.add(localfile);
+    //         aaaaaaaaa = container
+    //         console.log(container)
+    //         console.log(container.files)
+    //         canvas_temp.files = container.files;
+    //         canvas_temp.toDataURL(canvas_temp.files[0])
+    //     }
+    //     , mime_type, quality);
+
+    console.log("?")
+    // }
+    // ;
 }
 function calculate_length_dds(x, y, is_dxt5) {
 
@@ -401,8 +487,8 @@ function x_to_texture(offset, offset_mid) {
     canvas.width = texture_x
     canvas.height = texture_y
 
-    image_offset = texture_data_offset + offset_mid
-    console.log(texture_data_offset + offset_mid, 'offset')
+    image_offset = texture_data_offset
+    console.log(texture_data_offset, 'offset')
 
     if (game == 'idk') {// dxt1_to_canvas()
     } else if (game == 'pac_man_world_rally' && fileextension == 'xgc') {
@@ -477,8 +563,8 @@ function rgba64_to_canvas() {
     }
 
     temp_style = 'border:1px solid;background:white;'
-    if(game === "hot_wheels_velocity_x"){
-        temp_style+= 'transform:rotateX(180deg);'
+    if (game === "hot_wheels_velocity_x") {
+        temp_style += 'transform:rotateX(180deg);'
     }
 
     data_ = canvas.toDataURL()
@@ -984,8 +1070,8 @@ function dxt1_gc_to_canvas() {
         data-texture_type='${texture_type_value}'
         data-texture_id='${dxt1_gc_file_id}'>
         <img width='256' height='256' src='${data_}'></img>
-        <input id="img-input${dxt1_gc_file_id}" type="file" name="fileTest" accept="image/*" />
-        <div id="root${dxt1_gc_file_id}"></div>
+        <input id="img-input ${dxt1_gc_file_id}" type="file" name="fileTest" accept="image/*" />
+        <div id="root ${dxt1_gc_file_id}"></div>
 </div>`
     }
     if (texture_type_value == 193 || texture_type_value == 194) {
@@ -1242,7 +1328,7 @@ function get_pixels_to_dtx1_gc() {
 
                         let temp = new DataView(temp_pixel_buffer).getUint8(ii_length, true)
 
-                        new DataView(buffer).setUint8(texture_data_offset + offset_mid + ii_length, temp, is_little_endian)
+                        new DataView(buffer).setUint8(texture_data_offset + ii_length, temp, is_little_endian)
                     }
 
                 }
@@ -1250,7 +1336,7 @@ function get_pixels_to_dtx1_gc() {
         }
     }
 
-                document.getElementsByClassName("file_is_highlighted")[0].click()
+    document.getElementsByClassName("file_is_highlighted")[0].click()
 
 }
 function get_pixel_data() {
