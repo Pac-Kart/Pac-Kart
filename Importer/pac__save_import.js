@@ -1,6 +1,13 @@
 function save_file_import(file_name, fileextension) {
 
-    let html = `
+    let html
+    if (u32(8, true) === 9624) {
+        html = `
+    <div style='display:block'>
+        <a class='file_arrow' style='padding-right:4px;padding-left:4px;' id='arrow'></a><a> ⚙ </a> <a id='save_pac_folder' data-type="ghost_save_pac_folder" data-offset="0" class='file_hover_not_selected'>${file_name}</a>
+    </div>`
+    } else {
+        html = `
     <div style='display:block'>
         <a class='file_arrow' style='padding-right:4px;padding-left:4px;' id='arrow'>↓</a><a> 🗀 </a> <a id='save_pac_folder' data-type="save_pac_folder" data-offset="0" class='file_hover_not_selected'>${file_name}</a>
             <div class='sub_file_div' style="display:block;">
@@ -22,6 +29,7 @@ function save_file_import(file_name, fileextension) {
                 <a class='no_arrow' style='padding-right:4px;padding-left:4px;display:none;'>↓</a><a> ⚙ </a> <a  id='save_pac_unlockables' data-type="save_pac_unlockables" data-offset="0" class='file_hover_not_selected'>Unlockables</a>
             </div>
     </div>`
+    }
 
     document.getElementById("file_viewer").innerHTML = html
 
@@ -30,14 +38,19 @@ function save_file_import(file_name, fileextension) {
     }
     document.getElementById("save_button").addEventListener("click", save_file);
 
-    document.getElementById("arrow").addEventListener("click", arrow_click);
     document.getElementById("save_pac_folder").addEventListener("click", file_click);
+
+    if (u32(8, true) === 9624) {
+        
+    }else{
+    document.getElementById("arrow").addEventListener("click", arrow_click);
     document.getElementById("save_pac_save_settings").addEventListener("click", file_click);
     document.getElementById("save_pac_circuit_settings").addEventListener("click", file_click);
     document.getElementById("save_pac_time_trials").addEventListener("click", file_click);
     document.getElementById("save_pac_letter_hunt").addEventListener("click", file_click);
     document.getElementById("save_pac_clockbuster").addEventListener("click", file_click);
     document.getElementById("save_pac_unlockables").addEventListener("click", file_click);
+    }
 
     positions_array = ['1st', '2nd', '3rd', '4th', '5th']
     track_name_array = ["Cloud Garden", "Molten Mountain", "Rolling Hills", "Ghost Mansion", "Canyon Crusade", "Arctic Iceberg", "Jungle Safari", "Pirate Cove", "Winding Wetlands", "Toc-Man's Factory", "Funhouse of Terror", "Spooky's Castle", "Galactic Outpost", "King's Kourse", "Retro Maze", "Subterranean Speedway"]
@@ -71,7 +84,7 @@ function save_file_import(file_name, fileextension) {
         clockbuster: (3104 + is_gc),
         unlockables: (4512 + is_gc),
     }
-    
+
     document.getElementsByClassName('file_hover_not_selected')[0].click()
     document.getElementById("file_viewer").addEventListener("keydown", file_move_with_key);
 
@@ -184,4 +197,24 @@ function save_time_format_focus(e) {
 function save_time_format_blur(e) {
     console.log(e.target.dataset.actual_time)
     e.target.value = msToTime(e.target.dataset.actual_time)
+}
+
+function save_file_ghost_import(file_name, fileextension) {
+    // u8 = (o)=>dataView.getUint8(o, is_little_endian);
+    // u16 = (o)=>dataView.getUint16(o, is_little_endian);
+    // u32 = (o)=>dataView.getUint32(o, is_little_endian);
+    // f32 = (o)=>dataView.getFloat32(o, is_little_endian);
+
+    document.getElementById("file_viewer").innerHTML = html
+
+    if (document.getElementById("save_button") == null) {
+        document.getElementById("data_types_bar").innerHTML += `<a data-is_active="false" class="data_bar_options" id="save_button">Save</a>`
+    }
+    document.getElementById("save_button").addEventListener("click", save_file);
+
+    document.getElementById("arrow").addEventListener("click", arrow_click);
+    document.getElementById("save_pac_folder").addEventListener("click", file_click);
+
+    is_gc = 0
+
 }

@@ -1,7 +1,7 @@
 function load_x_d_texts_folder(id) {
-    TXFA = Object.byString(XFA, id);
+    TXFA = Object.byString(x, id[0]);
 
-    console.log(id,TXFA)
+    // console.log(id,TXFA)
 
     let html = ''
 

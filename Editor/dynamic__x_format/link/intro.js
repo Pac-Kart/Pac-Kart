@@ -1,5 +1,5 @@
-function load_x_d_link_intro(id,outer_id) {
-    TXFA = Object.byString(XFA, id);
+function load_x_d_link_intro(id, outer_id) {
+    // TXFA = Object.byString(x, id);
 
     let html = `<div><div id='table_box' style="display:inline-block;width:95%;padding:5px;">Intro<br><div>`
 
@@ -17,15 +17,15 @@ function load_x_d_link_intro(id,outer_id) {
 <table style='width:100%;'>
     <tbody>`
 
-        if (t_array.filename != null) {
+        if (t_array.section_12.length) {
             html += `<tr>
                   <td style="width:10%;white-space:nowrap;" class='no_border'>Name</td>
                   <td class='no_border'>
-                     <input style="width:100%" type='text' value="${t_array.filename}" data-outer_xfa="${id}[${i}]"  data-inner_xfa="filename" data-type="string">
+                     <input style="width:100%" type='text' value="${t_array.section_12[0].section_00[0]}" data-outer_xfa="${id}[${i}].section_12[0].section_00"  data-inner_xfa="0" data-type="string">
                   </td>
                   <td style="width:10%;white-space:nowrap;" class='no_border'>Index</td>
                   <td class='no_border'>
-                     <input style="width:100%" type='text' value="${t_array.file_index}" data-outer_xfa="${id}[${i}]"  data-inner_xfa="file_index" data-type="u32">
+                     <input style="width:100%" type='text' value="${t_array.section_12[0].u32_04}" data-outer_xfa="${id}[${i}].section_12[0]"  data-inner_xfa="u32_04" data-type="u32">
                   </td>
                   <td data-x="delete_main" data-xfa="unknown" class='x_button noselect'>
                      X
@@ -34,15 +34,15 @@ function load_x_d_link_intro(id,outer_id) {
 `
         }
 
-        if (t_array.intro != null) {
+        if (t_array.section_04[0] != null) {
             html += `<tr>
                   <td style="width:10%;white-space:nowrap;" class='no_border'>Video</td>
                   <td class='no_border'>
-                     <input style="width:100%" type='text' value="${t_array.intro}" data-outer_xfa="${id}[${i}]"  data-inner_xfa="intro" data-type="string">
+                     <input style="width:100%" type='text' value="${t_array.section_04[0]}" data-outer_xfa="${id}[${i}].section_04"  data-inner_xfa="0" data-type="string">
                   </td>
                   <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown</td>
                   <td class='no_border'>
-                     <input style="width:100%" type='text' value="${t_array.section_1[0].unknown}" data-outer_xfa="${id}[${i}]" data-inner_xfa="section_1[0].unknown"data-type="u8">
+                     <input style="width:100%" type='text' value="${t_array.section_08[0].u8_01}" data-outer_xfa="${id}[${i}].section_08[0]" data-inner_xfa="u8_01"data-type="u8">
                   </td>
                   <td data-x="delete_main" data-xfa="unknown" class='x_button noselect'>
                      X
@@ -69,28 +69,66 @@ function load_x_d_link_intro(id,outer_id) {
     }
 
     function generate_box() {
-        if (this.id === "new_interface_entry") {
-            TXFA.push({
-                filename: 'blank',
-                file_index: 0
-            })
-        } else {
-            TXFA.push({
-                intro: 'blank',
-                section_1: [{
-                    unknown: 0
-                }]
-            })
-        }
+        let x = TXFA 
+        let i = x.length
+        let o = 0
+        
+            let str = [null]
+            if (this.id !== "new_interface_entry") {
+                str = ['blank']
+            }
+            x.push({
+                id: gen_id(),
+                u8_00: this.id === "new_interface_entry" ? 4: 0,
+                section_04: str,
+                section_08: [],
+                section_12: [],
+            });
+
+            if (this.id === "new_interface_entry") {
+            im_link_offset_index(0, x[i].section_12)
+            }else{
+            im_link_intro_08(0, x[i].section_08)
+            }
         document.getElementsByClassName("file_is_highlighted")[0].click()
+        }
+        function im_link_intro_08(o, x) {
+            x.push({
+                u8_00: 0,
+                u8_01: 0,
+            });
+            // 16 bytes;
+
+        }
+        function im_link_offset_index(o, x) {
+            x.push({
+                section_00: ['blank'],
+                u32_04: 0,
+            });
+            // 16 bytes;
+
+        // if (this.id === "new_interface_entry") {
+        //     TXFA.push({
+        //         filename: 'blank',
+        //         file_index: 0
+        //     })
+        // } else {
+        //     TXFA.push({
+        //         intro: 'blank',
+        //         section_1: [{
+        //             unknown: 0
+        //         }]
+        //     })
+        // }
     }
 
     document.getElementById("file_editor").innerHTML = html
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="intro_splice">X</a>'
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="intro_splice">X</a>'
 
     document.getElementById("new_interface_entry").addEventListener("click", generate_box);
     document.getElementById("new_video_entry").addEventListener("click", generate_box);
-    document.getElementById("intro_splice").addEventListener("click", delete_intro);
+    // document.getElementById("intro_splice").addEventListener("click", delete_intro);
 
     function delete_intro() {
         TXFA.splice(0, TXFA.length)
@@ -101,7 +139,7 @@ function load_x_d_link_intro(id,outer_id) {
         }
         file_move_with_key(temp, true)
         position.parentElement.remove()
-        
+
         temp_xfa = Object.byString(XFA, outer_id);
         if (temp_xfa.section_main.length !== 0 || temp_xfa.section_intro.length !== 0 || temp_xfa.section_demo[0] !== null) {} else {
             position = document.getElementsByClassName("file_is_highlighted")[0].parentElement.children[0].className = 'no_arrow'
@@ -114,6 +152,7 @@ function load_x_d_link_intro(id,outer_id) {
     for (let i = 0; i < input_field.length; i++) {
         input_field[i].addEventListener('change', dyn_update_input)
     }
+    
     let x_field = table_box.getElementsByClassName('x_button')
     for (let i = 0; i < x_field.length; i++) {
         x_field[i].addEventListener('click', delete_entry)

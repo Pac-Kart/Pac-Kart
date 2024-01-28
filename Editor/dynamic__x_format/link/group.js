@@ -1,6 +1,6 @@
 function load_x_d_link_main_group(id, id_1, id_2) {
 
-    TXFA = Object.byString(XFA, id + '[0]');
+    // TXFA = Object.byString(x, id + '[0]');
 
     let html = `<div style="display:flex;text-align:center;" class='save_records_boarder' data-type="[]" data-xfa='${id}'>
              <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_entry'>+ Sub Group</span>
@@ -15,13 +15,29 @@ function load_x_d_link_main_group(id, id_1, id_2) {
     function generate_sub_group() {
         let xid = gen_id()
 
-        TXFA.push([{
-            interface: [],
-            loading: ['Blank', 0],
-            name: ['Blank'],
-            save: [],
-            unknown: []
-        }, xid])
+        TXFA.section_00[0].section_04.push({
+        id: xid,
+        u32_00: 1,
+        section_04: [],
+        section_08: [{
+            section_00:['blank'],
+            u32_04:1,
+            
+        }],
+        section_12: ['Blank'],
+        u32_16: 1,
+        section_20: [{
+            u32_00:0,
+            section_04:[],
+            u16_08:0,
+        }],
+        u32_24: 1,
+        section_28: [{
+            u32_00:0,
+            section_04:[],
+            u16_08:0,
+        }],
+        })
 
         // let temp_xfa = Object.byString(XFA, outerid);
         outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement
@@ -31,13 +47,13 @@ function load_x_d_link_main_group(id, id_1, id_2) {
 
             outer_html.children[i].remove()
         }
-        if (TXFA.length === 0) {
+        if (TXFA.section_00[0].section_04.length === 0) {
             alert('broke how TXFA.length load_x_d_link_main_group')
         } else {
             outer_html.children[0].className = 'file_arrow'
-            for (let i = 0; i < TXFA.length; i++) {
+            for (let i = 0; i < TXFA.section_00[0].section_04.length; i++) {
 
-                html += dynamic__link_main_sub_group(TXFA[i][0], i, TXFA[i][1])
+                html += dynamic__link_main_sub_group(TXFA.section_00[0].section_04[i], i, TXFA.section_00[0].section_04[i].id)
             }
             outer_html.innerHTML += html
             x_addEventListener_file_viewer(outer_html)
@@ -53,7 +69,7 @@ function load_x_d_link_main_group(id, id_1, id_2) {
     }
 
     function delete_group() {
-         temp_xfa = Object.byString(XFA, id_1);
+         temp_xfa = Object.byString(x, id_1);
          outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement.parentElement
         let html = ''
         console.log(temp_xfa,id_1,id_2)
@@ -73,11 +89,12 @@ function load_x_d_link_main_group(id, id_1, id_2) {
         } else {
 
             for (let i = 0; i < temp_xfa.length; i++) {
-                html += dynamic__link_main_group(temp_xfa[i], i, temp_xfa[i][1])
+                html += dynamic__link_main_group(temp_xfa[i], i, temp_xfa[i].id)
             }
 
             outer_html.innerHTML += html
             x_addEventListener_file_viewer(outer_html)
+            outer_html.children[2].click()
             outer_html.children[0].click()
             outer_html.children[0].click()
         }

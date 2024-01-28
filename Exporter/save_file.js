@@ -1,8 +1,10 @@
 function save_file(e) {
 
     //calculate what type of file is being saved
-    if (XFA.length != 0) {
+    let name = gfile.name
+    if (x.length) {
         temp_buffer = dynamic_save()
+        name = x[0].name
     } else {
         temp_buffer = buffer
         if (fileextension == 'sav') {
@@ -15,7 +17,7 @@ function save_file(e) {
     let download_file = document.createElement("a")
     download_file.id = 'temp_download_file'
     download_file.href = objectURL
-    download_file.download = file.name
+    download_file.download = name
     document.getElementById("_2nd_data_bar").appendChild(download_file)
 
     document.getElementById("temp_download_file").click()

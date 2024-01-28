@@ -30,10 +30,10 @@ function dyn_link(offset, mid,XFA) {
         end_offset = dyn_string(end_offset, XFA.menu_loading_name, mid)
         set_u32(offset + 24, XFA.menu_loading_index, is_little_endian)
     }
-
+        
     if (XFA.section_main.length != 0) {
-        set_u32(offset + 28, XFA.section_main.length, is_little_endian)
-        set_u32(offset + 32, end_offset - mid, is_little_endian)
+        set_u32(offset + 28, XFA.section_main.length)
+        set_u32(offset + 32, end_offset - mid)
         global_offset_array.push(offset + 32 - mid)
         end_offset = dyn_link_header_5(end_offset, mid, XFA.section_main)
     }
@@ -351,3 +351,8 @@ function dyn_link(offset, mid,XFA) {
         return offset + (i * 4)
     }
 }
+
+
+// function ex_link(o,x) {
+//     return o + 170
+// }

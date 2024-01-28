@@ -1,6 +1,6 @@
 function load_x_d_model_folder(id) {
     console.log(id)
-    TXFA = Object.byString(XFA, id);
+    // TXFA = Object.byString(XFA, id);
     let html = ''
     // let html = `<div style="display:flex;text-align:center;" class='save_records_boarder' data-type="[]" data-xfa='${id}'>
     //          <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_entry'>+ Model</span>

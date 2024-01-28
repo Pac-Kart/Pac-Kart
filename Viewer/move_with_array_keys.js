@@ -109,3 +109,90 @@ function go_down(div) {
     }
 
 }
+
+// function file_move_with_key(e, is_not_arrow) {
+//     if (!is_not_arrow) {
+//         e.preventDefault();
+//     }
+
+//     const position = document.querySelector(".file_is_highlighted");
+
+//     if (e.key === 'ArrowDown') {
+//         handleArrowDown(position);
+//     } else if (e.key === 'ArrowUp') {
+//         handleArrowUp(position);
+//     } else if (e.key === 'ArrowLeft') {
+//         handleArrowLeft(position);
+//     } else if (e.key === 'ArrowRight') {
+//         handleArrowRight(position);
+//     }
+
+//     position.scrollIntoView();
+// }
+
+// function handleArrowDown(position) {
+//     const arrowSymbol = position.parentElement.children[0].innerHTML;
+
+//     if (arrowSymbol === '↓' && !position.parentElement.children[0].classList.contains('no_arrow') && position.nextElementSibling !== null) {
+//         handleArrowDownInner(position);
+//     } else if (position.parentElement.nextElementSibling !== null) {
+//         position.parentElement.nextElementSibling.children[2].click();
+//     } else {
+//         goDown(position.parentElement);
+//     }
+// }
+
+// function handleArrowDownInner(position) {
+//     if (position.nextElementSibling.style.display === 'block') {
+//         const target = position.nextElementSibling.children[2].tagName === "DIV" ? position.nextElementSibling.children[0].children[2] : position.nextElementSibling.children[2];
+//         target.click();
+//     }
+// }
+
+// function goDown(div) {
+//     if (div && div.parentElement && div.parentElement.nextElementSibling !== null) {
+//         goDown(div.parentElement);
+//     } else if (div && div.parentElement && div.parentElement.nextElementSibling !== null) {
+//         div.parentElement.nextElementSibling.children[2].click();
+//     }
+// }
+
+// function handleArrowUp(position) {
+//     if (position.parentElement.parentElement.id !== 'file_viewer') {
+//         goUp(position);
+//     }
+// }
+
+// function goUp(position) {
+//     const previousSibling = position.parentElement.previousElementSibling;
+
+//     if (previousSibling.classList.contains('file_hover_not_selected')) {
+//         previousSibling.click();
+//     } else if (previousSibling.classList.contains('sub_file_div')) {
+//         handleGoUpSubFileDiv(previousSibling);
+//     }
+// }
+
+// function handleGoUpSubFileDiv(previousSibling) {
+//     const lastChild = previousSibling.children[previousSibling.children.length - 1];
+
+//     if (lastChild.tagName === "A") {
+//         lastChild.click();
+//     } else if (lastChild.style.display === "block") {
+//         lastChild.children[2].click();
+//     } else {
+//         previousSibling.children[2].click();
+//     }
+// }
+
+// function handleArrowLeft(position) {
+//     if (position.parentElement.children[0].innerHTML === '↓') {
+//         position.parentElement.children[0].click();
+//     }
+// }
+
+// function handleArrowRight(position) {
+//     if (position.parentElement.children[0].innerHTML === '→') {
+//         position.parentElement.children[0].click();
+//     }
+// }

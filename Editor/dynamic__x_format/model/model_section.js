@@ -1,6 +1,6 @@
 function load_x_d_model_section(id, outerid, sub_group_index) {
     console.log(id)
-    TXFA = Object.byString(XFA, id);
+    // TXFA = Object.byString(XFA, id);
 
     let html = `<div style="display:inline-block;width:95%;padding:5px;">
    <div style='height:5%'>
@@ -8,7 +8,7 @@ function load_x_d_model_section(id, outerid, sub_group_index) {
          <table style='width:100%;' >
             <tbody>
                <tr>
-                  <td style="width:10%" class='no_border'>Render:</td>
+                  <td style="width:10%" class='no_border'>Render</td>
                   <td class='no_border'><input style="width:100%" id='render' type='text' value="${TXFA.render.toFixed(2)}" data-outer_xfa="${id}" data-inner_xfa="render" data-type="float">  </td>
                </tr>
             </tbody>

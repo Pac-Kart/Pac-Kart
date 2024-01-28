@@ -14,6 +14,7 @@ img {
     -ms-interpolation-mode: nearest-neighbor;
     /* IE8+                           */
 }
+
 .img {
     image-rendering: optimizeSpeed;
     image-rendering: -moz-crisp-edges;
@@ -296,7 +297,7 @@ th {
 }
 
 .x_button:hover {
-    background:red;
+    background: red;
     color: slateblue;
 }
 
@@ -308,8 +309,9 @@ th {
 }
 
 .plus_button:hover {
-    background:#00dbff;
+    background: #00dbff;
 }
-.content_select{
-    flex:auto;
+
+.content_select {
+    flex: auto;
 }

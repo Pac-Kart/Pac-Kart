@@ -1,6 +1,6 @@
 function load_texture(offset, mid) {
     offset_mid = mid
-    
+
     load_edit_texture(offset, offset_mid)
 
     if (fileextension == 'xps' || fileextension == "xpp") {
@@ -137,11 +137,14 @@ function load_edit_texture(offset, offset_mid) {
 }
 
 function image_file_input() {
+    if (fileextension === 'xgc') {
+        return
+    }
     if (fileextension == "xpc" || fileextension == "xdx") {
         if (texture_type_value === 24 || texture_type_value === 160) {
             document.getElementById("file_editor").innerHTML += "<hr><input id='rgba_file' type='file'>"
             document.getElementById("rgba_file").addEventListener("change", image_import_file)
-        } else if (texture_type_value === 4 ||texture_type_value === 5 ||texture_type_value === 65 || texture_type_value === 197) {
+        } else if (texture_type_value === 4 || texture_type_value === 5 || texture_type_value === 65 || texture_type_value === 197) {
             document.getElementById("file_editor").innerHTML += "<hr><p>⚠️ compression format / width and height must be the same<br></p><input id='dds_file' type='file'>"
             document.getElementById("dds_file").addEventListener("change", image_import_file)
         } else {
@@ -295,7 +298,7 @@ function generate_canvas_replacement_pc(ev) {
                 new DataView(buffer).setUint8(data_off + i + 1, new DataView(arrayBuffer).getUint8(ii + 1))
                 new DataView(buffer).setUint8(data_off + i + 2, new DataView(arrayBuffer).getUint8(ii + 2))
             }
-        }else{
+        } else {
             for (let i = 0; i < array_length; i += 4) {
                 new DataView(buffer).setUint8(data_off + i, new DataView(arrayBuffer).getUint8(i))
                 new DataView(buffer).setUint8(data_off + i + 1, new DataView(arrayBuffer).getUint8(i + 1))
@@ -512,6 +515,10 @@ function generate_canvas() {
 
 function rgba64_to_canvas() {
 
+    if (fileextension === "xps") {
+    image_offset += 16
+    }
+
     if (texture_type_value == 160) {
         for (i = 0,
         y = 0; y < texture_y; y++) {
@@ -532,6 +539,10 @@ function rgba64_to_canvas() {
         dxt1_to_canvas()
     } else if (texture_type_value == 197 || texture_type_value == 5) {
         dxt5_to_canvas()
+    } else if (texture_type_value == 24) {
+        _24_to_canvas()
+    } else if (texture_type_value == 72 || texture_type_value == 200) {
+        _72_to_canvas()
     } else {
 
         for (i = 0,
@@ -570,6 +581,45 @@ function rgba64_to_canvas() {
     data_ = canvas.toDataURL()
     document.getElementById("file_editor").innerHTML += `<img style="${temp_style}" width='${width}' height='${height}' src='${data_}'></img>`
 
+}
+
+function _72_to_canvas() {
+    let tex_color_array = []
+    
+    for (let i = 0; i < 1024; i+=4) {
+    tex_color_array.push([u8(image_offset),u8(image_offset + 1),u8(image_offset + 2),u8(image_offset + 3)])
+    image_offset += 4
+    }
+    
+    for (y = 0; y < texture_y; y += 1) {
+        for (x = 0; x < texture_x; x += 1) {
+        ctx.fillStyle = `rgba( ${tex_color_array[u8(image_offset)].toString()} )`
+        ctx.fillRect(x, y, 1, 1)
+
+            image_offset += 1
+        }
+        //
+        console.log(image_offset)
+    }
+
+    data_ = canvas.toDataURL()
+}
+
+function _24_to_canvas() {
+    for (y = 0; y < texture_y; y += 1) {
+        for (x = 0; x < texture_x; x += 1) {
+
+        
+
+        ctx.fillStyle = `rgb(${u8(image_offset)}, ${u8(image_offset +1)}, ${u8(image_offset +2)})`
+        ctx.fillRect(x, y, 1, 1)
+
+        image_offset+=3
+
+        }
+    }
+
+    data_ = canvas.toDataURL()
 }
 
 function dxt5_to_canvas() {
@@ -1070,7 +1120,7 @@ function dxt1_gc_to_canvas() {
         data-texture_type='${texture_type_value}'
         data-texture_id='${dxt1_gc_file_id}'>
         <img width='256' height='256' src='${data_}'></img>
-        <input id="img-input ${dxt1_gc_file_id}" type="file" name="fileTest" accept="image/*" />
+        <input id="img-input${dxt1_gc_file_id}" type="file" name="fileTest" accept="image/*" />
         <div id="root ${dxt1_gc_file_id}"></div>
 </div>`
     }

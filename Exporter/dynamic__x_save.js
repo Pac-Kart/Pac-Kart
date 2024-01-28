@@ -13,54 +13,61 @@ function dynamic_save() {
     // binary_size += 128
 
     dynamic_buffer = new ArrayBuffer(binary_size)
-
-    set_u8 = new DataView(dynamic_buffer).setUint8.bind(new DataView(dynamic_buffer))
-    set_u16 = new DataView(dynamic_buffer).setUint16.bind(new DataView(dynamic_buffer))
-    set_u32 = new DataView(dynamic_buffer).setUint32.bind(new DataView(dynamic_buffer))
-    set_f32 = new DataView(dynamic_buffer).setFloat32.bind(new DataView(dynamic_buffer))
-
-    //set magics
-    set_u32(0, 33620128, is_little_endian)
-    set_u32(4, 67174575, is_little_endian)
-
-    //global version
-    set_u32(8, XFA[0].version, is_little_endian)
-
-    //amount files
-    set_u32(12, XFA.length - 1, is_little_endian)
-
-    let f_i = 1
-    let TXFA = XFA[0]
-    //file index
-
-    let global_offset = ((XFA.length - 1) * 24) + 16
-
-    for (let block_i = 16; f_i < XFA.length; f_i++,
-    block_i += 24) {
-        global_offset = dyn_file_directory(block_i, global_offset)
-    }
-
-    let i = 0
-    for (; i < 128; i++) {
-        set_u8(global_offset + i, 32)
-    }
-    global_offset += i
+    
+    let global_offset = ex_x()
 
     return dynamic_buffer.slice(0, global_offset)
 
+    
+    // su8 = new DataView(dynamic_buffer).setUint8.bind(new DataView(dynamic_buffer))
+    // su16 = new DataView(dynamic_buffer).setUint16.bind(new DataView(dynamic_buffer))
+    // su32 = new DataView(dynamic_buffer).setUint32.bind(new DataView(dynamic_buffer))
+    // sf32 = new DataView(dynamic_buffer).setFloat32.bind(new DataView(dynamic_buffer))
+
+    //set magics
+    // su32(0, 33620128)
+    // su32(4, 67174575)
+
+    // //global version
+    // su32(8, x[0].version)
+
+    // //amount files
+    // su32(12, x[0].directory.length)
+
+    // let f_i = 0
+    // // let TXFA = XFA[0]
+    // // //file index
+
+    // let dir_o = 16
+
+    // let global_offset = ((x[0].directory.length) * 24) + 16
+
+    // for (; f_i < x[0].directory.length; f_i++,
+    // dir_o += 24) {
+    //     global_offset = dyn_file_directory(dir_o, global_offset,x[0].directory[f_i])
+    // }
+
+    // // let i = 0
+    // // for (; i < 128; i++) {
+    // //     su8(global_offset + i, 32)
+    // // }
+    // // global_offset += i
+    // global_offset = 100
+
+
     ////////////////////////////////////////////////////
-    function dyn_file_directory(block_offset, offset) {
-        let end_block = ((XFA.length - 1) * 24) + 16
-        set_u32(block_offset, XFA[f_i].version, is_little_endian)
-        set_u32(block_offset + 4, XFA[f_i].type, is_little_endian)
-        set_u32(block_offset + 8, XFA[f_i].index, is_little_endian)
+    function dyn_file_directory(o, global ,x) {
+        // let end_block = (x.length * 24) + 16
+        su32(o, x.version)
+        su32(o + 4, ['car', 'interface', 'item', 'link', 'world', 'colliders', 'world texture', 'geometry', 'share', 'audio', 'music'].indexOf(x.type))
+        su32(o + 8, x.index)
         // offset +12 is unknown
-        set_u32(block_offset + 20, global_offset - end_block, is_little_endian)
-        global_offset = dyn_sub_file_header(offset, XFA[f_i])
+        // su32(o + 20, global - end_block)
+        // global = dyn_sub_file_header(offset, x.datapack[0])
 
-        set_u32(block_offset + 16, global_offset - offset, is_little_endian)
+        su32(o + 16, global - o)
 
-        return global_offset
+        return global
     }
     //
     function dyn_sub_file_header(offset, XFA) {
@@ -72,22 +79,22 @@ function dynamic_save() {
         model_offset_index_array = []
         global_offset_array = []
         let block_i = 80
-        set_u32(offset + 8, XFA.sounds.length, is_little_endian)
-        set_u32(offset + 20, XFA.textures.length, is_little_endian)
-        set_u32(offset + 32, XFA.sounds.length, is_little_endian)
+        su32(offset + 8, XFA.sounds.length, is_little_endian)
+        su32(offset + 20, XFA.textures.length, is_little_endian)
+        su32(offset + 32, XFA.sounds.length, is_little_endian)
 
-        set_u32(offset + 48, XFA.texture_animations.length, is_little_endian)
+        su32(offset + 48, XFA.texture_animations.length, is_little_endian)
 
         // linked strings
         for (let ii = 0; ii < 2; ii++) {
 
             for (let iii = 0; iii < XFA.linked_strings[ii].string.length; iii++) {
-                set_u8(block_i + iii + offset, XFA.linked_strings[ii].string[iii].charCodeAt())
+                su8(block_i + iii + offset, XFA.linked_strings[ii].string[iii].charCodeAt())
             }
             block_i += 12
 
-            set_u32(block_i + offset, XFA.linked_strings[ii].unknown1, is_little_endian)
-            set_u32(block_i + offset + 4, XFA.linked_strings[ii].unknown2, is_little_endian)
+            su32(block_i + offset, XFA.linked_strings[ii].unknown1, is_little_endian)
+            su32(block_i + offset + 4, XFA.linked_strings[ii].unknown2, is_little_endian)
             block_i += 8
         }
 
@@ -136,7 +143,7 @@ function dynamic_save() {
         
         
         let patch_list_1 = temp_offset
-        set_u32(offset + 4, temp_offset - temp_i, is_little_endian)
+        su32(offset + 4, temp_offset - temp_i, is_little_endian)
         // divisibility FIX 
 
         let patch_1_i = XFA.patcher_texutre[0].amount + XFA.patcher_texture_animation[0].amount + XFA.patcher_sounds[0].amount
@@ -149,13 +156,13 @@ function dynamic_save() {
         //calculate offset out
         //fill these in last
 
-        set_u32(offset + 12, XFA.patcher_general_offsets[0].amount, is_little_endian)
-        set_u32(offset + 16, XFA.patcher_texutre[0].amount, is_little_endian)
-        set_u32(offset + 28, XFA.patcher_sounds[0].amount, is_little_endian)
-        set_u32(offset + 52, XFA.patcher_texture_animation[0].amount, is_little_endian)
-        set_u32(offset + 56, XFA.patcher_models[0].amount, is_little_endian)
+        su32(offset + 12, XFA.patcher_general_offsets[0].amount, is_little_endian)
+        su32(offset + 16, XFA.patcher_texutre[0].amount, is_little_endian)
+        su32(offset + 28, XFA.patcher_sounds[0].amount, is_little_endian)
+        su32(offset + 52, XFA.patcher_texture_animation[0].amount, is_little_endian)
+        su32(offset + 56, XFA.patcher_models[0].amount, is_little_endian)
 
-        set_u32(offset + 56, XFA.patcher_models[0].amount, is_little_endian)
+        su32(offset + 56, XFA.patcher_models[0].amount, is_little_endian)
 
         let mid = temp_offset
         offset_mid = temp_offset
@@ -164,8 +171,8 @@ function dynamic_save() {
         let tex_anims
         if (XFA.type_s !== "share" && XFA.type_s !== "world") {
 
-            set_u32(temp_offset + 0, XFA.type_data[0].unknown_00, is_little_endian)
-            set_u32(temp_offset + 4, 16, is_little_endian)
+            su32(temp_offset + 0, XFA.type_data[0].unknown_00, is_little_endian)
+            su32(temp_offset + 4, 16, is_little_endian)
             global_offset_array.push(temp_offset + 4 - mid)
             let mid_section_2 = temp_offset + 16
             end_block = temp_offset + 32
@@ -173,7 +180,7 @@ function dynamic_save() {
 
             //mid section header 2
             global_offset_array.push(mid_section_2 - mid)
-            set_u32(mid_section_2 + 4, XFA.type_data[0].section_04.unknown_04, is_little_endian)
+            su32(mid_section_2 + 4, XFA.type_data[0].section_04.unknown_04, is_little_endian)
 
             end_block = dyn_multiappend(XFA.models, model_array, dyn_model, mid_section_2 + 16, mid)
             // FIX imperfect ?
@@ -189,7 +196,7 @@ function dynamic_save() {
             end_block = dyn_multiappend(XFA.model_animations_2, model_animations_2_array, dyn_model_animation_2, end_block, mid)
 
             if (XFA.textures.length !== 0) {
-                set_u32(offset + 24, end_block - mid, is_little_endian)
+                su32(offset + 24, end_block - mid, is_little_endian)
                 end_block = dyn_textures(end_block, XFA.textures, mid)
             }
 
@@ -199,7 +206,7 @@ function dynamic_save() {
 
 
 
-            set_u32(mid_section_2, end_block - mid, is_little_endian)
+            su32(mid_section_2, end_block - mid, is_little_endian)
 
             //autosave
             // if (end_block === 432) {
@@ -230,10 +237,10 @@ function dynamic_save() {
         }
 
         if (XFA.texture_animations.length) {
-            set_u32(offset + 60, tex_anims - mid, is_little_endian)
+            su32(offset + 60, tex_anims - mid, is_little_endian)
 
             for (let i = 0; i < XFA.texture_animations.length; i++) {
-                set_u32(tex_anims + (i * 12), end_block - mid, is_little_endian)
+                su32(tex_anims + (i * 12), end_block - mid, is_little_endian)
 
                 end_block = dyn_texture_animations(end_block, XFA.texture_animations[i])
             }
@@ -242,21 +249,21 @@ function dynamic_save() {
             let end_block = offset + 48
 
             if (XFA.pattern_04.length) {
-                set_u32(offset + 4, end_block - mid, is_little_endian)
+                su32(offset + 4, end_block - mid, is_little_endian)
                 end_block = dyn_texture_animations_04(end_block, XFA.pattern_04[0])
                 global_offset_array.push(offset + 4 - mid)
             }
 
             // if (XFA.pattern_04.length) {
-            //     set_u32(offset + 4, end_block - mid, is_little_endian)
+            //     su32(offset + 4, end_block - mid, is_little_endian)
             //     global_offset_array.push(offset + 4 - mid)
             //     end_block = dyn_texture_animations_04(end_block, XFA.pattern_04[0])
             // }
 
             if (XFA.translation_20.length) {
                 let temp_offset = end_block
-                set_u32(offset + 16, XFA.translation_20.length, is_little_endian)
-                set_u32(offset + 20, end_block - mid, is_little_endian)
+                su32(offset + 16, XFA.translation_20.length, is_little_endian)
+                su32(offset + 20, end_block - mid, is_little_endian)
                 global_offset_array.push(offset + 20 - mid)
 
                 end_block += XFA.translation_20.length * 16
@@ -273,13 +280,13 @@ function dynamic_save() {
         function dyn_texture_animations_04(offset, XFA) {
             let end_block = offset + 32
 
-            set_u8(offset + 11, XFA.unknown_11, is_little_endian)
-            set_u32(offset + 20, XFA.time_20, is_little_endian)
+            su8(offset + 11, XFA.unknown_11, is_little_endian)
+            su32(offset + 20, XFA.time_20, is_little_endian)
 
             if (XFA.textures_04.length) {
                 let temp_offset = end_block
-                set_u32(offset + 0, XFA.textures_04.length, is_little_endian)
-                set_u32(offset + 4, end_block - mid, is_little_endian)
+                su32(offset + 0, XFA.textures_04.length, is_little_endian)
+                su32(offset + 4, end_block - mid, is_little_endian)
                 global_offset_array.push(offset + 4 - mid)
                 end_block += divisible(XFA.textures_04.length * 4, 16)
 
@@ -293,16 +300,16 @@ function dynamic_save() {
         }
         function dyn_texture_animations_04_04(offset, XFA, i) {
             if (XFA[i] != -1) {
-                set_u16(offset + 0, XFA[i][0][1], is_little_endian)
-                set_u16(offset + 2, 52428, is_little_endian)
+                su16(offset + 0, XFA[i][0][1], is_little_endian)
+                su16(offset + 2, 52428, is_little_endian)
                 texture_offset_index_array.push([offset + 0 - mid, XFA[i][0][1], XFA[i][0][2]])
             }
         }
         function dyn_texture_animations_04_20(offset, XFA) {
-            set_f32(offset + 0, XFA.x_00, is_little_endian)
-            set_f32(offset + 4, XFA.y_04, is_little_endian)
-            set_u8(offset + 9, XFA.unknown_09, is_little_endian)
-            set_f32(offset + 12, XFA.time_12, is_little_endian)
+            sf32(offset + 0, XFA.x_00, is_little_endian)
+            sf32(offset + 4, XFA.y_04, is_little_endian)
+            su8(offset + 9, XFA.unknown_09, is_little_endian)
+            sf32(offset + 12, XFA.time_12, is_little_endian)
         }
 
         //loading.xpc testing
@@ -383,7 +390,7 @@ function dynamic_save() {
         // end_block += divisible(temp_end, 16) - temp_end
 
         if (global_offset_array.length != 0) {
-            set_u32(offset, end_block - mid, is_little_endian)
+            su32(offset, end_block - mid, is_little_endian)
         }
 
         end_block = dyn_file_patcher_2(end_block, mid, XFA)
@@ -396,35 +403,35 @@ function dynamic_save() {
         let i = 0
         for (let t_i = 0; t_i < texture_offset_index_array.length; t_i++,
         i++) {
-            set_u32(offset + (i * 8), texture_offset_index_array[t_i][0], is_little_endian)
-            set_u16(offset + (i * 8) + 4, texture_offset_index_array[t_i][1], is_little_endian)
-            set_u16(offset + (i * 8) + 6, texture_offset_index_array[t_i][2], is_little_endian)
+            su32(offset + (i * 8), texture_offset_index_array[t_i][0], is_little_endian)
+            su16(offset + (i * 8) + 4, texture_offset_index_array[t_i][1], is_little_endian)
+            su16(offset + (i * 8) + 6, texture_offset_index_array[t_i][2], is_little_endian)
         }
         for (let ta_i = 0; ta_i < texture_anim_offset_index_array.length; ta_i++,
         i++) {
-            set_u32(offset + (i * 8), texture_anim_offset_index_array[ta_i][0], is_little_endian)
-            set_u16(offset + (i * 8) + 4, texture_anim_offset_index_array[ta_i][1], is_little_endian)
-            set_u16(offset + (i * 8) + 6, texture_anim_offset_index_array[ta_i][2], is_little_endian)
+            su32(offset + (i * 8), texture_anim_offset_index_array[ta_i][0], is_little_endian)
+            su16(offset + (i * 8) + 4, texture_anim_offset_index_array[ta_i][1], is_little_endian)
+            su16(offset + (i * 8) + 6, texture_anim_offset_index_array[ta_i][2], is_little_endian)
         }
         for (let s_i = 0; s_i < sound_offset_index_array.length; s_i++,
         i++) {
-            set_u32(offset + (i * 8), sound_offset_index_array[s_i][0], is_little_endian)
-            set_u16(offset + (i * 8) + 4, sound_offset_index_array[s_i][1], is_little_endian)
-            set_u16(offset + (i * 8) + 6, sound_offset_index_array[s_i][2], is_little_endian)
+            su32(offset + (i * 8), sound_offset_index_array[s_i][0], is_little_endian)
+            su16(offset + (i * 8) + 4, sound_offset_index_array[s_i][1], is_little_endian)
+            su16(offset + (i * 8) + 6, sound_offset_index_array[s_i][2], is_little_endian)
         }
     }
     function dyn_file_patcher_2(offset, mid) {
         let i = 0
         for (let m_i = 0; m_i < model_offset_index_array.length; m_i++,
         i += 8) {
-            // set_u32(offset + (i * 8), model_offset_index_array[i], is_little_endian)
-            set_u32(offset + i, model_offset_index_array[m_i][0], is_little_endian)
-            set_u16(offset + i + 4, model_offset_index_array[m_i][1], is_little_endian)
-            set_u16(offset + i + 6, model_offset_index_array[m_i][2], is_little_endian)
+            // su32(offset + (i * 8), model_offset_index_array[i], is_little_endian)
+            su32(offset + i, model_offset_index_array[m_i][0], is_little_endian)
+            su16(offset + i + 4, model_offset_index_array[m_i][1], is_little_endian)
+            su16(offset + i + 6, model_offset_index_array[m_i][2], is_little_endian)
         }
         for (let g_i = 0; g_i < global_offset_array.length; g_i++,
         i += 4) {
-            set_u32(offset + i, global_offset_array[g_i], is_little_endian)
+            su32(offset + i, global_offset_array[g_i], is_little_endian)
         }
         return offset + i
     }
@@ -439,49 +446,3 @@ function dynamic_save() {
 
 }
 
-function divisible(value, divisibility) {
-    let temp_value = value
-    while ((temp_value) % divisibility !== 0) {
-        temp_value++
-    }
-    return temp_value
-}
-function replacement_divisibility(value, divisibility, offset, replacement) {
-    let temp_value = value
-    let i = 0
-    while ((temp_value) % divisibility !== 0) {
-        set_u8(offset + i, replacement)
-        temp_value++
-        i++
-    }
-    return temp_value
-}
-function dyn_string(offset, XFA_string, mid, divis) {
-    if (divis === undefined) {
-        divis = 16
-    }
-    let i = 0
-    if (XFA_string.length) {
-
-        for (; i < XFA_string.length; i++) {
-            set_u8(offset + i, XFA_string[i].charCodeAt())
-        }
-        i++
-        i = divisible(i, divis)
-    }
-    return offset + i
-}
-
-function generate_id_offset_array(array, XFA) {
-    if (XFA.length !== null) {
-
-        array.push({
-            a_ids: [],
-            a_offsets: []
-        })
-        for (let i = 0; i < XFA.length; i++) {
-            array[0].a_ids.push(XFA[i].id)
-            array[0].a_offsets.push(false)
-        }
-    }
-}

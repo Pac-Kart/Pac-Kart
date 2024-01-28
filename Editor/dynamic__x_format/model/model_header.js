@@ -1,6 +1,6 @@
 function load_x_d_model_header(id, outerid, sub_group_index) {
     console.log(id)
-    TXFA = Object.byString(XFA, id);
+    // TXFA = Object.byString(XFA, id);
 
      let html = `<div style='overflow:hidden;height:100%'; ><div style="display:inline-block;width:95%;padding:5px;height:20%;">
     <input style='width:100%;' maxlength='52' data-outer_xfa="${id}" data-type="string" data-fixed="true" data-byte_amount="52" data-inner_xfa="name"  id='image_name' type='text' value='${TXFA.name}'>
@@ -10,33 +10,33 @@ function load_x_d_model_header(id, outerid, sub_group_index) {
          <table style='width:100%;' >
             <tbody id="visibility_table">
                <tr>
-                  <td style="width:10%" class='no_border'>x 1:</td>
+                  <td style="width:10%" class='no_border'>x 1</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.x1}" data-outer_xfa="${id}.visibility" data-inner_xfa="x1" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>y 1:</td>
+                  <td style="width:10%" class='no_border'>y 1</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.y1}" data-outer_xfa="${id}.visibility" data-inner_xfa="y1" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>z 1:</td>
+                  <td style="width:10%" class='no_border'>z 1</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.z1}" data-outer_xfa="${id}.visibility" data-inner_xfa="z1" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>w 1:</td>
+                  <td style="width:10%" class='no_border'>w 1</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.w1}" data-outer_xfa="${id}.visibility" data-inner_xfa="w1" data-type="float">  </td>
                </tr>
                <tr>
-                  <td style="width:10%" class='no_border'>x 2:</td>
+                  <td style="width:10%" class='no_border'>x 2</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.x2}" data-outer_xfa="${id}.visibility" data-inner_xfa="x2" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>y 2:</td>
+                  <td style="width:10%" class='no_border'>y 2</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.y2}" data-outer_xfa="${id}.visibility" data-inner_xfa="y2" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>z 2:</td>
+                  <td style="width:10%" class='no_border'>z 2</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.z2}" data-outer_xfa="${id}.visibility" data-inner_xfa="z2" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>w 2:</td>
+                  <td style="width:10%" class='no_border'>w 2</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.w2}" data-outer_xfa="${id}.visibility" data-inner_xfa="w2" data-type="float">  </td>
                </tr>
                <tr>
-                  <td style="width:10%" class='no_border'>x 3:</td>
+                  <td style="width:10%" class='no_border'>x 3</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.x3}" data-outer_xfa="${id}.visibility" data-inner_xfa="x3" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>y 3:</td>
+                  <td style="width:10%" class='no_border'>y 3</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.y3}" data-outer_xfa="${id}.visibility" data-inner_xfa="y3" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>z 3:</td>
+                  <td style="width:10%" class='no_border'>z 3</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.z3}" data-outer_xfa="${id}.visibility" data-inner_xfa="z3" data-type="float">  </td>
-                  <td style="width:10%" class='no_border'>w 3:</td>
+                  <td style="width:10%" class='no_border'>w 3</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.w3}" data-outer_xfa="${id}.visibility" data-inner_xfa="w3" data-type="float">  </td>
                </tr>
             </tbody>

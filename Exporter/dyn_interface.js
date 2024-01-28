@@ -1962,14 +1962,6 @@ function dyn_interface(offset, mid, XFA, old_offset) {
             set_u32(offset + 16, XFA.section_20.length, is_little_endian)
             set_u32(offset + 20, end_block - mid, is_little_endian)
             global_offset_array.push(offset + 20 - mid)
-            // if (XFA.layer_type !== 5) {
-
-            //     for (let i = 0; i < XFA.section_20.length; i++) {
-            //         dyn_layer_72_04_20(offset_20 + (i * 16), XFA.section_20[i])
-            //     }
-            //     end_block += XFA.section_20.length * 16
-
-            // } else {
 
             for (let i = 0; i < XFA.section_20.length; i++) {
                 dyn_layer_72_04_20L5(offset_20 + (i * 32), XFA.section_20[i])
@@ -2142,59 +2134,25 @@ function dyn_interface(offset, mid, XFA, old_offset) {
 
 }
 
-function dyn_multiappend(XFA, ARRAY, FUNCTION, OFFSET, MID) {
-    END_OFFSET = OFFSET
-    if (XFA.length) {
+// function dyn_multiappend(XFA, ARRAY, FUNCTION, OFFSET, MID) {
+//     END_OFFSET = OFFSET
+//     if (XFA.length) {
 
-        let temp_index
+//         let temp_index
 
-        for (let i = 0; i < XFA.length; i++) {
+//         for (let i = 0; i < XFA.length; i++) {
 
-            temp_index = ARRAY[0].a_ids.indexOf(XFA[i].id)
+//             temp_index = ARRAY[0].a_ids.indexOf(XFA[i].id)
 
-            if (temp_index === null) {
-                //not linked
-                console.log(XFA, 'not linked')
-                return END_OFFSET
-            } else {
-                ARRAY[0].a_offsets[temp_index] = END_OFFSET - MID
-                END_OFFSET = FUNCTION(END_OFFSET, XFA[temp_index])
-            }
-        }
-    }
-    return END_OFFSET
-}
-
-function dyn_multilink(ID, ARRAY, FUNCTION, XFA, OFFSET, MID_OFFSET, END_OFFSET, NO_GLOBAL_OFFSET,IS_APPEND,CUSTOM) {
-    //capitilized for dramatic effect !
-    if (ID !== 0) {
-
-        let temp_index = ARRAY[0].a_ids.indexOf(ID)
-        if (temp_index === null) {
-            //not linked
-            console.log(XFA, 'not linked')
-            return END_OFFSET
-        } else {
-            let temp_offset = ARRAY[0].a_offsets[temp_index]
-            if (temp_offset === false) {
-                //append first time
-                ARRAY[0].a_offsets[temp_index] = END_OFFSET
-                temp_offset = ARRAY[0].a_offsets[temp_index]
-                END_OFFSET = FUNCTION(temp_offset, XFA[temp_index])
-            }
-            if (IS_APPEND) {
-            set_u32(OFFSET, temp_offset, is_little_endian)
-            }else{
-            set_u32(OFFSET, temp_offset - MID_OFFSET, is_little_endian)
-            }
-            if (NO_GLOBAL_OFFSET === true) {} else {
-                global_offset_array.push(OFFSET - MID_OFFSET)
-            }
-            if (CUSTOM === "model") {
-                        model_offset_index_array.push([OFFSET - MID_OFFSET,temp_index,0])
-            }
-        }
-    } else {// console.log(XFA,'nonlinked')
-    }
-    return END_OFFSET
-}
+//             if (temp_index === null) {
+//                 //not linked
+//                 console.log(XFA, 'not linked')
+//                 return END_OFFSET
+//             } else {
+//                 ARRAY[0].a_offsets[temp_index] = END_OFFSET - MID
+//                 END_OFFSET = FUNCTION(END_OFFSET, XFA[temp_index])
+//             }
+//         }
+//     }
+//     return END_OFFSET
+// }

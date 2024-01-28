@@ -1,5 +1,6 @@
 function load_x_d_sound(id, outer_id, sub_group_index) {
-    TXFA = Object.byString(XFA, id);
+    
+    TXFA = Object.byString(x, id);
 
     let html = `<div style="overflow:hidden;height:100%"><div style="display:inline-block;width:95%;padding:5px;height:20%">
    <div>Sound Settings
@@ -56,7 +57,7 @@ function load_x_d_sound(id, outer_id, sub_group_index) {
     // }
 
     function splice_entry() {
-        let temp_xfa = Object.byString(XFA, outer_id);
+        let temp_xfa = Object.byString(x, outer_id);
         let outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement.parentElement
         let html = ''
 
@@ -94,7 +95,7 @@ function load_x_d_sound(id, outer_id, sub_group_index) {
         new DataView(temp_buffer).setUint32(0, this.value)
         new_value = new DataView(temp_buffer).getUint32(0)
 
-        Object.byString(XFA, this.dataset.outer_xfa, this.dataset.inner_xfa, new_value)
+        Object.byString(x, this.dataset.outer_xfa, this.dataset.inner_xfa, new_value)
         this.value = new_value
 
         let position = document.getElementsByClassName("file_is_highlighted")[0]

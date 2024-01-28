@@ -2,11 +2,15 @@
 // load texture after asycronyss
 // alpha mat fix size
 function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
-    TXFA = Object.byString(XFA, id);
-    OTXFA = Object.byString(XFA, outer_id);
+    TXFA = Object.byString(x, id);
+    OTXFA = Object.byString(x, outer_id);
+    // TXFA = 0
+    // OTXFA = 0
+
+    
 
     let html = `<div style='overflow:hidden;height:100%'; ><div style="display:inline-block;width:95%;padding:5px;height:20%;">
-   <input style='width:100%;' maxlength='52' data-outer_xfa="${id}" data-type="string" data-fixed="true" data-byte_amount="52" data-inner_xfa="name"  id='image_name' type='text' value='${TXFA.name}'>
+   <input style='width:100%;' maxlength='52' data-outer_xfa="${id}.name" data-type="string" data-fixed="true" data-byte_amount="52" data-inner_xfa="0"  id='image_name' type='text' value='${TXFA.name}'>
    <div>Texture Settings
       <div class='save_records_boarder'>
          <table style='width:100%;white-space:nowrap;' >
@@ -511,7 +515,7 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
     }
 
     function splice_entry() {
-        let temp_xfa = Object.byString(XFA, outer_id);
+        let temp_xfa = Object.byString(x, outer_id);
         let outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement.parentElement
         let html = ''
 

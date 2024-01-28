@@ -13,7 +13,7 @@ function dxt1(buffer,width,height) {
 
             for (i = 0,
             y = 0; y < 4; y++) {
-                for (x = 0; x < 4; x++,
+                for (let x = 0; x < 4; x++,
                 i++) {
 
                     if (temp_pixel_array[i] == "00") {

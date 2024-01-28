@@ -5,7 +5,7 @@ function load_x_d_sound_folder(id) {
     //          <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_entry'>+ Sound</span>
     //          </div>`
 
-    let html = ''
+    let html = 'just add button / sound stats'
 
     document.getElementById("file_editor").innerHTML = html
 

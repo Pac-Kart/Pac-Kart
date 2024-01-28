@@ -1,5 +1,5 @@
 function load_x_d_text(id) {
-    TXFA = Object.byString(XFA, id);
+    TXFA = Object.byString(x, id[0]);
 
     console.log(id,TXFA)
 
@@ -18,7 +18,7 @@ function load_x_d_text(id) {
    // </div>`
 
    let html =`<div style='overflow:hidden;padding:1%;height:95%;'>
-   <textarea style='height:100%;width:100%;resize:none;' maxlength="515" data-type="string" data-outer_xfa="${id}.section_00[0]" data-inner_xfa="string" id='text'>${TXFA.section_00[0].string}</textarea>
+   <textarea style='height:100%;width:100%;resize:none;' maxlength="515" data-type="string" data-outer_xfa="${id[0]}.section_00" data-inner_xfa="0" id='text'>${TXFA.section_00[0]}</textarea>
    </div>
    `
 

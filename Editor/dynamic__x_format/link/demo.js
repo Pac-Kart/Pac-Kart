@@ -1,5 +1,5 @@
 function load_x_d_link_demo(id, outer_id) {
-    TXFA = Object.byString(XFA, id);
+    // TXFA = Object.byString(x, id + '[0]');
 
     let html = `
 <div style="display:inline-block;width:95%;padding:5px;">
@@ -9,13 +9,13 @@ function load_x_d_link_demo(id, outer_id) {
          <table style='width:100%;' >
             <tbody>
                <tr>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Demo Timer:</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>Demo Timer</td>
                   <td class='no_border'>
-                     <input style="width:100%" type='text' value="${TXFA[0].unknown_1}" data-outer_xfa="${id}[0]"  data-inner_xfa="unknown_1" data-type="u32">
+                     <input style="width:100%" type='text' value="${TXFA.u32_04}" data-outer_xfa="${id}"  data-inner_xfa="u32_04" data-type="u32">
                   </td>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown:</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown</td>
                   <td class='no_border'>
-                     <input style="width:100%" type='text' value="${TXFA[0].unknown_0}" data-outer_xfa="${id}[0]" data-inner_xfa="unknown_0" data-type="u32">
+                     <input style="width:100%" type='text' value="${TXFA.u8_00}" data-outer_xfa="${id}" data-inner_xfa="u8_00" data-type="u32">
                   </td>
                </tr>  
             </tbody>
@@ -27,26 +27,39 @@ function load_x_d_link_demo(id, outer_id) {
              </div>
 `
     document.getElementById("file_editor").innerHTML = html
-    document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="demo_splice">X</a>'
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="demo_splice">X</a>'
 
-    let input_field = file_editor.getElementsByTagName('INPUT')
-    for (let i = 0; i < input_field.length; i++) {
-        input_field[i].addEventListener('change', dyn_update_input)
-    }
+    add_events()
 
     document.getElementById("new_entry").addEventListener("click", generate_sub_group);
-    document.getElementById("demo_splice").addEventListener('click', delete_demo)
+    // document.getElementById("demo_splice").addEventListener('click', delete_demo)
 
     function generate_sub_group() {
         let xid = gen_id()
 
-        TXFA[0].link_array[0].push({
+        TXFA.section_08[0].section_04.push({
             id: xid,
-            interface: [],
-            loading: ['Blank', 0],
-            name: ['Blank'],
-            save: [],
-            unknown: []
+            u32_00: 0,
+            section_04: [],
+            section_08: [{
+                section_00: ['blank'],
+                u32_04: 0,
+
+            }],
+            section_12: ['Blank'],
+            u32_16: 0,
+            section_20: [{
+                u32_00: 0,
+                section_04: [],
+                u16_08: 0,
+            }],
+            u32_24: 0,
+            section_28: [{
+                u32_00: 0,
+                section_04: [],
+                u16_08: 0,
+            }],
         })
         outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement
         let html = ''
@@ -55,12 +68,12 @@ function load_x_d_link_demo(id, outer_id) {
 
             outer_html.children[i].remove()
         }
-        if (TXFA.length === 0) {
+        if (TXFA.section_08[0].section_04.length === 0) {
             alert('broke how TXFA.length load_x_d_link_demo')
         } else {
             outer_html.children[0].className = 'file_arrow'
-            for (let i = 0; i < TXFA[0].link_array[0].length; i++) {
-                html += dynamic__link_main_sub_group(TXFA[0].link_array[0][i], i, TXFA[0].link_array[0][i].id)
+            for (let i = 0; i < TXFA.section_08[0].section_04.length; i++) {
+                html += dynamic__link_main_sub_group(TXFA.section_08[0].section_04[i], i, TXFA.section_08[0].section_04[i].id)
             }
             outer_html.innerHTML += html
             x_addEventListener_file_viewer(outer_html)
