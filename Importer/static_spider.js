@@ -12,6 +12,8 @@
 
 function get_x_static(selected_game, file_name) {
     offset_mid = undefined
+    count = 0
+    datapack_offset = []
 
     let html = `<div class='sub_file_div'><a class='file_arrow' style='padding-right:6px;padding-left:4px;'>↓</a><a> 🗀 </a> <a id='temp' data-type="x_folder" data-offset="0" class='file_hover_not_selected'>${file_name}</a>`
 
@@ -77,6 +79,7 @@ function get_x_sub_files(offset, index, file_name) {
     }
 
     type = ['car', 'interface', 'item', 'link', 'world', 'colliders', 'world texture', 'geometry', 'share', 'audio', 'music'][u32(offset + 4)]
+    datapack_offset = offset;
 
     let html = ''
 
@@ -91,7 +94,6 @@ function get_x_sub_files(offset, index, file_name) {
 
         number_sounds = u32(temp_offset + 8)
         number_textures = u32(temp_offset + 20)
-
         if (number_sounds == 0 && number_textures == 0) {
             html += `<div style='display: block;' class='sub_file_div'><a class='no_arrow'>↓</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a></div>`
 
@@ -366,7 +368,7 @@ function get_x_datapack(offset, index) {
 
                 // document.getElementById("texture_row_select_" + i).addEventListener("click", load_edit_texture);
 
-                html += `<div style='display:none' class='sub_file_div'><a class='no_arrow'></a><a> </a> <a data-type="x_texture" data-offset="${texture_offset_list + i_offset}" data-offset_mid="${offset_mid}" class='file_hover_not_selected'>${btf_string}</a></div>`
+                html += `<div style='display:none' class='sub_file_div'><a class='no_arrow'></a><a> </a> <a data-type="x_texture" data-offset_datapack="${offset_datapack}" data-offset="${texture_offset_list + i_offset}" data-offset_mid="${offset_mid}" class='file_hover_not_selected'>${btf_string}</a></div>`
 
             }
 

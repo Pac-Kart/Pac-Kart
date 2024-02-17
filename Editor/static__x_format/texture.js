@@ -1,9 +1,9 @@
-function load_texture(offset, mid) {
+function load_texture(offset, mid, datapack) {
     offset_mid = mid
+    offset_datapack = datapack
+    load_edit_texture(offset, offset_mid, offset_datapack)
 
-    load_edit_texture(offset, offset_mid)
-
-    if (fileextension == 'xps' || fileextension == "xpp") {
+    if ((fileextension == 'xps' && !(game === "hot_wheels_velocity_x")) || fileextension == "xpp") {
         document.getElementById("file_editor").innerHTML += "<br><br>⚠️ warning PSP/PS2 format is not currently parsed correctly"
     }
 
@@ -101,7 +101,7 @@ function extract_bits(offset, buffer) {
 
 // }
 
-function load_edit_texture(offset, offset_mid) {
+function load_edit_texture(offset, offset_mid, offset_datapack) {
 
     // for (var i = 0; i < document.getElementsByClassName("binary_table")[0].children[1].children.length; i++) {
     //     document.getElementsByClassName("binary_table")[0].children[1].children[i].dataset.sound_row_select = 'false'
@@ -111,7 +111,7 @@ function load_edit_texture(offset, offset_mid) {
 
     offset_texture_entry = offset
 
-    get_texture_settings(offset, offset_mid)
+    get_texture_settings(offset, offset_mid, offset_datapack)
 
     texture_data_offset = texture_data_offset + offset_mid
 
@@ -381,7 +381,7 @@ function import_dds_into_x(dds_buffer, dds_offset, x_texture_offset_, length) {
     x_texture_offset += i
 }
 
-function get_texture_settings(texture_offset) {
+function get_texture_settings(texture_offset, mid, offset_datapack) {
 
     if (game == 'pac_man_world_rally') {
         texture_type_value = u8(texture_offset)
@@ -406,13 +406,14 @@ function get_texture_settings(texture_offset) {
         texture_x = Math.pow(2, u8(texture_offset + 6, is_little_endian))
         texture_y = Math.pow(2, u8(texture_offset + 7, is_little_endian))
         texture_data_offset = u32(texture_offset + 8, is_little_endian)
-    } else {
+    } else { // Hot Wheels: Velocity X
         texture_type_value = u16(texture_offset + 0, is_little_endian)
         texture_x = u16(texture_offset + 2, is_little_endian)
         texture_y = u16(texture_offset + 4, is_little_endian)
         texture_mipmap_value = u16(texture_offset + 6, is_little_endian)
         texture_data_offset = u32(texture_offset + 8, is_little_endian)
-        console.log(u32(texture_offset + 12, is_little_endian))
+        lookup_table_index = u32(texture_offset + 12, is_little_endian)
+        clut_offset = u32(offset_datapack + 44)
     }
 
     //     console.log(`0 / 1st: ${u16(texture_offset, is_little_endian)}
@@ -448,11 +449,13 @@ function get_texture_settings(texture_offset) {
     //u16 ?? 4 / 128 / 5 =256
     //u16 x
     //u16 y
-    //u16 ??
-    //u32 offset texture
-    //u32 padding?
+    //u16 Mipmap level
+    //u32 Offset texture
+    //u32 Color lookup table Index (ps2 only)
 
-    if (texture_type_value === 4) {
+    if (texture_type_value === 2) {
+        texture_format = "8-Bit indexed"
+    }else if (texture_type_value === 4) {
         texture_format = "DDS (dxt1 compression)"
     } else if (texture_type_value === 5) {
         texture_format = "DDS (dxt5 compression)"
@@ -464,7 +467,7 @@ function get_texture_settings(texture_offset) {
         texture_format = "???"
     } else if (texture_type_value === 72) {
         texture_format = "???"
-    } else if (texture_type_value === 160) {
+    } else if (texture_type_value === 160 || texture_type_value === 1) {
         texture_format = "PNG/JPEG (RGBA uncompressed)"
     } else if (texture_type_value === 193) {
         texture_format = "DDS (dxt1 compression + alpha texture half size)"
@@ -515,11 +518,11 @@ function generate_canvas() {
 
 function rgba64_to_canvas() {
 
-    if (fileextension === "xps") {
+    if (fileextension === "xps" && !(game === "hot_wheels_velocity_x")) {
     image_offset += 16
     }
 
-    if (texture_type_value == 160) {
+    if (texture_type_value == 160 || texture_type_value == 1) {
         for (i = 0,
         y = 0; y < texture_y; y++) {
             for (x = 0; x < texture_x; x++,
@@ -543,6 +546,28 @@ function rgba64_to_canvas() {
         _24_to_canvas()
     } else if (texture_type_value == 72 || texture_type_value == 200) {
         _72_to_canvas()
+    } else if (texture_type_value == 2 ){    // PS2 Indexed (Hot Wheels Velocity X)
+        for (i = 0,
+        y = 0; y < texture_y; y++) {
+            for (x = 0; x < texture_x; x++,
+            i += 1) {
+                lookup_table_offset = clut_offset+(lookup_table_index*1024)+offset_mid
+
+                pixel = u8(image_offset + (i))
+                if ((pixel+8) % 32 >= 24)
+                    pixel -= 8
+                else if ((pixel+8) % 32 >= 16)
+                    pixel += 8
+
+                color_r = u8((pixel*4)+lookup_table_offset+0)
+                color_g = u8((pixel*4)+lookup_table_offset+1)
+                color_b = u8((pixel*4)+lookup_table_offset+2)
+
+                ctx.fillStyle = `rgb(${color_r}, ${color_g}, ${color_b})`
+                ctx.fillRect(x, y, 1, 1)
+
+            }
+        }
     } else {
 
         for (i = 0,
