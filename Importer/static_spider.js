@@ -91,11 +91,11 @@ function get_x_sub_files(offset, index, file_name) {
 
     } else {
 
-        if ((id == HWVX_PROTO)&&(game == "hot_wheels_velocity_x"))
+        if ((id == HWVX_PROTO) && (game == "hot_wheels_velocity_x"))
             temp_offset = u32(offset + 20) + (index * 24) + 16
         else
             temp_offset = u32(offset + 20) + (u32(12) * 24) + 16
-        
+
         number_sounds = u32(temp_offset + 8)
         number_textures = u32(temp_offset + 20)
         if (number_sounds == 0 && number_textures == 0) {
@@ -126,11 +126,10 @@ function get_x_datapack(offset, index) {
 
     offset_datapack = offset
 
-    if ((id == HWVX_PROTO)&&(game == "hot_wheels_velocity_x")){
+    if ((id == HWVX_PROTO) && (game == "hot_wheels_velocity_x")) {
         after_datapack = get_datapack_end() + offset + (u32(offset + 8) * 4)
         offset_mid = u32(offset + 4) + after_datapack + (u32(offset + 12) * 4) + ((u32(offset + 16) + u32(offset + 28) + u32(offset + 52) + u32(offset + 56)) * 8);
-    }
-    else{
+    } else {
         after_datapack = get_datapack_end() + offset + divisible(number_sounds * 4, 32)
         offset_mid = divisible(((u32(offset + 16) + u32(offset + 28) + u32(offset + 52)) * 8), 32)
         offset_mid = offset_mid + u32(offset + 4, is_little_endian) + after_datapack
@@ -181,7 +180,7 @@ function get_x_datapack(offset, index) {
     case "link":
     case "audio":
     case "music":
-        html+= get_basic()
+        html += get_basic()
         break
     case "world":
         html += get_world()
@@ -428,7 +427,7 @@ function get_basic() {
             ä(frames, u32(o + 0), get_interfaceframe)
             break;
         }
-    return html
+        return html
 
     }
 }
@@ -3734,7 +3733,7 @@ function get_world() {
 
     let html = ''
 
-    if (game !=='pac_man_world_rally') {
+    if (game !== 'pac_man_world_rally') {
         return html
     }
 
@@ -6478,15 +6477,13 @@ function get_interfaceframe_04_04_12t8_04(o) {
     }
 }
 function get_interfaceframe_04_04_12t7(o) {
-if(u8(o+2) ||u8(o+3) ||u32(o+4) ||u32(o+8) ||u32(o+12) )
-    {
-        ü(1, [u8, 0,u8, 1,u8, 2,u8, 3, u32, 4, u32, 8, u32, 12], o)
+    if (u8(o + 2) || u8(o + 3) || u32(o + 4) || u32(o + 8) || u32(o + 12)) {
+        ü(1, [u8, 0, u8, 1, u8, 2, u8, 3, u32, 4, u32, 8, u32, 12], o)
     }
 
 }
 function get_interfaceframe_04_04_12t5(o) {
-if(u32(o+0) ||u32(o+4) !==12 ||u32(o+8) ||u32(o+12) )
-    {
+    if (u32(o + 0) || u32(o + 4) !== 12 || u32(o + 8) || u32(o + 12)) {
         ü(1, [u32, 0, u32, 4, u32, 8, u32, 12], o)
     }
 
@@ -8068,6 +8065,9 @@ function get_texture_animas_20(offset) {// console.log(`-> F ${f32(offset + 0 )}
 
 function extract_patcher(offset, amount) {
 
+    if (id === HWVX_PROTO) {
+        return
+    }
     let temp_array = []
     if (fileextension === "xgc") {
         for (let i = 0; i < amount; i++) {
