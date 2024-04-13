@@ -91,7 +91,7 @@ function get_x_sub_files(offset, index, file_name) {
 
     } else {
 
-        if ((id == 179)&&(game == "hot_wheels_velocity_x"))
+        if ((id == HWVX_PROTO)&&(game == "hot_wheels_velocity_x"))
             temp_offset = u32(offset + 20) + (index * 24) + 16
         else
             temp_offset = u32(offset + 20) + (u32(12) * 24) + 16
@@ -384,7 +384,7 @@ function get_x_datapack(offset, index) {
 
     function get_datapack_end() {
         let offset = 0
-        if (fileextension === "xps" && (id != 179)) {
+        if (fileextension === "xps" && (id != HWVX_PROTO)) {
             offset += 2048
         } else if (fileextension === "xpp") {
             offset += 128
