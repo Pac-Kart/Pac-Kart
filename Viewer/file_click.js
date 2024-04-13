@@ -299,7 +299,6 @@ function file_click() {
         load_kart(parseInt(this.dataset.offset), parseInt(this.dataset.mid))
         break
     case "x_texture":
-        console.log(this.dataset);
         load_texture(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid), parseInt(this.dataset.offset_datapack))
         break
         load_texture(parseInt(this.dataset.offset), parseInt(this.dataset.offset_mid))

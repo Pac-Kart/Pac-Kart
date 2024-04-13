@@ -12,7 +12,9 @@
 
 function get_x_static(selected_game, file_name) {
     offset_mid = undefined
+    HWVX_PROTO = 179
     count = 0
+    id = u32(16, is_little_endian)
     datapack_offset = []
 
     let html = `<div class='sub_file_div'><a class='file_arrow' style='padding-right:6px;padding-left:4px;'>↓</a><a> 🗀 </a> <a id='temp' data-type="x_folder" data-offset="0" class='file_hover_not_selected'>${file_name}</a>`
@@ -24,7 +26,6 @@ function get_x_static(selected_game, file_name) {
     file_version = u32(8)
 
     for (let i = 0; i < u32(12); i++) {
-
         html += get_x_sub_files(16 + (i * 24), i + 1, file_name)
     }
 
@@ -90,8 +91,11 @@ function get_x_sub_files(offset, index, file_name) {
 
     } else {
 
-        temp_offset = u32(offset + 20) + (u32(12) * 24) + 16
-
+        if ((id == 179)&&(game == "hot_wheels_velocity_x"))
+            temp_offset = u32(offset + 20) + (index * 24) + 16
+        else
+            temp_offset = u32(offset + 20) + (u32(12) * 24) + 16
+        
         number_sounds = u32(temp_offset + 8)
         number_textures = u32(temp_offset + 20)
         if (number_sounds == 0 && number_textures == 0) {
@@ -101,7 +105,7 @@ function get_x_sub_files(offset, index, file_name) {
 
             html += `<div style='display: block;' class='sub_file_div'><a class='file_arrow'>→</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a>`
 
-            html += get_x_datapack(u32(offset + 20) + (u32(12) * 24) + 16, index)
+            html += get_x_datapack(temp_offset, index)
 
             html += `</div>`
 
@@ -122,27 +126,27 @@ function get_x_datapack(offset, index) {
 
     offset_datapack = offset
 
-    after_datapack = get_datapack_end() + offset + divisible(number_sounds * 4, 32)
-    index_patch_list = after_datapack + u32(offset + 4)
-    offset_mid = divisible(((u32(offset + 16) + u32(offset + 28) + u32(offset + 52)) * 8), 32)
-
-    // console.log(offset_mid,after_datapack)
-
-    // offset_mid = (u32(offset_datapack + 28, is_little_endian) + u32(offset_datapack + 16, is_little_endian) + u32(offset_datapack + 52, is_little_endian)) * 8
-
-    offset_mid = offset_mid + u32(offset + 4, is_little_endian) + after_datapack
-    if (fileextension == "xps") {
-        xps_i = 0;
-        while ((after_datapack + u32(offset + 4, is_little_endian) + xps_i) % 2048 !== 0) {
-            xps_i += 1
-        }
-        offset_mid = offset_mid + xps_i
+    if ((id == HWVX_PROTO)&&(game == "hot_wheels_velocity_x")){
+        after_datapack = offset + 120 + (u32(offset + 8) * 4)
+        offset_mid = u32(offset + 4) + after_datapack + (u32(offset + 12) * 4) + ((u32(offset + 16) + u32(offset + 28) + u32(offset + 52) + u32(offset + 56)) * 8);
     }
+    else{
+        after_datapack = get_datapack_end() + offset + divisible(number_sounds * 4, 32)
+        offset_mid = divisible(((u32(offset + 16) + u32(offset + 28) + u32(offset + 52)) * 8), 32)
+        offset_mid = offset_mid + u32(offset + 4, is_little_endian) + after_datapack
+        if ((fileextension == "xps")) {
+            xps_i = 0;
+            while ((after_datapack + u32(offset + 4, is_little_endian) + xps_i) % 2048 !== 0) {
+                xps_i += 1
+            }
+            offset_mid = offset_mid + xps_i
+        }
+    }
+
+    index_patch_list = after_datapack + u32(offset + 4)
 
     log_array.order = offset_mid
     log_array.p_texture = index_patch_list
-
-    // console.log(index_patch_list, 'index', offset_mid, 'offset_mid', game, fileextension)
 
     number_sounds = u32(offset + 8)
     number_textures = u32(offset + 20)
@@ -380,7 +384,7 @@ function get_x_datapack(offset, index) {
 
     function get_datapack_end() {
         let offset = 0
-        if (fileextension === "xps") {
+        if (fileextension === "xps" && (id != 179)) {
             offset += 2048
         } else if (fileextension === "xpp") {
             offset += 128
