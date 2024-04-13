@@ -127,7 +127,7 @@ function get_x_datapack(offset, index) {
     offset_datapack = offset
 
     if ((id == HWVX_PROTO)&&(game == "hot_wheels_velocity_x")){
-        after_datapack = offset + 120 + (u32(offset + 8) * 4)
+        after_datapack = get_datapack_end() + offset + (u32(offset + 8) * 4)
         offset_mid = u32(offset + 4) + after_datapack + (u32(offset + 12) * 4) + ((u32(offset + 16) + u32(offset + 28) + u32(offset + 52) + u32(offset + 56)) * 8);
     }
     else{
