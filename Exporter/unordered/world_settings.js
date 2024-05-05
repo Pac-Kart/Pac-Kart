@@ -1,7 +1,8 @@
+"use strict";
 function ex_world_settings(o, x) {
-    let e = o + 208
+    let e = o + divisible(208, g.divisibility)
     //amount?   su32(o +00, x.u32_00)
-    sf32(o + 08, x.f32_08)
+    sf32(o + 8, x.f32_08)
     ex_patch(o + 16, g.texture_patch_array, x.texture_16)
     ex_patch(o + 20, g.texture_patch_array, x.texture_20)
     ex_patch(o + 24, g.texture_patch_array, x.texture_24)
@@ -16,7 +17,6 @@ function ex_world_settings(o, x) {
     sf32(o + 116, x.f32_116)
     sf32(o + 120, x.f32_120)
     su8(o + 126, x.u8_126)
-    ex_patch(o + 136, g.texture_patch_array, x.texture_136)
     sf32(o + 140, x.f32_140)
     //?
     sf32(o + 144, x.f32_144)
@@ -31,11 +31,11 @@ function ex_world_settings(o, x) {
     sf32(o + 168, x.f32_168)
 
     if (x.section_04.length) {
-        su32(o + 00, x.section_04.length)
-        su32(o + 04, e - g.m)
-        g.oa.push(o + 04)
+        su32(o + 0, x.section_04.length)
+        su32(o + 4, e)
+        g.oa.push(o + 4)
         let temp_offset = e
-        e += divisible(x.section_04.length * 64, 16)
+        e += divisible(x.section_04.length * 64, g.divisibility)
         for (let i = 0; i < x.section_04.length; i++) {
             e = ex_world_settings_04(temp_offset + (i * 64), e, x.section_04[i])
         }
@@ -52,6 +52,8 @@ function ex_world_settings(o, x) {
     e = ex_s_offset(o + 72, e, ex_world_settings_72, x.section_72, 'down');
     e = ex_string(o + 76, e, x.section_76)
     e = ex_ml(x.unordered_frame_font_88, g.frame_font_array, ex_frame_font, g.unordered_ref.frame_font, o + 88, e, 'down');
+    ex_patch(o + 136, g.texture_patch_array, x.texture_136)
+
     e = ex_s_offset(o + 192, e, ex_world_settings_192, x.section_192, 'down');
     e = ex_s_offset(o + 196, e, ex_world_settings_196, x.section_196, 'down');
 
@@ -59,9 +61,9 @@ function ex_world_settings(o, x) {
     return e
 }
 function ex_world_settings_04(o, e, x) {
-    su8(o + 00, x.u8_00)
-    su8(o + 08, x.u8_08)
-    su8(o + 09, x.u8_09)
+    su8(o + 0, x.u8_00)
+    su8(o + 8, x.u8_08)
+    su8(o + 9, x.u8_09)
     su8(o + 10, x.u8_10)
     su8(o + 11, x.u8_11)
     sf32(o + 12, x.f32_12)
@@ -77,139 +79,141 @@ function ex_world_settings_04(o, e, x) {
     return e
 }
 function ex_world_settings_12(o, x) {
-    let e = o + 16
-    su32(o + 00, x.u32_00)
-    sf32(o + 04, x.f32_04)
-    su32(o + 08, x.u32_08)
+    let e = o + divisible(16, g.divisibility)
+    su32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    su32(o + 8, x.f32_08)
 
     g.debug ? ex_debug(o, "^f[:") : 0;
     return e
 }
 function ex_world_settings_36(o, x) {
-    let e = o + 16
-    su8(o + 00, x.u8_00)
-    su8(o + 01, x.u8_01)
-    su8(o + 02, x.u8_02)
-    su8(o + 03, x.u8_03)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 0, x.u8_00)
+    su8(o + 1, x.u8_01)
+    su8(o + 2, x.u8_02)
+    su8(o + 3, x.u8_03)
 
     g.debug ? ex_debug(o, "v[_>") : 0;
     return e
 }
 function ex_world_settings_48(o, x) {
-    let e = o + 16
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(16, g.divisibility)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
 
-    e = ex_s_offset(o + 00, e, ex_world_settings_48_00, x.section_00, 'down');
+    e = ex_s_offset(o + 0, e, ex_world_settings_48_00, x.section_00, 'down');
 
     g.debug ? ex_debug(o, "mQo9") : 0;
     return e
 }
 function ex_world_settings_48_00(o, x) {
-    let e = o + 16
-    su8(o + 00, x.u8_00)
-    su8(o + 01, x.u8_01)
-    su8(o + 02, x.u8_02)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 0, x.u8_00)
+    su8(o + 1, x.u8_01)
+    su8(o + 2, x.u8_02)
 
     g.debug ? ex_debug(o, "8>lm") : 0;
     return e
 }
 function ex_world_settings_52(o, x) {
-    let e = o + 16
-    su8(o + 00, x.u8_00)
-    su8(o + 01, x.u8_01)
-    su8(o + 02, x.u8_02)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 0, x.u8_00)
+    su8(o + 1, x.u8_01)
+    su8(o + 2, x.u8_02)
 
     g.debug ? ex_debug(o, "0WjQ") : 0;
     return e
 }
 function ex_world_settings_56(o, x) {
-    let e = o + 16
-    su8(o + 00, x.u8_00)
-    su8(o + 01, x.u8_01)
-    su8(o + 02, x.u8_02)
-    su8(o + 03, x.u8_03)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 0, x.u8_00)
+    su8(o + 1, x.u8_01)
+    su8(o + 2, x.u8_02)
+    su8(o + 3, x.u8_03)
 
     g.debug ? ex_debug(o, "WR@L") : 0;
     return e
 }
 function ex_world_settings_60(o, x) {
-    let e = o + 16
-    su8(o + 00, x.u8_00)
-    su8(o + 01, x.u8_01)
-    su8(o + 02, x.u8_02)
-    su8(o + 03, x.u8_03)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 0, x.u8_00)
+    su8(o + 1, x.u8_01)
+    su8(o + 2, x.u8_02)
+    su8(o + 3, x.u8_03)
 
     g.debug ? ex_debug(o, "RY>]") : 0;
     return e
 }
 function ex_world_settings_64(o, x) {
-    let e = o + 16
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(16, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
 
     g.debug ? ex_debug(o, "gLBs") : 0;
     return e
 }
 function ex_world_settings_68(o, x) {
-    let e = o + 32
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(32, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
 
     g.debug ? ex_debug(o, "S19K") : 0;
     return e
 }
 function ex_world_settings_72(o, x) {
-    let e = o + 16
-    su32(o + 04, x.u32_04)
+    let e = o + divisible(16, g.divisibility)
+    su32(o + 4, x.u32_04)
 
     g.debug ? ex_debug(o, "TeAb") : 0;
     return e
 }
 function ex_world_settings_192(o, x) {
-    let e = o + 48
-    su32(o + 08, x.u32_08)
-    ex_patch(o + 20, g.texture_patch_array, x.texture_20)
+    let e = o + divisible(48, g.divisibility)
+    su32(o + 8, x.u32_08)
     //amount?   su32(o +36, x.u32_36)
 
-    e = ex_ml(x.unordered_interface_00, g.interface_array, ex_interface, g.unordered_ref.interface, o + 00, e, 'down');
-    e = ex_ml(x.unordered_interface_04, g.interface_array, ex_interface, g.unordered_ref.interface, o + 04, e, 'down');
+    e = ex_ml(x.unordered_interface_00, g.interface_array, ex_interface, g.unordered_ref.interface, o + 0, e, 'down');
+    e = ex_ml(x.unordered_interface_04, g.interface_array, ex_interface, g.unordered_ref.interface, o + 4, e, 'down');
     e = ex_string(o + 12, e, x.section_12)
     e = ex_string(o + 16, e, x.section_16)
+    ex_patch(o + 20, g.texture_patch_array, x.texture_20)
+
     e = ex_ml(x.unordered_car_24, g.car_array, ex_car, g.unordered_ref.car, o + 24, e, 'down');
     e = ex_ml(x.unordered_car_28, g.car_array, ex_car, g.unordered_ref.car, o + 28, e, 'down');
     e = ex_ml(x.unordered_car_32, g.car_array, ex_car, g.unordered_ref.car, o + 32, e, 'down');
     if (x.section_40.length) {
         su32(o + 36, x.section_40.length)
-        su32(o + 40, e - g.m)
+        su32(o + 40, e)
         g.oa.push(o + 40)
         let temp_offset = e
-        e += divisible(x.section_40.length * 8, 16)
+        e += divisible(x.section_40.length * 8, g.divisibility)
         for (let i = 0; i < x.section_40.length; i++) {
             e = ex_world_settings_192_40(temp_offset + (i * 8), e, x.section_40[i])
         }
         ;
     }
+
     ;g.debug ? ex_debug(o, "3P>U") : 0;
     return e
 }
 function ex_world_settings_192_40(o, e, x) {
-    su32(o + 04, x.u32_04)
+    su32(o + 4, x.u32_04)
 
-    e = ex_string(o + 00, e, x.section_00)
+    e = ex_string(o + 0, e, x.section_00)
 
     g.debug ? ex_debug(o, "ur=P") : 0;
     return e
 }
 function ex_world_settings_196(o, x) {
-    let e = o + 32
-    su32(o + 00, x.u32_00)
+    let e = o + divisible(32, g.divisibility)
+    su32(o + 0, x.u32_00)
 
-    e = ex_s_offset(o + 04, e, ex_world_settings_196_04, x.section_04, 'down');
-    e = ex_s_offset(o + 08, e, ex_world_settings_196_04, x.section_08, 'down');
+    e = ex_s_offset(o + 4, e, ex_world_settings_196_04, x.section_04, 'down');
+    e = ex_s_offset(o + 8, e, ex_world_settings_196_04, x.section_08, 'down');
     e = ex_s_offset(o + 12, e, ex_world_settings_196_04, x.section_12, 'down');
     e = ex_s_offset(o + 16, e, ex_world_settings_196_04, x.section_16, 'down');
 
@@ -217,28 +221,28 @@ function ex_world_settings_196(o, x) {
     return e
 }
 function ex_world_settings_196_04(o, x) {
-    let e = o + 32
+    let e = o + divisible(32, g.divisibility)
     //amount?   su32(o +00, x.u32_00)
     //amount?   su32(o +08, x.u32_08)
     sf32(o + 16, x.f32_16)
 
     if (x.section_04.length) {
-        su32(o + 00, x.section_04.length)
-        su32(o + 04, e - g.m)
-        g.oa.push(o + 04)
+        su32(o + 0, x.section_04.length)
+        su32(o + 4, e)
+        g.oa.push(o + 4)
         let temp_offset = e
-        e += divisible(x.section_04.length * 12, 16)
+        e += divisible(x.section_04.length * 12, g.divisibility)
         for (let i = 0; i < x.section_04.length; i++) {
             e = ex_world_settings_196_04_04(temp_offset + (i * 12), e, x.section_04[i])
         }
         ;
     }
     ;if (x.section_12.length) {
-        su32(o + 08, x.section_12.length)
-        su32(o + 12, e - g.m)
+        su32(o + 8, x.section_12.length)
+        su32(o + 12, e)
         g.oa.push(o + 12)
         let temp_offset = e
-        e += divisible(x.section_12.length * 12, 16)
+        e += divisible(x.section_12.length * 12, g.divisibility)
         for (let i = 0; i < x.section_12.length; i++) {
             e = ex_world_settings_196_04_04(temp_offset + (i * 12), e, x.section_12[i])
         }
@@ -248,9 +252,9 @@ function ex_world_settings_196_04(o, x) {
     return e
 }
 function ex_world_settings_196_04_04(o, e, x) {
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
 
     g.debug ? ex_debug(o, "@mN[") : 0;
     return e

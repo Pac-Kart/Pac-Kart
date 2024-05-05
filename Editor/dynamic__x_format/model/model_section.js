@@ -1,33 +1,24 @@
+"use strict";
 function load_x_d_model_section(id, outerid, sub_group_index) {
-    console.log(id)
-    // TXFA = Object.byString(XFA, id);
+    let html = `${load_world_canvas_string(TXFA.sub_section)}`
 
-    let html = `<div style="display:inline-block;width:95%;padding:5px;">
-   <div style='height:5%'>
-      <div class='save_records_boarder'>
-         <table style='width:100%;' >
-            <tbody>
-               <tr>
-                  <td style="width:10%" class='no_border'>Render</td>
-                  <td class='no_border'><input style="width:100%" id='render' type='text' value="${TXFA.render.toFixed(2)}" data-outer_xfa="${id}" data-inner_xfa="render" data-type="float">  </td>
-               </tr>
-            </tbody>
-         </table>   
-      </div>
-   </div>`
-   // <div style="display:flex;text-align:center;" class='save_records_boarder' data-type="[]" data-xfa='${id}'>
-   //           <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_entry'>+ Model</span>
-   //           </div>`
+    file_editor.innerHTML = html
+    file_editor_side_panel.innerHTML = `<a>Render</a><br>
+        <input style="width:100%" id='render' type='text' value="${TXFA.render}" data-outer_xfa="${id}" data-inner_xfa="render" data-type="float">`
 
-    document.getElementById("file_editor").innerHTML = html
-
-    // document.getElementById("new_entry").addEventListener("click", generate_texture);
     document.getElementById("_2nd_data_bar").innerHTML = ''
 
-    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
-
-    // document.getElementById("main_delete").addEventListener("click", splice_entry);
-    document.getElementById("render").addEventListener("change", dyn_update_input);
+    let tempsection = TXFA.sub_section
+    let modelarray = []
+    for (let i = 0; i < tempsection.length; i++) {
+        modelarray.push({
+            v_array: tempsection[i].v_array,
+            u_array: tempsection[i].u_array,
+            n_array: tempsection[i].n_array,
+            c_array: tempsection[i].c_array,
+        })
+    }
+    gen_model_box(modelarray)
 
     function generate_texture() {
         let xid = gen_id()
@@ -76,7 +67,6 @@ function load_x_d_model_section(id, outerid, sub_group_index) {
 
         }
         file_viewer.focus()
-        // generate_file_view()
     }
 
     function splice_entry() {

@@ -1,10 +1,11 @@
+"use strict";
 function im_world_settings(o, i, x) {
     x.push({
         id: gen_id(),
-        u32_00: u32(o + 00),
+        u32_00: u32(o + 0),
         //amount?
         section_04: [],
-        f32_08: f32(o + 08),
+        f32_08: f32(o + 8),
         section_12: [],
         texture_16: im_patch(g.texture_patch_ref, o + 16),
         texture_20: im_patch(g.texture_patch_ref, o + 20),
@@ -47,8 +48,8 @@ function im_world_settings(o, i, x) {
         section_196: [],
     });
 
-    for (let ii = 0; ii < u32(o + 00); ii++) {
-        im_world_settings_04(u32(o + 04) + (ii * 64) + g.m, ii, x[i].section_04);
+    for (let ii = 0; ii < u32(o + 0); ii++) {
+        im_world_settings_04(u32(o + 4) + (ii * 64) + g.m, ii, x[i].section_04);
     }
     u32(o + 12) ? im_world_settings_12(u32(o + 12) + g.m, x[i].section_12) : 0;
     u32(o + 36) ? im_world_settings_36(u32(o + 36) + g.m, x[i].section_36) : 0;
@@ -69,9 +70,9 @@ function im_world_settings(o, i, x) {
 function im_world_settings_04(o, i, x) {
     x.push({
         id: gen_id(),
-        u8_00: u8(o + 00),
-        u8_08: u8(o + 08),
-        u8_09: u8(o + 09),
+        u8_00: u8(o + 0),
+        u8_08: u8(o + 8),
+        u8_09: u8(o + 9),
         u8_10: u8(o + 10),
         u8_11: u8(o + 11),
         f32_12: f32(o + 12),
@@ -87,9 +88,9 @@ function im_world_settings_04(o, i, x) {
 }
 function im_world_settings_12(o, x) {
     x.push({
-        u32_00: u32(o + 00),
-        f32_04: f32(o + 04),
-        u32_08: u32(o + 08),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
+        f32_08: f32(o + 8),
     });
 
     // 16 bytes;
@@ -97,10 +98,10 @@ function im_world_settings_12(o, x) {
 }
 function im_world_settings_36(o, x) {
     x.push({
-        u8_00: u8(o + 00),
-        u8_01: u8(o + 01),
-        u8_02: u8(o + 02),
-        u8_03: u8(o + 03),
+        u8_00: u8(o + 0),
+        u8_01: u8(o + 1),
+        u8_02: u8(o + 2),
+        u8_03: u8(o + 3),
     });
 
     // 16 bytes;
@@ -109,20 +110,20 @@ function im_world_settings_36(o, x) {
 function im_world_settings_48(o, x) {
     x.push({
         section_00: [],
-        f32_04: f32(o + 04),
-        f32_08: f32(o + 08),
+        f32_04: f32(o + 4),
+        f32_08: f32(o + 8),
     });
 
-    u32(o + 00) ? im_world_settings_48_00(u32(o + 00) + g.m, x[0].section_00) : 0;
+    u32(o + 0) ? im_world_settings_48_00(u32(o + 0) + g.m, x[0].section_00) : 0;
 
     // 16 bytes;
 
 }
 function im_world_settings_48_00(o, x) {
     x.push({
-        u8_00: u8(o + 00),
-        u8_01: u8(o + 01),
-        u8_02: u8(o + 02),
+        u8_00: u8(o + 0),
+        u8_01: u8(o + 1),
+        u8_02: u8(o + 2),
     });
 
     // 16 bytes;
@@ -130,9 +131,9 @@ function im_world_settings_48_00(o, x) {
 }
 function im_world_settings_52(o, x) {
     x.push({
-        u8_00: u8(o + 00),
-        u8_01: u8(o + 01),
-        u8_02: u8(o + 02),
+        u8_00: u8(o + 0),
+        u8_01: u8(o + 1),
+        u8_02: u8(o + 2),
     });
 
     // 16 bytes;
@@ -140,10 +141,10 @@ function im_world_settings_52(o, x) {
 }
 function im_world_settings_56(o, x) {
     x.push({
-        u8_00: u8(o + 00),
-        u8_01: u8(o + 01),
-        u8_02: u8(o + 02),
-        u8_03: u8(o + 03),
+        u8_00: u8(o + 0),
+        u8_01: u8(o + 1),
+        u8_02: u8(o + 2),
+        u8_03: u8(o + 3),
     });
 
     // 16 bytes;
@@ -151,10 +152,10 @@ function im_world_settings_56(o, x) {
 }
 function im_world_settings_60(o, x) {
     x.push({
-        u8_00: u8(o + 00),
-        u8_01: u8(o + 01),
-        u8_02: u8(o + 02),
-        u8_03: u8(o + 03),
+        u8_00: u8(o + 0),
+        u8_01: u8(o + 1),
+        u8_02: u8(o + 2),
+        u8_03: u8(o + 3),
     });
 
     // 16 bytes;
@@ -162,9 +163,9 @@ function im_world_settings_60(o, x) {
 }
 function im_world_settings_64(o, x) {
     x.push({
-        f32_00: f32(o + 00),
-        f32_04: f32(o + 04),
-        f32_08: f32(o + 08),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
+        f32_08: f32(o + 8),
     });
 
     // 16 bytes;
@@ -172,9 +173,9 @@ function im_world_settings_64(o, x) {
 }
 function im_world_settings_68(o, x) {
     x.push({
-        f32_00: f32(o + 00),
-        f32_04: f32(o + 04),
-        f32_08: f32(o + 08),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
+        f32_08: f32(o + 8),
         f32_12: f32(o + 12),
     });
 
@@ -183,7 +184,7 @@ function im_world_settings_68(o, x) {
 }
 function im_world_settings_72(o, x) {
     x.push({
-        u32_04: u32(o + 04),
+        u32_04: u32(o + 4),
     });
 
     // 16 bytes;
@@ -193,7 +194,7 @@ function im_world_settings_192(o, x) {
     x.push({
         unordered_interface_00: 0,
         unordered_interface_04: 0,
-        u32_08: u32(o + 08),
+        u32_08: u32(o + 8),
         section_12: [im_string(u32(o + 12), 0, false)],
         section_16: [im_string(u32(o + 16), 0, false)],
         texture_20: im_patch(g.texture_patch_ref, o + 20),
@@ -205,8 +206,8 @@ function im_world_settings_192(o, x) {
         section_40: [],
     });
 
-    x[0].unordered_interface_00 = in_ml(u32(o + 00), g.interface_array, im_interface, g.unordered_ref.interface);
-    x[0].unordered_interface_04 = in_ml(u32(o + 04), g.interface_array, im_interface, g.unordered_ref.interface);
+    x[0].unordered_interface_00 = in_ml(u32(o + 0), g.interface_array, im_interface, g.unordered_ref.interface);
+    x[0].unordered_interface_04 = in_ml(u32(o + 4), g.interface_array, im_interface, g.unordered_ref.interface);
     x[0].unordered_car_24 = in_ml(u32(o + 24), g.car_array, im_car, g.unordered_ref.car);
     x[0].unordered_car_28 = in_ml(u32(o + 28), g.car_array, im_car, g.unordered_ref.car);
     x[0].unordered_car_32 = in_ml(u32(o + 32), g.car_array, im_car, g.unordered_ref.car);
@@ -221,22 +222,22 @@ function im_world_settings_192(o, x) {
 function im_world_settings_192_40(o, i, x) {
     x.push({
         id: gen_id(),
-        section_00: [im_string(u32(o + 00), 0, false)],
-        u32_04: u32(o + 04),
+        section_00: [im_string(u32(o + 0), 0, false)],
+        u32_04: u32(o + 4),
     });
 
 }
 function im_world_settings_196(o, x) {
     x.push({
-        u32_00: u32(o + 00),
+        u32_00: u32(o + 0),
         section_04: [],
         section_08: [],
         section_12: [],
         section_16: [],
     });
 
-    u32(o + 04) ? im_world_settings_196_04(u32(o + 04) + g.m, x[0].section_04) : 0;
-    u32(o + 08) ? im_world_settings_196_04(u32(o + 08) + g.m, x[0].section_08) : 0;
+    u32(o + 4) ? im_world_settings_196_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 8) ? im_world_settings_196_04(u32(o + 8) + g.m, x[0].section_08) : 0;
     u32(o + 12) ? im_world_settings_196_04(u32(o + 12) + g.m, x[0].section_12) : 0;
     u32(o + 16) ? im_world_settings_196_04(u32(o + 16) + g.m, x[0].section_16) : 0;
 
@@ -245,20 +246,20 @@ function im_world_settings_196(o, x) {
 }
 function im_world_settings_196_04(o, x) {
     x.push({
-        u32_00: u32(o + 00),
+        u32_00: u32(o + 0),
         //amount?
         section_04: [],
-        u32_08: u32(o + 08),
+        u32_08: u32(o + 8),
         //amount?
         section_12: [],
         f32_16: f32(o + 16),
     });
 
-    for (let i = 0; i < u32(o + 00); i++) {
-        im_world_settings_196_04_04(u32(o + 04) + (i * 12) + g.m, i, x[0].section_04);
+    for (let i = 0; i < u32(o + 0); i++) {
+        im_world_settings_196_04_04(u32(o + 4) + (i * 12) + g.m, i, x[0].section_04);
     }
 
-    for (let i = 0; i < u32(o + 08); i++) {
+    for (let i = 0; i < u32(o + 8); i++) {
         im_world_settings_196_04_04(u32(o + 12) + (i * 12) + g.m, i, x[0].section_12);
     }
 
@@ -268,9 +269,9 @@ function im_world_settings_196_04(o, x) {
 function im_world_settings_196_04_04(o, i, x) {
     x.push({
         id: gen_id(),
-        f32_00: f32(o + 00),
-        f32_04: f32(o + 04),
-        f32_08: f32(o + 08),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
+        f32_08: f32(o + 8),
     });
 
 }

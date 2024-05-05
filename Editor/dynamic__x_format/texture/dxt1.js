@@ -1,18 +1,36 @@
+"use strict";
 //returns rgba8888 from a raw dxt1 buffer
-function dxt1(buffer,width,height) {
-    // console.log(buffer)
-        image_offset = 0
+function dxt1(buffer, width, height, ctx) {
+    let a = Date.now()
+    let color_1
+    let color_2
+    let color_3
+    let color_4
 
-    for (outer_y = 0; outer_y < height; outer_y += 4) {
-        for (outer_x = 0; outer_x < width; outer_x += 4) {
+    let blue_color_1
+    let blue_color_3
+    let blue_color_4
 
-            get_color()
+    let green_color_1
+    let green_color_3
+    let green_color_4
+
+    let red_color_1
+    let red_color_3
+    let red_color_4
+
+    let image_offset = 0
+    let temp_pixel_array
+
+    for (let outer_y = 0; outer_y < height; outer_y += 4) {
+        for (let outer_x = 0; outer_x < width; outer_x += 4) {
+
+            let colors = get_color(buffer, image_offset)
             get_pixel_data()
 
             image_offset += 8
 
-            for (i = 0,
-            y = 0; y < 4; y++) {
+            for (let i = 0, y = 0; y < 4; y++) {
                 for (let x = 0; x < 4; x++,
                 i++) {
 
@@ -34,8 +52,8 @@ function dxt1(buffer,width,height) {
         }
 
     }
-
-    data_ = canvas.toDataURL()
+    console.log('saved in', Date.now() - a)
+    return
 
     function get_color() {
 
@@ -183,8 +201,6 @@ function dxt1(buffer,width,height) {
                 if (parseInt(blue_color_3, 16) > 255) {
                     blue_color_3 = "FF"
                 }
-                //
-                //
                 if (red_color_4.length == 1) {
                     red_color_4 = '0' + red_color_4
                 }
@@ -201,20 +217,16 @@ function dxt1(buffer,width,height) {
 
             }
         }
-        // if (texture_type_value == 197) {
-        //     image_offset -= 8
-        // }
 
     }
     function get_pixel_data() {
-        temp_pixel_array = []
         var i = 0
         var temp_1 = 0
         var iii = 0
         for (temp_pixel_array = []; iii < 16; iii += 4,
         i++) {
             var pixel_row = new DataView(buffer).getUint8(image_offset + i + 4)
-            for (ii = 0; ii < 8; ii += 2,
+            for (let ii = 0; ii < 8; ii += 2,
             temp_1++) {
                 let pixel_1 = (pixel_row >> ii) & 0x1;
                 let pixel_2 = (pixel_row >> ii + 1) & 0x1;

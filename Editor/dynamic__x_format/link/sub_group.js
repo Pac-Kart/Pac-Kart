@@ -1,6 +1,5 @@
+"use strict";
 function load_x_d_link_main_sub_group(id, outerid, sub_group_index) {
-    // TXFA = Object.byString(x, id);
-
     let html = `<div style="display:inline-block;width:95%;padding:5px;">`
 
     html += `World File<div class='save_records_boarder' data-xfa='${id}'>
@@ -169,11 +168,9 @@ function load_x_d_link_main_sub_group(id, outerid, sub_group_index) {
                 </table>
                 </div></div></a>`
 
-    document.getElementById("file_editor").innerHTML = html
+    file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="sub_group_splice">X</a>'
     document.getElementById("sub_group_splice").addEventListener('click', splice_entry)
-
-    add_events()
 
     let plus_field = file_editor.getElementsByClassName('plus_button')
     for (let i = 0; i < plus_field.length; i++) {
@@ -189,7 +186,6 @@ function load_x_d_link_main_sub_group(id, outerid, sub_group_index) {
         let outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement.parentElement
         let html = ''
 
-        // temp_xfa.section_00[0].section_04.splice(sub_group_index, 1)
         temp_xfa.splice(sub_group_index, 1)
 
         for (let i = outer_html.children.length - 1; i > 2; i--) {
@@ -210,7 +206,7 @@ function load_x_d_link_main_sub_group(id, outerid, sub_group_index) {
             }
 
             outer_html.innerHTML += html
-            x_addEventListener_file_viewer(outer_html)
+            // x_addEventListener_file_viewer(outer_html)
             outer_html.children[2].click()
             outer_html.children[0].click()
             outer_html.children[0].click()
@@ -252,7 +248,6 @@ function load_x_d_link_main_sub_group(id, outerid, sub_group_index) {
                     u32_04: 0,
                 }],
             })
-            // aa.push(['blank', 0])
 
         }
         document.getElementsByClassName("file_is_highlighted")[0].click()

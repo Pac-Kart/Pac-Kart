@@ -1,6 +1,5 @@
+"use strict";
 function load_x_d_link_intro(id, outer_id) {
-    // TXFA = Object.byString(x, id);
-
     let html = `<div><div id='table_box' style="display:inline-block;width:95%;padding:5px;">Intro<br><div>`
 
     for (let i = 0; i < TXFA.length; i++) {
@@ -69,66 +68,50 @@ function load_x_d_link_intro(id, outer_id) {
     }
 
     function generate_box() {
-        let x = TXFA 
+        let x = TXFA
         let i = x.length
         let o = 0
-        
-            let str = [null]
-            if (this.id !== "new_interface_entry") {
-                str = ['blank']
-            }
-            x.push({
-                id: gen_id(),
-                u8_00: this.id === "new_interface_entry" ? 4: 0,
-                section_04: str,
-                section_08: [],
-                section_12: [],
-            });
 
-            if (this.id === "new_interface_entry") {
+        let str = [null]
+        if (this.id !== "new_interface_entry") {
+            str = ['blank']
+        }
+        x.push({
+            id: gen_id(),
+            u8_00: this.id === "new_interface_entry" ? 4 : 0,
+            section_04: str,
+            section_08: [],
+            section_12: [],
+        });
+
+        if (this.id === "new_interface_entry") {
             im_link_offset_index(0, x[i].section_12)
-            }else{
+        } else {
             im_link_intro_08(0, x[i].section_08)
-            }
+        }
         document.getElementsByClassName("file_is_highlighted")[0].click()
-        }
-        function im_link_intro_08(o, x) {
-            x.push({
-                u8_00: 0,
-                u8_01: 0,
-            });
-            // 16 bytes;
+    }
+    function im_link_intro_08(o, x) {
+        x.push({
+            u8_00: 0,
+            u8_01: 0,
+        });
+        // 16 bytes;
 
-        }
-        function im_link_offset_index(o, x) {
-            x.push({
-                section_00: ['blank'],
-                u32_04: 0,
-            });
-            // 16 bytes;
-
-        // if (this.id === "new_interface_entry") {
-        //     TXFA.push({
-        //         filename: 'blank',
-        //         file_index: 0
-        //     })
-        // } else {
-        //     TXFA.push({
-        //         intro: 'blank',
-        //         section_1: [{
-        //             unknown: 0
-        //         }]
-        //     })
-        // }
+    }
+    function im_link_offset_index(o, x) {
+        x.push({
+            section_00: ['blank'],
+            u32_04: 0,
+        });
+        // 16 bytes;
     }
 
-    document.getElementById("file_editor").innerHTML = html
+    file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
-    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="intro_splice">X</a>'
 
     document.getElementById("new_interface_entry").addEventListener("click", generate_box);
     document.getElementById("new_video_entry").addEventListener("click", generate_box);
-    // document.getElementById("intro_splice").addEventListener("click", delete_intro);
 
     function delete_intro() {
         TXFA.splice(0, TXFA.length)
@@ -152,11 +135,10 @@ function load_x_d_link_intro(id, outer_id) {
     for (let i = 0; i < input_field.length; i++) {
         input_field[i].addEventListener('change', dyn_update_input)
     }
-    
+
     let x_field = table_box.getElementsByClassName('x_button')
     for (let i = 0; i < x_field.length; i++) {
         x_field[i].addEventListener('click', delete_entry)
     }
 
-    // document.getElementById("link_new_file").addEventListener("click", a);
 }

@@ -1,4 +1,7 @@
+"use strict";
 function genFileInViewer(arrow, img, type, id, name) {
+    name = name.replaceAll('<', '&lt').replaceAll('>', '&gt')
+
     if (arrow === "n") {
         arrow = `no_arrow'>↓`
     } else if (arrow === "y") {
@@ -22,7 +25,7 @@ function genFileInViewer(arrow, img, type, id, name) {
     return `<div ${display} class='sub_file_div'>
         <a class='${arrow}</a>
         <a> ${img} </a>
-        <a id='temp' data-type="${type}" data-xfa="${id}" class='file_hover_not_selected'>${name}</a>`
+        <a data-type="${type}" data-xfa="${id}" class='file_hover_not_selected'>${name}</a>`
 
 }
 
@@ -40,14 +43,15 @@ function dynamic__x_generator() {
 function dynamicXGeneratorFileList(x, i) {
 
     let html = genFileInViewer('y', 'folder', 'x_d_sub_file', x.id, `${i} ${x.type}`)
-
     x.datapack[0].audio[0].sound.length ? html += dynamic__sounds_folder(x.datapack[0], x.id) : 0;
     x.datapack[0].ordered[0].textures.length ? html += dynamic__texture_folder(x.datapack[0].ordered[0].textures, x.id) : 0;
-    // x.datapack[0].ordered[0].model_animation_2.length ? html += dynamic_order(x.datapack[0].ordered[0].model_animation_2, x.id, 'model_animation_2') : 0;
+    x.datapack[0].ordered[0].texture_animation.length ? html += dynamic__texture_animations_folder(x.datapack[0].ordered[0].texture_animation, x.id) : 0;
     x.datapack[0].ordered[0].models.length ? html += dynamic_order(x.datapack[0].ordered[0].models, x.id, 'models') : 0;
 
-    // const unorderedCategories = ['car', 'link', 'idk', 'interface', 'frame_sparkler', 'frame_font', 'frame_multi_font', 'frame_text', 'sound_controls', 'sound_section', 'model_link', 'model_sub_link', 'wtf', 'unknown', 'unknown_00', 'activator', 'flag', 'var', 'gate', 'strange', 'object', 'um', 'world_settings'];
-    const unorderedCategories = ['car', 'link', 'interface', 'frame_sparkler', 'frame_font', 'frame_multi_font', 'frame_text', 'sound_controls', 'sound_section', 'model_link'];
+    if (x.type === 'world') {
+        x.datapack[0].ordered[0].file_specific.length ? html += dynamic_order(x.datapack[0].ordered[0].file_specific, x.id, 'World') : 0;
+    }
+    const unorderedCategories = ['link', 'interface', 'frame_font', 'frame_multi_font', 'frame_text', 'sound_controls', 'sound_section', 'model_link', 'world_settings', 'flag', 'object', 'unknown_00', 'activator', 'idk', 'strange'];
 
     for (const category of unorderedCategories) {
         if (x.datapack[0].ordered[0].unordered[0][category].length) {
@@ -55,72 +59,20 @@ function dynamicXGeneratorFileList(x, i) {
         }
     }
 
+    x.datapack[0].ordered[0].unordered[0].car.length ? html += dynamic_car(x.datapack[0].ordered[0].unordered[0], x.id, 'car') : 0;
+    x.datapack[0].ordered[0].unordered[0].frame_sparkler.length ? html += dynamic__frame_sparkler(x.datapack[0].ordered[0].unordered[0], x.id, 'frame_sparkler') : 0;
+
     return `${html}</div>`;
-
-    // let html = `<div style='display: block;' class='sub_file_div'>
-    //                 <a class='file_arrow'>→</a>
-    //                 <a> 🗎 </a> <a data-type="x_d_sub_file" data-xfa="${x.id}" class='file_hover_not_selected'>${i} ${x.type}</a>`
-
-    // x.datapack[0].audio[0].sound.length ? html += dynamic__sounds_folder(x.datapack[0]) : 0;
-
-    // x.datapack[0].ordered[0].textures.length ? html += dynamic__texture_folder(x.datapack[0].ordered[0].textures, x.id) : 0;
-    // x.datapack[0].ordered[0].model_animation_2.length ? html += dynamic_order(x.datapack[0].ordered[0].model_animation_2, x.id, 'model_animation_2') : 0;
-    // x.datapack[0].ordered[0].models.length ? html += dynamic_order(x.datapack[0].ordered[0].models, x.id, 'models') : 0;
-
-    // x.datapack[0].ordered[0].unordered[0].car.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].car, x.id, 'car') : 0;
-    // x.datapack[0].ordered[0].unordered[0].link.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].link, x.id, 'link') : 0;
-    // x.datapack[0].ordered[0].unordered[0].idk.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].idk, x.id, 'idk') : 0;
-    // x.datapack[0].ordered[0].unordered[0].interface.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].interface, x.id, 'interface') : 0;
-    // x.datapack[0].ordered[0].unordered[0].frame_sparkler.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].frame_sparkler, x.id, 'frame_sparkler') : 0;
-    // x.datapack[0].ordered[0].unordered[0].frame_font.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].frame_font, x.id, 'frame_font') : 0;
-    // x.datapack[0].ordered[0].unordered[0].frame_multi_font.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].frame_multi_font, x.id, 'frame_multi_font') : 0;
-    // x.datapack[0].ordered[0].unordered[0].frame_text.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].frame_text, x.id, 'frame_text') : 0;
-    // x.datapack[0].ordered[0].unordered[0].sound_controls.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].sound_controls, x.id, 'sound_controls') : 0;
-    // x.datapack[0].ordered[0].unordered[0].sound_section.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].sound_section, x.id, 'sound_section') : 0;
-    // x.datapack[0].ordered[0].unordered[0].model_link.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].model_link, x.id, 'model_link') : 0;
-    // x.datapack[0].ordered[0].unordered[0].model_sub_link.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].model_sub_link, x.id, 'model_sub_link') : 0;
-    // x.datapack[0].ordered[0].unordered[0].wtf.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].wtf, x.id, 'wtf') : 0;
-    // x.datapack[0].ordered[0].unordered[0].unknown.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].unknown, x.id, 'unknown') : 0;
-    // x.datapack[0].ordered[0].unordered[0].unknown_00.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].unknown_00, x.id, 'unknown_00') : 0;
-    // x.datapack[0].ordered[0].unordered[0].activator.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].activator, x.id, 'activator') : 0;
-    // x.datapack[0].ordered[0].unordered[0].flag.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].flag, x.id, 'flag') : 0;
-    // x.datapack[0].ordered[0].unordered[0].var.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].var, x.id, 'var') : 0;
-    // x.datapack[0].ordered[0].unordered[0].gate.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].gate, x.id, 'gate') : 0;
-    // x.datapack[0].ordered[0].unordered[0].strange.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].strange, x.id, 'strange') : 0;
-    // x.datapack[0].ordered[0].unordered[0].object.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].object, x.id, 'object') : 0;
-    // x.datapack[0].ordered[0].unordered[0].um.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].um, x.id, 'um') : 0;
-    // x.datapack[0].ordered[0].unordered[0].world_settings.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].world_settings, x.id, 'world_settings') : 0;
-
-    // if (XFA.sounds.length) {
-    //     html += dynamic__sounds_folder(XFA.sounds, XFA.id)
-    // }
-    // if (XFA.textures.length) {
-    //     html += dynamic__texture_folder(XFA.textures, XFA.id)
-    // }
-
-    // if (XFA.texture_animations.length) {
-    //     html += dynamic__texture_animations_folder(XFA.texture_animations, XFA.id)
-    // }
-    // if (XFA.models.length) {
-    //     html += dynamic__models_folder(XFA.models, XFA.id)
-    // }
-
-    // if (XFA.type_s === "car") {} else if (XFA.type_s === "interface") {
-    //     html += dynamic__interface(XFA.type_data[0].section_04.low_section_00[0], XFA.id)
-    // } else if (XFA.type_s === 'link') {
-
-    // x.datapack[0].ordered[0].unordered[0].link.length ? html += dynamic__link_folder(x.datapack[0].ordered[0].unordered[0].link[0]) : 0;
-
-    //     html += dynamic__link_folder(XFA.type_data[0].section_04.low_section_00[0])
-    // } else if (XFA.type_s === 'world') {} else if (XFA.type_s === 'share') {
-    //     html += dynamic__share(XFA.type_data[0])
-    // }
 }
 
 function dynamic_order(x, id, name) {
     let printname = name.replaceAll('_', ' ')
     let html = genFileInViewer('y', 'folder', `x_d_` + name + `__folder`, id, printname)
 
+    if (name === 'World') {
+        html += dynamic_world(x, id, name)
+        return `${html}</div>`;
+    }
     for (let i = 0; i < x.length; i++) {
         html += dynamic_order_file(x, i, name, id)
     }
@@ -143,6 +95,7 @@ function dynamic_order_file(x, i, name, id) {
     case 'link':
     case 'interface':
     case 'models':
+    case 'world_settings':
         arrow = 'y'
         break
     default:
@@ -154,19 +107,22 @@ function dynamic_order_file(x, i, name, id) {
         elementname = printname
     } else if (name === 'models') {
         elementname = x[i].name
-    }else{
-
+    } else if (name === 'world_settings') {
+        elementname = "World Settings"
+    } else if (name === 'activator') {
+        elementname = printname
+    } else if (name === 'flag') {
+        elementname = printname
+    } else {
         elementname = `${printname} ${i + 1}`
     }
 
     let html = genFileInViewer(arrow, '?', `x_d_` + name + `__file`, x[i].id, elementname)
 
     const dynamicHtmlFunctions = {
-        'car': dynamic__car,
         'link': dynamic__link,
         'idk': dynamic__idk,
         'interface': dynamic__interface,
-        'frame_sparkler': dynamic__frame_sparkler,
         'frame_font': dynamic__frame_font,
         'frame_multi_font': dynamic__frame_multi_font,
         'frame_text': dynamic__frame_text,
@@ -297,16 +253,13 @@ function dynamic__texts(XFA, i) {
 }
 
 function dynamic__texture_animations_folder(XFA, XFA_ID) {
-    let file_arrow = `no_arrow'>↓`
+    let file_arrow = `n`
 
     if (XFA.length !== 0) {
-        file_arrow = `file_arrow'>→`
+        file_arrow = `y`
     }
 
-    let html = `<div style='display: none;' class='sub_file_div'>
-                    <a class='${file_arrow}</a>
-                    <a> 🗀 </a>
-                    <a data-type="x_d_texture_animations_folder" data-XFA="${XFA_ID}" class='file_hover_not_selected'> Texture Animations </a>`
+    let html = genFileInViewer(file_arrow, '🗀', 'x_d_texture_animations_folder', XFA_ID, 'Texture Animations')
 
     for (let i = 0; i < XFA.length; i++) {
         html += dynamic__texture_animations(XFA[i], i)
@@ -319,21 +272,9 @@ function dynamic__texture_animations_folder(XFA, XFA_ID) {
 function dynamic__texture_animations(XFA, i) {
     let texture_name
 
-    let html = `<div style='display: none;' class='sub_file_div'>
-                    <a class='file_arrow'>→</a>
-                    <a> / </a>
-                    <a data-type="x_d_texture_animation" data-XFA="${XFA.id}" class='file_hover_not_selected'> animation ${i + 1} </a>`
+    let html = genFileInViewer('n', '?', 'x_d_texture_animation_file', XFA.id, `Animation ${i + 1}`)
 
-    let temp_array = ['pattern', 'color', 'translation']
-    for (let i = 0; i < 3; i++) {
-        html += `<div style='display: none;' class='sub_file_div'>
-                    <a class='no_arrow'>↓</a>
-                    <a> / </a>
-                    <a data-type="x_d_texture_animation_ ${temp_array[i]}" data-XFA="${XFA.id}" class='file_hover_not_selected'> ${temp_array[i]} </a></div>`
-    }
-
-    html += '</div>'
-    return html
+    return `${html}</div>`
 }
 
 function dynamic__texture_folder(x, xid) {
@@ -358,15 +299,13 @@ function dynamic__texture_folder(x, xid) {
 function dynamic__textures(XFA) {
     let texture_name
     if (XFA.name != "") {
-        texture_name = XFA.name
+        texture_name = XFA.name[0]
     } else {
         texture_name = 'Blank Texture'
     }
-    let html = `<div style='display: none;' class='sub_file_div'>
-                    <a class='no_arrow'>↓</a>
-                    <a> / </a>
-                    <a data-type="x_d_textures" data-XFA="${XFA.id}" class='file_hover_not_selected'> ${texture_name} </a></div>`
-    return html
+    let html = genFileInViewer('n', '/', `x_d_textures`, XFA.id, texture_name)
+
+    return `${html}</div>`
 }
 function dynamic__models_folder(XFA, XFA_ID) {
     let file_arrow = `no_arrow'>↓`
@@ -388,8 +327,6 @@ function dynamic__models_folder(XFA, XFA_ID) {
     return html
 }
 
-
-
 function dynamic__model(XFA) {
     let html = ''
 
@@ -406,13 +343,7 @@ function dynamic__model_section(x, i) {
         file_arrow = `y`
     }
 
-    html = genFileInViewer(file_arrow, '?', 'x_d_model__sections', x.id, `Section ${i+1}`)
-
-
-    // let html = `<div style='display: none;' class='sub_file_div'>
-    //                 <a class='${file_arrow}</a>
-    //                 <a> 🗀 </a>
-    //                 <a data-type="x_d_model_section" data-XFA="${XFA.id}" class='file_hover_not_selected'> Section ${i + 1} </a>`
+    let html = genFileInViewer(file_arrow, '?', 'x_d_model__sections', x.id, `Section ${i + 1}`)
 
     for (let i = 0; i < x.sub_section.length; i++) {
         html += dynamic__model_sub_section(x.sub_section[i], i)
@@ -422,24 +353,14 @@ function dynamic__model_section(x, i) {
 }
 function dynamic__model_sub_section(x, i) {
 
-    html = genFileInViewer('n', '?', 'x_d_model__model', x.id, `Model ${i + 1}`)
+    let html = genFileInViewer('n', '?', 'x_d_model__model', x.id, `Model ${i + 1}`)
 
-    // let html = `<div style='display: none;' class='sub_file_div'>
-    //                 <a class='no_arrow'>↓</a>
-    //                 <a> / </a>
-    //                 <a data-type="x_d_model" data-XFA="${XFA.id}" class='file_hover_not_selected'> Model ${i + 1} </a></div>`
     return `${html}</div>`
 }
 
 function dynamic__sounds_folder(x, id) {
-    // let file_arrow = `no_arrow'>↓`
-
     let file_arrow
     x.audio[0].sound.length ? file_arrow = `file_arrow'>→` : file_arrow = `no_arrow'>↓`;
-
-    // if (XFA.length !== 0) {
-    //     file_arrow = `file_arrow'>→`
-    // }
 
     let html = `<div style='display: none;' class='sub_file_div'>
                     <a class='${file_arrow}</a>
@@ -463,7 +384,6 @@ function dynamic__sound(x, i) {
 
 function dynamic__link(x) {
     let html = '';
-    // x.datapack[0].ordered[0].unordered[0].car.length ? html += dynamic_order(x.datapack[0].ordered[0].unordered[0].car ,x.id,'car') : 0;
 
     x.section_08.length ? html += dynamic__link_intro(x.section_08, x.id) : 0;
     x.section_32.length ? html += dynamic__link_main(x.section_32, x.id) : 0;
@@ -476,24 +396,10 @@ function dynamic__link(x) {
 function dynamic__link_folder(x) {
     let file_arrow = `no_arrow'>↓`
 
-    // if (x.section_main.length !== 0 || x.section_intro.length !== 0 || x.section_demo[0] !== null) {
-    //     file_arrow = `file_arrow'>→`
-    // }
-
     let html = `<div style='display: none;' class='sub_file_div'>
                     <a class='${file_arrow}</a>
                     <a> 🗀 </a>
                     <a data-type="x_d_link__folder" data-XFA="${x.id}" class='file_hover_not_selected'> Link </a>`
-
-    // if (XFA.section_main.length != 0) {
-    //     html += dynamic__link_main(XFA.section_main, XFA.id)
-    // }
-    // if (XFA.section_intro.length != 0) {
-    //     html += dynamic__link_intro(XFA.section_intro, XFA.id)
-    // }
-    // if (XFA.section_demo.length !== 0 && XFA.section_demo[0] !== null) {
-    //     html += dynamic__link_demo(XFA.section_demo, XFA.id)
-    // }
 
     html += "</div>"
     return html
@@ -583,150 +489,169 @@ function dynamic__share(XFA) {
 }
 
 function dynamic__car(x) {
-    return ''
-    // let html = genFileInViewer('y', '?', 'x_d_car_sub_file', x.id, 'temp')
+    let html = genFileInViewer('y', 'folder', 'x_d_world_car__a_folder', x.id, 'a')
 
-    // return html + '</div>';
+    return html + '</div>';
 }
-// function dynamic__link(x) {
-//     let html = genFileInViewer('y', '?', 'x_d_link_sub_file', x.id, 'temp')
-
-//     return html + '</div>';
-// }
 function dynamic__idk(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_idk_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__interface(x) {
     let html = ''
+
+    let file_arrow = `n`
+
+    if (x.section_72.length) {
+        file_arrow = `y`
+    }
+
+    html = genFileInViewer(file_arrow, 'folder', 'x_d_interface__layer_folder', x.id, 'Elements')
+
     for (let i = 0; i < x.section_72.length; i++) {
         html += dynamic__interface_72(x.section_72[i])
     }
+    html += '</div>';
 
-    return html;
+    file_arrow = `n`
+
+    if (x.section_04.length) {
+        if (x.section_04[0].section_04.length) {
+            file_arrow = `y`
+        }
+    }
+    html += genFileInViewer(file_arrow, 'folder', 'x_d_interface__varible_folder', x.id, 'Varibles')
+
+    for (let i = 0; i < x.section_04[0].section_04.length; i++) {
+        html += dynamic__interface_04(x.section_04[0].section_04[i])
+    }
+
+    return html + '</div>';
 }
 
 function dynamic__interface_72(x) {
 
-    html = genFileInViewer('n', '?', 'x_d_interface__layer_file', x.id, x.section_00[0])
+    let html = genFileInViewer('n', '?', 'x_d_interface__layer_file', x.id, x.section_00[0])
+
+    return html + '</div>';
+
+}
+function dynamic__interface_04(x) {
+
+    let html = genFileInViewer('n', '?', 'x_d_interface__varible_file', x.id, x.section_00[0])
 
     return html + '</div>';
 
 }
 
-function dynamic__frame_sparkler(x) {
-    return ''
-    // let html = genFileInViewer('y', '?', 'x_d_frame_sparkler_sub_file', x.id, 'temp')
+function dynamic__frame_sparkler(x, id) {
+    let html = genFileInViewer('y', 'folder', `x_d_frame_sparkler__folder`, id, 'Emmiters')
 
-    // return html + '</div>';
+    for (let i = 0; i < x.frame_sparkler.length; i++) {
+        html += dynamic__frame_sparkler_file(x.frame_sparkler[i], i)
+    }
+    return html += '</div>'
 }
+
+function dynamic__frame_sparkler_file(x, i) {
+    return genFileInViewer('n', 'file', `x_d_frame_sparkler__file`, x.id, 'Emmiter ' + (i + 1)) + '</div>'
+}
+
 function dynamic__frame_font(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_frame_font_sub_file', x.id, 'temp')
 
-    // return html + '</div>';
 }
 function dynamic__frame_multi_font(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_frame_multi_font_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__frame_text(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_frame_text_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__sound_controls(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_sound_controls_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__sound_section(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_sound_section_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__model_link(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_model_link_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__model_sub_link(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_model_sub_link_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__wtf(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_wtf_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__unknown(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_unknown_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__unknown_00(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_unknown_00_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__activator(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_activator_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__flag(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_flag_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__var(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_var_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__gate(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_gate_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__strange(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_strange_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__object(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_object_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__um(x) {
     return ''
-    // let html = genFileInViewer('y', '?', 'x_d_um_sub_file', x.id, 'temp')
-
-    // return html + '</div>';
 }
 function dynamic__world_settings(x) {
-    return ''
-    // let html = genFileInViewer('y', '?', 'x_d_world_settings_sub_file', x.id, 'temp')
 
-    // return html + '</div>';
+    let html = genFileInViewer('n', '💡', 'x_d_world_settings__lighting', x.id, 'Lighting')
+    return html + '</div>';
+}
+
+function dynamic_car(x, id, name) {
+    let html = genFileInViewer('y', 'folder', `x_d_car__folder`, id, 'Car')
+
+    html += genFileInViewer('y', 'folder', `x_d_car__obj_folder`, id, 'Car Objects')
+    for (let i = 0; i < x.car.length; i++) {
+        html += genFileInViewer('n', 'file', `x_d_car__file`, x.car[i].id, 'Car Object ' + (i + 1)) + '</div>'
+    }
+    html += '</div>'
+
+    html += genFileInViewer('y', 'folder', `x_d_car_00_180__folder`, id, 'Car Parts A')
+    for (let i = 0; i < x.car_00_180.length; i++) {
+        html += genFileInViewer('n', 'file', `x_d_car_00_180__file`, x.car_00_180[i].id, 'Car Part A ' + (i + 1)) + '</div>'
+    }
+    html += '</div>'
+
+    html += genFileInViewer('y', 'folder', `x_d_car_00_184__folder`, id, 'Car Parts B')
+    for (let i = 0; i < x.car_00_184.length; i++) {
+        html += genFileInViewer('n', 'file', `x_d_car_00_184__file`, x.car_00_184[i].id, 'Car Part B ' + (i + 1)) + '</div>'
+    }
+    html += '</div>'
+
+    return html + '</div>'
+
+}
+
+function dynamic_world(x, id, name) {
+    let html = ''
+    // let html = genFileInViewer('n', '?', `x_d_world_collision`, id, 'Collision') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_route`, id, 'World Route') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_start_points`, id, 'Start Points') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_sound`, id, 'Sound Area') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_Activators`, id, 'Actors') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_Respawnt11`, id, 'Respawn 1') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_Respawnt4`, id, 'Respawn 2') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_Stage`, id, 'Stage Objects') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_Animation`, id, 'Animation Objects') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_Objects`, id, 'Collectibles') + '</div>'
+
+    return html
+
 }

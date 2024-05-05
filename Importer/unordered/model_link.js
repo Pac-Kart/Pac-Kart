@@ -1,8 +1,9 @@
+"use strict";
 function im_model_link(o, i, x) {
     x.push({
         id: gen_id(),
-        u32_00: u32(o + 00),
-        section_04: [im_string(u32(o + 04), 0, false)],
+        u32_00: u32(o + 0),
+        section_04: [im_string(u32(o + 4), 0, false)],
         unordered_model_sub_link_08: 0,
         ordered_model_animation_1_12: 0,
         ordered_model_animation_2_16: 0,
@@ -24,7 +25,7 @@ function im_model_link(o, i, x) {
         section_64: [],
     });
 
-    x[i].unordered_model_sub_link_08 = in_ml(u32(o + 08), g.model_sub_link_array, im_model_sub_link, g.unordered_ref.model_sub_link);
+    x[i].unordered_model_sub_link_08 = in_ml(u32(o + 8), g.model_sub_link_array, im_model_sub_link, g.unordered_ref.model_sub_link);
     x[i].ordered_model_animation_1_12 = in_ml(u32(o + 12), g.model_animation_1_array, im_model_animation_1, g.ordered_ref.model_animation_1);
     x[i].ordered_model_animation_2_16 = in_ml(u32(o + 16), g.model_animation_2_array, im_model_animation_2, g.ordered_ref.model_animation_2);
 
@@ -52,23 +53,23 @@ function im_model_link_24(o, i, x,tempoffset) {
         ordered_models_00: 0,
     });
 
-    x[i].ordered_models_00 = in_ml(u32(o + 00), g.models_array, im_models, g.ordered_ref.models,tempoffset,i * 4);
+    x[i].ordered_models_00 = in_ml(u32(o + 0), g.models_array, im_models, g.ordered_ref.models,tempoffset,i * 4);
 
 }
 function im_model_link_32(o, i, x,tempoffset) {
     x.push({
         id: gen_id(),
         ordered_models_00: 0,
-        u16_04: u16(o + 04),
+        u16_04: u16(o + 4),
     });
 
-    x[i].ordered_models_00 = in_ml(u32(o + 00), g.models_array, im_models, g.ordered_ref.models,tempoffset,i * 8);
+    x[i].ordered_models_00 = in_ml(u32(o + 0), g.models_array, im_models, g.ordered_ref.models,tempoffset,i * 8);
 
 }
 function im_model_link_52(o, x) {
     x.push({
-        f32_00: f32(o + 00),
-        f32_04: f32(o + 04),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
     });
 
     // 16 bytes;
@@ -76,8 +77,8 @@ function im_model_link_52(o, x) {
 }
 function im_model_link_56(o, x) {
     x.push({
-        f32_00: f32(o + 00),
-        f32_04: f32(o + 04),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
     });
 
     // 16 bytes;
@@ -85,9 +86,9 @@ function im_model_link_56(o, x) {
 }
 function im_model_link_64(o, x) {
     x.push({
-        f32_00: f32(o + 00),
-        f32_04: f32(o + 04),
-        f32_08: f32(o + 08),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
+        f32_08: f32(o + 8),
         f32_16: f32(o + 16),
         f32_20: f32(o + 20),
         f32_24: f32(o + 24),

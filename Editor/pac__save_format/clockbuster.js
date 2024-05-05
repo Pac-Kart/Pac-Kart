@@ -1,10 +1,9 @@
 function load_clockbuster() {
 
-    // clockbuster_offset = 3104
     clockbuster_html = ""
     clockbuster_import();
 
-    document.getElementById("file_editor").innerHTML = clockbuster_html
+    file_editor.innerHTML = clockbuster_html
 
     clockbuster_data();
 }
@@ -16,7 +15,7 @@ function clockbuster_import() {
         <div class='save_records_time'>
             <div class='save_records_clockbuster_row'>${track_name_array[clockbuster_i]}
 
-                
+
                 <span data-debug='true'><input type='checkbox' title='locked?' id='check_${clockbuster_i}'> locked?</span>
 
             </div>
@@ -74,16 +73,16 @@ function clockbuster_data() {
 
         for (clockbuster_import_i = 0; clockbuster_import_i < 5; clockbuster_import_i++) {
 
-            document.getElementById('trophy_' + clockbuster_i + "_" + clockbuster_import_i).selectedIndex = (u8(save_offset.clockbuster+ (clockbuster_i * 88) + (clockbuster_import_i * 16) + 8))
-            document.getElementById('trophy_' + clockbuster_i + "_" + clockbuster_import_i).dataset.offset = (save_offset.clockbuster+ (clockbuster_i * 88) + (clockbuster_import_i * 16) + 8)
+            document.getElementById('trophy_' + clockbuster_i + "_" + clockbuster_import_i).selectedIndex = (u8(save_offset.clockbuster + (clockbuster_i * 88) + (clockbuster_import_i * 16) + 8))
+            document.getElementById('trophy_' + clockbuster_i + "_" + clockbuster_import_i).dataset.offset = (save_offset.clockbuster + (clockbuster_i * 88) + (clockbuster_import_i * 16) + 8)
 
-            document.getElementById('char_' + clockbuster_i + "_" + clockbuster_import_i).selectedIndex = (u8(save_offset.clockbuster+ (clockbuster_i * 88) + (clockbuster_import_i * 16) + 9))
-            document.getElementById('char_' + clockbuster_i + "_" + clockbuster_import_i).dataset.offset = (save_offset.clockbuster+ (clockbuster_i * 88) + (clockbuster_import_i * 16) + 9)
+            document.getElementById('char_' + clockbuster_i + "_" + clockbuster_import_i).selectedIndex = (u8(save_offset.clockbuster + (clockbuster_i * 88) + (clockbuster_import_i * 16) + 9))
+            document.getElementById('char_' + clockbuster_i + "_" + clockbuster_import_i).dataset.offset = (save_offset.clockbuster + (clockbuster_i * 88) + (clockbuster_import_i * 16) + 9)
 
-            get_letters(save_offset.clockbuster+ (clockbuster_i * 88) + (clockbuster_import_i * 16) + 10, clockbuster_i, clockbuster_import_i)
+            get_letters(save_offset.clockbuster + (clockbuster_i * 88) + (clockbuster_import_i * 16) + 10, clockbuster_i, clockbuster_import_i)
 
-            document.getElementById('points_' + clockbuster_i + "_" + clockbuster_import_i).value = (u32(save_offset.clockbuster+ (clockbuster_i * 88) + (clockbuster_import_i * 16) + 16, is_little_endian))
-            document.getElementById('points_' + clockbuster_i + "_" + clockbuster_import_i).dataset.offset = (save_offset.clockbuster+ (clockbuster_i * 88) + (clockbuster_import_i * 16) + 16)
+            document.getElementById('points_' + clockbuster_i + "_" + clockbuster_import_i).value = (u32(save_offset.clockbuster + (clockbuster_i * 88) + (clockbuster_import_i * 16) + 16 ))
+            document.getElementById('points_' + clockbuster_i + "_" + clockbuster_import_i).dataset.offset = (save_offset.clockbuster + (clockbuster_i * 88) + (clockbuster_import_i * 16) + 16)
 
             document.getElementById('trophy_' + clockbuster_i + "_" + clockbuster_import_i).addEventListener("change", save_value_changed);
             document.getElementById('char_' + clockbuster_i + "_" + clockbuster_import_i).addEventListener("change", save_value_changed);

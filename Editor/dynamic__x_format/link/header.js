@@ -1,5 +1,5 @@
+"use strict";
 function load_x_d_link_header(id) {
-    // TXFA = Object.byString(x, id);
     let menu_Intrface_name = TXFA.section_12[0]
     let menu_Intrface_index = TXFA.u32_16
     let menu_loading_name = TXFA.section_20[0]
@@ -36,52 +36,27 @@ function load_x_d_link_header(id) {
                </tr>
                <tr>
                   <td style="width:10%" class='no_border'>Font:</td>
-                  <td class='no_border'>${genterate_linkbox(id,'frame_font',TXFA.unordered_frame_font_60)}
+                  <td class='no_border'>${generate_linkbox(id, 'unordered_frame_font_60', 'frame_font', TXFA.unordered_frame_font_60)}
                   </td>
                   <td style="width:10%" class='no_border'>Texture 1:</td>
-                  <td class='no_border'>${genterate_linkbox_special(id,TXFA.texture_44)}  </td>
+                  <td class='no_border'>${generate_linkbox_special(`${id}.texture_44`, TXFA.texture_44)}  </td>
                </tr>
                <tr>
                   <td style="width:10%" class='no_border'>Texture 2:</td>
-                  <td class='no_border'>${genterate_linkbox_special(id,TXFA.texture_52)}  </td>
+                  <td class='no_border'>${generate_linkbox_special(`${id}.texture_52`, TXFA.texture_52)}  </td>
                   </td>
                   <td style="width:10%" class='no_border'>Texture 3:</td>
-                  <td class='no_border'>${genterate_linkbox_special(id,TXFA.texture_56)}  </td>
+                  <td class='no_border'>${generate_linkbox_special(`${id}.texture_56`, TXFA.texture_56)}  </td>
                </tr>
             </tbody>
-         </table>   
+         </table>
       </div>
    </div>
    ${section_00()}
 `
 
-    // if (main.length === 0 || intro.length === 0 || demo.length === null) {
-    //     html += `<div style="display:flex;text-align:center;" class='save_records_boarder' data-xfa='${id}'>`
-    //     if (main.length === 0) {
-    //         html += `<span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_main_link'>+ Main</span>`
-    //     }
-    //     if (intro.length === 0) {
-    //         html += `<span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_intro_link'>+ Intro</span>`
-    //     }
-    //     if (demo.length === 0) {
-    //         html += `<span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_demo_link'>+ Demo</span>`
-    //     }
-
-    //     html += '</div>'
-    // }
-
-    document.getElementById("file_editor").innerHTML = html
+    file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
-
-    // if (main.length === 0) {
-    //     document.getElementById("new_main_link").addEventListener("click", generate_xfa);
-    // }
-    // if (intro.length === 0) {
-    //     document.getElementById("new_intro_link").addEventListener("click", generate_xfa);
-    // }
-    // if (demo.length === 0) {
-    //     document.getElementById("new_demo_link").addEventListener("click", generate_xfa);
-    // }
 
     function generate_xfa() {
         if (this.id === 'new_main_link') {
@@ -122,7 +97,7 @@ function load_x_d_link_header(id) {
         outer_html.innerHTML += html
         outer_html.children[0].className = 'file_arrow'
 
-        x_addEventListener_file_viewer(outer_html)
+        // x_addEventListener_file_viewer(outer_html)
 
         outer_html.children[0].className = 'file_arrow'
         outer_html.children[0].click()
@@ -133,8 +108,6 @@ function load_x_d_link_header(id) {
         document.getElementsByClassName("file_is_highlighted")[0].click()
         file_viewer.focus()
     }
-
-    add_events()
 
     function section_00() {
         let html = ''
@@ -151,14 +124,14 @@ function load_x_d_link_header(id) {
 `
             if (TXFA.section_00[0].section_04) {
                 if (TXFA.section_00[0].section_04[0].section_00) {
-                    html+=`
+                    html += `
                 <tr>
                   <td style="width:10%" class='no_border'>unknown 2:</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.section_00[0].section_04[0].section_00[0].u8_08}" data-outer_xfa="${id}.section_00[0].section_04[0].section_00[0]" data-inner_xfa="u8_08" data-type="u8">  </td>
                </tr>
 `
                     if (TXFA.section_00[0].section_04[0].section_00[0].section_04.length) {
-                    html+=`
+                        html += `
                 <tr>
                   <td style="width:10%" class='no_border'>unknown 3:</td>
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.section_00[0].section_04[0].section_00[0].section_04[0].u32_20}" data-outer_xfa="${id}.section_00[0].section_04[0].section_00[0].section_04[0]" data-inner_xfa="u32_20" data-type="u32">  </td>
@@ -169,9 +142,9 @@ function load_x_d_link_header(id) {
                 }
 
             }
-            html+= `
+            html += `
             </tbody>
-         </table>   
+         </table>
       </div>
    </div>
 `

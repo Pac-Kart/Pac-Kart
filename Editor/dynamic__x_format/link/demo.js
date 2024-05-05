@@ -1,6 +1,5 @@
+"use strict";
 function load_x_d_link_demo(id, outer_id) {
-    // TXFA = Object.byString(x, id + '[0]');
-
     let html = `
 <div style="display:inline-block;width:95%;padding:5px;">
    
@@ -17,23 +16,18 @@ function load_x_d_link_demo(id, outer_id) {
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.u8_00}" data-outer_xfa="${id}" data-inner_xfa="u8_00" data-type="u32">
                   </td>
-               </tr>  
+               </tr>
             </tbody>
-         </table>   
+         </table>
       </div>
    </div>
    <div style="display:flex;text-align:center;" class='save_records_boarder' data-type="[]" data-xfa='${id}'>
              <span class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;' id='new_entry'>+ Sub Group</span>
              </div>
 `
-    document.getElementById("file_editor").innerHTML = html
+    file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
-    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="demo_splice">X</a>'
-
-    add_events()
-
     document.getElementById("new_entry").addEventListener("click", generate_sub_group);
-    // document.getElementById("demo_splice").addEventListener('click', delete_demo)
 
     function generate_sub_group() {
         let xid = gen_id()
@@ -61,7 +55,7 @@ function load_x_d_link_demo(id, outer_id) {
                 u16_08: 0,
             }],
         })
-        outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement
+        let outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement
         let html = ''
 
         for (let i = outer_html.children.length - 1; i > 2; i--) {
@@ -76,7 +70,7 @@ function load_x_d_link_demo(id, outer_id) {
                 html += dynamic__link_main_sub_group(TXFA.section_08[0].section_04[i], i, TXFA.section_08[0].section_04[i].id)
             }
             outer_html.innerHTML += html
-            x_addEventListener_file_viewer(outer_html)
+            // x_addEventListener_file_viewer(outer_html)
 
             outer_html.children[0].className = 'file_arrow'
             outer_html.children[0].click()

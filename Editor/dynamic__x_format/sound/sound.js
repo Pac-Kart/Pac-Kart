@@ -1,5 +1,6 @@
+"use strict";
 function load_x_d_sound(id, outer_id, sub_group_index) {
-    
+
     TXFA = Object.byString(x, id);
 
     let html = `<div style="overflow:hidden;height:100%"><div style="display:inline-block;width:95%;padding:5px;height:20%">
@@ -39,23 +40,15 @@ function load_x_d_sound(id, outer_id, sub_group_index) {
 
     html += `${generate_and_attach_wav(TXFA.sound_data[0].byteLength, TXFA.soundsamplerate)} <br><a style="color:#939393;">Byte Length: ${TXFA.sound_data[0].byteLength}</a></div>`
 
-    document.getElementById("file_editor").innerHTML = html
+    file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
-    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="splice_sound">X</a>'
 
     document.getElementById("Sound_Sample_Rate").addEventListener('change', Sound_Sample_Rate_update)
     document.getElementById("unknown_1").addEventListener('change', dyn_update_input)
     document.getElementById("unknown_2").addEventListener('change', dyn_update_input)
     document.getElementById("unknown_3").addEventListener('change', dyn_update_input)
 
-    // document.getElementById("splice_sound").addEventListener('click', splice_entry)
     document.getElementById("replace_sound_file").addEventListener("change", replace_sound_file);
-
-    // let input_field = file_editor.getElementsByTagName('INPUT')
-    // for (let i = 0; i < input_field.length; i++) {
-    //     input_field[i].addEventListener('change', dyn_update_input)
-    // }
-
     function splice_entry() {
         let temp_xfa = Object.byString(x, outer_id);
         let outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement.parentElement
@@ -107,7 +100,7 @@ function load_x_d_sound(id, outer_id, sub_group_index) {
         var file = event.target.files[0];
         var reader = new FileReader();
 
-        replace_sound_buffer = reader.readAsArrayBuffer(file);
+        let replace_sound_buffer = reader.readAsArrayBuffer(file);
 
         reader.onload = function(e) {
             replace_sound_buffer = e.target.result
@@ -127,34 +120,21 @@ function load_x_d_sound(id, outer_id, sub_group_index) {
 
             TXFA.soundsamplerate = audio_replace_sample_rate
 
-            //get index
-            // let node = document.querySelector(`tr[data-sound_row_select="true"]`)
-            // let temp_index = Array.prototype.indexOf.call(node.parentNode.childNodes, node);
-
-            // document.getElementById("sound_table_" + temp_index).innerHTML = ""
-
-            //get new dataview?
-
-            for (data_i = 0,
-            data_string = 0; data_string !== 1635017060; data_i++) {
+            let data_i = 0
+            for (let data_string = 0; data_string !== 1635017060; data_i++) {
                 data_string = new DataView(replace_sound_buffer).getUint32(data_i, true)
             }
 
-            wav_data_amount = new DataView(replace_sound_buffer).getUint32(data_i + 3, true)
+            let wav_data_amount = new DataView(replace_sound_buffer).getUint32(data_i + 3, true)
 
-            wav_data_end = (wav_data_amount + data_i + 7)
+            let wav_data_end = (wav_data_amount + data_i + 7)
 
             replace_sound_buffer = replace_sound_buffer.slice(data_i + 7, wav_data_end)
 
             TXFA.sound_data[0] = replace_sound_buffer
             //replace buffer with new wav
 
-            // old_sound_offset = old_sound_offset - offset_audio
-            // generate_and_attach_wav(old_sound_offset, old_sound_length, audio_replace_sample_rate, 0)
-
             document.getElementsByClassName("file_is_highlighted")[0].click()
-
-            // document.getElementById("sound_row_select_" + temp_index).click()
 
         }
 
@@ -215,7 +195,7 @@ function load_x_d_sound(id, outer_id, sub_group_index) {
         //sound length
 
         for (let i = 0; i < sound_length; i += 2) {
-            let temp = new DataView(TXFA.sound_data[0]).getUint16(i, is_little_endian)
+            let temp = new DataView(TXFA.sound_data[0]).getUint16(i, g.endian)
             new DataView(wav_).setUint16(44 + i, temp, true)
         }
 

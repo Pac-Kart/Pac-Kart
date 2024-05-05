@@ -115,6 +115,11 @@ html {
     height: 20px;
     ; background: #f2f2f2;
 }
+.logbar{
+    height:10%;
+    width:100%;
+    box-sizing:border-box;
+}
 
 .folder {
     padding: 10px;
@@ -315,3 +320,27 @@ th {
 .content_select {
     flex: auto;
 }
+.select_option_fileview{
+    width: 85%;
+    font-size: larger;
+    padding: 7px;
+    line-height: 35px;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: center;
+}
+
+.select_option_fileview:hover {
+    color: white;
+    background: #787878;
+}
+
+
+#log-container { overflow: auto; height: 150px; }
+
+.log-warn { color: orange }
+.log-error { color: red }
+.log-info { color: skyblue }
+.log-log { color: silver }
+
+.log-warn, .log-error { font-weight: bold; }

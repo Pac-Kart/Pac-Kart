@@ -1,8 +1,9 @@
+"use strict";
 function im_object(o, i, x) {
     x.push({
         id: gen_id(),
-        u8_08: u8(o + 08),
-        u8_09: u8(o + 09),
+        u8_08: u8(o + 8),
+        u8_09: u8(o + 9),
         u8_11: u8(o + 11),
         section_12: [],
         ordered_model_animation_2_16: 0,
@@ -37,7 +38,9 @@ function im_object(o, i, x) {
     x[i].ordered_model_animation_2_16 = in_ml(u32(o + 16), g.model_animation_2_array, im_model_animation_2, g.ordered_ref.model_animation_2);
     switch (u8(o + 11)) {
     case 15:
-        u32(o + 32) ? im_object_32t15(u32(o + 32) + g.m, x[i].section_32) : 0;
+        x[i].section_32 = in_ml(u32(o + 32), g.object_32t15_array, im_object_32t15, g.unordered_ref.object_32t15);
+
+        // u32(o + 32) ? im_object_32t15(u32(o + 32) + g.m, x[i].section_32) : 0;
         break;
     case 16:
         u32(o + 32) ? im_object_32t16(u32(o + 32) + g.m, x[i].section_32) : 0;
@@ -63,9 +66,9 @@ function im_object(o, i, x) {
 }
 function im_object_12(o, x) {
     x.push({
-        texture_00: im_patch(g.texture_patch_ref, o + 00),
-        u8_04: u8(o + 04),
-        f32_08: f32(o + 08),
+        texture_00: im_patch(g.texture_patch_ref, o + 0),
+        u8_04: u8(o + 4),
+        f32_08: f32(o + 8),
         section_16: [],
     });
 
@@ -76,40 +79,41 @@ function im_object_12(o, x) {
 }
 function im_object_12_16(o, x) {
     x.push({
-        u8_00: u8(o + 00),
-        u8_01: u8(o + 01),
-        u8_02: u8(o + 02),
-        u8_03: u8(o + 03),
+        u8_00: u8(o + 0),
+        u8_01: u8(o + 1),
+        u8_02: u8(o + 2),
+        u8_03: u8(o + 3),
     });
 
     // 16 bytes;
 
 }
-function im_object_32t15(o, x) {
+function im_object_32t15(o, i, x) {
     x.push({
-        u32_00: u32(o + 00),
+        id: gen_id(),
+        u32_00: u32(o + 0),
         //amount?
         section_04: [],
         unordered_unknown_00_08: 0,
         unordered_unknown_00_12: 0,
     });
 
-    for (let i = 0; i < u32(o + 00); i++) {
-        im_object_32t15_04(u32(o + 04) + (i * 28) + g.m, i, x[0].section_04);
+    for (let ii = 0; ii < u32(o + 0); ii++) {
+        im_object_32t15_04(u32(o + 4) + (ii * 28) + g.m, ii, x[i].section_04);
     }
-    x[0].unordered_unknown_00_08 = in_ml(u32(o + 08), g.unknown_00_array, im_unknown_00, g.unordered_ref.unknown_00);
-    x[0].unordered_unknown_00_12 = in_ml(u32(o + 12), g.unknown_00_array, im_unknown_00, g.unordered_ref.unknown_00);
-
+    x[i].unordered_unknown_00_08 = in_ml(u32(o + 8), g.unknown_00_array, im_unknown_00, g.unordered_ref.unknown_00);
+    x[i].unordered_unknown_00_12 = in_ml(u32(o + 12), g.unknown_00_array, im_unknown_00, g.unordered_ref.unknown_00);
+    return x[i].id
     // 16 bytes;
 
 }
 function im_object_32t15_04(o, i, x) {
     x.push({
         id: gen_id(),
-        u32_00: u32(o + 00),
+        u32_00: u32(o + 0),
         //amount?
         section_04: [],
-        u32_08: u32(o + 08),
+        u32_08: u32(o + 8),
         //amount?
         section_12: [],
         u32_16: u32(o + 16),
@@ -118,11 +122,11 @@ function im_object_32t15_04(o, i, x) {
         f32_24: f32(o + 24),
     });
 
-    for (let ii = 0; ii < u32(o + 00); ii++) {
-        im_object_32t15_04_04(u32(o + 04) + (ii * 12) + g.m, ii, x[i].section_04);
+    for (let ii = 0; ii < u32(o + 0); ii++) {
+        im_object_32t15_04_04(u32(o + 4) + (ii * 12) + g.m, ii, x[i].section_04);
     }
 
-    for (let ii = 0; ii < u32(o + 08); ii++) {
+    for (let ii = 0; ii < u32(o + 8); ii++) {
         im_object_32t15_04_04(u32(o + 12) + (ii * 12) + g.m, ii, x[i].section_12);
     }
 
@@ -136,18 +140,18 @@ function im_object_32t15_04_04(o, i, x) {
         id: gen_id(),
         unordered_um_00: 0,
         unordered_um_04: 0,
-        u8_08: u8(o + 08),
-        u8_09: u8(o + 09),
+        u8_08: u8(o + 8),
+        u8_09: u8(o + 9),
     });
 
-    x[i].unordered_um_00 = in_ml(u32(o + 00), g.um_array, im_um, g.unordered_ref.um);
-    x[i].unordered_um_04 = in_ml(u32(o + 04), g.um_array, im_um, g.unordered_ref.um);
+    x[i].unordered_um_00 = in_ml(u32(o + 0), g.um_array, im_um, g.unordered_ref.um);
+    x[i].unordered_um_04 = in_ml(u32(o + 4), g.um_array, im_um, g.unordered_ref.um);
 
 }
 function im_object_32t16(o, x) {
     x.push({
-        u32_00: u32(o + 00),
-        u32_04: u32(o + 04),
+        u32_00: u32(o + 0),
+        u32_04: u32(o + 4),
     });
 
     // 16 bytes;
@@ -155,7 +159,7 @@ function im_object_32t16(o, x) {
 }
 function im_object_32t17(o, x) {
     x.push({
-        u32_04: u32(o + 04),
+        u32_04: u32(o + 4),
     });
 
     // 16 bytes;
@@ -166,20 +170,20 @@ function im_object_32t18(o, x) {
         section_00: [],
     });
 
-    u32(o + 00) ? im_object_32t18_00(u32(o + 00) + g.m, x[0].section_00) : 0;
+    u32(o + 0) ? im_object_32t18_00(u32(o + 0) + g.m, x[0].section_00) : 0;
 
     // 16 bytes;
 
 }
 function im_object_32t18_00(o, x) {
     x.push({
-        u32_00: u32(o + 00),
-        u32_04: u32(o + 04),
+        u32_00: u32(o + 0),
+        u32_04: u32(o + 4),
         section_08: [],
     });
 
-    for (let i = 0; i < u32(o + 04); i++) {
-        im_mysterious(u32(o + 08) + (i * 64) + g.m, i, x[0].section_08);
+    for (let i = 0; i < u32(o + 4); i++) {
+        im_mysterious(u32(o + 8) + (i * 64) + g.m, i, x[0].section_08);
     }
 
     // 16 bytes;

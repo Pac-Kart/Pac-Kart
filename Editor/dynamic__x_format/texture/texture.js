@@ -1,14 +1,10 @@
+"use strict";
 // fix
 // load texture after asycronyss
 // alpha mat fix size
 function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
+
     TXFA = Object.byString(x, id);
-    OTXFA = Object.byString(x, outer_id);
-    // TXFA = 0
-    // OTXFA = 0
-
-    
-
     let html = `<div style='overflow:hidden;height:100%'; ><div style="display:inline-block;width:95%;padding:5px;height:20%;">
    <input style='width:100%;' maxlength='52' data-outer_xfa="${id}.name" data-type="string" data-fixed="true" data-byte_amount="52" data-inner_xfa="0"  id='image_name' type='text' value='${TXFA.name}'>
    <div>Texture Settings
@@ -50,35 +46,50 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
     </div>
    `
 
-    document.getElementById("file_editor").innerHTML = html
+    file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
-    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="splice_texture">X</a>'
 
     document.getElementById("replace_texture_file").addEventListener('change', replace_texture)
-    // document.getElementById("splice_texture").addEventListener('click', splice_entry)
     document.getElementById("image_name").addEventListener('change', edit_change_name);
 
     mip_map_eventlistener()
     generate_texture();
 
     function generate_texture() {
-        canvas = document.getElementById('canvas');
-        ctx = canvas.getContext('2d');
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
 
         canvas.width = get_dimension_int(TXFA.x)
         canvas.height = get_dimension_int(TXFA.y)
 
+        let texdata
+
         if (TXFA.type === 24) {
-            rgba8888(TXFA.texture[mipmap_level], canvas.width, canvas.height, false)
+            rgba8888(TXFA.texture[mipmap_level], canvas.width, canvas.height, false, ctx)
         } else if (TXFA.type === 65) {
-            dxt1(TXFA.texture[mipmap_level], canvas.width, canvas.height)
+            dxt1(TXFA.texture[mipmap_level], canvas.width, canvas.height, ctx)
+        } else if (TXFA.type === 68) {
+            return
+        } else if (TXFA.type === 72) {
+            return
         } else if (TXFA.type === 160) {
-            rgba8888(TXFA.texture[mipmap_level], canvas.width, canvas.height, true)
+            rgba8888(TXFA.texture[mipmap_level], canvas.width, canvas.height, true, ctx)
+        } else if (TXFA.type === 193) {
+            return
+            // dxt5(TXFA.texture[mipmap_level], canvas.width, canvas.height,ctx)
+        } else if (TXFA.type === 194) {
+            return
+        } else if (TXFA.type === 196) {
+            return
         } else if (TXFA.type === 197) {
-            dxt5(TXFA.texture[mipmap_level], canvas.width, canvas.height)
+            dxt5(TXFA.texture[mipmap_level], canvas.width, canvas.height, ctx)
+        } else if (TXFA.type === 200) {
+            return
         }
 
-        document.getElementById("canvas_img").src = data_
+        texdata = canvas.toDataURL()
+
+        document.getElementById("canvas_img").src = texdata
 
         if (TXFA.type === 24 || TXFA.type === 65) {
             //no alpha
@@ -91,9 +102,9 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
             let i = 0
             let grid_y = 0
             let grid_x = 0
-            for (outer_2_y = 0; outer_2_y < 128; outer_2_y += 4,
+            for (let outer_2_y = 0; outer_2_y < 128; outer_2_y += 4,
             grid_y += 128 / canvas.height) {
-                for (outer_2_x = 0; outer_2_x < 128; outer_2_x += 4,
+                for (let outer_2_x = 0; outer_2_x < 128; outer_2_x += 4,
                 grid_x += 128 / canvas.width) {
                     if (i % 2 == 0) {
                         ctx.fillStyle = "#cccccc"
@@ -111,7 +122,6 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
     }
 
     function mip_map_eventlistener() {
-        // console.log(document.getElementById('mip_arrow'), 'mipa;slkdfj')
         if (TXFA.texture.length != 1) {
             if (mipmap_level === 0) {
                 document.getElementById("mipmap_next").addEventListener('click', mipmap_change);
@@ -126,7 +136,7 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
 
     function replace_texture(e) {
 
-        file_temp = e.target.files[0];
+        let file_temp = e.target.files[0];
 
         let filename = file_temp.name
         let fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
@@ -139,8 +149,6 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
             is_dds = false
         }
 
-        // console.log(file_temp)
-
         if (mipmap_level === 0 && is_dds === false) {
             // not mipmap
             // not dds
@@ -149,7 +157,7 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
             // is dds
             var reader = new FileReader();
 
-            dds_buffer = reader.readAsArrayBuffer(file_temp);
+            let dds_buffer = reader.readAsArrayBuffer(file_temp);
 
             document.getElementById("replace_texture_file").value = ''
 
@@ -163,6 +171,7 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
                     return;
                 }
 
+                let is_dxt5
                 if (new DataView(dds_buffer).getUint32(84, false) === 1146639413) {
                     is_dxt5 = true
                 } else if (new DataView(dds_buffer).getUint32(84, false) === 1146639409) {
@@ -175,12 +184,13 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
                 let dds_height = new DataView(dds_buffer).getUint32(12, true)
                 let dds_width = new DataView(dds_buffer).getUint32(16, true)
 
-                // check if acctually power of 2 first  
+                // check if acctually power of 2 first
                 if (powerOfTwo(dds_height) === false || powerOfTwo(dds_width) === false) {
                     alert("dds dimensions must be powers of 2 !!!")
                     return
                 }
 
+                let dds_new_byte_length
                 if (is_dxt5 === true) {
                     dds_new_byte_length = dds_width * dds_height
                 } else {
@@ -190,13 +200,11 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
                 dds_height = powerOfTwo_reverse(dds_height)
                 dds_width = powerOfTwo_reverse(dds_width)
 
-                // console.log(dds_width, dds_width, 'dds', mipmap_level)
                 let dds_offset = 128
 
                 if (mipmap_level === 0) {
                     //not mip
                     let amount_dds_mips = new DataView(dds_buffer).getUint32(28, true)
-                    // console.log(amount_dds_mips, 'amount_dds_mips')
                     //FIX
 
                     TXFA.texture = []
@@ -208,15 +216,11 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
                         TXFA.type = 65
                     }
 
-                    //     x_texture_offset = texture_data_offset + offset_mid
-
-                    // dds_new_byte_length = dds_new_byte_length/2
-
-                    for (dds_loop_i = 0; dds_loop_i < amount_dds_mips; dds_loop_i++) {
+                    for (let dds_loop_i = 0; dds_loop_i < amount_dds_mips; dds_loop_i++) {
 
                         //FIX
                         let dds_new_buffer = dds_buffer.slice(dds_offset, dds_offset + dds_new_byte_length)
-                        console.log(dds_offset, dds_new_byte_length + dds_offset, 'idk', dds_buffer, 'dds_new_buffer', dds_new_buffer, 'dif', dds_offset - dds_new_byte_length)
+                        // console.log(dds_offset, dds_new_byte_length + dds_offset, 'idk', dds_buffer, 'dds_new_buffer', dds_new_buffer, 'dif', dds_offset - dds_new_byte_length)
                         dds_offset += dds_new_byte_length
 
                         if (is_dxt5 === true) {
@@ -229,11 +233,11 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
                         dds_height = dds_height - 1
 
                         if (dds_width === 1 || dds_height === 1) {
-                            console.log(dds_new_buffer, 'low')
+                            // console.log(dds_new_buffer, 'low')
                             amount_dds_mips = 0
                         }
 
-                        console.log(dds_width, 'dds_width', dds_height, 'dds_height')
+                        // console.log(dds_width, 'dds_width', dds_height, 'dds_height')
 
                         TXFA.texture.push(dds_new_buffer)
 
@@ -243,8 +247,6 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
 
                 } else {
                     // is mip
-
-                    // console.log(TXFA.y - mipmap_level, dds_height, 'dds_height asdf mipmap')
                     if (dds_height !== TXFA.y - mipmap_level) {
                         alert("wrong y dimensions")
                         return;
@@ -267,31 +269,6 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
 
                     let position = document.getElementsByClassName("file_is_highlighted")[0]
                     position.click()
-                    // dds_mips = new DataView(dds_buffer).getUint32(28, true)
-
-                    // temp_y = TXFA.y
-                    // temp_x = TXFA.x
-                    //     x_texture_offset = texture_data_offset + offset_mid
-
-                    // for (dds_loop_i = 0; dds_loop_i < TXFA.mipmaps + 1; dds_loop_i++) {
-
-                    //     import_dds_into_x(dds_buffer, dds_offset, x_texture_offset, dds_new_byte_length)
-
-                    //     function import_dds_into_x(dds_buffer, dds_offset, x_texture_offset_, length) {
-
-                    //         for (i = 0; i < length; i++) {
-
-                    //             temp_i = new DataView(dds_buffer).getUint8(i + dds_offset)
-                    //             new DataView(buffer).setUint8(i + x_texture_offset_, temp_i)
-                    //         }
-                    //         x_texture_offset += i
-                    //     }
-
-                    //     temp_x = temp_x / 2
-                    //     temp_y = temp_y / 2
-
-                    // }
-                    //     document.getElementsByClassName("file_is_highlighted")[0].click()
 
                 }
             }
@@ -302,10 +279,9 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
 
         function generate_canvas_replacement_pc(file_temp) {
 
-            // file_temp = ev.target.files[0];
             // get the file
-            blobURL = URL.createObjectURL(file_temp);
-            img_temp = new Image();
+            let blobURL = URL.createObjectURL(file_temp);
+            let img_temp = new Image();
             img_temp.src = blobURL;
 
             img_temp.onerror = function() {
@@ -331,21 +307,17 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
                     is_power_of_2 = powerOfTwo(img_height)
                 }
 
-                // console.log('true',img_width,img_height)
-
-                // I'm using a <input type="file"> for demonstrating
-
                 URL.revokeObjectURL(this.src);
-                mime_type = "image/jpeg";
-                quality = qualityRate(file_temp.size);
-                canvas_temp = document.createElement("canvas");
+                let mime_type = "image/jpeg";
+                let quality = qualityRate(file_temp.size);
+                let canvas_temp = document.createElement("canvas");
                 canvas_temp.width = img_width
                 canvas_temp.height = img_height
-                ctx_temp = canvas_temp.getContext("2d");
+                let ctx_temp = canvas_temp.getContext("2d");
                 ctx_temp.imageSmoothingEnabled = false
                 ctx_temp.drawImage(img_temp, 0, 0, canvas_temp.width, canvas_temp.height);
 
-                document.getElementById("file_editor").append(canvas_temp);
+                file_editor.append(canvas_temp);
 
                 let temp_array = ctx_temp.getImageData(0, 0, canvas_temp.width, canvas_temp.height).data
 
@@ -358,22 +330,6 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
                 TXFA.y = powerOfTwo_reverse(canvas_temp.height)
                 TXFA.mipmaps = 0
 
-                // canvas_temp.toBlob(blob=>{
-                //     let localfile = new File([blob],'import.png',{
-                //         type: "image/jpeg",
-                //         lastModified: new Date().getTime()
-                //     },'utf-8');
-                //     let container = new DataTransfer();
-                //     container.items.add(localfile);
-                //     aaaaaaaaa = container
-                //     console.log(container)
-                //     console.log(container.files)
-                //     canvas_temp.files = container.files;
-                //     canvas_temp.toDataURL(canvas_temp.files[0])
-                // }
-                // , mime_type, quality);
-
-                // console.log("?")
                 let position = document.getElementsByClassName("file_is_highlighted")[0]
                 position.click()
 
@@ -385,46 +341,16 @@ function load_x_d_texture(id, outer_id, sub_group_index, mipmap_level) {
             return Math.log2(x) % 1 === 0;
         }
         function powerOfTwo_reverse(x) {
-            //FIX
-            // this is rly bad but im lazy 
-            if (x === 1) {
-                return 0
-            } else if (x === 2) {
-                return 1
-            } else if (x === 4) {
-                return 2
-            } else if (x === 8) {
-                return 3
-            } else if (x === 16) {
-                return 4
-            } else if (x === 32) {
-                return 5
-            } else if (x === 64) {
-                return 6
-            } else if (x === 128) {
-                return 7
-            } else if (x === 256) {
-                return 8
-            } else if (x === 512) {
-                return 9
-            } else if (x === 1024) {
-                return 10
-            } else if (x === 2048) {
-                return 11
-            } else if (x === 4096) {
-                return 12
-            } else if (x === 8192) {
-                return 13
-            } else if (x === 16384) {
-                return 14
+            let logval = Math.log2(x)
+            if (logval % 1 === 0) {
+                return logval
             } else {
-                alert("wtf", x, 'malformed or to high how')
+                alert("wtf", x, logval, 'malformed how')
             }
         }
     }
 
     function mipmap_change() {
-        // console.log(this)
         if (this.id === "mipmap_prev") {
             load_x_d_texture(id, outer_id, sub_group_index, mipmap_level - 1)
         } else {

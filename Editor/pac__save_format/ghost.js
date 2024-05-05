@@ -6,7 +6,7 @@ function load_ghost() {
                 </select>
 </div>
 `
-    document.getElementById("file_editor").innerHTML = html    
+    file_editor.innerHTML = html    
     document.getElementById("char").value = (u32(12,true))
 
         // document.getElementById("char").selectedIndex = (u32(12))

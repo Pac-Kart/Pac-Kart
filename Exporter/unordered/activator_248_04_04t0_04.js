@@ -1,7 +1,8 @@
+"use strict";
 function ex_activator_248_04_04t0_04(o, x) {
-    let e = o + 48
+    let e = o + divisible(48, g.divisibility)
     //amount?   su32(o +00, x.u32_00)
-    sf32(o + 08, x.f32_08)
+    sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
@@ -16,11 +17,11 @@ function ex_activator_248_04_04t0_04(o, x) {
     su8(o + 34, x.u8_34)
 
     if (x.section_04.length) {
-        su32(o + 00, x.section_04.length)
-        su32(o + 04, e - g.m)
-        g.oa.push(o + 04)
+        su32(o + 0, x.section_04.length)
+        su32(o + 4, e)
+        g.oa.push(o + 4)
         let temp_offset = e
-        e += divisible(x.section_04.length * 8, 16)
+        e += divisible(x.section_04.length * 8, g.divisibility)
         for (let i = 0; i < x.section_04.length; i++) {
             e = ex_activator_248_04_04t0_04_04(temp_offset + (i * 8), e, x.section_04[i])
         }
@@ -30,27 +31,27 @@ function ex_activator_248_04_04t0_04(o, x) {
     return e
 }
 function ex_activator_248_04_04t0_04_04(o, e, x) {
-    su32(o + 00, x.u32_00)
+    su32(o + 0, x.u32_00)
 
-    e = ex_s_offset(o + 04, e, ex_activator_248_04_04t0_04_04_04, x.section_04, 'down');
+    e = ex_s_offset(o + 4, e, ex_activator_248_04_04t0_04_04_04, x.section_04, 'down');
 
     g.debug ? ex_debug(o, "wOXy") : 0;
     return e
 }
 function ex_activator_248_04_04t0_04_04_04(o, x) {
-    let e = o + 16
-    su32(o + 00, x.u32_00)
+    let e = o + divisible(16, g.divisibility)
+    su32(o + 0, x.u32_00)
 
-    e = ex_s_offset(o + 04, e, ex_activator_248_04_04t0_04_04_04_04, x.section_04, 'down');
+    e = ex_s_offset(o + 4, e, ex_activator_248_04_04t0_04_04_04_04, x.section_04, 'down');
 
     g.debug ? ex_debug(o, "=M;:") : 0;
     return e
 }
 function ex_activator_248_04_04t0_04_04_04_04(o, x) {
-    let e = o + 16
-    su8(o + 00, x.u8_00)
-    su8(o + 01, x.u8_01)
-    su8(o + 02, x.u8_02)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 0, x.u8_00)
+    su8(o + 1, x.u8_01)
+    su8(o + 2, x.u8_02)
 
     g.debug ? ex_debug(o, ">phr") : 0;
     return e

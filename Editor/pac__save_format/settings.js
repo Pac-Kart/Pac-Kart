@@ -2,7 +2,7 @@ function load_save_settings() {
     settings_html = ''
     settings_import();
 
-    document.getElementById("file_editor").innerHTML = settings_html
+    file_editor.innerHTML = settings_html
 
     settings_data()
 
@@ -128,23 +128,23 @@ function settings_import() {
 }
 
 function settings_data() {
-    document.getElementById("year").value = (u32(save_offset.settings1 + 8, is_little_endian))
+    document.getElementById("year").value = (u32(save_offset.settings1 + 8 ))
     document.getElementById("year").dataset.offset = (save_offset.settings1 + 8)
 
-    document.getElementById("month").value = (u32(save_offset.settings1 + 12, is_little_endian))
+    document.getElementById("month").value = (u32(save_offset.settings1 + 12 ))
     document.getElementById("month").dataset.offset = (save_offset.settings1 + 12)
 
-    document.getElementById("day").value = (u32(save_offset.settings1 + 16, is_little_endian))
+    document.getElementById("day").value = (u32(save_offset.settings1 + 16 ))
     document.getElementById("day").dataset.offset = (save_offset.settings1 + 16)
-    document.getElementById("hour").value = (u32(save_offset.settings1 + 20, is_little_endian))
+    document.getElementById("hour").value = (u32(save_offset.settings1 + 20 ))
     document.getElementById("hour").dataset.offset = (save_offset.settings1 + 20)
-    document.getElementById("minute").value = (u32(save_offset.settings1 + 24, is_little_endian))
+    document.getElementById("minute").value = (u32(save_offset.settings1 + 24 ))
     document.getElementById("minute").dataset.offset = (save_offset.settings1 + 24)
 
-    document.getElementById("last_difficulty").selectedIndex = (u32(save_offset.settings1 + 28, is_little_endian))
+    document.getElementById("last_difficulty").selectedIndex = (u32(save_offset.settings1 + 28 ))
     document.getElementById("last_difficulty").dataset.offset = (save_offset.settings1 + 28)
 
-    document.getElementById("auto_save").selectedIndex = (u32(save_offset.settings1 + 32, is_little_endian))
+    document.getElementById("auto_save").selectedIndex = (u32(save_offset.settings1 + 32 ))
     document.getElementById("auto_save").dataset.offset = (save_offset.settings1 + 32)
 
     document.getElementById("sfx_volume").value = (u8(save_offset.settings1 + 36))

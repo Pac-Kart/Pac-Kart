@@ -1,7 +1,5 @@
+"use strict";
 function load_x_d_model_header(id, outerid, sub_group_index) {
-    console.log(id)
-    // TXFA = Object.byString(XFA, id);
-
      let html = `<div style='overflow:hidden;height:100%'; ><div style="display:inline-block;width:95%;padding:5px;height:20%;">
     <input style='width:100%;' maxlength='52' data-outer_xfa="${id}" data-type="string" data-fixed="true" data-byte_amount="52" data-inner_xfa="name"  id='image_name' type='text' value='${TXFA.name}'>
     <br>
@@ -43,15 +41,15 @@ function load_x_d_model_header(id, outerid, sub_group_index) {
          </table>   
       </div>
    </div>
-   <br>`
+</div>
+                    <div id='outer_canvas' style='height:95%;'>
 
-    document.getElementById("file_editor").innerHTML = html
+`
 
-    // document.getElementById("new_entry").addEventListener("click", generate_model_section);
+    file_editor.innerHTML = html
+
     document.getElementById("_2nd_data_bar").innerHTML = ''
-    // document.getElementById("_2nd_data_bar").innerHTML = '<a data-is_active="false" class="data_bar_options" id="main_delete">X</a>'
     document.getElementById("image_name").addEventListener('change', edit_change_name);
-    // document.getElementById("main_delete").addEventListener("click", splice_entry);
 
     let input_field = visibility_table.getElementsByTagName('INPUT')
     for (let i = 0; i < input_field.length; i++) {
@@ -93,7 +91,6 @@ function load_x_d_model_header(id, outerid, sub_group_index) {
 
         }
         file_viewer.focus()
-        // generate_file_view()
     }
 
     function splice_entry() {

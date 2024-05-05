@@ -1,16 +1,17 @@
+"use strict";
 function ex_car(o, x) {
-    let e = o + 16
-    su8(o + 04, x.u8_04)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 4, x.u8_04)
 
-    e = ex_s_offset(o + 00, e, ex_car_00, x.section_00, 'down');
+    e = ex_s_offset(o + 0, e, ex_car_00, x.section_00, 'down');
 
     g.debug ? ex_debug(o, "HfAo") : 0;
     return e
 }
 function ex_car_00(o, x) {
-    let e = o + 240
-    su32(o + 04, x.u32_04)
-    su32(o + 08, x.u32_08)
+    let e = o + divisible(240, g.divisibility)
+    su32(o + 4, x.u32_04)
+    su32(o + 8, x.u32_08)
     su32(o + 12, x.u32_12)
     su32(o + 16, x.u32_16)
     su32(o + 20, x.u32_20)
@@ -56,20 +57,22 @@ function ex_car_00(o, x) {
     //amount?   su32(o +220, x.u32_220)
     //amount?   su32(o +228, x.u32_228)
 
-    e = ex_ml(x.ordered_model_animation_2_176, g.model_animation_2_array, ex_model_animation_2, g.ordered_ref.model_animation_2, o + 176, e, 'down',true);
+    e = ex_ml(x.ordered_model_animation_2_176, g.model_animation_2_array, ex_model_animation_2, g.ordered_ref.model_animation_2, o + 176, e, 'down', true);
 
-    e = ex_s_offset(o + 180, e, ex_car_00_180, x.section_180, 'down');
-    e = ex_s_offset(o + 184, e, ex_car_00_184, x.section_184, 'down');
+    e = ex_ml(x.unordered_car_00_180_180, g.car_00_180_array, ex_car_00_180, g.unordered_ref.car_00_180, o + 180, e, 'down');
+    e = ex_ml(x.unordered_car_00_184_184, g.car_00_184_array, ex_car_00_184, g.unordered_ref.car_00_184, o + 184, e, 'down');
+    // e = ex_s_offset(o + 180, e, ex_car_00_180, x.section_180, 'down');
+    // e = ex_s_offset(o + 184, e, ex_car_00_184, x.section_184, 'down');
     e = ex_s_offset(o + 188, e, ex_car_00_188, x.section_188, 'down');
     e = ex_s_offset(o + 192, e, ex_car_00_192, x.section_192, 'down');
     e = ex_s_offset(o + 196, e, ex_car_00_196, x.section_196, 'down');
     e = ex_s_offset(o + 200, e, ex_car_00_200, x.section_200, 'down');
     if (x.section_208.length) {
         su32(o + 204, x.section_208.length)
-        su32(o + 208, e - g.m)
+        su32(o + 208, e)
         g.oa.push(o + 208)
         let temp_offset = e
-        e += divisible(x.section_208.length * 8, 16)
+        e += divisible(x.section_208.length * 8, g.divisibility)
         for (let i = 0; i < x.section_208.length; i++) {
             e = ex_car_00_208(temp_offset + (i * 8), e, x.section_208[i])
         }
@@ -77,10 +80,10 @@ function ex_car_00(o, x) {
     }
     ;if (x.section_216.length) {
         su32(o + 212, x.section_216.length)
-        su32(o + 216, e - g.m)
+        su32(o + 216, e)
         g.oa.push(o + 216)
         let temp_offset = e
-        e += divisible(x.section_216.length * 12, 16)
+        e += divisible(x.section_216.length * 12, g.divisibility)
         for (let i = 0; i < x.section_216.length; i++) {
             e = ex_car_00_216(temp_offset + (i * 12), e, x.section_216[i])
         }
@@ -88,10 +91,10 @@ function ex_car_00(o, x) {
     }
     ;if (x.section_224.length) {
         su32(o + 220, x.section_224.length)
-        su32(o + 224, e - g.m)
+        su32(o + 224, e)
         g.oa.push(o + 224)
         let temp_offset = e
-        e += divisible(x.section_224.length * 12, 16)
+        e += divisible(x.section_224.length * 12, g.divisibility)
         for (let i = 0; i < x.section_224.length; i++) {
             e = ex_car_00_216(temp_offset + (i * 12), e, x.section_224[i])
         }
@@ -99,12 +102,12 @@ function ex_car_00(o, x) {
     }
     ;if (x.section_232.length) {
         su32(o + 228, x.section_232.length)
-        su32(o + 232, e - g.m)
+        su32(o + 232, e)
         g.oa.push(o + 232)
         let temp_offset = e
-        e += divisible(x.section_232.length * 04, 16)
+        e += divisible(x.section_232.length * 4, g.divisibility)
         for (let i = 0; i < x.section_232.length; i++) {
-            e = ex_unknown(temp_offset + (i * 04), e, x.section_232[i])
+            e = ex_unknown(temp_offset + (i * 4), e, x.section_232[i])
         }
         ;
     }
@@ -112,22 +115,22 @@ function ex_car_00(o, x) {
     return e
 }
 function ex_car_00_180(o, x) {
-    let e = o + 48
+    let e = o + divisible(48, g.divisibility)
     //amount?   su32(o +16, x.u32_16)
     //amount?   su32(o +24, x.u32_24)
     //amount?   su32(o +32, x.u32_32)
     //amount?   su32(o +40, x.u32_40)
 
-    e = ex_s_offset(o + 00, e, ex_car_00_180_00, x.section_00, 'down');
-    e = ex_s_offset(o + 04, e, ex_car_00_180_04, x.section_04, 'down');
-    e = ex_ml(x.unordered_sound_section_08, g.sound_section_array, ex_sound_section, g.unordered_ref.sound_section, o + 08, e, 'down');
+    e = ex_s_offset(o + 0, e, ex_car_00_180_00, x.section_00, 'down');
+    e = ex_s_offset(o + 4, e, ex_car_00_180_04, x.section_04, 'down');
+    e = ex_ml(x.unordered_sound_section_08, g.sound_section_array, ex_sound_section, g.unordered_ref.sound_section, o + 8, e, 'down');
     e = ex_ml(x.unordered_sound_section_12, g.sound_section_array, ex_sound_section, g.unordered_ref.sound_section, o + 12, e, 'down');
     if (x.section_20.length) {
         su32(o + 16, x.section_20.length)
-        su32(o + 20, e - g.m)
+        su32(o + 20, e)
         g.oa.push(o + 20)
         let temp_offset = e
-        e += divisible(x.section_20.length * 8, 16)
+        e += divisible(x.section_20.length * 8, g.divisibility)
         for (let i = 0; i < x.section_20.length; i++) {
             e = ex_car_00_180_20(temp_offset + (i * 8), e, x.section_20[i])
         }
@@ -135,10 +138,10 @@ function ex_car_00_180(o, x) {
     }
     ;if (x.section_28.length) {
         su32(o + 24, x.section_28.length)
-        su32(o + 28, e - g.m)
+        su32(o + 28, e)
         g.oa.push(o + 28)
         let temp_offset = e
-        e += divisible(x.section_28.length * 8, 16)
+        e += divisible(x.section_28.length * 8, g.divisibility)
         for (let i = 0; i < x.section_28.length; i++) {
             e = ex_car_00_180_20(temp_offset + (i * 8), e, x.section_28[i])
         }
@@ -146,10 +149,10 @@ function ex_car_00_180(o, x) {
     }
     ;if (x.section_36.length) {
         su32(o + 32, x.section_36.length)
-        su32(o + 36, e - g.m)
+        su32(o + 36, e)
         g.oa.push(o + 36)
         let temp_offset = e
-        e += divisible(x.section_36.length * 8, 16)
+        e += divisible(x.section_36.length * 8, g.divisibility)
         for (let i = 0; i < x.section_36.length; i++) {
             e = ex_car_00_180_20(temp_offset + (i * 8), e, x.section_36[i])
         }
@@ -157,10 +160,10 @@ function ex_car_00_180(o, x) {
     }
     ;if (x.section_44.length) {
         su32(o + 40, x.section_44.length)
-        su32(o + 44, e - g.m)
+        su32(o + 44, e)
         g.oa.push(o + 44)
         let temp_offset = e
-        e += divisible(x.section_44.length * 8, 16)
+        e += divisible(x.section_44.length * 8, g.divisibility)
         for (let i = 0; i < x.section_44.length; i++) {
             e = ex_car_00_180_20(temp_offset + (i * 8), e, x.section_44[i])
         }
@@ -170,19 +173,19 @@ function ex_car_00_180(o, x) {
     return e
 }
 function ex_car_00_180_00(o, x) {
-    let e = o + 48
-    sf32(o + 00, x.f32_00)
-    ex_patch(o + 04, g.texture_patch_array, x.texture_04)
+    let e = o + divisible(48, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    ex_patch(o + 4, g.texture_patch_array, x.texture_04)
     //amount?   su32(o +12, x.u32_12)
     su32(o + 24, x.u32_24)
 
-    e = ex_s_offset(o + 08, e, ex_car_00_180_00_08, x.section_08, 'down');
+    e = ex_s_offset(o + 8, e, ex_car_00_180_00_08, x.section_08, 'down');
     if (x.section_16.length) {
         su32(o + 12, x.section_16.length)
-        su32(o + 16, e - g.m)
+        su32(o + 16, e)
         g.oa.push(o + 16)
         let temp_offset = e
-        e += divisible(x.section_16.length * 20, 16)
+        e += divisible(x.section_16.length * 20, g.divisibility)
         for (let i = 0; i < x.section_16.length; i++) {
             e = ex_car_00_180_00_16(temp_offset + (i * 20), e, x.section_16[i])
         }
@@ -197,20 +200,20 @@ function ex_car_00_180_00(o, x) {
     return e
 }
 function ex_car_00_180_00_08(o, x) {
-    let e = o + 16
-    su8(o + 00, x.u8_00)
-    su8(o + 01, x.u8_01)
-    su8(o + 02, x.u8_02)
-    su8(o + 03, x.u8_03)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 0, x.u8_00)
+    su8(o + 1, x.u8_01)
+    su8(o + 2, x.u8_02)
+    su8(o + 3, x.u8_03)
 
     g.debug ? ex_debug(o, "_>ez") : 0;
     return e
 }
 function ex_car_00_180_00_16(o, e, x) {
-    su32(o + 00, x.u32_00)
-    su32(o + 04, x.u32_04)
+    su32(o + 0, x.u32_00)
+    su32(o + 4, x.u32_04)
 
-    e = ex_s_offset(o + 08, e, ex_car_00_180_00_16_08, x.section_08, 'down');
+    e = ex_s_offset(o + 8, e, ex_car_00_180_00_16_08, x.section_08, 'down');
     e = ex_s_offset(o + 12, e, ex_car_00_180_00_16_12, x.section_12, 'down');
     e = ex_s_offset(o + 16, e, ex_car_00_180_00_16_12, x.section_16, 'down');
 
@@ -218,8 +221,8 @@ function ex_car_00_180_00_16(o, e, x) {
     return e
 }
 function ex_car_00_180_00_16_08(o, x) {
-    let e = o + 48
-    su32(o + 04, x.u32_04)
+    let e = o + divisible(48, g.divisibility)
+    su32(o + 4, x.u32_04)
     su16(o + 12, x.u16_12)
     su32(o + 20, x.u32_20)
     su32(o + 28, x.u32_28)
@@ -228,15 +231,15 @@ function ex_car_00_180_00_16_08(o, x) {
     return e
 }
 function ex_car_00_180_00_16_12(o, x) {
-    let e = o + 16
-    su32(o + 00, x.u32_00)
+    let e = o + divisible(16, g.divisibility)
+    su32(o + 0, x.u32_00)
 
     if (x.section_04.length) {
-        su32(o + 00, x.section_04.length)
-        su32(o + 04, e - g.m)
-        g.oa.push(o + 04)
+        su32(o + 0, x.section_04.length)
+        su32(o + 4, e)
+        g.oa.push(o + 4)
         let temp_offset = e
-        e += divisible(x.section_04.length * 64, 16)
+        e += divisible(x.section_04.length * 64, g.divisibility)
         for (let i = 0; i < x.section_04.length; i++) {
             e = ex_mysterious(temp_offset + (i * 64), e, x.section_04[i])
         }
@@ -246,12 +249,12 @@ function ex_car_00_180_00_16_12(o, x) {
     return e
 }
 function ex_car_00_180_04(o, x) {
-    let e = o + 96
-    sf32(o + 00, x.f32_00)
+    let e = o + divisible(96, g.divisibility)
+    sf32(o + 0, x.f32_00)
     //?
-    sf32(o + 04, x.f32_04)
+    sf32(o + 4, x.f32_04)
     //?
-    sf32(o + 08, x.f32_08)
+    sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
     //?
     sf32(o + 16, x.f32_16)
@@ -277,16 +280,19 @@ function ex_car_00_180_04(o, x) {
     e = ex_s_offset(o + 64, e, ex_car_00_180_04_56, x.section_64, 'down');
     e = ex_ml(x.unordered_unknown_00_68, g.unknown_00_array, ex_unknown_00, g.unordered_ref.unknown_00, o + 68, e, 'down');
     e = ex_s_offset(o + 80, e, ex_car_00_180_04_80, x.section_80, 'down');
-    e = ex_s_offset(o + 84, e, ex_car_00_180_04_84, x.section_84, 'down');
-    e = ex_s_offset(o + 88, e, ex_car_00_180_04_88, x.section_88, 'down');
+
+    e = ex_ml(x.unordered_car_00_180_04_84_84, g.car_00_180_04_84_array, ex_car_00_180_04_84, g.unordered_ref.car_00_180_04_84, o + 84, e, 'down');
+    e = ex_ml(x.unordered_car_00_180_04_84_88, g.car_00_180_04_84_array, ex_car_00_180_04_84, g.unordered_ref.car_00_180_04_84, o + 88, e, 'down');
+    // e = ex_s_offset(o + 84, e, ex_car_00_180_04_84, x.section_84, 'down');
+    // e = ex_s_offset(o + 88, e, ex_car_00_180_04_88, x.section_88, 'down');
     e = ex_s_offset(o + 92, e, ex_car_00_180_04_92, x.section_92, 'down');
 
     g.debug ? ex_debug(o, "KPK3") : 0;
     return e
 }
 function ex_car_00_180_04_56(o, x) {
-    let e = o + 48
-    su32(o + 04, x.u32_04)
+    let e = o + divisible(48, g.divisibility)
+    su32(o + 4, x.u32_04)
     su16(o + 12, x.u16_12)
     su32(o + 20, x.u32_20)
     su32(o + 28, x.u32_28)
@@ -295,9 +301,9 @@ function ex_car_00_180_04_56(o, x) {
     return e
 }
 function ex_car_00_180_04_80(o, x) {
-    let e = o + 32
-    su32(o + 00, x.u32_00)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(32, g.divisibility)
+    su32(o + 0, x.u32_00)
+    sf32(o + 8, x.f32_08)
 
     e = ex_ml(x.unordered_unknown_00_16, g.unknown_00_array, ex_unknown_00, g.unordered_ref.unknown_00, o + 16, e, 'down');
 
@@ -305,47 +311,40 @@ function ex_car_00_180_04_80(o, x) {
     return e
 }
 function ex_car_00_180_04_84(o, x) {
-    let e = o + 16
-    su32(o + 00, x.u32_00)
+    let e = o + divisible(16, g.divisibility)
+    su32(o + 0, x.u32_00)
 
     g.debug ? ex_debug(o, "@p?P") : 0;
     return e
 }
-function ex_car_00_180_04_88(o, x) {
-    let e = o + 16
-    su32(o + 00, x.u32_00)
-
-    g.debug ? ex_debug(o, "AMo0") : 0;
-    return e
-}
 function ex_car_00_180_04_92(o, x) {
-    let e = o + 16
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(16, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
 
     g.debug ? ex_debug(o, "0CvZ") : 0;
     return e
 }
 function ex_car_00_180_20(o, e, x) {
-    su8(o + 00, x.u8_00)
+    su8(o + 0, x.u8_00)
 
     switch (x.u8_00) {
     case 1:
-        e = ex_s_offset(o + 04, e, ex_car_00_180_20_04t1, x.section_04, 'down');
+        e = ex_s_offset(o + 4, e, ex_car_00_180_20_04t1, x.section_04, 'down');
         break;
     case 3:
-        e = ex_s_offset(o + 04, e, ex_car_00_180_20_04t3, x.section_04, 'down');
+        e = ex_s_offset(o + 4, e, ex_car_00_180_20_04t3, x.section_04, 'down');
         break;
     }
     g.debug ? ex_debug(o, "7<Bd") : 0;
     return e
 }
 function ex_car_00_180_20_04t1(o, x) {
-    let e = o + 64
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(64, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
@@ -358,26 +357,26 @@ function ex_car_00_180_20_04t1(o, x) {
     return e
 }
 function ex_car_00_180_20_04t3(o, x) {
-    let e = o + 32
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(32, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
 
     g.debug ? ex_debug(o, "Yr?m") : 0;
     return e
 }
 function ex_car_00_184(o, x) {
-    let e = o + 16
-    su8(o + 00, x.u8_00)
+    let e = o + divisible(16, g.divisibility)
+    su8(o + 0, x.u8_00)
 
-    e = ex_s_offset(o + 04, e, ex_car_00_184_04, x.section_04, 'down');
+    e = ex_s_offset(o + 4, e, ex_car_00_184_04, x.section_04, 'down');
 
     g.debug ? ex_debug(o, ";ljS") : 0;
     return e
 }
 function ex_car_00_184_04(o, x) {
-    let e = o + 64
+    let e = o + divisible(64, g.divisibility)
     sf32(o + 12, x.f32_12)
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
@@ -389,15 +388,15 @@ function ex_car_00_184_04(o, x) {
     sf32(o + 44, x.f32_44)
     sf32(o + 48, x.f32_48)
 
-    e = ex_s_offset(o + 00, e, ex_car_00_184_04_00, x.section_00, 'down');
-    e = ex_s_offset(o + 04, e, ex_car_00_184_04_04, x.section_04, 'down');
-    e = ex_s_offset(o + 08, e, ex_car_00_184_04_08, x.section_08, 'down');
+    e = ex_s_offset(o + 0, e, ex_car_00_184_04_00, x.section_00, 'down');
+    e = ex_s_offset(o + 4, e, ex_car_00_184_04_04, x.section_04, 'down');
+    e = ex_s_offset(o + 8, e, ex_car_00_184_04_08, x.section_08, 'down');
 
     g.debug ? ex_debug(o, "LRdo") : 0;
     return e
 }
 function ex_car_00_184_04_00(o, x) {
-    let e = o + 80
+    let e = o + divisible(80, g.divisibility)
     su8(o + 34, x.u8_34)
     su8(o + 35, x.u8_35)
     sf32(o + 40, x.f32_40)
@@ -412,10 +411,10 @@ function ex_car_00_184_04_00(o, x) {
     return e
 }
 function ex_car_00_184_04_00_16(o, x) {
-    let e = o + 48
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(48, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
     sf32(o + 24, x.f32_24)
@@ -425,20 +424,20 @@ function ex_car_00_184_04_00_16(o, x) {
     return e
 }
 function ex_car_00_184_04_04(o, x) {
-    let e = o + 16
-    sf32(o + 00, x.f32_00)
+    let e = o + divisible(16, g.divisibility)
+    sf32(o + 0, x.f32_00)
     //?
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
 
     g.debug ? ex_debug(o, "oVHV") : 0;
     return e
 }
 function ex_car_00_184_04_08(o, x) {
-    let e = o + 96
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(96, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
     sf32(o + 24, x.f32_24)
@@ -459,7 +458,7 @@ function ex_car_00_184_04_08(o, x) {
     return e
 }
 function ex_car_00_188(o, x) {
-    let e = o + 128
+    let e = o + divisible(128, g.divisibility)
     su8(o + 20, x.u8_20)
     sf32(o + 28, x.f32_28)
     sf32(o + 32, x.f32_32)
@@ -475,19 +474,19 @@ function ex_car_00_188(o, x) {
     sf32(o + 104, x.f32_104)
     sf32(o + 108, x.f32_108)
 
-    e = ex_ml(x.ordered_model_animation_2_00, g.model_animation_2_array, ex_model_animation_2, g.ordered_ref.model_animation_2, o + 00, e, 'down',true);
+    e = ex_ml(x.ordered_model_animation_2_00, g.model_animation_2_array, ex_model_animation_2, g.ordered_ref.model_animation_2, o + 0, e, 'down', true);
 
-    e = ex_ml(x.unordered_model_link_04, g.model_link_array, ex_model_link, g.unordered_ref.model_link, o + 04, e, 'down');
-    e = ex_ml(x.ordered_model_animation_1_08, g.model_animation_1_array, ex_model_animation_1, g.ordered_ref.model_animation_1, o + 08, e, 'down',true);
-    e = ex_ml(x.ordered_model_animation_1_12, g.model_animation_1_array, ex_model_animation_1, g.ordered_ref.model_animation_1, o + 12, e, 'down',true);
-    e = ex_ml(x.ordered_model_animation_1_16, g.model_animation_1_array, ex_model_animation_1, g.ordered_ref.model_animation_1, o + 16, e, 'down',true);
-    e = ex_ml(x.ordered_model_animation_1_24, g.model_animation_1_array, ex_model_animation_1, g.ordered_ref.model_animation_1, o + 24, e, 'down',true);
+    e = ex_ml(x.unordered_model_link_04, g.model_link_array, ex_model_link, g.unordered_ref.model_link, o + 4, e, 'down');
+    e = ex_ml(x.ordered_model_animation_1_08, g.model_animation_1_array, ex_model_animation_1, g.ordered_ref.model_animation_1, o + 8, e, 'down', true);
+    e = ex_ml(x.ordered_model_animation_1_12, g.model_animation_1_array, ex_model_animation_1, g.ordered_ref.model_animation_1, o + 12, e, 'down', true);
+    e = ex_ml(x.ordered_model_animation_1_16, g.model_animation_1_array, ex_model_animation_1, g.ordered_ref.model_animation_1, o + 16, e, 'down', true);
+    e = ex_ml(x.ordered_model_animation_1_24, g.model_animation_1_array, ex_model_animation_1, g.ordered_ref.model_animation_1, o + 24, e, 'down', true);
     if (x.section_52.length) {
         su32(o + 48, x.section_52.length)
-        su32(o + 52, e - g.m)
+        su32(o + 52, e)
         g.oa.push(o + 52)
         let temp_offset = e
-        e += divisible(x.section_52.length * 8, 16)
+        e += divisible(x.section_52.length * 8, g.divisibility)
         for (let i = 0; i < x.section_52.length; i++) {
             e = ex_car_00_188_52(temp_offset + (i * 8), e, x.section_52[i])
         }
@@ -495,10 +494,10 @@ function ex_car_00_188(o, x) {
     }
     ;if (x.section_60.length) {
         su32(o + 56, x.section_60.length)
-        su32(o + 60, e - g.m)
+        su32(o + 60, e)
         g.oa.push(o + 60)
         let temp_offset = e
-        e += divisible(x.section_60.length * 20, 16)
+        e += divisible(x.section_60.length * 20, g.divisibility)
         for (let i = 0; i < x.section_60.length; i++) {
             e = ex_car_00_188_60(temp_offset + (i * 20), e, x.section_60[i])
         }
@@ -506,10 +505,10 @@ function ex_car_00_188(o, x) {
     }
     ;if (x.section_68.length) {
         su32(o + 64, x.section_68.length)
-        su32(o + 68, e - g.m)
+        su32(o + 68, e)
         g.oa.push(o + 68)
         let temp_offset = e
-        e += divisible(x.section_68.length * 32, 16)
+        e += divisible(x.section_68.length * 32, g.divisibility)
         for (let i = 0; i < x.section_68.length; i++) {
             e = ex_car_00_188_68(temp_offset + (i * 32), e, x.section_68[i])
         }
@@ -517,10 +516,10 @@ function ex_car_00_188(o, x) {
     }
     ;if (x.section_76.length) {
         su32(o + 72, x.section_76.length)
-        su32(o + 76, e - g.m)
+        su32(o + 76, e)
         g.oa.push(o + 76)
         let temp_offset = e
-        e += divisible(x.section_76.length * 32, 16)
+        e += divisible(x.section_76.length * 32, g.divisibility)
         for (let i = 0; i < x.section_76.length; i++) {
             e = ex_car_00_188_68(temp_offset + (i * 32), e, x.section_76[i])
         }
@@ -528,10 +527,10 @@ function ex_car_00_188(o, x) {
     }
     ;if (x.section_84.length) {
         su32(o + 80, x.section_84.length)
-        su32(o + 84, e - g.m)
+        su32(o + 84, e)
         g.oa.push(o + 84)
         let temp_offset = e
-        e += divisible(x.section_84.length * 32, 16)
+        e += divisible(x.section_84.length * 32, g.divisibility)
         for (let i = 0; i < x.section_84.length; i++) {
             e = ex_car_00_188_68(temp_offset + (i * 32), e, x.section_84[i])
         }
@@ -541,24 +540,24 @@ function ex_car_00_188(o, x) {
     return e
 }
 function ex_car_00_188_52(o, e, x) {
-    su32(o + 00, x.u32_00)
+    su32(o + 0, x.u32_00)
 
-    e = ex_s_offset(o + 04, e, ex_car_00_188_52_04, x.section_04, 'down');
+    e = ex_s_offset(o + 4, e, ex_car_00_188_52_04, x.section_04, 'down');
 
     g.debug ? ex_debug(o, "Z5qA") : 0;
     return e
 }
 function ex_car_00_188_52_04(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +00, x.u32_00)
-    su8(o + 08, x.u8_08)
+    su8(o + 8, x.u8_08)
 
     if (x.section_04.length) {
-        su32(o + 00, x.section_04.length)
-        su32(o + 04, e - g.m)
-        g.oa.push(o + 04)
+        su32(o + 0, x.section_04.length)
+        su32(o + 4, e)
+        g.oa.push(o + 4)
         let temp_offset = e
-        e += divisible(x.section_04.length * 4, 16)
+        e += divisible(x.section_04.length * 4, g.divisibility)
         for (let i = 0; i < x.section_04.length; i++) {
             e = ex_car_00_188_52_04_04(temp_offset + (i * 4), e, x.section_04[i])
         }
@@ -569,17 +568,17 @@ function ex_car_00_188_52_04(o, x) {
 }
 function ex_car_00_188_52_04_04(o, e, x) {
 
-    e = ex_ml(x.unordered_model_link_00, g.model_link_array, ex_model_link, g.unordered_ref.model_link, o + 00, e, 'down');
+    e = ex_ml(x.unordered_model_link_00, g.model_link_array, ex_model_link, g.unordered_ref.model_link, o + 0, e, 'down');
 
     g.debug ? ex_debug(o, ">uIC") : 0;
     return e
 }
 function ex_car_00_188_60(o, e, x) {
-    su16(o + 00, x.u16_00)
-    su8(o + 02, x.u8_02)
-    su8(o + 03, x.u8_03)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    su16(o + 0, x.u16_00)
+    su8(o + 2, x.u8_02)
+    su8(o + 3, x.u8_03)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
     su8(o + 16, x.u8_16)
 
@@ -587,7 +586,7 @@ function ex_car_00_188_60(o, e, x) {
     return e
 }
 function ex_car_00_188_68(o, e, x) {
-    su32(o + 00, x.u32_00)
+    su32(o + 0, x.u32_00)
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
     sf32(o + 24, x.f32_24)
@@ -596,21 +595,23 @@ function ex_car_00_188_68(o, e, x) {
     return e
 }
 function ex_car_00_192(o, x) {
-    let e = o + 48
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    let e = o + divisible(48, g.divisibility)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
     //amount?   su32(o +20, x.u32_20)
     su8(o + 28, x.u8_28)
 
-    e = ex_s_offset(o + 16, e, ex_car_00_192_16, x.section_16, 'down');
+    e = ex_ml(x.unordered_car_00_192_16_16, g.car_00_192_16_array, ex_car_00_192_16, g.unordered_ref.car_00_192_16, o + 16, e, 'down');
+
+    // e = ex_s_offset(o + 16, e, ex_car_00_192_16, x.section_16, 'down');
     if (x.section_24.length) {
         su32(o + 20, x.section_24.length)
-        su32(o + 24, e - g.m)
+        su32(o + 24, e)
         g.oa.push(o + 24)
         let temp_offset = e
-        e += divisible(x.section_24.length * 12, 16)
+        e += divisible(x.section_24.length * 12, g.divisibility)
         for (let i = 0; i < x.section_24.length; i++) {
             e = ex_car_00_192_24(temp_offset + (i * 12), e, x.section_24[i])
         }
@@ -622,8 +623,8 @@ function ex_car_00_192(o, x) {
     return e
 }
 function ex_car_00_192_16(o, x) {
-    let e = o + 48
-    su32(o + 04, x.u32_04)
+    let e = o + divisible(48, g.divisibility)
+    su32(o + 4, x.u32_04)
     su16(o + 12, x.u16_12)
     su32(o + 20, x.u32_20)
     su32(o + 28, x.u32_28)
@@ -632,16 +633,16 @@ function ex_car_00_192_16(o, x) {
     return e
 }
 function ex_car_00_192_24(o, e, x) {
-    sf32(o + 00, x.f32_00)
-    sf32(o + 04, x.f32_04)
-    sf32(o + 08, x.f32_08)
+    sf32(o + 0, x.f32_00)
+    sf32(o + 4, x.f32_04)
+    sf32(o + 8, x.f32_08)
 
     g.debug ? ex_debug(o, "Io]5") : 0;
     return e
 }
 function ex_car_00_196(o, x) {
-    let e = o + 32
-    sf32(o + 04, x.f32_04)
+    let e = o + divisible(32, g.divisibility)
+    sf32(o + 4, x.f32_04)
     //?
     sf32(o + 12, x.f32_12)
     //?
@@ -650,18 +651,18 @@ function ex_car_00_196(o, x) {
     sf32(o + 20, x.f32_20)
     //?
 
-    e = ex_ml(x.unordered_sound_section_00, g.sound_section_array, ex_sound_section, g.unordered_ref.sound_section, o + 00, e, 'down');
-    e = ex_ml(x.unordered_sound_section_08, g.sound_section_array, ex_sound_section, g.unordered_ref.sound_section, o + 08, e, 'down');
+    e = ex_ml(x.unordered_sound_section_00, g.sound_section_array, ex_sound_section, g.unordered_ref.sound_section, o + 0, e, 'down');
+    e = ex_ml(x.unordered_sound_section_08, g.sound_section_array, ex_sound_section, g.unordered_ref.sound_section, o + 8, e, 'down');
 
     g.debug ? ex_debug(o, "i]Cj") : 0;
     return e
 }
 function ex_car_00_200(o, x) {
-    let e = o + 32
+    let e = o + divisible(32, g.divisibility)
 
-    e = ex_ml(x.unordered_interface_00, g.interface_array, ex_interface, g.unordered_ref.interface, o + 00, e, 'down');
-    e = ex_ml(x.unordered_interface_04, g.interface_array, ex_interface, g.unordered_ref.interface, o + 04, e, 'down');
-    e = ex_ml(x.unordered_interface_08, g.interface_array, ex_interface, g.unordered_ref.interface, o + 08, e, 'down');
+    e = ex_ml(x.unordered_interface_00, g.interface_array, ex_interface, g.unordered_ref.interface, o + 0, e, 'down');
+    e = ex_ml(x.unordered_interface_04, g.interface_array, ex_interface, g.unordered_ref.interface, o + 4, e, 'down');
+    e = ex_ml(x.unordered_interface_08, g.interface_array, ex_interface, g.unordered_ref.interface, o + 8, e, 'down');
     e = ex_ml(x.unordered_interface_12, g.interface_array, ex_interface, g.unordered_ref.interface, o + 12, e, 'down');
     e = ex_ml(x.unordered_interface_16, g.interface_array, ex_interface, g.unordered_ref.interface, o + 16, e, 'down');
     e = ex_ml(x.unordered_interface_20, g.interface_array, ex_interface, g.unordered_ref.interface, o + 20, e, 'down');
@@ -673,11 +674,11 @@ function ex_car_00_208(o, e, x) {
     //amount?   su32(o +00, x.u32_00)
 
     if (x.section_04.length) {
-        su32(o + 00, x.section_04.length)
-        su32(o + 04, e - g.m)
-        g.oa.push(o + 04)
+        su32(o + 0, x.section_04.length)
+        su32(o + 4, e)
+        g.oa.push(o + 4)
         let temp_offset = e
-        e += divisible(x.section_04.length * 32, 16)
+        e += divisible(x.section_04.length * 32, g.divisibility)
         for (let i = 0; i < x.section_04.length; i++) {
             e = ex_car_00_208_04(temp_offset + (i * 32), e, x.section_04[i])
         }
@@ -698,11 +699,11 @@ function ex_car_00_216(o, e, x) {
     //amount?   su32(o +00, x.u32_00)
 
     if (x.section_04.length) {
-        su32(o + 00, x.section_04.length)
-        su32(o + 04, e - g.m)
-        g.oa.push(o + 04)
+        su32(o + 0, x.section_04.length)
+        su32(o + 4, e)
+        g.oa.push(o + 4)
         let temp_offset = e
-        e += divisible(x.section_04.length * 64, 16)
+        e += divisible(x.section_04.length * 64, g.divisibility)
         for (let i = 0; i < x.section_04.length; i++) {
             e = ex_mysterious(temp_offset + (i * 64), e, x.section_04[i])
         }

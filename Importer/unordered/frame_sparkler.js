@@ -1,8 +1,9 @@
+"use strict";
 function im_frame_sparkler(o, i, x) {
     x.push({
         id: gen_id(),
-        f32_00: f32(o + 00),
-        u32_08: u32(o + 08),
+        f32_00: f32(o + 0),
+        u32_08: u32(o + 8),
         u32_12: u32(o + 12),
         section_16: [],
     });
@@ -14,9 +15,9 @@ function im_frame_sparkler(o, i, x) {
 }
 function im_frame_sparkler_16(o, x) {
     x.push({
-        texture_00: im_patch(g.texture_patch_ref, o + 00),
-        u8_04: u8(o + 04),
-        u32_08: u32(o + 08),
+        texture_00: im_patch(g.texture_patch_ref, o + 0),
+        u8_04: u8(o + 4),
+        u32_08: u32(o + 8),
         f32_16: f32(o + 16),
         f32_24: f32(o + 24),
         f32_28: f32(o + 28),
@@ -44,20 +45,20 @@ function im_frame_sparkler_16(o, x) {
 function im_frame_sparkler_16_48(o, i, x) {
     x.push({
         id: gen_id(),
-        u8_00: u8(o + 00),
-        u8_01: u8(o + 01),
-        u8_02: u8(o + 02),
-        u8_03: u8(o + 03),
-        f32_08: f32(o + 08),
+        u8_00: u8(o + 0),
+        u8_01: u8(o + 1),
+        u8_02: u8(o + 2),
+        u8_03: u8(o + 3),
+        f32_08: f32(o + 8),
     });
 
 }
 function im_frame_sparkler_16_56(o, i, x) {
     x.push({
         id: gen_id(),
-        f32_00: f32(o + 00),
-        f32_04: f32(o + 04),
-        f32_08: f32(o + 08),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
+        f32_08: f32(o + 8),
         f32_20: f32(o + 20),
     });
 

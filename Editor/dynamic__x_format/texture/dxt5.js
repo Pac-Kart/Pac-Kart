@@ -1,10 +1,47 @@
-function dxt5(buffer, width, height) {
+"use strict";
+function dxt5(buffer, width, height, ctx) {
 
+    let color_1
+    let color_2
+    let color_3
+    let color_4
 
-        
-    image_offset = 0
-    for (outer_2_y = 0; outer_2_y < height; outer_2_y += 4) {
-        for (outer_2_x = 0; outer_2_x < width; outer_2_x += 4) {
+    let blue_color_1
+    let blue_color_3
+    let blue_color_4
+
+    let green_color_1
+    let green_color_3
+    let green_color_4
+
+    let red_color_1
+    let red_color_3
+    let red_color_4
+
+    let alpha0
+    let alpha1
+
+    let array_1
+    let array_2
+    let array_3
+    let array_4
+    let array_5
+    let array_6
+
+    let temp_alpha_array
+
+    let temp_alpha_array_1
+    let temp_alpha_array_2
+    let temp_alpha_array_3
+    let temp_alpha_array_4
+    let temp_alpha_array_5
+    let temp_alpha_array_6
+
+    let temp_pixel_array
+
+    let image_offset = 0
+    for (let outer_2_y = 0; outer_2_y < height; outer_2_y += 4) {
+        for (let outer_2_x = 0; outer_2_x < width; outer_2_x += 4) {
 
             dxt5_alpha()
             dxt5_color()
@@ -12,8 +49,7 @@ function dxt5(buffer, width, height) {
 
             image_offset += 16
 
-            for (i = 0,
-            y = 0; y < 4; y++) {
+            for (let i = 0, y = 0; y < 4; y++) {
                 for (let x = 0; x < 4; x++,
                 i++) {
 
@@ -36,7 +72,7 @@ function dxt5(buffer, width, height) {
         }
     }
 
-    data_ = canvas.toDataURL()
+    return
 
     function dxt5_alpha() {
         alpha0 = new DataView(buffer).getUint8(image_offset)
@@ -79,10 +115,11 @@ function dxt5(buffer, width, height) {
         temp_alpha_array.push(temp_alpha_array_6[5] + "" + temp_alpha_array_6[4] + "" + temp_alpha_array_6[3])
         temp_alpha_array.push(temp_alpha_array_6[2] + "" + temp_alpha_array_6[1] + "" + temp_alpha_array_6[0])
 
-        for (temp_alpha_array_i = 0; temp_alpha_array_i < 16; temp_alpha_array_i++) {
+        let convert_hex
+        for (let temp_alpha_array_i = 0; temp_alpha_array_i < 16; temp_alpha_array_i++) {
             if (alpha0 > alpha1) {
                 if (temp_alpha_array[temp_alpha_array_i] === "000") {
-                    let convert_hex = alpha0
+                    convert_hex = alpha0
                     convert_hex = ('00' + convert_hex.toString(16).toUpperCase()).slice(-2);
 
                     temp_alpha_array[temp_alpha_array_i] = convert_hex
@@ -329,8 +366,6 @@ function dxt5(buffer, width, height) {
                 if (parseInt(blue_color_3, 16) > 255) {
                     blue_color_3 = "FF"
                 }
-                //
-                //
                 if (red_color_4.length == 1) {
                     red_color_4 = '0' + red_color_4
                 }
@@ -350,18 +385,13 @@ function dxt5(buffer, width, height) {
 
     }
     function dxt5_color_codes() {
-        // codes0 = extract_bits(image_offset + 12, buffer)
-        // codes1 = extract_bits(image_offset + 13, buffer)
-        // codes2 = extract_bits(image_offset + 14, buffer)
-        // codes3 = extract_bits(image_offset + 15, buffer)
-
         var i = 0
         var temp_1 = 0
         var iii = 0
         for (temp_pixel_array = []; iii < 16; iii += 4,
         i++) {
             var pixel_row = new DataView(buffer).getUint8(image_offset + i + 12)
-            for (ii = 0; ii < 8; ii += 2,
+            for (let ii = 0; ii < 8; ii += 2,
             temp_1++) {
                 let pixel_1 = (pixel_row >> ii) & 0x1;
                 let pixel_2 = (pixel_row >> ii + 1) & 0x1;

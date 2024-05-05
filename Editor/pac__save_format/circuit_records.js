@@ -8,7 +8,7 @@ function load_circuit_records() {
     circuit_records_import_in('Watermelon')
     circuit_records_import_in('Classic')
     circuit_records_import_in('Rally')
-    document.getElementById("file_editor").innerHTML = circuit_records_html
+    file_editor.innerHTML = circuit_records_html
     circuit_records_import_data()
 
 }
@@ -83,14 +83,14 @@ function circuit_records_import_data() {
             document.getElementById("char" + circuit_records_import_in_i + cup_array[cup_i]).value = u8(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 2);
             document.getElementById("char" + circuit_records_import_in_i + cup_array[cup_i]).dataset.offset = save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 2
 
-            console.log(u8(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 2),'a')
+            console.log(u8(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 2), 'a')
 
-            document.getElementById("points" + circuit_records_import_in_i + cup_array[cup_i]).value = u32(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 4, is_little_endian)
+            document.getElementById("points" + circuit_records_import_in_i + cup_array[cup_i]).value = u32(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 4)
             document.getElementById("points" + circuit_records_import_in_i + cup_array[cup_i]).dataset.offset = save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 4
-            document.getElementById("time" + circuit_records_import_in_i + cup_array[cup_i]).value = '' + msToTime(u32(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 8, is_little_endian))
-            document.getElementById("time" + circuit_records_import_in_i + cup_array[cup_i]).dataset.actual_time = u32(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 8, is_little_endian)
+            document.getElementById("time" + circuit_records_import_in_i + cup_array[cup_i]).value = '' + msToTime(u32(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 8))
+            document.getElementById("time" + circuit_records_import_in_i + cup_array[cup_i]).dataset.actual_time = u32(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 8)
             document.getElementById("time" + circuit_records_import_in_i + cup_array[cup_i]).dataset.offset = save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 8
-            document.getElementById("display" + circuit_records_import_in_i + cup_array[cup_i]).selectedIndex = u32(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 12, is_little_endian)
+            document.getElementById("display" + circuit_records_import_in_i + cup_array[cup_i]).selectedIndex = u32(save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 12)
             document.getElementById("display" + circuit_records_import_in_i + cup_array[cup_i]).dataset.offset = save_offset.circuit + (circuit_records_import_in_i * 16) + (cup_i * 64) + 12
 
             document.getElementById("trophy" + circuit_records_import_in_i + cup_array[cup_i]).addEventListener("change", save_value_changed);

@@ -1,18 +1,17 @@
+"use strict";
 function load_x_d_frame_font(id, id_index) {
 
     let html = `
-<div style="display:inline-block;width:95%;padding:5px;">
+<div style="display:inline-block;width:95%;padding:5px;" id='inner_editor'>
 
 ${fontsettings()}
 ${fontlist()}
-  
+
    </div>
 `
 
-    document.getElementById("file_editor").innerHTML = html
+    file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
-
-    add_events()
 
     let plus_field = file_editor.getElementsByClassName('plus_button')
     for (let i = 0; i < plus_field.length; i++) {
@@ -21,10 +20,6 @@ ${fontlist()}
     let x_field = file_editor.getElementsByClassName('x_button')
     for (let i = 0; i < x_field.length; i++) {
         x_field[i].addEventListener('click', x_button)
-    }
-    x_field = file_editor.getElementsByClassName('tempchange')
-    for (let i = 0; i < x_field.length; i++) {
-        x_field[i].addEventListener('change', clickfile)
     }
 
     function clickfile() {
@@ -42,7 +37,7 @@ ${fontlist()}
                <tr>
                   <td style="width:10%;white-space:nowrap;" class='no_border'>Texture</td>
                   <td class='no_border'>
-                     ${genterate_linkbox_special(id, TXFA.texture_00)}
+                     ${generate_linkbox_special(`${id}.texture_00`, TXFA.texture_00)}
                   </td>
                   <td style="width:10%;white-space:nowrap;" class='no_border'>Spacing?</td>
                   <td class='no_border'>
@@ -50,21 +45,21 @@ ${fontlist()}
                   </td>
                </tr>  
                <tr>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 1</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>u8_08</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.u8_08}" data-outer_xfa="${id}"  data-inner_xfa="u8_08" data-type="u8">
                   </td>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 2</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>u8_09</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.u8_09}" data-outer_xfa="${id}"  data-inner_xfa="u8_09" data-type="u8">
                   </td>
                </tr>  
                <tr>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 3</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>u8_10</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.u8_10}" data-outer_xfa="${id}"  data-inner_xfa="u8_10" data-type="u8">
                   </td>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 4</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>section_28.f32_00</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.section_28[0].f32_00}" data-outer_xfa="${id}.section_28[0]"  data-inner_xfa="f32_00" data-type="f32">
                   </td>
@@ -82,7 +77,7 @@ ${fontlist()}
         let html = `
    <div style='padding-bottom:20px'>section_36 List
       <div class='save_records_boarder'>
-            <table style="width:100%">
+            <table style="width:100%" id='fontlisttable'>
                 <tbody>
                     <tr>
                         <th>Letter ?</th>
@@ -97,7 +92,7 @@ ${fontlist()}
             <input disabled style="width:100%" type='text' value="${String.fromCharCode(TXFA.section_36[i].u8_00)}" data-outer_xfa="${id}.section_00[0].section_192[0].section_24[${i}]" data-inner_xfa="f32_00" data-type="string" data-fixed="true" data-byte_amount="1">
                </td>
             <td style="width:20%" class='no_border'>
-            <input class='tempchange' style="width:100%" type='text' value="${TXFA.section_36[i].u8_00}" data-outer_xfa="${id}.section_36[${i}]" data-inner_xfa="u8_00" data-type="u8">
+            <input class='reset' style="width:100%" type='text' value="${TXFA.section_36[i].u8_00}" data-outer_xfa="${id}.section_36[${i}]" data-inner_xfa="u8_00" data-type="u8">
                </td>
                <td style="width:20%" class='no_border'>
             <input style="width:100%" type='text' value="${TXFA.section_36[i].f32_04}" data-outer_xfa="${id}.section_36[${i}]" data-inner_xfa="f32_04" data-type="f32">

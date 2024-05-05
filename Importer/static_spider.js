@@ -1,39 +1,56 @@
-// static file | append directly to file_viewer
-// x_spider for dynamic
+#! static file | append directly to file_viewer from buffer
+// ordered/x.js for dynamic import
 // most of this is just for testing
-
-// activate later
-// get_world_20_12t8_72 (find how many bytes per)
-// Model Animation 1
-
-// mysterious or unknown for unorderd ?
-
-// 
-
-function get_x_static(selected_game, file_name) {
-    offset_mid = undefined
+function get_x_static(file_name) {
+    globalThis.offset_mid = undefined
     HWVX_PROTO = 179
     count = 0
-    id = u32(16, is_little_endian)
+    id = u32(16)
     datapack_offset = []
 
     let html = `<div class='sub_file_div'><a class='file_arrow' style='padding-right:6px;padding-left:4px;'>↓</a><a> 🗀 </a> <a id='temp' data-type="x_folder" data-offset="0" class='file_hover_not_selected'>${file_name}</a>`
 
     // folder
-    if ((u32(8) === 183 || u32(8) === 243 || u32(8) === 249 || u32(8) === 267 || u32(8) === 274 || u32(8) === 315)) {} else {
+    switch (u32(0)) {
+    case 33620128:
+        break
+    default:
+        console.log(u32(0))
+    }
+
+    switch (u32(4)) {
+    case 67174575:
+        break
+    default:
+        console.log(u32(4))
+    }
+
+    switch (u32(8)) {
+    case 179:
+    case 183:
+    case 243:
+    case 249:
+    case 267:
+    case 274:
+    case 315:
+        break
+    default:
         console.log(u32(8))
     }
-    file_version = u32(8)
 
+    end = 16 + (u32(12) * 24)
     for (let i = 0; i < u32(12); i++) {
+
         html += get_x_sub_files(16 + (i * 24), i + 1, file_name)
     }
+
+    document.getElementById('_2nd_data_bar').innerHTML = ''
 
     return html
 }
 
 function get_x_sub_files(offset, index, file_name) {
-    log_array = {
+    globalThis.log_array = {
         p_texture: 0,
         p_animation: 0,
         p_sound: 0,
@@ -46,58 +63,85 @@ function get_x_sub_files(offset, index, file_name) {
         p_offset: 0,
     }
 
-    models_array = []
-    frames = []
-    sound_controls = []
-    sound_player = []
-    activator = []
-    varible = []
-    flag = []
-    idk = []
-    unknown = []
-    unknown_00 = []
-    fonts = []
-    multi_font = []
-    texts = []
-    model_link = []
-    interface_sub_model = []
-    model_animation_1 = []
-    model_animation_2 = []
-    sparkler = []
-    um = []
-    nothing = []
+    globalThis.models_array = []
+    globalThis.frames = []
+    globalThis.sound_controls = []
+    globalThis.sound_player = []
+    globalThis.activator = []
+    globalThis.varible = []
+    globalThis.flag = []
+    globalThis.idk = []
+    globalThis.unknown = []
+    globalThis.unknown_00 = []
+    globalThis.fonts = []
+    globalThis.multi_font = []
+    globalThis.texts = []
+    globalThis.model_link = []
+    globalThis.interface_sub_model = []
+    globalThis.model_animation_1 = []
+    globalThis.model_animation_2 = []
+    globalThis.sparkler = []
+    globalThis.um = []
+    globalThis.nothing = []
+
+    // console.log(u32(offset + 20) + (index * 24) + 16)
 
     temp_array__[0].offset_check = []
 
-    if (u32(offset + 12)) {
-        ü(0, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20], offset);
+    if (u32(offset + 12)) {// ü(0, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20], offset);
     }
 
     // check if file header and file directory are the same version
     // (u32(offset + 0) === u32(8)) ? 0 : console.log(u32(offset + 0))
-    if (u32(offset) === u32(8) && u32(offset + 12) === 0) {} else {
-        ü(0, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20], offset);
+    if (u32(offset) === u32(8) && u32(offset + 12) === 0) {} else {// ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20], offset);
     }
 
-    type = ['car', 'interface', 'item', 'link', 'world', 'colliders', 'world texture', 'geometry', 'share', 'audio', 'music'][u32(offset + 4)]
+    globalThis.type = ['car', 'interface', 'item', 'link', 'world', 'colliders', 'world texture', 'geometry', 'share', 'audio', 'music'][u32(offset + 4)]
     datapack_offset = offset;
 
     let html = ''
 
-    if (type === 'geometry' || type === 'music' || game === "bigfoot_collision_course") {
+    if (type === 'geometry' || type === 'music' || g.game === "bigfoot_collision_course") {
         is_arrow_needed = `<a class='no_arrow'>↓</a>`
 
         html += `<div style='display: block;' class='sub_file_div'><a class='no_arrow'>↓</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a></div>`
+        end = u32(offset + 20) + (index * 24) + 16 + u32(offset + 16)
+        // console.log(u32(offset + 20), u32(offset + 24))
+        // ü(0, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20], offset);
 
     } else {
+        let temp_offset
+        if (g.version === HWVX_PROTO) {
+            //hwvx proto
+            if (end === u32(offset + 20) + (index * 24) + 16) {} else {//         console.log(end, u32(offset + 20) + (index * 24) + 16,'diff',end- (u32(offset + 20) + (index * 24) + 16))
+            //                               temp_offset = u32(offset + 20) + (index * 24) + 16
 
-        if ((id == HWVX_PROTO) && (game == "hot_wheels_velocity_x"))
+            //             console.log(u32(temp_offset + 12),'12',u32(temp_offset + 16),'16',  u32(temp_offset + 28),'28',  u32(temp_offset + 56),'56')
+            // ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, u32, 96, u32, 100, u32, 104, u32, 108, u32, 112, u32, 116], temp_offset)
+            }
+            temp_offset = u32(offset + 20) + (index * 24) + 16
+            number_sounds = u32(temp_offset + 8)
+            number_textures = u32(temp_offset + 20)
+
+            html += `<div style='display: block;' class='sub_file_div'><a class='file_arrow'>→</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a>`
+
+            html += get_x_datapack(temp_offset, index)
+
+            // html += get_x_datapack(u32(offset + 20) + (index * 24) + 16)
+
+            html += `</div>`
+
+            return html
+        }
+        temp_offset = u32(offset + 20) + (u32(12) * 24) + 16
+        if ((id == HWVX_PROTO) && (g.game == "hot_wheels_velocity_x"))
             temp_offset = u32(offset + 20) + (index * 24) + 16
         else
             temp_offset = u32(offset + 20) + (u32(12) * 24) + 16
 
         number_sounds = u32(temp_offset + 8)
         number_textures = u32(temp_offset + 20)
+
         if (number_sounds == 0 && number_textures == 0) {
             html += `<div style='display: block;' class='sub_file_div'><a class='no_arrow'>↓</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a></div>`
 
@@ -105,7 +149,7 @@ function get_x_sub_files(offset, index, file_name) {
 
             html += `<div style='display: block;' class='sub_file_div'><a class='file_arrow'>→</a><a> 🗎 </a> <a data-type="x_sub_file" data-offset="${offset}" class='file_hover_not_selected'>${index} ${type}</a>`
 
-            html += get_x_datapack(temp_offset, index)
+            html += get_x_datapack(u32(offset + 20) + (u32(12) * 24) + 16, index)
 
             html += `</div>`
 
@@ -118,8 +162,23 @@ function get_x_sub_files(offset, index, file_name) {
 
 function get_x_datapack(offset, index) {
     let html = ''
+
+    if (g.version === HWVX_PROTO) {
+        after_datapack = offset + 120 + (u32(offset + 8) * 4)
+        offset_mid = u32(offset + 4) + after_datapack + (u32(offset + 12) * 4) + ((u32(offset + 16) + u32(offset + 28) + u32(offset + 52) + u32(offset + 56)) * 8)
+        offset_datapack = offset
+
+        if (u32(offset + 08)) {
+            html += get_sounds(offset + 120)
+        }
+        offset_textures = u32(offset + 24)
+        html += get_textures()
+
+        return html
+    }
+
     if (u32(offset + 36) || u32(offset + 40) || u32(offset + 44) || u32(offset + 64) || u32(offset + 68) || u32(offset + 72) || u32(offset + 76) || u32(offset + 96) || u32(offset + 116) || u32(offset + 8) !== u32(offset + 32)) {
-        ü(0, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, u32, 96, u32, 100, u32, 104, u32, 108, u32, 112, u32, 116], offset)
+        ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, u32, 96, u32, 100, u32, 104, u32, 108, u32, 112, u32, 116], offset)
     }
 
     //get ordered list
@@ -132,14 +191,15 @@ function get_x_datapack(offset, index) {
     } else {
         after_datapack = get_datapack_end() + offset + divisible(number_sounds * 4, 32)
         offset_mid = divisible(((u32(offset + 16) + u32(offset + 28) + u32(offset + 52)) * 8), 32)
-        offset_mid = offset_mid + u32(offset + 4, is_little_endian) + after_datapack
-        if ((fileextension == "xps")) {
+        offset_mid = offset_mid + u32(offset + 4) + after_datapack
+        if ((g.console === "ps2")) {
             xps_i = 0;
-            while ((after_datapack + u32(offset + 4, is_little_endian) + xps_i) % 2048 !== 0) {
+            while ((after_datapack + u32(offset + 4) + xps_i) % 2048 !== 0) {
                 xps_i += 1
             }
             offset_mid = offset_mid + xps_i
         }
+
     }
 
     index_patch_list = after_datapack + u32(offset + 4)
@@ -155,7 +215,6 @@ function get_x_datapack(offset, index) {
     amount_animations = u32(offset + 48)
 
     html += get_sounds(get_datapack_end() + offset)
-
     texture_patch = extract_patcher(index_patch_list, u32(offset_datapack + 16))
     index_patch_list = index_patch_list + (u32(offset_datapack + 16) * 8)
 
@@ -173,24 +232,29 @@ function get_x_datapack(offset, index) {
 
     html += get_textures()
 
-    switch (type) {
-    case "car":
-    case "interface":
-    case "item":
-    case "link":
-    case "audio":
-    case "music":
-        html += get_basic()
-        break
-    case "world":
-        html += get_world()
-        break
-    case "share":
-        // wip
-        break
-    default:
-        console.log('?', type)
-        break
+    // console.log(offset_mid)
+
+    if (g.game === 'pac_man_world_rally') {
+
+        switch (type) {
+        case "car":
+        case "interface":
+        case "item":
+        case "link":
+        case "audio":
+        case "music":
+            // html += get_basic()
+            break
+        case "world":
+            html += get_world()
+            break
+        case "share":
+            // wip
+            break
+        default:
+            console.log('?', type)
+            break
+        }
     }
 
     return html
@@ -204,7 +268,7 @@ function get_x_datapack(offset, index) {
 
     return html
 
-    if (game == "pac_man_world_rally") {
+    if (g.game == "pac_man_world_rally") {
 
         if (type === 'interface') {} else if (type === 'world') {
 
@@ -214,7 +278,7 @@ function get_x_datapack(offset, index) {
             if (u32(offset_mid + 24) !== 0) {// world_24(u32(offset_mid + 24 ) + offset_mid)
             }
 
-            //calculate model offset -> 
+            //calculate model offset ->
             temp = u32(offset_mid + 24) + offset_mid
             temp_amount = u32(temp + 8)
             temp = u32(temp + 12) + offset_mid
@@ -226,14 +290,12 @@ function get_x_datapack(offset, index) {
 
             // html += get_models(temp, offset_animations)
 
-            if (fileextension == 'xdx') {
+            if (g.console === 'xbox') {
                 offset_collision = u32(offset_mid + 152) + offset_mid
                 html += get_world_options(u32(offset_mid + 152) + offset_mid)
             } else {
                 html += get_world_options(u32(offset_mid + 20) + offset_mid, offset_collision)
             }
-            // if (fileextension == "xdx") {
-            // }
         } else if (type === 'share') {} else if (type === 'car') {
 
             let temp = u32(offset_mid + 4) + offset_mid
@@ -263,7 +325,9 @@ function get_x_datapack(offset, index) {
         for (; i < number_sounds; i++) {
             sound_offset_array.push(u32(o + (i * 4)))
         }
-        i = divisible(i * 4, 32)
+        if (g.version !== HWVX_PROTO) {
+            i = divisible(i * 4, 32)
+        }
 
         offset_audio = after_datapack
         offset_audio_start = offset_audio
@@ -303,6 +367,7 @@ function get_x_datapack(offset, index) {
 
     function get_textures() {
         let html = ''
+        let hwvx_proto = ''
         if (number_textures != 0) {
             texture_offset_list = (offset_mid + offset_textures)
 
@@ -310,7 +375,7 @@ function get_x_datapack(offset, index) {
 
             // console.log('texture offset:', texture_offset_list)
 
-            if (game == 'pac_man_world_rally') {
+            if (g.game == 'pac_man_world_rally') {
                 i_offset_plus = 64
             } else {
                 i_offset_plus = 16
@@ -320,8 +385,8 @@ function get_x_datapack(offset, index) {
             for (i = 0; i < number_textures; i++,
             i_offset += i_offset_plus) {
 
-                if (game == 'pac_man_world_rally') {
-                    if (fileextension === "xpp") {
+                if (g.game == 'pac_man_world_rally') {
+                    if (g.console === 'psp') {
                         get_xpp_tex(texture_offset_list + (i * 64))
                     }
 
@@ -334,7 +399,7 @@ function get_x_datapack(offset, index) {
                     //     console.log(btf_string)
                     // }
 
-                } else if (game == 'snoopy_vs_the_red_baron') {
+                } else if (g.game == 'snoopy_vs_the_red_baron') {
                     temp_name_offset = u32(i_offset + texture_offset_list + 12) + offset_mid
                     next_temp_name_offset = u32(i_offset + texture_offset_list + 24) + offset_mid
 
@@ -362,6 +427,14 @@ function get_x_datapack(offset, index) {
                     }
 
                 } else {
+                    if (g.version === HWVX_PROTO) {
+                        hwvx_proto = `data-datapack="${offset_datapack}"`
+                    }
+
+                    //     if (u32(texture_offset_list + i_offset +12) !== 0) {
+                    // ü(1, [u16, 0, u16, 2,u16, 4,u16, 6, u32, 8, u32, 12], texture_offset_list + i_offset)
+                    //     }
+
                     btf_string = 'Texture ' + i
                 }
 
@@ -383,11 +456,11 @@ function get_x_datapack(offset, index) {
 
     function get_datapack_end() {
         let offset = 0
-        if (fileextension === "xps" && (id != HWVX_PROTO)) {
+        if (g.console === 'ps2' && (id != HWVX_PROTO)) {
             offset += 2048
-        } else if (fileextension === "xpp") {
+        } else if (g.console === 'psp') {
             offset += 128
-        } else if (game === "snoopy_vs_the_red_baron") {
+        } else if (g.game === "snoopy_vs_the_red_baron") {
             offset += 128
         } else if (type === "geometry") {
             offset += 84
@@ -398,9 +471,29 @@ function get_x_datapack(offset, index) {
     }
 }
 
+function get_x_datapack_hwvx_proto(o, i) {
+    let html = ''
+    if (u32(o + 36) || u32(o + 96) || u32(o + 108) || u32(o + 116)) {
+        ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, u32, 96, u32, 100, u32, 104, u32, 108, u32, 112, u32, 116], o)
+    }
+    let indexpatchoffset = o + 120 + (number_sounds * 4)
+    offset_mid = u32(o + 4) + indexpatchoffset + (u32(o + 12) * 4) + ((u32(o + 16) + u32(o + 28) + u32(o + 56)) * 8)
+    end = offset_mid + u32(o + 0)
+    if (u32(o + 08)) {
+        html += get_sounds(o + 120)
+
+        // let tex_offset = offset_mid + u32(o + 60)
+        // console.log(tex_offset, offset_mid, u32(o + 64), type, 'end=', tex_offset + (u32(o + 64) * 44))
+    }
+    // offset_mid + u32(o + 24)
+    // console.log(offset_mid + u32(o + 24))
+    // get_x_datapack_hwvx_proto_basic()
+    return html
+}
+
 function get_basic() {
     let html = ''
-    if (game !== 'pac_man_world_rally') {
+    if (g.game !== 'pac_man_world_rally') {
         return html
     }
 
@@ -602,7 +695,7 @@ function get_car_main(offset) {
         }
     }
 
-    if (fileextension == 'xdx' || file_version === 249) {
+    if (g.console === 'xbox' || g.version === 249) {
         return ''
     }
 
@@ -838,18 +931,6 @@ function get_car_00_180_20_04t3(o) {
         ü(1, [f32, 0, f32, 4, f32, 8, f32, 12, f32, 16, f32, 20, f32, 24, f32, 28], o)
     }
 }
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//3
 
 function get_car_00_184(o) {
     if (u8(o + 1) || u8(o + 2) || u8(o + 3) || u32(o + 8) || u32(o + 12)) {
@@ -905,20 +986,6 @@ function get_car_00_184_04_08(o) {
         ü(1, [f32, 0, f32, 4, f32, 8, f32, 12, f32, 16, f32, 20, f32, 24, f32, 28, f32, 32, f32, 36, f32, 40, f32, 44, f32, 48, f32, 52, f32, 56, f32, 60, f32, 64, f32, 68, f32, 72, f32, 76, f32, 80, f32, 84, f32, 88, f32, 92, ], o)
     }
 }
-
-//3
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//4
 
 function get_car_00_188(o) {
     if (u8(o + 20) !== 25 || u8(o + 21) || u16(o + 22) || u32(o + 44) || u32(o + 96) || u32(o + 100) || u32(o + 112) || u32(o + 116) || u32(o + 120) || u32(o + 124)) {
@@ -984,20 +1051,6 @@ function get_car_00_188_68(o) {
         ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, f32, 16, f32, 20, f32, 24, f32, 28, ], o)
     }
 }
-
-//4
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//5
 
 function get_car_00_192(o) {
     if (u8(o + 28) !== 1 || u8(o + 29) || u8(o + 30) || u8(o + 31) || u32(o + 36) || u32(o + 40) || u32(o + 44)) {
@@ -1216,19 +1269,6 @@ function get_car_00_192_24(o) {//shifts
 //     }
 // }
 
-//5
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//6
 
 function get_car_00_196(o) {
     if (f32(o + 24) || f32(o + 28)) {
@@ -1239,20 +1279,6 @@ function get_car_00_196(o) {
     ä(sound_player, u32(o + 8), get_sound_player)
 
 }
-
-//6
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//7
 
 function get_car_00_200(o) {
     if (u32(o + 24) || u32(o + 28)) {
@@ -1267,18 +1293,6 @@ function get_car_00_200(o) {
     ä(frames, u32(o + 20), get_interfaceframe)
 
 }
-
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
 
 function get_car_00_208(o) {
     // ü(0, [u32, 0, u32, 4], o)
@@ -1296,18 +1310,6 @@ function get_car_00_208_04(o) {
     }
 }
 
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-
 function get_car_00_216(o) {
     if (u32(o + 8)) {
         ü(1, [u32, 0, u32, 4, u32, 8], o)
@@ -1316,10 +1318,6 @@ function get_car_00_216(o) {
         get_mys_a(u32(o + 4) + offset_mid + (i * 64))
     }
 }
-
-/////////////////
-//////////////////
-/////obj
 
 function get_mys_a(o) {
     if (u8(o + 1) || u32(o + 12) || f32(o + 28) || f32(o + 52) || f32(o + 56) || f32(o + 60)) {
@@ -2505,7 +2503,6 @@ function get_activator_248_04_04t0(o) {
 function get_activator_248_04_04t0_04(o) {
     if (u8(o + 25) || u8(o + 26) || u8(o + 35) || u32(o + 36) || u32(o + 40) || u32(o + 44)) {
         ü(1, [u32, 0, u32, 4, f32, 8, f32, 12, f32, 16, f32, 20, u8, 24, u8, 25, u8, 26, u8, 27, u8, 28, u8, 29, u8, 30, u8, 31, u8, 32, u8, 33, u8, 34, u8, 35, u32, 36, u32, 40, u32, 44, ], o)
-        // ü(3, [u32, 0, u32, 4, f32, 8, f32, 12], o)
     }
     for (let i = 0; i < u32(o); i++) {
         ö(u32(o + 4) + (i * 8), get_activator_248_04_04t0_04_04)
@@ -3051,7 +3048,6 @@ function get_unknown_00_04_08t2_52(o) {
     }
 }
 
-/* */
 function get_unknown_00_04_08t3(o) {
     if (u32(o + 4) || u32(o + 8) || u32(o + 12) || u32(o + 16) || u32(o + 20) || u32(o + 24) || u32(o + 28) || u32(o + 32) || u32(o + 36) || u8(o + 41) || u8(o + 43) || u32(o + 44) || u32(o + 56) || u32(o + 60)) {
         ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u8, 40, u8, 41, u8, 42, u8, 43, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
@@ -3080,7 +3076,7 @@ function get_unknown_00_04_08t3_52(o) {
         ü(1, [f32, 0, f32, 4, f32, 8, f32, 12, f32, 16, f32, 20, f32, 24, f32, 28], o)
     }
 }
-/* */
+
 function get_unknown_00_04_08t4(o) {
     if (u32(o + 0) !== 1 || u32(o + 4) || u32(o + 8) || u32(o + 12) || u32(o + 16) || u32(o + 20) || u32(o + 24) || u32(o + 28) || u32(o + 32) || u32(o + 36) || u32(o + 40) || u32(o + 44) || u32(o + 48) || u32(o + 52) || u32(o + 56) || u32(o + 60)) {
         ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
@@ -3235,11 +3231,15 @@ function get_models(offset, index) {
     }
 
     let html = ''
+    if (g.console === 'xbox' || g.version === 249) {
+        return
+    }
 
     // ü(1, [u16, 0, u16, 2, u32, 4, u32, 8, u32, 12, f32, 16, f32, 20, f32, 24, f32, 28, f32, 32, f32, 36, f32, 40, f32, 44, f32, 48, f32, 52, f32, 56, f32, 60], offset)
 
-    html += `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> 🗀 </a> <a data-type="x_model_folder" data-offset="${offset}" class='file_hover_not_selected'>${get_string(u32(offset + 8) + offset_mid, 0, false)}</a></div>`
-    for (let i = 0; i < u16(offset + 2); i++) {// get_models_04(u32(offset + 4) + offset_mid + (i * 8))
+    // html += `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> 🗀 </a> <a data-type="x_model_folder" data-offset="${offset}" class='file_hover_not_selected'>${get_string(u32(offset + 8) + offset_mid, 0, false)}</a></div>`
+    for (let i = 0; i < u16(offset + 2); i++) {
+        get_models_04(u32(offset + 4) + offset_mid + (i * 8))
     }
     return html
 
@@ -3255,7 +3255,16 @@ function get_models(offset, index) {
         }
     }
     function get_models_04_04_00(offset) {
+        // ü(1, [u32, 0, u32, 4, u32, 8, u8, 12,u8, 13,u8, 14,u8, 15, u32, 16, u32, 20,u32, 24,u32, 28,u32, 32,u32, 36,u32, 40,u8, 44,u8, 45,u8, 46,u8, 47,u8, 48,u8, 49,u16, 50,u8, 52,u8, 53,u8, 54,u8, 55,u32, 56,u32, 60,u32, 64,u32, 68,u32, 72,u32, 76,u32, 80,u32, 84,u32, 88,u32, 92], offset)
 
+        if (g.console === 'gamecube') {
+            get_GC_models_04_04_00(offset)
+            return
+
+        } else if (g.console === 'ps2') {
+            // get_PS2_models_04_04_00(offset)
+            return
+        }
         if (u32(offset + 88) === 0) {// console.log(`[ ${u8(offset + 56 )}, ${u8(offset + 57 )}, ${u8(offset + 58 )}, ${u8(offset + 59 )} |||${u32(offset + 0 )} | ${u32(offset + 4 )} | ${u32(offset + 8 )} | [ ${u8(offset + 12 )}, ${u8(offset + 13 )}, ${u8(offset + 14 )}, ${u8(offset + 15 )} ] | ${u32(offset + 16 )} | ${u32(offset + 20 )} | ${u32(offset + 24 )} | ${u32(offset + 28 )} | ${u32(offset + 32 )} | ${u32(offset + 36 )} | [ ${u8(offset + 40 )}, ${u8(offset + 41 )}, ${u8(offset + 42 )}, ${u8(offset + 43 )} ] | [ ${u8(offset + 44 )}, ${u8(offset + 45 )}, ${u8(offset + 46 )}, ${u8(offset + 47 )} ] | [ ${u8(offset + 48 )}, ${u8(offset + 49 )}, ${u8(offset + 50 )}, ${u8(offset + 51 )}  ] | [ ${u8(offset + 52 )}, ${u8(offset + 53 )}, ${u8(offset + 54 )}, ${u8(offset + 55 )} ] || offset:${offset} -mid:${offset_mid}`)
         }
 
@@ -3265,11 +3274,175 @@ function get_models(offset, index) {
 
     }
 
-    function get_models_04_04_00_92(offset) {
-        if (u32(offset + 4)) {
-            console.log(`${u32(offset + 0)} | ${u32(offset + 4)} | ${u32(offset + 8)} | ${u32(offset + 12)} || offset:${offset} -mid:${offset_mid}`)
+    function get_models_04_04_00_92(offset) {// if (u32(offset + 4)) {
+    //     console.log(`${u32(offset + 0)} | ${u32(offset + 4)} | ${u32(offset + 8)} | ${u32(offset + 12)} || offset:${offset} -mid:${offset_mid}`)
+    // }
+
+    }
+
+    function get_models_04_04_00_gc76(o, v) {
+        // ü(1, [u32, 0, u32, 4, u32, 8, u32, 12,u32, 16,u32, 20,u32, 24,u32, 28], o)
+        //calculate end?
+        let structsize = 0
+        if (u32(o + 8)) {
+            structsize = ((u32(o + 8) + offset_mid) - o)
+        } else if (u32(o + 12)) {
+            structsize = ((u32(o + 12) + offset_mid) - o)
+        } else if (u32(o + 16)) {
+            structsize = ((u32(o + 16) + offset_mid) - o)
+        } else {
+            structsize = 0
+        }
+        if (structsize === 48) {} else {
+            ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44], o)
+        }
+        return 0
+
+        let size = u32(o + 4)
+        // get_models_04_04_00_gc76_16(u32(o+16)+offset_mid,size)
+        // ö(u32(o+16), get_models_04_04_00_gc76_16)
+
+        if (structsize === 48) {
+            if (u32(o + 40)) {
+                console.log(u32(o + 40) + offset_mid, u32(o + 40) + offset_mid + u32(o + 28))
+            }
         }
 
+        // if (structsize === 48) {
+        //     ö(u32(o+8), get_models_04_04_00_gc76_08)
+        // }
+
+        // console.log(u32(o + 16) + offset_mid, u32(o + 16) + offset_mid + size)
+
+        if (u32(o + 16) && structsize === 48 && u32(o + 32)) {// console.log(u32(o + 12) + offset_mid, u32(o + 16) + offset_mid,size, u32(o + 16) - u32(o + 12),structsize)
+
+        // if (size === 32) {
+        // console.log(u32(o + 16) + offset_mid, u32(o + 32) + offset_mid, 'size:',size, 'dif:',u32(o + 32) - u32(o + 16), 'structsize:',structsize, 'val', v)
+        // }
+        // }else{
+        // // console.log(u32(o + 8) + offset_mid, u32(o + 12) + offset_mid,size, u32(o + 12) - u32(o + 8),structsize)
+        // }
+        }
+
+        // if (structsize === 32) {
+        //  // ü(1, [u32, 0, u32, 4, u32, 8, u32, 12,u32, 16,u32, 20,u32, 24,u32, 28], o)
+        // }else if (structsize === 48) {
+        //  ü(1, [u32, 0, u32, 4, u32, 8, u32, 12,u32, 16,u32, 20,u32, 24,u32, 28,u32, 32,u32, 36,u32, 40,u32, 44], o)
+        // }else{
+        //     console.log(structsize)
+        // }
+
+        // let temp = ü(1, [u32, 0, u32, 4, u32, 8, u32, 12,u32, 16,u32, 20,u32, 24,u32, 28], o)
+        // return temp
+        // if (temp === 16) {
+        // ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32], o)
+        // }
+    }
+    function get_models_04_04_00_gc76_08(o) {
+        ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28], o)
+    }
+    function get_models_04_04_00_gc76_16(o, v) {
+        console.log(v, o, o + v, o + u16(o))
+        ü(1, [u16, 0], o)
+    }
+
+    function get_GC_models_04_04_00(o) {
+        let temp = 0
+        // ü(1, [u32, 0, u32, 4, u32, 8, u8, 12, u8, 13, u8, 14, u8, 15, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u8, 44, u8, 45, u8, 46, u8, 47, u8, 48, u8, 49, u16, 50, u8, 52, u8, 53, u8, 54, u8, 55, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u16, 84, u16, 86, u32, 88, u32, 92], o)
+        for (let i = 0; i < u16(o + 84); i++) {
+            temp = get_GC_models_04_04_00_76(u32(o + 76) + (i * 24) + offset_mid, u8(o + 86), u8(o + 87))
+        }
+        let end = 0
+        if (u32(o + 64)) {
+            end = u32(o + 64);
+        } else if (u32(o + 68)) {
+            end = u32(o + 68)
+        } else if (u32(o + 72)) {
+            end = u32(o + 72)
+        } else if (u32(o + 76)) {
+            end = u32(o + 76)
+        }
+        if (u32(o + 68) && u32(o + 64)) {
+            // get_GC_models_04_04_00_80(u32(o + 80) + offset_mid)
+            // get_GC_models_04_04_00_80(u32(o + 80) + offset_mid)
+            ü(1, [u32, 0, u32, 4, u32, 8, u8, 12, u8, 13, u8, 14, u8, 15, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u8, 44, u8, 45, u8, 46, u8, 47, u8, 48, u8, 49, u16, 50, u8, 52, u8, 53, u8, 54, u8, 55, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u16, 84, u16, 86, u32, 88, u32, 92], o)
+        }
+
+        // if (end - u32(o + 60) === 64) {
+        //     // console.log(end - u32(o + 60), temp, u32(o + 60) + offset_mid)
+        // ü(1, [u32, 0, u32, 4, u32, 8, u8, 12, u8, 13, u8, 14, u8, 15, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u8, 44, u8, 45, u8, 46, u8, 47, u8, 48, u8, 49, u16, 50, u8, 52, u8, 53, u8, 54, u8, 55, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u16, 84, u16, 86, u32, 88, u32, 92], o)
+
+        // }
+
+        // if (u32(o + 64) && u32(o + 72)) {
+        // ü(1, [u32, 0, u32, 4, u32, 8, u8, 12, u8, 13, u8, 14, u8, 15, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u8, 44, u8, 45, u8, 46, u8, 47, u8, 48, u8, 49, u16, 50, u8, 52, u8, 53, u8, 54, u8, 55, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u16, 84, u16, 86, u32, 88, u32, 92], o)
+
+        // }
+
+        // console.log(u32(o+76) - u32(o+60),temp, u32(o+60) + offset_mid)
+
+    }
+
+    function get_GC_models_04_04_00_80(o) {
+        if (u32(o + 12)) {
+            ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, ], o)
+        }
+        for (let i = 0; i < u32(o + 8); i++) {
+            get_GC_models_04_04_00_80_00(u32(o) + (i * 32) + offset_mid)
+        }
+    }
+
+    function get_GC_models_04_04_00_80_00(o) {
+        ü(1, [f32, 0, f32, 4, f32, 8, f32, 12, f32, 16, f32, 20, u16, 24, u16, 26, u8, 28, u8, 29, u8, 30, u8, 31], o)
+
+    }
+
+    function get_GC_models_04_04_00_76(o, v1, v2) {
+        if (u32(o + 0) || u8(o + 21) || u8(o + 22) || u8(o + 23)) {
+            ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u8, 20, u8, 21, u8, 22, u8, 23], o)
+        }
+
+        //         if (u8(o+20) === 1) {
+        // console.log('is:', u32(o+16) - u32(o+12),'offset:',o + u32(o+12),'v1:',v1,'v2:',v2,'04:',u32(o+4))
+        //         }
+
+        for (let i = 0; i < u8(o + 20); i++) {
+            get_GC_models_04_04_00_76_08(u32(o + 8) + (i * 1) + offset_mid)
+        }
+
+        if (u8(o + 20) !== 0) {// buffer
+        // ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u8, 20, u8, 21, u8, 22, u8, 23], o)
+        }
+
+        // if (u32(o+8) && u32(o+12) && u32(o+12) - u32(o+8) === 32) {
+        // // console.log('is:', u32(o+12) - u32(o+8),o + u32(o+8))
+        //     ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u8, 20, u8, 21, u8, 22, u8, 23], o)
+        // }
+        return u32(o + 4)
+    }
+
+    function get_GC_models_04_04_00_76_08(o) {// ü(1, [u8, 0], o)
+    }
+
+    function get_PS2_models_04_04_00(o) {
+        switch (u32(o)) {
+        case 0:
+            get_PS2_models_04_04_00t0(o)
+            break
+        case 1:
+            get_PS2_models_04_04_00t1(o)
+            break
+        case 2:
+            get_PS2_models_04_04_00t2(o)
+            break
+        }
+    }
+    function get_PS2_models_04_04_00t0(o) {// ü(1, [u32, 0, u32, 4, u32, 8, u8, 12, u8, 13, u8, 14, u8, 15, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u8, 44, u8, 45, u8, 46, u8, 47, u8, 48, u8, 49, u16, 50, u8, 52, u8, 53, u8, 54, u8, 55, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76], o)
+    }
+    function get_PS2_models_04_04_00t1(o) {
+        ü(1, [u32, 0, u32, 4, u8, 8, u8, 9, u8, 10, u8, 11, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u8, 40, u8, 41, u8, 42, u8, 43, u8, 44, u8, 45, u8, 46, u8, 47, u32, 48, u8, 52, u8, 53, u8, 54, u8, 55, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, ], o)
+    }
+    function get_PS2_models_04_04_00t2(o) {// ü(1, [u32, 0, u32, 4, u8, 8, u8, 9, u8, 10, u8, 11, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u8, 44, u8, 45, u8, 46, u8, 47, u32, 48, u32, 52, f32, 56, f32, 60, f32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, ], o)
     }
 }
 
@@ -3312,7 +3485,7 @@ function get_world_options(offset) {
 
     }
     // html += get_world_weird(u32(offset_mid + 8 ) + offset_mid)
-    if (fileextension == 'xdx') {
+    if (g.console === 'xbox') {
         html += get_world_routes(u32(offset_mid + 152) + offset_mid, [0, 0])
     } else if (u32(8) == 249) {
         html += get_world_routes(u32(offset_mid + 120) + offset_mid, [0, 0])
@@ -3323,11 +3496,11 @@ function get_world_options(offset) {
 
     if (u32(8) == 249) {
         html += get_world_options_starting_points(u32(offset_mid + 12) + offset_mid, u32(offset_mid + 8))
-    } else if (fileextension == 'xdx') {
+    } else if (g.console === 'xbox') {
         html += get_world_options_starting_points(u32(offset_mid + 12) + offset_mid, u32(offset_mid + 8))
     } else {}
 
-    if (fileextension == 'xdx') {
+    if (g.console === 'xbox') {
         html += get_world_gate(u32(offset_mid + 224) + offset_mid, u32(offset_mid + 220))
     } else if (u32(8) == 249) {
         html += get_world_gate(u32(offset_mid + 192) + offset_mid, u32(offset_mid + 188))
@@ -3421,7 +3594,7 @@ function get_world_flags_2(offset) {
 
 function get_world_flags_2_2(offset) {
     // let html = `<br>--->---> ${u32(offset + 0 )} | ${u32(offset + 4 )} | [ ${u8(offset + 8 )}, ${u8(offset + 9 )}, ${u8(offset + 10 )}, ${u8(offset + 11 )} ] | ${u32(offset + 12 )} | ${u32(offset + 16 )} | ${u32(offset + 20 )} | ${u32(offset + 24 )} | ${u32(offset + 28 )} | ${u32(offset + 32 )} | ${u32(offset + 36 )} | ${u32(offset + 40 )} | ${u32(offset + 44 )} | ${u32(offset + 48 )} | ${u32(offset + 52 )} | ${u32(offset + 56 )} | ${u32(offset + 60 )} | ${u32(offset + 64 )} | ${u32(offset + 68 )} | ${u32(offset + 72 )} | ${u32(offset + 76 )} | ${u32(offset + 80 )} | ${u32(offset + 84 )} | ${u32(offset + 88 )} | ${u32(offset + 92 )} | ${u32(offset + 96 )} | ${u32(offset + 100 )} | ${u32(offset + 104 )} | ${u32(offset + 108 )} | ${u32(offset + 112 )} | ${u32(offset + 116 )} | ${u32(offset + 120 )} | ${u32(offset + 124 )} | ${u32(offset + 128 )} | ${u32(offset + 132 )} | ${u32(offset + 136 )} | ${u32(offset + 140 )} | ${u32(offset + 144 )} | ${u32(offset + 148 )} | ${u32(offset + 152 )} | ${u32(offset + 156 )} | ${u32(offset + 160 )} | ${u32(offset + 164 )} | ${u32(offset + 168 )} | ${u32(offset + 172 )}`
-    let html = `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ? </a> <a data-type="x_world_flags_2" data-offset="${offset}" class='file_hover_not_selected'>${get_string(u32(offset + 140) + offset_mid, 0, false)}</a></div>`
+    // let html = `<div style='display:none' class='sub_file_div'><a class='file_arrow'>→</a><a> ? </a> <a data-type="x_world_flags_2" data-offset="${offset}" class='file_hover_not_selected'>${get_string(u32(offset + 140) + offset_mid, 0, false)}</a></div>`
     // if (u32(offset + 140 ) != 0) {
     //     html += `<br>--->--->---?${get_string(u32(offset + 140 ) + offset_mid, 0, false)}`
     // }
@@ -3554,7 +3727,7 @@ function get_link(o) {
         }
     }
 
-    if (fileextension === "xdx" || file_version === 249) {
+    if (g.console === 'xbox' || g.version === 249) {
         get_xdx_link(o)
         return
     }
@@ -3620,13 +3793,13 @@ function get_link_intro(o) {
         ü(1, [u8, 0, u8, 1, u8, 2, u8, 3, u32, 4, u32, 8, u32, 12], o)
     }
 
-    if (u32(o + 4) && file_version !== 249) {// console.log(get_string(u32(o + 4) + offset_mid, 0, false))
+    if (u32(o + 4) && g.version !== 249) {// console.log(get_string(u32(o + 4) + offset_mid, 0, false))
     }
 
-    if (u32(o + 8) && file_version !== 249) {
+    if (u32(o + 8) && g.version !== 249) {
         get_link_intro_08(u32(o + 8) + offset_mid)
     }
-    if (u32(o + 12) && file_version !== 249) {
+    if (u32(o + 12) && g.version !== 249) {
         get_link_offset_index(u32(o + 12) + offset_mid)
     }
 
@@ -3733,39 +3906,39 @@ function get_world() {
 
     let html = ''
 
-    if (game !== 'pac_man_world_rally') {
+    if (g.game !== 'pac_man_world_rally') {
         return html
     }
 
-    if (fileextension == 'xdx') {
+    if (g.console === 'xbox') {
         html += get_world_options(u32(offset_mid + 152) + offset_mid)
     } else {
         html += get_world_options(u32(offset_mid + 20) + offset_mid)
     }
 
-    if (fileextension == 'xdx' || file_version === 249) {
+    if (g.console === 'xbox' || g.version === 249) {
         return html
     }
 
-    let o = offset_mid
-    if (u32(o + 4) !== 160 || u32(o + 16) !== 16 || u32(o + 36) || u32(o + 40) || u32(o + 44) || u32(o + 48) || u32(o + 52) || u32(o + 56) || u32(o + 60) || u32(o + 64) || u32(o + 68) || u32(o + 72) || u32(o + 76) || u32(o + 80) || u32(o + 84) || u32(o + 88) || u32(o + 92)) {
-        ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, u32, 96, u32, 100, u32, 104, u32, 108, u32, 112, u32, 116, u32, 120, u32, 124, u32, 128, u32, 132, u32, 136, u32, 140, u32, 144, u32, 148, u32, 152, u32, 156], o)
-    }
+    // let o = offset_mid
+    // if (u32(o + 4) !== 160 || u32(o + 16) !== 16 || u32(o + 36) || u32(o + 40) || u32(o + 44) || u32(o + 48) || u32(o + 52) || u32(o + 56) || u32(o + 60) || u32(o + 64) || u32(o + 68) || u32(o + 72) || u32(o + 76) || u32(o + 80) || u32(o + 84) || u32(o + 88) || u32(o + 92)) {
+    //     ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, u32, 96, u32, 100, u32, 104, u32, 108, u32, 112, u32, 116, u32, 120, u32, 124, u32, 128, u32, 132, u32, 136, u32, 140, u32, 144, u32, 148, u32, 152, u32, 156], o)
+    // }
 
-    ö(u32(o), get_unordered_world)
-    ö(u32(o + 4), get_collision)
-    ö(u32(o + 8), get_world_08)
-    ö(u32(o + 12), get_world_12)
+    // ö(u32(o), get_unordered_world)
+    // ö(u32(o + 4), get_collision)
+    // ö(u32(o + 8), get_world_08)
+    // ö(u32(o + 12), get_world_12)
 
-    for (let i = 0; i < u32(o + 16); i++) {
-        get_world_20(u32(o + 20) + offset_mid + (i * 16))
-    }
+    // for (let i = 0; i < u32(o + 16); i++) {
+    //     get_world_20(u32(o + 20) + offset_mid + (i * 16))
+    // }
 
-    ö(u32(o + 24), get_world_24)
+    // ö(u32(o + 24), get_world_24)
 
-    for (let i = 0; i < u32(o + 28); i++) {
-        get_world_32(u32(o + 32) + offset_mid + (i * 4))
-    }
+    // for (let i = 0; i < u32(o + 28); i++) {
+    //     get_world_32(u32(o + 32) + offset_mid + (i * 4))
+    // }
 
     return html
 }
@@ -3988,6 +4161,7 @@ function get_world_20(o) {
             break
         case 8:
             get_world_20_12t8(u32(o + 12) + offset_mid + (i * u32(o + 4)))
+
             break
         case 10:
             get_world_20_12t10(u32(o + 12) + offset_mid + (i * u32(o + 4)))
@@ -4030,11 +4204,10 @@ function get_world_20_12t2(o) {
     if (u32(o + 32) || u32(o + 36) || u32(o + 44) || u32(o + 48) || u32(o + 68) || u32(o + 80) || u32(o + 88) || u32(o + 92) || u32(o + 96)) {
         ü(1, [u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, u32, 96, u32, 100, u32, 104], o)
     }
-    // if (u32(o+56)===0) {
-    // console.log(u32(o+40),u32(o+52),u32(o+84),u32(o+104))
+    if (u32(o + 56)) {// console.log(u32(o+40),u32(o+52),u32(o+84),u32(o+104))
     //     ü(1, [u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, u32, 64, u32, 68, u32, 72, u32, 76, u32, 80, u32, 84, u32, 88, u32, 92, u32, 96, u32, 100, u32, 104], o)
-
-    // }
+    // console.log(u32(o+52) + offset_mid,u32(o+52) + u32(o+56) + offset_mid)
+    }
     ö(u32(o + 56), get_world_20_12t2_56)
     for (let i = 0; i < u32(o + 60); i++) {
         get_world_20_12t2_64(u32(o + 64) + offset_mid + (i * 4))
@@ -4145,6 +4318,7 @@ function get_world_20_12t8(o) {
         case 320:
         case 352:
         case 384:
+        case 640:
         case 704:
         case 832:
         case 1120:
@@ -4197,59 +4371,6 @@ function get_world_20_12t8(o) {
     // console.log(` ${u32(o+32)} [32] | ${u32(o+36)} [36] |`)
     // ö(u32(o + 72), get_world_20_12t8_72)
     // }
-
-    /*
-    -192 = 
-20,22,23,24,441,444,480,493,494,495,496,89,96,98,360,82,108,110,112,114,116,119,121,109,111,113,165,134,135,12,14,15,48,5928,2333,748,740,746,747,4003,4490,5200,5929,5934,5199,5936,5932,3997,4001,4002,5937,5939,575,657,772,774,996,997,998,999,1001,1002,1003,1004,1006,2415,3106,3108,2171,4117,7173,8071,6178,6554,8226,8228,8229,8235,1336,1337,665,666,669,684,716,718,2345,2346,2347,2348,2356,2355,2354,2353,2413,2414,2416,2417,2419,2420,2422,2423,2425,2432,2433,2435,38,1023,1215,1936,1937,1938,1939,3707,19,842,3452,3454,10,28,2437,2249,2250,2436,160,1244,1439,778,1442,2248,2235,2240,2252,2244,4676,5515,6189,25,5101,5103,5105,5558,5118,5124,5128,5129,5130,5131,5688,5690,5695 | u32 | 0 | 5955724
-8 | u16 | 4 | 2405808
-0 | u16 | 6 | 2405810
-0 | u32 | 8 | 2405812
-1,0 | u16 | 12 | 5391208
-8 | u16 | 14 | 2405818
-1,0 | u16 | 16 | 5391212
-8 | u16 | 18 | 2405822
-0 | u32 | 20 | 2405824
-0 | u32 | 24 | 2405828
-0 | u32 | 28 | 2405832
-0 | u32 | 32 | 2405836
-8,7,1 | u32 | 36 | 5391152
-0 | u32 | 40 | 2405844
-0 | u32 | 44 | 2405848
-0 | f32 | 48 | 2405852
-0 | f32 | 52 | 2405856
-0 | f32 | 56 | 2405860
-0 | f32 | 60 | 2405864
-0 | f32 | 64 | 2405868
-0 | f32 | 68 | 2405872
-232176,232384,232592,232800,233008,233216,233424,233632,233840,234048,234256,72832,73104,73312,62864,285056,285264,285472,285680,285888,286096,286304,286512,118496,118704,118912,119120,119328,119536,119744,100752,100960,491664,491872,492080,492288,492496,492704,503776,505504,505712,505920,506848,535584,535792,536000,558880,559088,559296,559504,559712,560736,560944,561152,561360,547792,548000,548512,548720,548928,549136,549344,549552,549760,549968,550176,550384,550592,550800,552544,552752,552960,327152,327360,327568,327792,330928,331136,331344,331552,331760,331968,135584,135792,151008,151216,151616,155120,155328,155536,155744,155952,156160,156368,156576,156784,156992,157200,157408,157616,157824,158032,158240,158448,158656,158864,159072,159280,159488,159696,525728,526208,527376,528352,528560,528768,528976,530768,359008,361168,362160,362368,750704,751184,751632,761840,762048,762256,762464,175648,175856,173856,174064,174272,471232,471680,471888,478576,479344,479824,480352,480832,481040,97232,748736,749216,749696,751088,765792,767360,775968,776176,776384,776592,777616,777824,780432 | u32 | 72 | 5955796
-232368,232576,232784,232992,233200,233408,233616,233824,234032,234240,234448,73024,73296,73504,63056,285248,285456,285664,285872,286080,286288,286496,286704,118688,118896,119104,119312,119520,119728,119936,100944,101152,491856,492064,492272,492480,492688,492896,503968,505696,505904,506112,507040,535776,535984,536192,559072,559280,559488,559696,559904,560928,561136,561344,561552,547984,548192,548704,548912,549120,549328,549536,549744,549952,550160,550368,550576,550784,550992,552736,552944,553152,327344,327552,327760,327984,331120,331328,331536,331744,331952,332160,135776,135984,151200,151408,151808,155312,155520,155728,155936,156144,156352,156560,156768,156976,157184,157392,157600,157808,158016,158224,158432,158640,158848,159056,159264,159472,159680,159888,525920,526400,527568,528544,528752,528960,529168,530960,359200,361360,362352,362560,750896,751376,751824,762032,762240,762448,762656,175840,176048,174048,174256,174464,471424,471872,472080,478768,479536,480016,480544,481024,481232,97424,748928,749408,749888,751280,765984,767552,776160,776368,776576,776784,777808,778016,780624 | u32 | 76 | 5955800
-
--256
-3998,3999,4000,2106,1340,39,63,839,3448,18,2243,4677,5102,5104,5560,5399,5122,5132,5563,5562 | u32 | 0 | 5955404
-8 | u16 | 4 | 4834896
-0 | u16 | 6 | 4834898
-0 | u32 | 8 | 4834900
-1 | u16 | 12 | 4834904
-8 | u16 | 14 | 4834906
-1 | u16 | 16 | 4834908
-8 | u16 | 18 | 4834910
-0 | u32 | 20 | 4834912
-0 | u32 | 24 | 4834916
-0 | u32 | 28 | 4834920
-0 | u32 | 32 | 4834924
-7,8 | u32 | 36 | 5390832
-0 | u32 | 40 | 4834932
-0 | u32 | 44 | 4834936
-0 | f32 | 48 | 4834940
-0 | f32 | 52 | 4834944
-0 | f32 | 56 | 4834948
-0 | f32 | 60 | 4834952
-0 | f32 | 64 | 4834956
-0 | f32 | 68 | 4834960
-559920,560192,560464,326480,133696,525936,359584,360560,361888,750912,479552,480560,748944,749424,765216,766480,766752,776800,777072,777344 | u32 | 72 | 5955476
-560176,560448,560720,326736,133952,526192,359840,360816,362144,751168,479808,480816,749200,749680,765472,766736,767008,777056,777328,777600 | u32 | 76 | 5955480
-
-        */
 
     if (u32(o + 36) === 0) {
         if (u32(o + 76)) {
@@ -4315,9 +4436,10 @@ function get_world_20_12t8_76t8_08(o) {
 ///////
 ///////
 function get_world_20_12t10(o) {
-    if (f32(o + 44) !== 1 || f32(o + 60) !== 1 || u32(o + 80) !== 5000 || u32(o + 88) || u32(o + 92)) {
+    if (f32(o + 44) !== 1 || f32(o + 60) !== 1 || u8(o + 77) || u8(o + 78) || u8(o + 79) || u32(o + 80) !== 5000 || u32(o + 88) || u32(o + 92)) {
         ü(1, [f32, 32, f32, 36, f32, 40, f32, 44, f32, 48, f32, 52, f32, 56, f32, 60, u32, 64, f32, 68, f32, 72, f32, 76, u32, 80, u32, 84, u32, 88, u32, 92, ], o)
     }
+
     ä(activator, u32(o + 64), get_activator)
 
 }
@@ -4443,6 +4565,10 @@ function get_wtf_08_08t1_08(o) {
     if (u8(o + 0) || u8(o + 2) || u8(o + 3) || u32(o + 4) || f32(o + 16) !== 1 || u32(o + 24) || u32(o + 28)) {
         ü(1, [u8, 0, u8, 1, u8, 2, u8, 3, u32, 4, u32, 8, u32, 12, f32, 16, f32, 20, u32, 24, u32, 28, ], o)
     }
+    if (u8(o + 1) === 0) {
+        ö(u32(o + 20), get_wtf_08_08t1_08_20t0)
+    }
+
     ö(u32(o + 8), get_wtf_08_08t1_08_08)
     ö(u32(o + 12), get_gate)
 
@@ -4451,6 +4577,12 @@ function get_wtf_08_08t1_08(o) {
 function get_wtf_08_08t1_08_08(o) {
     if (u32(o + 0) || u32(o + 4) || u32(o + 8) || u32(o + 12) || u32(o + 16) || u32(o + 24) || u32(o + 28)) {
         ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, f32, 20, u32, 24, u32, 28, ], o)
+    }
+}
+
+function get_wtf_08_08t1_08_20t0(o) {
+    if (u32(o + 12) || u32(o + 28) || u32(o + 36) || u32(o + 40) || u32(o + 44)) {
+        ü(1, [f32, 0, f32, 4, f32, 8, u32, 12, f32, 16, f32, 20, f32, 24, u32, 28, f32, 32, u32, 36, u32, 40, u32, 44, ], o)
     }
 }
 
@@ -4866,7 +4998,7 @@ function get_flag_12t3(o) {
 
 function get_flag_12t3_12(o) {
     if (u32(o + 0) || u32(o + 4) || u32(o + 8) || u32(o + 12) || u32(o + 16) || u32(o + 20) || u32(o + 24) || u32(o + 24)) {
-        ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 24], o)
+        ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28], o)
     }
 }
 function get_flag_12t4(o) {
@@ -5620,6 +5752,10 @@ function get_unordered_world_04(o) {
     if (u8(o + 1) || u8(o + 2) || u8(o + 3) || u32(o + 4) || u8(o + 11) !== 255 || f32(o + 12) !== 50 || f32(o + 32) || f32(o + 36) || f32(o + 40) || f32(o + 44) !== 1 || f32(o + 48) !== 100 || f32(o + 52) !== 0.5 || f32(o + 56) || f32(o + 60)) {
         ü(1, [u8, 0, u8, 1, u8, 2, u8, 3, u32, 4, u8, 8, u8, 9, u8, 10, u8, 11, f32, 12, f32, 16, f32, 20, f32, 24, f32, 28, f32, 32, f32, 36, f32, 40, f32, 44, f32, 48, f32, 52, f32, 56, f32, 60], o)
     }
+    // if (u8(o) ===0) {
+    //     ü(1, [u32, 16, f32, 16], o)
+    // }
+
 }
 
 function get_unordered_world_12(o) {
@@ -6124,9 +6260,9 @@ function get_xdx_interface_12_24_04t11_04(o) {
         ö(u32(o + 4), get_xdx_interface_12_24_04t11_04_04t0)
     } else if (u32(o) === 1 || u32(o) === 2) {
         ö(u32(o + 4), get_xdx_interface_12_24_04t11_04_04t1)
-    } else if (u32(o) === 3 && fileextension === "xdx") {
+    } else if (u32(o) === 3 && g.console === 'xbox') {
         ö(u32(o + 4), get_xdx_interface_12_24_04t11_04_04t0)
-    } else if (u32(o) === 3 && file_version === 249) {
+    } else if (u32(o) === 3 && g.version === 249) {
         ä(sound_controls, u32(o + 4), get_sound_controls)
     } else {
         ü(1, [u32, 0, u32, 4], o)
@@ -6204,11 +6340,11 @@ function get_xdx_interface_12_24_04t11_04_08t1_00_04(o) {
 }
 
 function get_interfaceframe(o) {
-    if (u32(o + 32) || u32(o + 48) === 0 || u32(o + 64) || u32(o + 76)) {
-        ü(0, [u8, 0, u8, 1, u16, 2, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, f32, 60, u32, 64, u32, 68, u32, 72, u32, 76, ], o)
-    }
+    // if (u32(o + 32) || u32(o + 48) === 0 || u32(o + 64) || u32(o + 76)) {
+    ü(1, [u8, 0, u8, 1, u16, 2, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, f32, 60, u32, 64, u32, 68, u32, 72, u32, 76, ], o)
+    // }
 
-    if (fileextension == 'xdx' || file_version === 249) {
+    if (g.console === 'xbox' || g.version === 249) {
         get_xdx_interface(o)
         return
     }
@@ -6465,8 +6601,14 @@ function get_interfaceframe_04_04_12t8(o) {
         ü(1, [u32, 0, u32, 4, u32, 8, u32, 12], o)
     }
 
-    for (let i = 0; i < u32(o); i++) {
-        ö(u32(o + 4) + (i * 12), get_interfaceframe_04_04_12t8_04)
+    if (g.version === 249) {
+        for (let i = 0; i < u32(o); i++) {
+            ö(u32(o + 4) + (i * 16), get_interfaceframe_04_04_12t8_04demo)
+        }
+    } else {
+        for (let i = 0; i < u32(o); i++) {
+            ö(u32(o + 4) + (i * 12), get_interfaceframe_04_04_12t8_04)
+        }
     }
 
 }
@@ -6476,6 +6618,13 @@ function get_interfaceframe_04_04_12t8_04(o) {
         ü(1, [u8, 0, u8, 1, u8, 2, u8, 3, u32, 4, u32, 8], o)
     }
 }
+
+function get_interfaceframe_04_04_12t8_04demo(o) {
+    if (u8(o + 2) || u8(o + 3) || u32(o + 12)) {
+        ü(1, [u8, 0, u8, 1, u8, 2, u8, 3, u32, 4, u32, 8, u32, 12], o)
+    }
+}
+
 function get_interfaceframe_04_04_12t7(o) {
     if (u8(o + 2) || u8(o + 3) || u32(o + 4) || u32(o + 8) || u32(o + 12)) {
         ü(1, [u8, 0, u8, 1, u8, 2, u8, 3, u32, 4, u32, 8, u32, 12], o)
@@ -6483,7 +6632,7 @@ function get_interfaceframe_04_04_12t7(o) {
 
 }
 function get_interfaceframe_04_04_12t5(o) {
-    if (u32(o + 0) || u32(o + 4) !== 12 || u32(o + 8) || u32(o + 12)) {
+    if (u32(o + 8) || u32(o + 12)) {
         ü(1, [u32, 0, u32, 4, u32, 8, u32, 12], o)
     }
 
@@ -6549,6 +6698,49 @@ function get_model_animation_1(o) {
         }
     }
 
+    if (u32(o + 36) && u32(o) === 1 && u32(o + 4) === 67) {// ü(1, [f32, 0, f32, 4, f32, 8, f32, 12, f32, 16, f32, 20, f32, 24, f32, 28, f32, 32, f32, 36, f32, 40, f32, 44, f32, 48, f32, 52, f32, 56, f32, 60, u32, 64, u32, 68, u32, 72, u32, 76, f32, 80, f32, 84, f32, 88, f32, 92], u32(o + 36) + offset_mid + (i * 96))
+    }
+
+    // if (u32(o) === 3 && u32(o + 36)) {
+    //     for (let i = 0; i < u32(o + 40) - 1; i++) {
+    //         ü(1, [f32, 0, f32, 4, f32, 8, f32, 12, f32, 16, f32, 20, f32, 24, f32, 28, f32, 32, f32, 36, f32, 40, f32, 44, f32, 48, f32, 52, f32, 56, f32, 60, u32, 64, u32, 68, u32, 72, u32, 76, f32, 80, f32, 84, f32, 88, f32, 92], u32(o + 36) + offset_mid + (i * 96))
+
+    //     }
+    // }
+
+    // if (u32(o + 4) === 291) {
+    //     if (u32(o + 52)) {
+    //         let test = divisible(u32(o + 40) * 4, 16)
+
+    //         let end = u32(o + 40) * 4 + u32(o + 32) + offset_mid
+    //         let begin = u32(o + 52) + offset_mid
+
+    //         if (begin - end !== 0) {
+    //             console.log(test, u32(o + 40) * 4, begin, begin - end, test - (u32(o + 40) * 4))
+
+    //             // ü(1, [u32, 0, u32, 4, f32, 8, f32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
+    //         }
+
+    //     }
+
+    // }
+
+    // if (u32(o) === 1) {
+    //     let test = divisible(u32(o + 40) * 4, 16)
+    //     // only happens with 1
+    //     if (u32(o + 44)) {
+    //         let end = u32(o + 40) * 4 + u32(o + 32) + offset_mid
+    //         let begin = u32(o + 44) + offset_mid
+    //         // if (begin - end === 4)  {
+    //         console.log(test, u32(o + 40) * 4, begin, begin - end, test - (u32(o + 40) * 4))
+    //         // ü(1, [u32, 0, u32, 4, f32, 8, f32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
+
+    //         // }
+    //     }
+
+    // }
+    // u32(o + 40) * 4 + u32(o + 40) + offset_mid
+
     // 44  still needs resarch
 
     // if (u32(o + 44) - u32(o + 36) === -16 || u32(o + 44) - u32(o + 36) === 0 || u32(o + 44) - u32(o + 36) === -32) {// ü(1, [u32, 0, u32, 4, f32, 8, f32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
@@ -6558,87 +6750,6 @@ function get_model_animation_1(o) {
 
     //     ü(1, [u32, 0, u32, 4, f32, 8, f32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
     // }
-
-    /*
-        // postion
-
-        44 = 
-0 = 
-1 | u32 | 0 | 7828432
-163,419 | u32 | 4 | 11694736
-0 | f32 | 8 | 7828440
-250,200,165,150,300,120 | f32 | 12 | 13111944
-1 | u32 | 16 | 7828448
-7,3 | u32 | 20 | 11694752
-6735040,7350368,7350608,6811664,6325104,7020576,7026512,7029872,7033232,7911376,8488736,8489216 | u32 | 24 | 13696244
-6735044,7350372,7350612,6811668,6325108,7020580,7026516,7029876,7033236,7911380,8488740,8489220 | u32 | 28 | 13696248
-6735056,7350384,7350624,6811680,6325120,7020592,7026528,7029888,7033248,7911392,8488752,8489232 | u32 | 32 | 13696252
-6735264,7350416,7350656,6811824,6325568,7021216,7026944,7030304,7033920,7911856,8488848,8489312 | u32 | 36 | 13696256
-49,8,6,33,112,154,101,166,113,23,20 | u32 | 40 | 13696260
-6735264,7350416,7350656,6811824,6325568,7021216,7026944,7030304,7033920,7911856,8488848,8489312 | u32 | 44 | 13696264
-7,3 | u32 | 48 | 11694780
-6736636,7350512,7350728,6812220,6328704,7025528,7029772,7033132,7038568,7915020,8489124,8489552 | u32 | 52 | 13696272
-4282416980,3452816845 | u32 | 56 | 11694788
-4160081,3452816845 | u32 | 60 | 11694792
-
-        -16 =
-1 | u32 | 0 | 4509660
-67,163,419 | u32 | 4 | 9933856
-1,0 | f32 | 8 | 7827576
-240,120,200,165,150 | f32 | 12 | 11749464
-1 | u32 | 16 | 4509676
-7,5,3 | u32 | 20 | 11922928
-2340448,2356816,4354752,4358208,4361872,6734176,5657152,5658720,5660432,5662144,6812304,6324640,6020880,6021104,7812320,7812768 | u32 | 24 | 12515764
-2340452,2356820,4354756,4358212,4361876,6734180,5657156,5658724,5660436,5662148,6812308,6324644,6020884,6021108,7812324,7812772 | u32 | 28 | 12515768
-2340464,2356832,4354768,4358224,4361888,6734192,5657168,5658736,5660448,5662160,6812320,6324656,6020896,6021120,7812336,7812784 | u32 | 32 | 12515772
-2340560,2356928,4354944,4358400,4362064,6734400,5657472,5659072,5660784,5662464,6812464,6324784,6020944,6021168,7812432,7812928 | u32 | 36 | 12515776
-19,37,46,72,79,70,32,28,5,20 | u32 | 40 | 12515332
-2340544,2356912,4354928,4358384,4362048,6734384,5657456,5659056,5660768,5662448,6812448,6324768,6020928,6021152,7812416,7812912 | u32 | 44 | 12515784
-4,3,1,2 | u32 | 48 | 11749500
-494382536,4355536,4358992,4362656,6734952,5658624,5660336,5662048,5663584,6812592,6325008,6021004,6021228,7812672,7813312 | u32 | 52 | 12515792
-494128568,1040214948,4294967295,3452816845,1919250466 | u32 | 56 | 12515348
-494128632,1086508232,0,3452816845,539127923 | u32 | 60 | 12515352
-
-32 = 
-1 | u32 | 0 | 7827328
-163 | u32 | 4 | 7827332
-0,1 | f32 | 8 | 12871316
-200,150 | f32 | 12 | 12871320
-1 | u32 | 16 | 7827344
-7 | u32 | 20 | 7827348
-6733936,8117200,8117680 | u32 | 24 | 12871812
-6733940,8117204,8117684 | u32 | 28 | 12871816
-6733952,8117216,8117696 | u32 | 32 | 12871820
-6734032,8117360,8117856 | u32 | 36 | 12871824
-12,28,29 | u32 | 40 | 12871828
-6734000,8117328,8117824 | u32 | 44 | 12871832
-1,2 | u32 | 48 | 12871356
-6734080,8117584,8118088 | u32 | 52 | 12871840
-4294967295,362932960 | u32 | 56 | 12871364
-0,4 | u32 | 60 | 12871368
-
-416 = 
-u32#1 | u32#163 | f32#0 | f32#60.00 | u32#28 | u32#196 | u32#6881696 | u32#6881724 | u32#6881792 | u32#6882464 | u32#61 | u32#6882048 | u32#92 | u32#6904912 | u32#3452816845 | u32#3452816845 || O 7975088 M 1093456 I 6881632
-
-            512 =
-1 | u32 | 0 | 8146384
-163 | u32 | 4 | 8146388
-0 | f32 | 8 | 8146392
-30 | f32 | 12 | 8146396
-28 | u32 | 16 | 8146400
-196 | u32 | 20 | 8146404
-7052992 | u32 | 24 | 8146408
-7053020 | u32 | 28 | 8146412
-7053088 | u32 | 32 | 8146416
-7053728 | u32 | 36 | 8146420
-31 | u32 | 40 | 8146424
-7053216 | u32 | 44 | 8146428
-69 | u32 | 48 | 8146432
-7062284 | u32 | 52 | 8146436
-3452816845 | u32 | 56 | 8146440
-3452816845 | u32 | 60 | 8146444
-
-            */
 
     // 48 /44
     // ü(0, [u32, 0, u32, 4, f32, 8, f32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
@@ -6683,92 +6794,10 @@ u32#1 | u32#163 | f32#0 | f32#60.00 | u32#28 | u32#196 | u32#6881696 | u32#68817
         // }
         // if (u32(o+16)===5) {
 
-        // true = 
-        /*
-
-35,291 | u32 | 4 | 7223236
-
-
-1656848,1660336,1664016,2332800,2333200,2334080,2480960,2652256,2368848,2369072,1965168,1966768,1968496,1970192,2837568,2838064,2796992,2802736,2806096,2809712,2830992,2831248,2780256,2780752,3487920,3488384,2960960,2961584,2500416,2501232,3237504 | u32 | 44 | 8438572
-1657456,1660944,1664624,2332880,2333768,2335452,2503824,2661324,2368924,2369148,1966336,1968048,1969776,1971328,2837824,2838328,2801304,2805564,2808924,2814360,2831088,2831320,2780512,2781152,3488196,3488624,2961356,2961728,2500656,2504368,3240668 | u32 | 52 | 8438580
-
-false =
-67,11 | u32 | 4 | 6232772
-
-
-915552,931968,0 | u32 | 44 | 6232812
-3366811421,0 | u32 | 52 | 6232820
-
-
-
-
-
-
-1 | 163 | 0 | 200.00 | 1 | 7 | 6734176 | 6734180 | 6734192 | 6734400 | 46 | 6734384 | 3 | 6734952 | 4294967295 | 0 || O 7827568 M 1093456 I 6734112
-1 | 35 | 1.00 | 120.00 | 1 | 7 | 1656672 | 1656676 | 1656688 | 1656864 | 37 | 1656848 | 4 | 1657456 | 2758475838 | 3368862272 || O 4086592 M 2429984 I 1656608
-1 | 35 | 1.00 | 120.00 | 1 | 7 | 1660160 | 1660164 | 1660176 | 1660352 | 37 | 1660336 | 4 | 1660944 | 2758475838 | 3368862272 || O 4090080 M 2429984 I 1660096
-1 | 35 | 1.00 | 120.00 | 1 | 7 | 1663840 | 1663844 | 1663856 | 1664032 | 37 | 1664016 | 4 | 1664624 | 2758475838 | 3368862272 || O 4093760 M 2429984 I 1663776
-1 | 35 | 0 | 200.00 | 1 | 7 | 2332992 | 2332996 | 2333008 | 2333216 | 46 | 2333200 | 3 | 2333768 | 4294967295 | 0 || O 3426784 M 1093856 I 2332928
-1 | 67 | 1.00 | 240.00 | 1 | 7 | 915456 | 915460 | 915472 | 915568 | 19 | 915552 | 4 | 3366811421 | 3100472093 | 4174213917 || O 3085184 M 2169792 I 915392
-1 | 67 | 1.00 | 240.00 | 1 | 7 | 931872 | 931876 | 931888 | 931984 | 19 | 931968 | 4 | 3366811421 | 3100472093 | 4174213917 || O 3101600 M 2169792 I 931808
-1 | 291 | 0 | 120.00 | 1 | 5 | 2368800 | 2368804 | 2368816 | 2368864 | 5 | 2368848 | 3 | 2368924 | 3452816845 | 3452816845 || O 7223232 M 4854496 I 2368736
-1 | 291 | 0 | 120.00 | 1 | 5 | 1968160 | 1968164 | 1968176 | 1968512 | 79 | 1968496 | 4 | 1969776 | 3452816845 | 3452816845 || O 6245632 M 4277536 I 1968096
-
-0
-1 | 291 | 0 | 300.00 | 1 | 7 | 2796352 | 2796356 | 2796368 | 2796992 | 154 | 2796992 | 7 | 2801304 | 3452816845 | 3452816845 || O 7670048 M 4873760 I 2796288
-1 | 291 | 0 | 300.00 | 1 | 7 | 2802304 | 2802308 | 2802320 | 2802736 | 101 | 2802736 | 7 | 2805564 | 3452816845 | 3452816845 || O 7676000 M 4873760 I 2802240
-1 | 291 | 0 | 300.00 | 1 | 7 | 2809024 | 2809028 | 2809040 | 2809712 | 166 | 2809712 | 7 | 2814360 | 3452816845 | 3452816845 || O 7682720 M 4873760 I 2808960
-1 | 291 | 0 | 120.00 | 1 | 7 | 3237024 | 3237028 | 3237040 | 3237504 | 113 | 3237504 | 7 | 3240668 | 3452816845 | 3452816845 || O 8438528 M 5201568 I 3236960
-
-512
-1 | 35 | 0 | 30.00 | 28 | 196 | 2652032 | 2652060 | 2652128 | 2652768 | 31 | 2652256 | 69 | 2661324 | 3452816845 | 3452816845 || O 3745824 M 1093856 I 2651968
-1 | 163 | 0 | 30.00 | 28 | 196 | 7052992 | 7053020 | 7053088 | 7053728 | 31 | 7053216 | 69 | 7062284 | 3452816845 | 3452816845 || O 8146384 M 1093456 I 7052928
-
-
-*/
-
         //calculate amount
         if ((u32(o + 40) * u32(o + 48) * 4) === u32(o + 52) - u32(o + 36)) {} else {// console.log(u32(o + 40) * u32(o + 48) * 4))
         // ü(1, [u32, 0, u32, 4, f32, 8, f32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
 
-        /*
-false ->
-1,3 | u32 | 0 | 9446252
-67,11 | u32 | 4 | 9446256
-1,0 | f32 | 8 | 9446260
-240,150,175,310,200,250,190 | f32 | 12 | 10872120
-1 | u32 | 16 | 4509676
-7,2 | u32 | 20 | 9446272
-2340448,2356816,5168928,5173584,5177632,5181680,5185280,5647184,5654080,8188080,8191280,7926832,7930720,7797056,7798848,6018512,6019600 | u32 | 24 | 10873220
-2340452,2356820,5168912,5173568,5177616,5181664,5185264,5647168,5654064,8188064,8191264,7926816,7930704,7797040,7798832,6018496,6019584 | u32 | 28 | 10873224
-2340464,2356832,5168932,5173588,5177636,5181684,5185284,5647188,5654084,8188084,8191284,7926836,7930724,7797060,7798852,6018516,6019604 | u32 | 32 | 10873228
-2340560,2356928,5169056,5173712,5177760,5181840,5185424,5647472,5654208,8188224,8191344,7926992,7930880,7797136,7798928,6018560,6019664 | u32 | 36 | 10873232
-19,31,36,34,69,32,15,39,18,16,11,13 | u32 | 40 | 10873236
-2340544,2356912,0 | u32 | 44 | 9446296
-4,2,1 | u32 | 48 | 9459052
-494382536,0 | u32 | 52 | 9446304
-494128568,0 | u32 | 56 | 9446308
-494128632,0 | u32 | 60 | 9446312
-
-
-true = 
-1 | u32 | 0 | 6784132
-163,419 | u32 | 4 | 9933856
-1,0 | f32 | 8 | 7827336
-120,200,250,60,30,165,150,300 | f32 | 12 | 11893416
-1,28 | u32 | 16 | 7975104
-7,196,5,3 | u32 | 20 | 11694752
-4354752,4358208,4361872,6733936,6734176,6735040,6881696,7052992,5657152,5658720,5660432,5662144,7350368,7350608,6811664,6812304,6324640,6325104,7020576,7026512,7029872,7033232,7911376,8117200,8117680,6020880,6021104,7812320,7812768,8488736,8489216 | u32 | 24 | 13696244
-4354756,4358212,4361876,6733940,6734180,6735044,6881724,7053020,5657156,5658724,5660436,5662148,7350372,7350612,6811668,6812308,6324644,6325108,7020580,7026516,7029876,7033236,7911380,8117204,8117684,6020884,6021108,7812324,7812772,8488740,8489220 | u32 | 28 | 13696248
-4354768,4358224,4361888,6733952,6734192,6735056,6881792,7053088,5657168,5658736,5660448,5662160,7350384,7350624,6811680,6812320,6324656,6325120,7020592,7026528,7029888,7033248,7911392,8117216,8117696,6020896,6021120,7812336,7812784,8488752,8489232 | u32 | 32 | 13696252
-4354944,4358400,4362064,6734032,6734400,6735264,6882464,7053728,5657472,5659072,5660784,5662464,7350416,7350656,6811824,6812464,6324784,6325568,7021216,7026944,7030304,7033920,7911856,8117360,8117856,6020944,6021168,7812432,7812928,8488848,8489312 | u32 | 36 | 13696256
-37,12,46,49,61,31,72,79,70,8,6,33,32,28,112,154,101,166,113,29,5,20,23 | u32 | 40 | 13695780
-4354928,4358384,4362048,6734000,6734384,6735264,6882048,7053216,5657456,5659056,5660768,5662448,7350416,7350656,6811824,6812448,6324768,6325568,7021216,7026944,7030304,7033920,7911856,8117328,8117824,6020928,6021152,7812416,7812912,8488848,8489312 | u32 | 44 | 13696264
-4,1,3,7,92,69,2 | u32 | 48 | 11749500
-4355536,4358992,4362656,6734080,6734952,6736636,6904912,7062284,5658624,5660336,5662048,5663584,7350512,7350728,6812220,6812592,6325008,6328704,7025528,7029772,7033132,7038568,7915020,8117584,8118088,6021004,6021228,7812672,7813312,8489124,8489552 | u32 | 52 | 13696272
-1040214948,4294967295,4282416980,3452816845,362932960,1919250466 | u32 | 56 | 12515348
-1086508232,0,4160081,3452816845,4,539127923 | u32 | 60 | 12515352
-*/
         //     console.log(u32(o+52) + offset_mid ,u32(o+36) - u32(o+52),(u32(o+40) * u32(o+48) * 4))
 
         // ü(1, [u32, 0, u32, 4, f32, 8, f32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44, u32, 48, u32, 52, u32, 56, u32, 60, ], o)
@@ -6818,30 +6847,10 @@ true =
     if (u32(o + 16) === 28) {// ü(1, [u32, 0, u32, 4, u32, 16, u32, 20, u32, 40], o)
     // ö(u32(o + 28), get_model_animation_1_28t3)
 
-    /*
-3 | u32 | 0 | 9446252
-11 | u32 | 4 | 9446256
-1 | u32 | 16 | 9446268
-2 | u32 | 20 | 9446272
-31,36,34,69,32,15,18,16,39,11,13 | u32 | 40 | 10873236
-
-*/
-
     }
 
     // if ((u32(o+28)+offset_mid) - (u32(o+32)+offset_mid) === -12) {
 
-    /*
-        -68 = 1
-        12 = 1 , 4
-        
-        1 | u32 | 0 | 3574400
-35,163 | u32 | 4 | 3216176
-28 | u32 | 16 | 3574416
-196 | u32 | 20 | 3574420
-61,31 | u32 | 40 | 3745864
-
-*/
     // console.log(u32(o+24)+offset_mid,u32(o+28)+offset_mid,u32(o+32)+offset_mid,(u32(o+28)+offset_mid) - (u32(o+32)+offset_mid))
 
     // ü(1, [u32, 0, u32, 4, u32, 16, u32, 20, u32, 40], o)
@@ -6915,156 +6924,6 @@ true =
     // let html = `<div style='display:none' class='sub_file_div'><a style='padding-right: 6px; padding-left: 4px;' class='no_arrow'></a><a> ? </a> <a  data-type="x_model_animation_1" data-offset="${offset}" data-offset_mid="${offset_mid}" class='file_hover_not_selected'> get_model_animation_1 [${i}]</a></div>`
     // return html
 
-    /*
-    // check values
-    [11]
-3 | u32 | 0 | 9446252
-11 | u32 | 4 | 9446256
-0,1 | f32 | 8 | 13127380
-150,175,310,200,250,190 | f32 | 12 | 10872120
-1 | u32 | 16 | 9446268
-2 | u32 | 20 | 9446272
-5168928,5173584,5177632,5181680,5185280,5647184,5654080,8188080,8191280,7926832,7930720,7797056,7798848,6018512,6019600 | u32 | 24 | 10873220
-5168912,5173568,5177616,5181664,5185264,5647168,5654064,8188064,8191264,7926816,7930704,7797040,7798832,6018496,6019584 | u32 | 28 | 10873224
-5168932,5173588,5177636,5181684,5185284,5647188,5654084,8188084,8191284,7926836,7930724,7797060,7798852,6018516,6019604 | u32 | 32 | 10873228
-5169056,5173712,5177760,5181840,5185424,5647472,5654208,8188224,8191344,7926992,7930880,7797136,7798928,6018560,6019664 | u32 | 36 | 10873232
-31,36,34,69,32,15,39,18,16,11,13 | u32 | 40 | 10873236
-0 | u32 | 44 | 9446296
-2,1 | u32 | 48 | 9459052
-0 | u32 | 52 | 9446304
-0 | u32 | 56 | 9446308
-0 | u32 | 60 | 9446312
-
-
-[35]
-5 | u32 | 0 | 4527356
-35 | u32 | 4 | 4527360
-1,0 | f32 | 8 | 7898360
-240,100,60,30,120,250,200 | f32 | 12 | 11911496
-1,29 | u32 | 16 | 7898368
-7,203 | u32 | 20 | 7898372
-845226304,477686472,477645640,1051400538,395166720,32,6,8,552120320,552120064,565563968,552114944 | u32 | 24 | 13701476
-845226240,477686440,477655336,3207371451,395166656,36,7,16,552150336,552120000,565564032,552124224 | u32 | 28 | 13701480
-2358144,2360112,3744176,3745056,6804960,7021712,4802880,7655568,7656848,7038656,7043840,8192752,8206928,8208736,8489648,8491248,8492848,8494448 | u32 | 32 | 13701484
-845211136,477686376,477662888,1059440207,395166528,44,9,188304820,552150208,552119808,565653952,565573248 | u32 | 36 | 13701488
-66,65,21,61,31,25,41,45,180,192,50,47 | u32 | 40 | 13412740
-845211200,477686280,477662952,1064134299,395166400,52,11,0,552150080,552083392,565653824,565573440 | u32 | 44 | 13701496
-845211264,477686248,477662984,1052046719,395166336,56,12,0,552149952,552083328,565653760,565573504 | u32 | 48 | 13701500
-2358408,2360372,3744260,3745140,6805204,7021836,4802980,7655732,7657028,7039376,7044608,8192952,8207116,8208916,8489812,8491412,8493012,8494612 | u32 | 52 | 13701504
-845211328,477686344,477663048,1057947842,395166208,64,14,0,552149888,552134976,565653632,565573632 | u32 | 56 | 13701508
-845211456,477686152,477663080,1056407289,395166144,68,15,3,552149824,552135040,565653568,565573696 | u32 | 60 | 13701512
- 
-[67]
-1 | u32 | 0 | 4509660
-67 | u32 | 4 | 4509664
-1 | f32 | 8 | 4509668
-240 | f32 | 12 | 4509672
-1 | u32 | 16 | 4509676
-7 | u32 | 20 | 4509680
-2340448,2356816 | u32 | 24 | 4526052
-2340452,2356820 | u32 | 28 | 4526056
-2340464,2356832 | u32 | 32 | 4526060
-2340560,2356928 | u32 | 36 | 4526064
-19 | u32 | 40 | 4509700
-2340544,2356912 | u32 | 44 | 4526072
-4 | u32 | 48 | 4509708
-494382536 | u32 | 52 | 4509712
-494128568 | u32 | 56 | 4509716
-494128632 | u32 | 60 | 4509720
-
-[163]
-1 | u32 | 0 | 6784132
-163 | u32 | 4 | 6784136
-1,0 | f32 | 8 | 7827336
-120,200,250,60,30,150 | f32 | 12 | 12515304
-1,28 | u32 | 16 | 7975104
-7,196 | u32 | 20 | 7975108
-4354752,4358208,4361872,6733936,6734176,6735040,6881696,7052992,7812320,7812768,8117200,8117680 | u32 | 24 | 12871812
-4354756,4358212,4361876,6733940,6734180,6735044,6881724,7053020,7812324,7812772,8117204,8117684 | u32 | 28 | 12871816
-4354768,4358224,4361888,6733952,6734192,6735056,6881792,7053088,7812336,7812784,8117216,8117696 | u32 | 32 | 12871820
-4354944,4358400,4362064,6734032,6734400,6735264,6882464,7053728,7812432,7812928,8117360,8117856 | u32 | 36 | 12871824
-37,12,46,49,61,31,20,32,28,29 | u32 | 40 | 12871828
-4354928,4358384,4362048,6734000,6734384,6735264,6882048,7053216,7812416,7812912,8117328,8117824 | u32 | 44 | 12871832
-4,1,3,7,92,69,2 | u32 | 48 | 12871356
-4355536,4358992,4362656,6734080,6734952,6736636,6904912,7062284,7812672,7813312,8117584,8118088 | u32 | 52 | 12871840
-1040214948,4294967295,4282416980,3452816845,1919250466,362932960 | u32 | 56 | 12871364
-1086508232,0,4160081,3452816845,539127923,4 | u32 | 60 | 12871368
-
-[419]
-1 | u32 | 0 | 9933852
-419 | u32 | 4 | 9933856
-0 | f32 | 8 | 9933860
-120,200,165,150,300 | f32 | 12 | 11893416
-1 | u32 | 16 | 9933868
-5,3,7 | u32 | 20 | 11749936
-5657152,5658720,5660432,5662144,7350368,7350608,6811664,6812304,6324640,6325104,7020576,7026512,7029872,7033232,7911376,6020880,6021104,8488736,8489216 | u32 | 24 | 13696244
-5657156,5658724,5660436,5662148,7350372,7350612,6811668,6812308,6324644,6325108,7020580,7026516,7029876,7033236,7911380,6020884,6021108,8488740,8489220 | u32 | 28 | 13696248
-5657168,5658736,5660448,5662160,7350384,7350624,6811680,6812320,6324656,6325120,7020592,7026528,7029888,7033248,7911392,6020896,6021120,8488752,8489232 | u32 | 32 | 13696252
-5657472,5659072,5660784,5662464,7350416,7350656,6811824,6812464,6324784,6325568,7021216,7026944,7030304,7033920,7911856,6020944,6021168,8488848,8489312 | u32 | 36 | 13696256
-72,79,70,8,6,33,32,28,112,154,101,166,113,5,23,20 | u32 | 40 | 13696260
-5657456,5659056,5660768,5662448,7350416,7350656,6811824,6812448,6324768,6325568,7021216,7026944,7030304,7033920,7911856,6020928,6021152,8488848,8489312 | u32 | 44 | 13696264
-4,3,1,2,7 | u32 | 48 | 11749964
-5658624,5660336,5662048,5663584,7350512,7350728,6812220,6812592,6325008,6328704,7025528,7029772,7033132,7038568,7915020,6021004,6021228,8489124,8489552 | u32 | 52 | 13696272
-3452816845 | u32 | 56 | 9933908
-3452816845 | u32 | 60 | 9933912
-
-
-[1]
-1 | u32 | 0 | 4509660
-67,163,419 | u32 | 4 | 9933856
-1,0 | f32 | 8 | 7827336
-240,120,200,250,60,30,165,150,300 | f32 | 12 | 11893416
-1,28 | u32 | 16 | 7975104
-7,196,5,3 | u32 | 20 | 11694752
-2340448,2356816,4354752,4358208,4361872,6733936,6734176,6735040,6881696,7052992,5657152,5658720,5660432,5662144,7350368,7350608,6811664,6812304,6324640,6325104,7020576,7026512,7029872,7033232,7911376,8117200,8117680,6020880,6021104,7812320,7812768,8488736,8489216 | u32 | 24 | 13696244
-2340452,2356820,4354756,4358212,4361876,6733940,6734180,6735044,6881724,7053020,5657156,5658724,5660436,5662148,7350372,7350612,6811668,6812308,6324644,6325108,7020580,7026516,7029876,7033236,7911380,8117204,8117684,6020884,6021108,7812324,7812772,8488740,8489220 | u32 | 28 | 13696248
-2340464,2356832,4354768,4358224,4361888,6733952,6734192,6735056,6881792,7053088,5657168,5658736,5660448,5662160,7350384,7350624,6811680,6812320,6324656,6325120,7020592,7026528,7029888,7033248,7911392,8117216,8117696,6020896,6021120,7812336,7812784,8488752,8489232 | u32 | 32 | 13696252
-2340560,2356928,4354944,4358400,4362064,6734032,6734400,6735264,6882464,7053728,5657472,5659072,5660784,5662464,7350416,7350656,6811824,6812464,6324784,6325568,7021216,7026944,7030304,7033920,7911856,8117360,8117856,6020944,6021168,7812432,7812928,8488848,8489312 | u32 | 36 | 13696256
-19,37,12,46,49,61,31,72,79,70,8,6,33,32,28,112,154,101,166,113,29,5,20,23 | u32 | 40 | 13695780
-2340544,2356912,4354928,4358384,4362048,6734000,6734384,6735264,6882048,7053216,5657456,5659056,5660768,5662448,7350416,7350656,6811824,6812448,6324768,6325568,7021216,7026944,7030304,7033920,7911856,8117328,8117824,6020928,6021152,7812416,7812912,8488848,8489312 | u32 | 44 | 13696264
-4,1,3,7,92,69,2 | u32 | 48 | 11749500
-494382536,4355536,4358992,4362656,6734080,6734952,6736636,6904912,7062284,5658624,5660336,5662048,5663584,7350512,7350728,6812220,6812592,6325008,6328704,7025528,7029772,7033132,7038568,7915020,8117584,8118088,6021004,6021228,7812672,7813312,8489124,8489552 | u32 | 52 | 13696272
-494128568,1040214948,4294967295,4282416980,3452816845,362932960,1919250466 | u32 | 56 | 12515348
-494128632,1086508232,0,4160081,3452816845,4,539127923 | u32 | 60 | 12515352
-
-[3]
-3 | u32 | 0 | 9446252
-11 | u32 | 4 | 9446256
-0,1 | f32 | 8 | 13127380
-150,175,310,200,250,190 | f32 | 12 | 10872120
-1 | u32 | 16 | 9446268
-2 | u32 | 20 | 9446272
-5168928,5173584,5177632,5181680,5185280,5647184,5654080,8188080,8191280,7926832,7930720,7797056,7798848,6018512,6019600 | u32 | 24 | 10873220
-5168912,5173568,5177616,5181664,5185264,5647168,5654064,8188064,8191264,7926816,7930704,7797040,7798832,6018496,6019584 | u32 | 28 | 10873224
-5168932,5173588,5177636,5181684,5185284,5647188,5654084,8188084,8191284,7926836,7930724,7797060,7798852,6018516,6019604 | u32 | 32 | 10873228
-5169056,5173712,5177760,5181840,5185424,5647472,5654208,8188224,8191344,7926992,7930880,7797136,7798928,6018560,6019664 | u32 | 36 | 10873232
-31,36,34,69,32,15,39,18,16,11,13 | u32 | 40 | 10873236
-0 | u32 | 44 | 9446296
-2,1 | u32 | 48 | 9459052
-0 | u32 | 52 | 9446304
-0 | u32 | 56 | 9446308
-0 | u32 | 60 | 9446312
-
-[5]
-5 | u32 | 0 | 5777516
-291,35 | u32 | 4 | 4527360
-0,-10,1,16,17 | f32 | 8 | 10380148
-1,10,20,5,24,30,15,120,25,60,35,31,54,48,240,55,16,40,50,38,65,100,40.0099983215332,151,12,90,28,85,75,36,170,45,130,175,300,250,200,180,360,115,80,160,110 | f32 | 12 | 12873032
-18,1,11,6,2,3,4,13,17,21,7,15,24,38,29,19,30,32,27,37,26,25,39,40,28,9,23,34,5,12,57,8,16,14 | u32 | 16 | 12891388
-0,8,36,33,2,4,34,1,5,6,3,9,17,37,38,7,102,46,66,97,86,82,31,96,93,21,113,101,57,118,203,109,111,65,138,103,141,92,79,85,44,98,70,91,73,89,75,128,105,50,53,64,51,41,68,63,11,15,16,119,114,110,104,94,137,127,29,25,30,27,22,28,55,107,106,116,99,49,126,20,32,24,10,35,76,165,59,74,23,100,69,87,40,12 | u32 | 20 | 12516400
-3452816845,845226304,477686472,477645640,1051400538,395166720,32,6,8,552120320,552120064,565563968,552114944 | u32 | 24 | 13701476
-3452816845,845226240,477686440,477655336,3207371451,395166656,36,7,16,552150336,552120000,565564032,552124224 | u32 | 28 | 13701480
-0,3603184,3603392,3606672,3609680,3609824,3612208,3612576,3613056,3613456,3613936,3614544,3614944,3615488,3615872,3617360,3617712,3618128,3620288,3620912,3621168,3621408,3621632,2330576,2330784,2334064,2337072,2337216,2339600,2339968,2341776,2344016,2346880,2352128,2358144,2360112,2362064,2370240,2370752,2370992,2371136,2371616,2372224,2372624,2373168,2373392,2373904,2374256,2374672,2376832,2377456,2377840,4344880,4345088,4348368,4351376,4351520,4353904,4354272,4355632,4358064,4359088,4362752,4363104,4363632,4364032,4364576,4366736,4367472,4367712,4367936,4368448,4368928,4369424,4369824,4370208,3719248,3719456,3722736,3725744,3725888,3728272,3728640,3729232,3729632,3730176,3732336,3732960,3733104,3733488,3734976,3735200,3735824,3736064,3736464,3736816,3737232,3737712,3738208,3740896,3745488,3752400,3762272,3768384,3774000,3775888,3781648,3791856,3794912,3799360,3734304,3734512,3737792,3740800,3740944,3743328,3743696,3744176,3745056,3746048,3746448,3747104,3747344,3747488,3749648,3750272,3750656,3752144,3752368,3752880,3753280,3753760,3754256,3754608,7097888,7098096,7101376,7104272,7104416,7106800,7107168,6736736,6748992,6750048,6765280,6778528,6787776,6804960,6819776,6835472,6850688,6862032,6905200,6919424,6931968,6951168,6967408,6986480,7001696,7006736,7012592,7015888,7021712,7029456,7034624,7041232,7045856,7062560,7068672,7072336,7081520,7087744,7092336,5159040,5159248,5162528,5165536,5165680,5168064,5168432,5172960,5188656,5189136,5189632,5190576,5194656,5198160,5204000,5206528,5209424,5214896,5219280,5224928,5227088,5230304,5256608,5259504,5261792,5265760,5269728,5273184,5275968,5278208,5283728,5286688,5289744,5291200,5291696,5294400,5297104,5298288,5298576,5637296,5637504,5640784,5643792,5643936,5646320,5646688,5663680,5664624,5668704,5672208,5678048,5680576,5683472,5688944,5693328,5698976,5701136,5704352,5730656,5733552,5735840,5739808,5743776,5747232,5750016,5752256,5757776,5760736,5763792,5765248,5765744,5768448,5771152,5772336,5772624,5773232,5776784,5781248,5789728,5795456,5798624,5803968,5807536,5812128,5817216,5826560,5831728,5843664,5851648,5858064,4793008,4793216,4796496,4799504,4799648,4802032,4802400,4802880,4803712,4804224,4804464,4804720,4805120,4805664,4805888,4806400,4806784,4808272,4810432,4811056,4811408,4811824,4812304,4812800,4815008,4817216,4821280,4826384,4834048,4837856,4839360,4840832,4843824,7340496,7340704,7343984,7346992,7347136,7349520,7349888,7350816,7351760,7355840,7359344,7365184,7367712,7370608,7376080,7380464,7386112,7388272,7391488,7417792,7420688,7422976,7426944,7430912,7434368,7437152,7439392,7444912,7447872,7450928,7452384,7452880,7455584,7458288,7459472,7459760,7460368,7478496,7497840,7513472,6801792,6802000,6805280,6808288,6808432,6810816,6811184,6812688,6813632,6817712,6821216,6827056,6829584,6832480,6837952,6842336,6847984,6850144,6853360,6879664,6882560,6884848,6886304,6886800,6889504,6892208,6896176,6900144,6903600,6906384,6908624,6914144,6917104,6920160,6921344,6921632,6922240,6931872,6941488,6970448,7004592,7021184,7021328,7023760,5302016,5302224,5305504,5308512,5308656,5311040,5311408,5311888,5313088,5314320,5320592,5367600,5373808,5381984,5388032,5388976,5393056,5396560,5402400,5404928,5407824,5413296,5417680,5423328,5425488,5428704,5455008,5457904,5460192,5461648,5462144,5464848,5467552,5471520,5475488,5478944,5481728,5483968,5489488,5492448,5495504,5496688,5496976,7645696,7645904,7649184,7652192,7652336,7654720,7655088,7655568,7656848,7658240,7658800,7659296,7660240,7664320,7667824,7673664,7676192,7679088,7684560,7688944,7694592,7696752,7699968,7726272,7729168,7731456,7735424,7739392,7742848,7745632,7747872,7753392,7756352,7759408,7760864,7761360,7764064,7766768,7767952,7768240,7768848,7774368,7779776,7785632,7791520,7797408,7819744,7825632,7831520,7831904,7834032,7836368,7010704,7010912,7014192,7017200,7017344,7019728,7020096,7025616,7038656,7043840,7049360,7050032,7050352,7050864,7051504,7052448,7056528,7060032,7065872,7068400,7071296,7076768,7081152,7086800,7088960,7092176,7118480,7121376,7123664,7127632,7131600,7135056,7137840,7140080,7145600,7148560,7151616,7153072,7153568,7156272,7158976,7160160,7160448,7161168,7164592,7166256,7167552,7168752,7169504,7169856,6314768,6314976,6318256,6321264,6321408,6323792,6324160,6328800,6329792,6331648,6334928,6340608,6340800,6340992,6360768,6360976,6361168,6361360,6375136,6377216,6385584,6392768,6396688,6397552,6398496,6402576,6406080,6411920,6414448,6417344,6422816,6427200,6432848,6435008,6438224,6464528,6467424,6469712,6473680,6477648,6481104,6483888,6486128,6491648,6494608,6497664,6499120,6499616,6502320,6505024,6506208,6506496,8178192,8178400,8181680,8184688,8184832,8187216,8187584,8192752,8194672,8206928,8208736,8210480,8222752,8223088,8223520,8223728,8223952,8228400,8229344,8233424,8236928,8242768,8245296,8248192,8253664,8258048,8263696,8265856,8269072,8295376,8298272,8300560,8304528,8308496,8311952,8314736,8316976,8322496,8325456,8328512,8329968,8330464,8333168,8335872,8337056,8337344,7901504,7901712,7904992,7908000,7908144,7910528,7910896,7915120,7917088,7934592,7935184,7935776,7936720,7940800,7944304,7950144,7952672,7955568,7961040,7965424,7971072,7973232,7976448,8002752,8005648,8007936,8011904,8015872,8019328,8022112,8024352,8029872,8032832,8035888,8037344,8037840,8040544,8043248,8044432,8044720,8045328,8047536,8051600,8053808,8058912,8066576,8070384,8070800,8071264,8076432,8094128,8478864,8479072,8482352,8485360,8485504,8487888,8488256,8489648,8491248,8492848,8494448,8496048,8496640,8497232,8498176,8502256,8505760,8511600,8514128,8517024,8522496,8526880,8532528,8534688,8537904,8564208,8567104,8569392,8570848,8571344,8574048,8576752,8580720,8584688,8588144,8590928,8593168,8598688,8601648,8604704,8605888,8606176,8606784,8624528,8624704,7787168,7787376,7790656,7793664,7793808,7796192,7796560,7800432,7800592,7800752,7801056,7802000,7806080,7809584,7815424,7817952,7820848,7826320,7830704,7836352,7838512,7841728,7868032,7870928,7873216,7877184,7881152,7884608,7887392,7889632,7895152,7898112,7901168,7902624,7903120,7905824,7908528,7909712,7910000,7910608,7913296,7917888,7924688,7931856,7933792,7943664,7949776,7955392,7957168,7957328,7957536,7963296,7973504,7976560,7981008,8107328,8107536,8110816,8113824,8113968,8116352,8116720,8118176,8118544,8118912,8133776,8137264,8148672,8149616,8153696,8157200,8163040,8165568,8168464,8173936,8178320,8183968,8186128,8189344,8215648,8218544,8220832,8224800,8228768,8232224,8235008,8237248,8245728,8248784,8250240,8250736,8253440,8256144,8257328,8257616,6008624,6008832,6012112,6015120,6015264,6017648,6018016,6021328,6021824,6022768,6026848,6030352,6036192,6038720,6041616,6047088,6051472,6057120,6059280,6062496,6088800,6091696,6093984,6097952,6101920,6105376,6108160,6110400,6115920,6118880,6121936,6123392,6126096,6128800,6129984,6130272,7802448,7802656,7805936,7808944,7809088,7811472,7811840,7813408,7814912,7815616,7816320,7817264,7821344,7824848,7830688,7833216,7836112,7841584,7845968,7851616,7853776,7856992,7883296,7886192,7888480,7892448,7896416,7899872,7902656,7904896,7910416,7913376,7916432,7918384,7921088,7923792,7924976,7925264 | u32 | 32 | 12628268
-3452816845,845211136,477686376,477662888,1059440207,395166528,44,9,188304820,552150208,552119808,565653952,565573248 | u32 | 36 | 13701488
-0,4,21,3,25,18,14,19,10,22,31,20,15,46,11,34,32,55,49,66,65,24,17,38,51,26,61,23,60,29,27,30,42,57,59,16,151,41,13,47,71,35,36,75,70,37,132,5,45,130,90,39,40,44,300,116,121,180,192,28,9,48,7,8,54,50,361,81,131,161,2,12,111,89 | u32 | 40 | 12891412
-3452816845,845211200,477686280,477662952,1064134299,395166400,52,11,0,552150080,552083392,565653824,565573440 | u32 | 44 | 13701496
-3452816845,845211264,477686248,477662984,1052046719,395166336,56,12,0,552149952,552083328,565653760,565573504 | u32 | 48 | 13701500
-3603072,3603200,3603476,3606756,3609456,3609568,3609692,3609924,3612096,3612292,3612648,3613112,3613528,3614012,3614432,3614584,3615028,3615576,3615996,3617440,3617772,3618312,3620332,3620924,3621056,3621208,3621448,3621688,2330464,2330592,2330868,2334148,2336848,2336960,2337084,2337316,2339488,2339684,2340040,2341912,2344144,2347100,2352324,2358408,2360372,2362284,2370296,2370640,2370792,2371004,2371208,2371692,2372112,2372264,2372708,2373208,2373448,2373984,2374316,2374856,2376876,2377544,2377964,4344768,4344896,4345172,4348452,4351152,4351264,4351388,4351620,4353792,4353988,4354344,4355728,4358076,4359168,4362832,4363164,4363520,4363672,4364116,4364760,4366780,4367360,4367512,4367752,4367992,4368520,4369004,4369480,4369912,4370332,3719136,3719264,3719540,3722820,3725520,3725632,3725756,3725988,3728160,3728356,3728712,3729120,3729272,3729716,3730360,3732380,3732972,3733192,3733612,3735016,3735256,3735712,3735864,3736120,3736544,3736876,3737304,3737788,3738284,3741048,3745692,3752288,3752604,3762396,3768508,3774084,3775776,3776040,3781912,3791940,3795016,3799200,3799464,3734192,3734320,3734596,3737876,3740576,3740688,3740812,3741044,3743216,3743412,3743768,3744260,3745140,3745936,3746088,3746532,3746992,3747144,3747356,3747672,3749692,3750360,3750780,3752184,3752424,3752936,3753352,3753836,3754336,3754668,7097776,7097904,7098180,7101460,6749936,7104160,7104284,7104516,7106688,7106884,7107240,6736980,6749084,6750292,6765524,6778772,6788020,6805204,6820020,6835716,6850944,6862276,6905444,6919664,6932212,6951412,6967652,6986724,7001812,7006860,7012716,7015996,7021836,7029576,7034748,7041356,7045980,7062684,7068768,7072460,7081644,7087868,7092460,5158928,5159056,5159332,5162612,5165312,5165424,5165548,5165780,5167952,5168148,5168504,5173056,5188728,5189212,5189748,5190744,5194752,5198404,5204100,5206644,5209652,5215140,5219516,5224992,5227216,5230912,5256672,5259568,5261956,5265924,5269808,5273264,5276048,5278304,5283792,5286800,5289932,5291328,5291980,5294684,5297220,5298348,5298628,5637184,5637312,5637588,5640868,5643568,5643680,5643804,5644036,5646208,5646404,5646760,5663796,5664792,5668800,5672452,5678148,5680692,5683700,5689188,5693564,5699040,5701264,5704960,5730720,5733616,5736004,5739972,5743856,5747312,5750096,5752352,5757840,5760848,5763980,5765376,5766028,5768732,5771268,5772396,5772676,5773308,5776884,5781488,5789868,5795552,5798728,5804052,5807664,5812256,5817456,5826660,5831968,5843808,5851772,5858188,4792896,4793024,4793300,4796580,4799280,4799392,4799516,4799748,4801920,4802116,4802472,4802980,4803768,4804112,4804264,4804476,4804608,4804760,4805204,4805704,4805944,4806488,4806908,4808456,4810476,4811136,4811468,4811896,4812380,4812920,4815128,4817476,4821540,4826684,4834328,4838004,4839504,4840980,4844352,7340384,7340512,7340788,7344068,7346768,7346880,7347004,7347236,7349408,7349604,7349960,7350932,7351928,7355936,7359588,7365284,7367828,7370836,7376324,7380700,7386176,7388400,7392096,7417856,7420752,7423140,7427108,7430992,7434448,7437232,7439488,7444976,7447984,7451116,7452512,7453164,7455868,7458404,7459532,7459812,7460572,7478700,7498004,7513492,6801680,6801808,6802084,6805364,6808064,6808176,6808300,6808532,6810704,6810900,6811256,6812804,6813800,6817808,6821460,6827156,6829700,6832708,6838196,6842572,6848048,6850272,6853968,6879728,6882624,6885036,6886432,6887084,6889788,6892372,6896340,6900224,6903680,6906464,6908720,6914208,6917216,6920276,6921404,6921684,6922444,6932052,6942008,6970968,7004952,7021196,7021424,7023856,5301904,5302032,5302308,5305588,5308288,5308400,5308524,5308756,5310928,5311124,5311480,5312044,5313248,5314496,5321792,5368064,5374028,5382164,5388148,5389144,5393152,5396804,5402500,5405044,5408052,5413540,5417916,5423392,5425616,5429312,5455072,5457968,5460380,5461776,5462428,5465132,5467716,5471684,5475568,5479024,5481808,5484064,5489552,5492560,5495620,5496748,5497028,7645584,7645712,7645988,7649268,7651968,7652080,7652204,7652436,7654608,7654804,7655160,7655732,7657028,7658328,7658876,7659412,7660408,7664416,7668068,7673764,7676308,7679316,7684804,7689180,7694656,7696880,7700576,7726336,7729232,7731620,7735588,7739472,7742928,7745712,7747968,7753456,7756464,7759596,7760992,7761644,7764348,7766884,7768012,7768292,7769008,7774508,7779928,7785756,7791644,7797892,7819868,7825756,7831604,7832084,7834276,7836612,7010592,7010720,7010996,7014276,7016976,7017088,7017212,7017444,7019616,7019812,7020168,7025700,7039376,7044608,7049472,7050100,7050432,7050968,7051620,7052616,7056624,7060276,7065972,7068516,7071524,7077012,7081388,7086864,7089088,7092784,7118544,7121440,7123828,7127796,7131680,7135136,7137920,7140176,7145664,7148672,7151804,7153200,7153852,7156556,7159092,7160220,7160500,7161056,7161280,7164728,7166344,7167632,7168816,7169540,7169912,6314656,6314784,6315060,6318340,6321040,6321152,6321276,6321508,6323680,6323876,6324232,6328896,6329984,6331772,6335064,6340624,6340828,6341176,6360800,6361004,6361196,6361824,6375216,6377432,6385768,6392932,6396796,6397668,6398664,6402672,6406324,6412020,6414564,6417572,6423060,6427436,6432912,6435136,6438832,6464592,6467488,6469876,6473844,6477728,6481184,6483968,6486224,6491712,6494720,6497852,6499248,6499900,6502604,6505140,6506268,6506548,8178080,8178208,8178484,8181764,8184464,8184576,8184700,8184932,8187104,8187300,8187656,8192952,8194916,8207116,8208916,8210724,8222796,8223152,8223552,8223768,8225396,8228516,8229512,8233520,8237172,8242868,8245412,8248420,8253908,8258284,8263760,8265984,8269680,8295440,8298336,8300724,8304692,8308576,8312032,8314816,8317072,8322560,8325568,8328700,8330096,8330748,8333452,8335988,8337116,8337396,7901392,7901520,7901796,7905076,7907776,7907888,7908012,7908244,7910416,7910612,7910968,7915240,7917412,7934688,7935280,7935892,7936888,7940896,7944548,7950244,7952788,7955796,7961284,7965660,7971136,7973360,7977056,8002816,8005712,8008100,8012068,8015952,8019408,8022192,8024448,8029936,8032944,8036076,8037472,8038124,8040828,8043364,8044492,8044772,8045448,8047796,8051720,8054068,8059212,8066856,8070484,8070916,8071408,8076956,8094312,8478752,8478880,8479156,8482436,8485136,8485248,8485372,8485604,8487776,8487972,8488328,8489812,8491412,8493012,8494612,8496144,8496736,8497348,8498344,8502352,8506004,8511700,8514244,8517252,8522740,8527116,8532592,8534816,8538512,8564272,8567168,8569580,8570976,8571628,8574332,8576916,8580884,8584768,8588224,8591008,8593264,8598752,8601760,8604820,8605948,8606228,8607428,8624548,8624784,7787056,7787184,7787460,7790740,7793440,7793552,7793676,7793908,7796080,7796276,7796632,7800440,7800600,7800816,7801172,7802168,7806176,7809828,7815524,7818068,7821076,7826564,7830940,7836416,7838640,7842336,7868096,7870992,7873380,7877348,7881232,7884688,7887472,7889728,7895216,7898224,7901356,7902752,7903404,7906108,7908644,7909772,7910052,7910684,7913448,7918092,7924852,7931980,7933328,7933680,7933996,7943788,7949900,7955476,7957176,7957344,7957688,7963560,7973588,7976664,7980848,7981112,8107216,8107344,8107620,8110900,8113600,8113712,8113836,8114068,8116240,8116436,8116792,8118224,8118592,8119356,8133896,8137620,8148788,8149784,8153792,8157444,8163140,8165684,8168692,8174180,8178556,8184032,8186256,8189952,8215712,8218608,8220996,8224964,8228848,8232304,8235088,8237344,8242832,8245840,8248972,8250368,8251020,8253724,8256260,8257388,8257668,6008512,6008640,6008916,6012196,6014896,6015008,6015132,6015364,6017536,6017732,6018088,6021456,6021940,6022936,6026944,6030596,6036292,6038836,6041844,6047332,6051708,6057184,6059408,6063104,6088864,6091760,6094148,6098116,6102000,6105456,6108240,6110496,6115984,6118992,6122124,6123676,6126380,6128916,6130044,6130324,7802336,7802464,7802740,7806020,7808720,7808832,7808956,7809188,7811360,7811556,7811912,7813604,7815032,7815736,7816436,7817432,7821440,7825092,7830788,7833332,7836340,7841828,7846204,7851680,7853904,7857600,7883360,7886256,7888644,7892612,7896496,7899952,7902736,7904992,7910480,7913488,7916620,7918016,7918668,7921372,7923908,7925036,7925316 | u32 | 52 | 12628288
-3452816845,845211328,477686344,477663048,1057947842,395166208,64,14,0,552149888,552134976,565653632,565573632 | u32 | 56 | 13701508
-3452816845,845211456,477686152,477663080,1056407289,395166144,68,15,3,552149824,552135040,565653568,565573696 | u32 | 60 | 13701512
-
-    
-    */
 }
 
 function get_model_animation_1_36(o) {// ü(1, [f32, 0], o)
@@ -7126,7 +6985,6 @@ function get_model_animation_1_52(o, temp_val) {
     // 48,128,272,768,192,16,432,992,112,304,368,208,384 bytes 
     // ??????????????????????????????
     // ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32], offset)
-    // ü(3, [u32, 0, u32, 4, u32, 8, u32, 12], offset)
     // let diff = u32(offset + 28) - u32(offset + 16)
 
     // console.log(`__start: ${u32(offset + 28) + offset_mid} || end: ${u32(offset + 16) + offset_mid} | Dif: ${diff} | calculated: ${(diff / 8) / 6}`)
@@ -7385,7 +7243,7 @@ function get_interfaceframe_72_32(o) {
         ö(u32(o + 28) + (i * 12), get_interfaceframe_72_32_20)
     }
 
-    if (fileextension == 'xdx' || file_version === 249) {
+    if (g.console === 'xbox' || g.version === 249) {
         // ü(1, [u8, 0, u8, 1, u8, 2, u8, 3, u8, 4, u8, 5, u8, 6, u8, 7, u32, 8, u32, 12, u32, 16, u32, 20, u32, 24, u32, 28, u32, 32, u32, 36, u32, 40, u32, 44], o)
 
         for (let i = 0; i < u32(o + 32); i++) {
@@ -7800,7 +7658,7 @@ function get_interfaceframe_72_24t1_08t1(o) {
     if (u8(o + 8) !== 1 || u8(o + 9) || u32(o + 12)) {
         ü(1, [u32, 0, u32, 4, u8, 8, u8, 9, u16, 10, u32, 12], o)
     }
-    if (fileextension === "xdx" || file_version === 249) {
+    if (g.console === 'xbox' || g.version === 249) {
         for (let i = 0; i < u32(o); i++) {
             ö(u32(o + 4) + (i * 4), get_xdx_interface_72_24t1_08_04)
         }
@@ -7944,7 +7802,7 @@ function get_interfaceframe_72_72_04_04(o) {
         ü(1, [u32, 0, u8, 4, u8, 5, u8, 6, u8, 7, f32, 8, u32, 12, u32, 16], o)
     }
 
-    if (fileextension === "xdx" || file_version === 249) {
+    if (g.console === 'xbox' || g.version === 249) {
         for (let i = 0; i < u32(o + 12); i++) {
             ö(u32(o + 16) + (i * 8), get_xdx_interface_72_72_04_04_16)
         }
@@ -8065,11 +7923,8 @@ function get_texture_animas_20(offset) {// console.log(`-> F ${f32(offset + 0 )}
 
 function extract_patcher(offset, amount) {
 
-    if (id === HWVX_PROTO) {
-        return
-    }
     let temp_array = []
-    if (fileextension === "xgc") {
+    if (g.console === "gamecube") {
         for (let i = 0; i < amount; i++) {
             temp_array.push([u32(offset + (i * 8)), u16(offset + 6 + (i * 8)), u16(offset + 4 + (i * 8))])
         }
@@ -8085,6 +7940,7 @@ function extract_patcher(offset, amount) {
 
 function get_string(begin, end, is_no_end) {
 
+    let temp_string
     if (is_no_end === undefined) {
         for (temp_string = ""; begin < end; begin++) {
             temp_string += String.fromCharCode(u8(begin))
@@ -8108,7 +7964,7 @@ function get_string(begin, end, is_no_end) {
 }
 
 function x_addEventListener() {
-    temp_div = document.getElementById('file_viewer').children[0]
+    let temp_div = file_viewer.children[0]
 
     x_addEventListener_file_viewer(temp_div)
 
@@ -8183,27 +8039,27 @@ function x_addEventListener_file_viewer(div) {
 //     }
 // }
 
-function arrow_click() {
-    const isOpening = this.innerHTML === '→';
+// function arrow_click() {
+//     const isOpening = this.innerHTML === '→';
 
-    this.innerHTML = isOpening ? '↓' : '→';
-    this.style.paddingRight = isOpening ? '6px' : '0px';
-    this.style.paddingLeft = isOpening ? '4px' : '0px';
+//     this.innerHTML = isOpening ? '↓' : '→';
+//     this.style.paddingRight = isOpening ? '6px' : '0px';
+//     this.style.paddingLeft = isOpening ? '4px' : '0px';
 
-    for (let i = 3; i < this.parentNode.children.length; i++) {
-        this.parentNode.children[i].style.display = isOpening ? 'block' : 'none';
-    }
+//     for (let i = 3; i < this.parentNode.children.length; i++) {
+//         this.parentNode.children[i].style.display = isOpening ? 'block' : 'none';
+//     }
 
-    const nextElementSibling = this.nextElementSibling;
-    if (nextElementSibling && nextElementSibling.nextElementSibling.nextElementSibling) {
-        nextElementSibling.nextElementSibling.nextElementSibling.style.display = isOpening ? 'block' : 'none';
-    }
-    position = document.getElementsByClassName("file_is_highlighted")[0]
-    if (position.getBoundingClientRect().x === 0 && position.getBoundingClientRect().y === 0) {
-        this.parentElement.children[2].click()
-    }
+//     const nextElementSibling = this.nextElementSibling;
+//     if (nextElementSibling && nextElementSibling.nextElementSibling.nextElementSibling) {
+//         nextElementSibling.nextElementSibling.nextElementSibling.style.display = isOpening ? 'block' : 'none';
+//     }
+//     position = document.getElementsByClassName("file_is_highlighted")[0]
+//     if (position.getBoundingClientRect().x === 0 && position.getBoundingClientRect().y === 0) {
+//         this.parentElement.children[2].click()
+//     }
 
-}
+// }
 
 function _Tx(array, f, n, offset, is_3) {
 
@@ -8359,11 +8215,15 @@ function array_log() {
 }
 
 function ü(mode, array, offset) {
-    return
     // 0 = "print rows"
     // 1 = "generate table"
     // 2 = "log offsets"
     // 3 = "structure test"
+    // 4 = "return structure length"
+
+    if (mode === 4) {
+        return mode4()
+    }
 
     let html = ''
     let show_byte = false
@@ -8583,6 +8443,33 @@ function ü(mode, array, offset) {
 
             _Tx(temp_array__[0].struct_check[ii], _3_array[i], _3_array[i + 1], offset, 1)
         }
+        return outer_i
+
+    }
+
+    function mode4() {
+        let outer_i = 0
+        let o_limit = 1024
+
+        for (let o = 16; o < o_limit; o += 16) {
+
+            offset_act = (offset + o) - offset_mid
+
+            for (let i = log_array.p_texture; i < log_array.p_model - 4; i += 4) {
+                if (u32(i) === offset_act) {
+                    outer_i = o
+                    // console.log(`%cStruct Size: %c ${o} %c| Init: %c ${i - o}`, 'color:blue;', 'color:red;', 'color:blue;', 'color:red;')
+
+                    i = log_array.p_model
+                    o = o_limit
+
+                } else if (o + 16 === o_limit) {
+                    console.log('no offset found')
+                    return;
+                }
+            }
+        }
+        return outer_i
 
     }
 
@@ -8641,7 +8528,7 @@ function ü(mode, array, offset) {
     }
 
 }
-temp_array__ = [{
+globalThis.temp_array__ = [{
     subarrays: [],
     struct_check: [],
     offset_check: [],
@@ -8711,18 +8598,6 @@ function to_table_i(html) {
             u_12: u32(o + 12),
         })
     }
-
-    /*
-        function get_layer_24t3(offset, XFA) {
-        x.push({
-            u_00: u32(o + 0),
-            u_04: u32(o + 4),
-            u_08: u32(o + 8),
-            u_12: u32(o + 12),
-        })
-        
-    }
-*/
 
 }
 
@@ -9681,28 +9556,6 @@ function html_to_eximport(inputHtml) {
         } else {
             jsFunction += `    //patch? ${propertyName} / ${type} / ${offset})\n`;
         }
-    }
-
-}
-
-function in_basic_04(o, x) {
-    x.push({
-        unordered_link: 0,
-        u32_04: u32(o + 4),
-    });
-
-    switch (g.file_dir_type) {
-    case "car":
-        // x[0].unordered_link = in_ml(o, frame_array, get_frame, outerXFA.frames)
-        break
-    case "interface":
-        // x[0].unordered_link = in_ml(o, frame_array, get_frame, outerXFA.frames)
-        break
-    case "link":
-        x[0].unordered_link = in_ml(u32(o), g.link_array, im_link, g.unordered_ref.link)
-        break
-    default:
-        console.log("later")
     }
 
 }

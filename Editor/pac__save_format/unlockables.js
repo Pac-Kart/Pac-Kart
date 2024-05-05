@@ -1,7 +1,7 @@
 function load_unlockables() {
 
     // unlockables_offset = buffer.byteLength - 224
-    document.getElementById("file_editor").innerHTML = `                    
+    file_editor.innerHTML = `                    
 
     <div>
         <h4>Arenas</h4>
@@ -259,7 +259,7 @@ function load_unlockables() {
 }
 
 function get_save_file_check(offset, byte_type) {
-    offset_value = new DataView(buffer).getUint32(offset,is_little_endian)
+    offset_value = new DataView(buffer).getUint32(offset, g.endian)
     let offset_string = "check" + offset
     if (offset_value === 0) {
         //unlocked
@@ -274,10 +274,10 @@ function get_save_file_check(offset, byte_type) {
 }
 
 function checkbox_clicked() {
-    n = this.id.slice(5)
+    let n = this.id.slice(5)
 
-    checked = this.checked ? 0 : 1
+    let checked = this.checked ? 0 : 1
 
-    new DataView(buffer).setUint32(n, checked,is_little_endian)
+    new DataView(buffer).setUint32(n, checked, g.endian)
 
 }

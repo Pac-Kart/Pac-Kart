@@ -1,9 +1,10 @@
+"use strict";
 function im_gate(o, i, x) {
     x.push({
         id: gen_id(),
-        u32_00: u32(o + 00),
-        f32_04: f32(o + 04),
-        f32_08: f32(o + 08),
+        u32_00: u32(o + 0),
+        f32_04: f32(o + 4),
+        f32_08: f32(o + 8),
         f32_12: f32(o + 12),
         u8_17: u8(o + 17),
         section_24: [],
@@ -33,7 +34,7 @@ function im_gate(o, i, x) {
     x[i].unordered_unknown_00_36 = in_ml(u32(o + 36), g.unknown_00_array, im_unknown_00, g.unordered_ref.unknown_00);
 
     for (let ii = 0; ii < u32(o + 60); ii++) {
-        im_unknown(u32(o + 64) + (ii * 04) + g.m, ii, x[i].section_64);
+        im_unknown(u32(o + 64) + (ii * 4) + g.m, ii, x[i].section_64);
     }
     x[i].unordered_sound_section_76 = in_ml(u32(o + 76), g.sound_section_array, im_sound_section, g.unordered_ref.sound_section);
     x[i].unordered_sound_controls_80 = in_ml(u32(o + 80), g.sound_controls_array, im_sound_controls, g.unordered_ref.sound_controls);
@@ -44,8 +45,8 @@ function im_gate(o, i, x) {
 }
 function im_gate_24(o, x) {
     x.push({
-        f32_00: f32(o + 00),
-        f32_04: f32(o + 04),
+        f32_00: f32(o + 0),
+        f32_04: f32(o + 4),
     });
 
     // 16 bytes;
@@ -53,21 +54,21 @@ function im_gate_24(o, x) {
 }
 function im_gate_84(o, x) {
     x.push({
-        u8_00: u8(o + 00),
+        u8_00: u8(o + 0),
         section_04: [],
-        u32_08: u32(o + 08),
+        u32_08: u32(o + 8),
     });
 
-    u32(o + 04) ? im_gate_84_04(u32(o + 04) + g.m, x[0].section_04) : 0;
+    u32(o + 4) ? im_gate_84_04(u32(o + 4) + g.m, x[0].section_04) : 0;
 
     // 16 bytes;
 
 }
 function im_gate_84_04(o, x) {
     x.push({
-        u8_00: u8(o + 00),
-        u32_04: u32(o + 04),
-        u32_08: u32(o + 08),
+        u8_00: u8(o + 0),
+        u32_04: u32(o + 4),
+        u32_08: u32(o + 8),
     });
 
     // 16 bytes;

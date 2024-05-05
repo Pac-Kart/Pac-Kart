@@ -1,3 +1,4 @@
+"use strict";
 function load_x_d_sound_controls(id) {
     let html = `
 <div style="display:inline-block;width:95%;padding:5px;">
@@ -7,13 +8,11 @@ ${soundlist()}
    </div>
 `
 
-    document.getElementById("file_editor").innerHTML = html
-
-    add_events()
+    file_editor.innerHTML = html
 
     function soundsettings() {
         let html
-        html = `   
+        html = `
    <div style='padding-bottom:20px'>Sound Controls
       <div class='save_records_boarder'>
          <table style='width:100%;' >
@@ -23,17 +22,17 @@ ${soundlist()}
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.u32_00}" data-outer_xfa="${id}"  data-inner_xfa="u32_00" data-type="u32">
                   </td>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 1</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>u8_08</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.u8_08}" data-outer_xfa="${id}"  data-inner_xfa="u8_08" data-type="u8">
                   </td>
-               </tr>  
+               </tr>
                <tr>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 2</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>u8_09</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.u8_09}" data-outer_xfa="${id}"  data-inner_xfa="u8_09" data-type="u8">
                   </td>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 3</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>u8_10</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.u8_10}" data-outer_xfa="${id}"  data-inner_xfa="u8_10" data-type="u8">
                   </td>
@@ -54,9 +53,9 @@ ${soundlist()}
     }
     function soundlist() {
         let html = ''
-       if (TXFA.section_16.length === 0) {
-          return html
-       }
+        if (TXFA.section_16.length === 0) {
+            return html
+        }
         html += `<div style='padding-bottom:20px'>section_16
       <div class='save_records_boarder'>
          <table style='width:100%;' >
@@ -69,13 +68,13 @@ ${soundlist()}
                   </td>
                </tr>  
                <tr>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 1</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>u8_08</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.section_16[i].u8_08}" data-outer_xfa="${id}.section_16[${i}]"  data-inner_xfa="u8_08" data-type="u8">
                   </td>
                </tr>  
                <tr>
-                  <td style="width:10%;white-space:nowrap;" class='no_border'>Unknown 2</td>
+                  <td style="width:10%;white-space:nowrap;" class='no_border'>u8_09</td>
                   <td class='no_border'>
                      <input style="width:100%" type='text' value="${TXFA.section_16[i].u8_09}" data-outer_xfa="${id}.section_16[${i}]"  data-inner_xfa="u8_09" data-type="u8">
                   </td>
@@ -91,7 +90,7 @@ ${soundlist()}
                 html += `<tr>
                   <td style="width:10%;white-space:nowrap;" class='no_border'>Sound Section ${ii + 1}</td>
                   <td class='no_border'>
-                  ${genterate_linkbox(id, 'sound_section', TXFA.section_16[i].section_04[ii].unordered_sound_section_00)}
+                  ${generate_linkbox(`${id}.section_16[${i}].section_04[${ii}]`, 'unordered_sound_section_00', 'sound_section', TXFA.section_16[i].section_04[ii].unordered_sound_section_00)}
                   </td>
                </tr>`
             }

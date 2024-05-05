@@ -1,4 +1,6 @@
-function load_x_d_layers_folder(id) {
-    TXFA = Object.byString(XFA, id);
-    console.log(TXFA,id)
+"use strict";
+function load_x_d_interface_elements_folder(id) {
+
+    file_editor.innerHTML = ''
+
 }

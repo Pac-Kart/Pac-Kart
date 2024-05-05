@@ -1,7 +1,8 @@
+"use strict";
 function im_frame_text(o, i, x) {
     x.push({
         id: gen_id(),
-        section_00: [im_string(u32(o + 00), 0, false)],
+        section_00: [im_string(u32(o + 0), 0, false)],
     });
 
     return x[i].id

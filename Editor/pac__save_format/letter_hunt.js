@@ -4,7 +4,7 @@ function load_letter_hunt() {
 
     letter_hunt_import();
 
-    document.getElementById("file_editor").innerHTML = letter_hunt_html
+    file_editor.innerHTML = letter_hunt_html
 
     letter_hunt_data();
 }
@@ -84,8 +84,8 @@ function letter_hunt_data() {
 
             get_letters(save_offset.letterhunt + (letter_hunt_i * 68) + (letter_hunt_import_i * 12) + 10, letter_hunt_i, letter_hunt_import_i)
 
-            document.getElementById("time_" + letter_hunt_i + "_" + letter_hunt_import_i).value = '' + msToTime(u32(save_offset.letterhunt + (letter_hunt_i * 68) + (letter_hunt_import_i * 12) + 16, is_little_endian))
-            document.getElementById("time_" + letter_hunt_i + "_" + letter_hunt_import_i).dataset.actual_time = u32(save_offset.letterhunt + (letter_hunt_i * 68) + (letter_hunt_import_i * 12) + 16, is_little_endian)
+            document.getElementById("time_" + letter_hunt_i + "_" + letter_hunt_import_i).value = '' + msToTime(u32(save_offset.letterhunt + (letter_hunt_i * 68) + (letter_hunt_import_i * 12) + 16 ))
+            document.getElementById("time_" + letter_hunt_i + "_" + letter_hunt_import_i).dataset.actual_time = u32(save_offset.letterhunt + (letter_hunt_i * 68) + (letter_hunt_import_i * 12) + 16 )
             document.getElementById("time_" + letter_hunt_i + "_" + letter_hunt_import_i).dataset.offset = (save_offset.letterhunt + (letter_hunt_i * 68) + (letter_hunt_import_i * 12) + 16)
 
             document.getElementById("trophy_" + letter_hunt_i + "_" + letter_hunt_import_i).addEventListener("change", save_value_changed);

@@ -1,10 +1,11 @@
+"use strict";
 function im_frame_font(o, i, x) {
     x.push({
         id: gen_id(),
-        texture_00: im_patch(g.texture_patch_ref, o + 00),
+        texture_00: im_patch(g.texture_patch_ref, o + 0),
         //patch?
-        u8_08: u8(o + 08),
-        u8_09: u8(o + 09),
+        u8_08: u8(o + 8),
+        u8_09: u8(o + 9),
         u8_10: u8(o + 10),
         f32_12: f32(o + 12),
         //amount?
@@ -26,7 +27,7 @@ function im_frame_font(o, i, x) {
 }
 function im_frame_font_28(o, x) {
     x.push({
-        f32_00: f32(o + 00),
+        f32_00: f32(o + 0),
     });
 
     // 32 bytes;
@@ -35,11 +36,11 @@ function im_frame_font_28(o, x) {
 function im_frame_font_36(o, i, x) {
     x.push({
         id: gen_id(),
-        u8_00: u8(o + 00),
+        u8_00: u8(o + 0),
         //check this
-        f32_04: f32(o + 04),
+        f32_04: f32(o + 4),
         //check this
-        f32_08: f32(o + 08),
+        f32_08: f32(o + 8),
         //check this
     });
 

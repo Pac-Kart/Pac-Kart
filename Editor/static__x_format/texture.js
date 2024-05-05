@@ -3,7 +3,7 @@ function load_texture(offset, mid, datapack) {
     offset_datapack = datapack
     load_edit_texture(offset, offset_mid, offset_datapack)
 
-    if ((fileextension == 'xps' && !(game === "hot_wheels_velocity_x")) || fileextension == "xpp") {
+    if ((g.console == 'ps2' && !(g.game === "hot_wheels_velocity_x")) || g.console == "psp") {
         document.getElementById("file_editor").innerHTML += "<br><br>⚠️ warning PSP/PS2 format is not currently parsed correctly"
     }
 
@@ -17,119 +17,43 @@ function extract_bits(offset, buffer) {
     }
 }
 
-// function attach_textures() {
-
-//     //get to texture offset all ?
-//     // gc,ps2,xbox,pc psp, yes 
-
-//     //baron yes/ 
-
-//     //16 bytes per entry
-//     // ????
-//     // ??
-//     // x / y
-//     // offset texture
-//     //offset texture name / bytes variable
-
-//     //hot wheels velocity x
-//     //u16 , 4/5
-//     //u16 , 64 x?
-//     //u16 , 64 y?
-//     //u16 , 7
-//     //u32 offset data
-//     //u32 always 0
-
-//     texture_offset_list = (offset_mid + _3_24__offset__btf_textures)
-
-//     console.log('texture offset:', texture_offset_list)
-
-//     if (game == 'rally') {
-//         i_offset_plus = 64
-//     } else {
-//         i_offset_plus = 16
-//     }
-
-//     i_offset = 0
-//     for (i = 0; i < _3_20__amount__btf_textures; i++,
-//     i_offset += i_offset_plus) {
-
-//         if (game == 'rally') {
-
-//             for (string_i = 12,
-//             btf_string = ""; string_i < 64; string_i++) {
-//                 btf_string += String.fromCharCode(u8(i_offset + texture_offset_list + string_i))
-//             }
-
-//         } else if (game == 'baron') {
-//             temp_name_offset = u32(i_offset + texture_offset_list + 12, is_little_endian) + offset_mid
-//             next_temp_name_offset = u32(i_offset + texture_offset_list + 24, is_little_endian) + offset_mid
-
-//             if (((_3_20__amount__btf_textures * i_offset_plus) - i_offset_plus) == i_offset) {
-//                 btf_string = 'last'
-
-//                 for (string_i = 0,
-//                 btf_string = ""; (string_i) < 128; string_i++) {
-//                     btf_string += String.fromCharCode(u8(temp_name_offset + string_i))
-
-//                     if (u32(temp_name_offset + string_i, true) == 1634169902) {
-//                         btf_string += "tga"
-//                         string_i += 128
-
-//                     }
-//                 }
-
-//             } else {
-
-//                 for (string_i = 0,
-//                 btf_string = ""; (string_i + temp_name_offset) < next_temp_name_offset; string_i++) {
-//                     btf_string += String.fromCharCode(u8(temp_name_offset + string_i))
-//                 }
-
-//             }
-
-//         } else {
-//             btf_string = 'no name'
-//         }
-
-//         var link = document.createElement("p");
-//         link.innerHTML = btf_string
-//         document.getElementById("texture_table_" + i).appendChild(link)
-
-//         document.getElementById("texture_row_select_" + i).addEventListener("click", load_edit_texture);
-
-//     }
-
-// }
-
 function load_edit_texture(offset, offset_mid, offset_datapack) {
-
-    // for (var i = 0; i < document.getElementsByClassName("binary_table")[0].children[1].children.length; i++) {
-    //     document.getElementsByClassName("binary_table")[0].children[1].children[i].dataset.sound_row_select = 'false'
-    // }
-    // let select_row_index = this.getElementsByTagName('td')[0].innerText - 1
-    // document.getElementsByClassName("binary_table")[0].children[1].children[select_row_index].dataset.sound_row_select = 'true'
-
     offset_texture_entry = offset
 
     get_texture_settings(offset, offset_mid, offset_datapack)
 
     texture_data_offset = texture_data_offset + offset_mid
 
-    document.getElementById("file_editor").innerHTML = `
-        <div data-debug='true'>
-    <p> texture header offset: ${offset}
-    <br> texture header data amount: <a id='start_texture_offset'>${i_offset_plus}</a>
-    <br> 
-    <p>data offset ${texture_data_offset} </p>
-    <p>texture type ${texture_type_value} <br>
-    Mipmaps: ${texture_mipmap_value}  </p>
+    let html = `<div style="overflow:hidden;height:20%"><div style="display:inline-block;width:95%;padding:5px;padding-bottom:20px">
+   <div id='textureinfo'>Texutre Info
+      <div class='save_records_boarder'>
+         <table style='width:100%;white-space:nowrap;' >
+            <tbody>
+               <tr>
+                  <td class='no_border'>Texture Info Offset</td>
+                  <td class='no_border'><input disabled style='width:100%;' title='Sound Sample Rate' type='text' id='sound_box_offset' value='${offset}'> </td>
+                  <td class='no_border'>Texture Offset</td>
+                  <td class='no_border'><input disabled style='width:100%;' title='sound_box_length' type='text' id='sound_box_length' value='${texture_data_offset}'> </td>
+               </tr>
+               <tr>
+                  <td class='no_border'>Texture Type</td>
+                 <td class='no_border'><input disabled style='width:100%;' title='Unknown 08' type='text' id='sound_box_ff' value='${texture_format}'></td>
+                  <td class='no_border'>Mipmaps</td>
+                  <td class='no_border'><input disabled style='width:100%;' title='Sound Sample Rate' type='text' id='sound_box_sample_rate' value='${texture_mipmap_value}'> </td>
+               </tr>
+               <tr>
+                  <td class='no_border'>x</td>
+                 <td class='no_border'><input disabled style='width:100%;' title='Unknown 16' type='text' id='sound_box_16' value='${texture_x}'></td>
+                  <td class='no_border'>Y</td>
+                    <td class='no_border'><input disabled style='width:100%;' title='Unknown 20' type='text' id='sound_box_20' value='${texture_y}'></td>
+               </tr>
+           </tbody>
+        </table>
+      </div>
+   </div>
+</div>`
+    file_editor.innerHTML = html
 
-
-    </div>
-    <p>x ${texture_x} y ${texture_y} </p>
-    <p>format: ${texture_format} </p>
-    <hr>
-`
     x_to_texture(offset, offset_mid)
 
     image_file_input()
@@ -137,10 +61,10 @@ function load_edit_texture(offset, offset_mid, offset_datapack) {
 }
 
 function image_file_input() {
-    if (fileextension === 'xgc') {
+    if (g.console === 'gamecube') {
         return
     }
-    if (fileextension == "xpc" || fileextension == "xdx") {
+    if (g.console == "pc" || g.console == "xbox") {
         if (texture_type_value === 24 || texture_type_value === 160) {
             document.getElementById("file_editor").innerHTML += "<hr><input id='rgba_file' type='file'>"
             document.getElementById("rgba_file").addEventListener("change", image_import_file)
@@ -155,10 +79,7 @@ function image_file_input() {
 }
 
 function image_import_file(event) {
-
-    console.log('save')
     if (texture_type_value === 24 || texture_type_value === 160) {
-        console.log(this, event)
         generate_canvas_replacement_pc(event)
         return;
     }
@@ -253,21 +174,6 @@ function generate_canvas_replacement_pc(ev) {
         let img_width = width
         let img_height = height
 
-        // let is_power_of_2 = powerOfTwo(img_width)
-        // while (is_power_of_2 === false) {
-        //     img_width--
-        //     is_power_of_2 = powerOfTwo(img_width)
-        // }
-        // is_power_of_2 = powerOfTwo(img_height)
-        // while (is_power_of_2 === false) {
-        //     img_height--
-        //     is_power_of_2 = powerOfTwo(img_height)
-        // }
-
-        // console.log('true',img_width,img_height)
-
-        // I'm using a <input type="file"> for demonstrating
-
         URL.revokeObjectURL(this.src);
         mime_type = "image/jpeg";
         quality = qualityRate(file_temp.size);
@@ -283,8 +189,6 @@ function generate_canvas_replacement_pc(ev) {
         let temp_array = ctx_temp.getImageData(0, 0, canvas_temp.width, canvas_temp.height).data
 
         var arrayBuffer = temp_array.buffer.slice(temp_array.byteOffset, temp_array.byteLength + temp_array.byteOffset);
-
-        //
 
         let array_length = arrayBuffer.byteLength
         let data_off = texture_data_offset
@@ -306,61 +210,11 @@ function generate_canvas_replacement_pc(ev) {
                 new DataView(buffer).setUint8(data_off + i + 3, new DataView(arrayBuffer).getUint8(i + 3))
             }
         }
-        console.log(arrayBuffer)
-        // TXFA.texture.push(arrayBuffer)
-
-        // canvas_temp.toBlob(blob=>{
-        //     let localfile = new File([blob],'import.png',{
-        //         type: "image/jpeg",
-        //         lastModified: new Date().getTime()
-        //     },'utf-8');
-        //     let container = new DataTransfer();
-        //     container.items.add(localfile);
-        //     aaaaaaaaa = container
-        //     console.log(container)
-        //     console.log(container.files)
-        //     canvas_temp.files = container.files;
-        //     canvas_temp.toDataURL(canvas_temp.files[0])
-        // }
-        // , mime_type, quality);
-
-        // console.log("?")
         let position = document.getElementsByClassName("file_is_highlighted")[0]
         position.click()
 
     }
 
-    // img_temp.onload = function() {
-    //     URL.revokeObjectURL(this.src);
-    //     mime_type = "image/jpeg";
-    //     quality = qualityRate(file_temp.size);
-    //     canvas_temp = document.createElement("canvas");
-    //     canvas_temp.width = texture_x;
-    //     canvas_temp.height = texture_y;
-    //     ctx_temp = canvas_temp.getContext("2d");
-    //     ctx_temp.imageSmoothingEnabled = false
-    //     ctx_temp.drawImage(img_temp, 0, 0, texture_x, texture_y);
-
-    //     document.getElementById("dds_file").append(canvas_temp);
-
-    //     canvas_temp.toBlob(blob=>{
-    //         let localfile = new File([blob],'import.png',{
-    //             type: "image/jpeg",
-    //             lastModified: new Date().getTime()
-    //         },'utf-8');
-    //         let container = new DataTransfer();
-    //         container.items.add(localfile);
-    //         aaaaaaaaa = container
-    //         console.log(container)
-    //         console.log(container.files)
-    //         canvas_temp.files = container.files;
-    //         canvas_temp.toDataURL(canvas_temp.files[0])
-    //     }
-    //     , mime_type, quality);
-
-    console.log("?")
-    // }
-    // ;
 }
 function calculate_length_dds(x, y, is_dxt5) {
 
@@ -383,79 +237,41 @@ function import_dds_into_x(dds_buffer, dds_offset, x_texture_offset_, length) {
 
 function get_texture_settings(texture_offset, mid, offset_datapack) {
 
-    if (game == 'pac_man_world_rally') {
+    if (g.game == 'pac_man_world_rally') {
         texture_type_value = u8(texture_offset)
         texture_mipmap_value = u8(texture_offset + 1)
-        texture_x = Math.pow(2, u8(texture_offset + 2, is_little_endian))
-        texture_y = Math.pow(2, u8(texture_offset + 3, is_little_endian))
-        if (fileextension == 'xpp') {
-            texture_data_offset = u32(texture_offset + 4, is_little_endian)
+        texture_x = Math.pow(2, u8(texture_offset + 2))
+        texture_y = Math.pow(2, u8(texture_offset + 3))
+        if (g.console == 'psp') {
+            texture_data_offset = u32(texture_offset + 4)
         } else {
 
-            texture_data_offset = u32(texture_offset + 8, is_little_endian)
+            texture_data_offset = u32(texture_offset + 8)
 
-            texture_data_offset_uknown = u32(texture_offset + 4, is_little_endian)
-            console.log(texture_data_offset_uknown)
+            texture_data_offset_uknown = u32(texture_offset + 4)
         }
 
-    } else if (game == 'snoopy_vs_the_red_baron') {
-        console.log(u32(texture_offset + 0, is_little_endian))
+    } else if (g.game == 'snoopy_vs_the_red_baron') {
 
-        texture_type_value = u8(texture_offset + 4, is_little_endian)
-        texture_mipmap_value = u8(texture_offset + 5, is_little_endian)
-        texture_x = Math.pow(2, u8(texture_offset + 6, is_little_endian))
-        texture_y = Math.pow(2, u8(texture_offset + 7, is_little_endian))
-        texture_data_offset = u32(texture_offset + 8, is_little_endian)
-    } else { // Hot Wheels: Velocity X
-        texture_type_value = u16(texture_offset + 0, is_little_endian)
-        texture_x = u16(texture_offset + 2, is_little_endian)
-        texture_y = u16(texture_offset + 4, is_little_endian)
-        texture_mipmap_value = u16(texture_offset + 6, is_little_endian)
-        texture_data_offset = u32(texture_offset + 8, is_little_endian)
-        lookup_table_index = u32(texture_offset + 12, is_little_endian)
+        texture_type_value = u8(texture_offset + 4)
+        texture_mipmap_value = u8(texture_offset + 5)
+        texture_x = Math.pow(2, u8(texture_offset + 6))
+        texture_y = Math.pow(2, u8(texture_offset + 7))
+        texture_data_offset = u32(texture_offset + 8)
+    } else {
+        // Hot Wheels: Velocity X
+        texture_type_value = u16(texture_offset + 0)
+        texture_x = u16(texture_offset + 2)
+        texture_y = u16(texture_offset + 4)
+        texture_mipmap_value = u16(texture_offset + 6)
+        texture_data_offset = u32(texture_offset + 8)
+        lookup_table_index = u32(texture_offset + 12)
         clut_offset = u32(offset_datapack + 44)
     }
 
-    //     console.log(`0 / 1st: ${u16(texture_offset, is_little_endian)}
-    // 2 / 2nd: ${u16(texture_offset + 2, is_little_endian)}
-    // 4 / 3nd: ${u8(texture_offset + 4, is_little_endian)}
-    // 5 / 3nd: ${u8(texture_offset + 5, is_little_endian)}
-    // 6 / 4nd: ${u8(texture_offset + 6, is_little_endian)}
-    // 7 / 5nd: ${u8(texture_offset + 7, is_little_endian)}
-    // 8 / 6 ${u32(texture_offset + 8, is_little_endian)}
-    // 12 / 7 ${u32(texture_offset + 12, is_little_endian)}`)
-
-    //offset to texture
-    //texture x y
-    //texture type //c1 ?
-
-    //baron textre headre format
-    //u32 values usually the same
-    // 00 02 24 A8 (140456) / 00 02 97 9D (169885)
-    // 2820932096 = has mips?
-    // 2643919360
-    // 900923904 = rgba no mips
-    //
-    //u8 texture type
-    //u8 mip maps
-    //u8 x
-    //u8 y
-    //u32 texture offset
-    //u32 string offset
-    //strings are 16 dibisible by 16
-    //end is relative on next offset / start of logic
-
-    //hot wheels
-    //u16 ?? 4 / 128 / 5 =256
-    //u16 x
-    //u16 y
-    //u16 Mipmap level
-    //u32 Offset texture
-    //u32 Color lookup table Index (ps2 only)
-
     if (texture_type_value === 2) {
         texture_format = "8-Bit indexed"
-    }else if (texture_type_value === 4) {
+    } else if (texture_type_value === 4) {
         texture_format = "DDS (dxt1 compression)"
     } else if (texture_type_value === 5) {
         texture_format = "DDS (dxt5 compression)"
@@ -494,14 +310,12 @@ function x_to_texture(offset, offset_mid) {
     canvas.height = texture_y
 
     image_offset = texture_data_offset
-    console.log(texture_data_offset, 'offset')
 
-    if (game == 'idk') {// dxt1_to_canvas()
-    } else if (game == 'pac_man_world_rally' && fileextension == 'xgc') {
+    if (g.game == 'idk') {// dxt1_to_canvas()
+    } else if (g.game == 'pac_man_world_rally' && g.console == 'gamecube') {
         dxt1_gc_to_canvas()
     } else {
         rgba64_to_canvas()
-        // dxt1_to_canvas()
     }
 
 }
@@ -518,8 +332,8 @@ function generate_canvas() {
 
 function rgba64_to_canvas() {
 
-    if (fileextension === "xps" && !(game === "hot_wheels_velocity_x")) {
-    image_offset += 16
+    if (g.console === "ps2" && !(g.game === "hot_wheels_velocity_x")) {
+        image_offset += 16
     }
 
     if (texture_type_value == 160 || texture_type_value == 1) {
@@ -546,22 +360,23 @@ function rgba64_to_canvas() {
         _24_to_canvas()
     } else if (texture_type_value == 72 || texture_type_value == 200) {
         _72_to_canvas()
-    } else if (texture_type_value == 2 ){    // PS2 Indexed (Hot Wheels Velocity X)
+    } else if (texture_type_value == 2) {
+        // PS2 Indexed (Hot Wheels Velocity X)
         for (i = 0,
         y = 0; y < texture_y; y++) {
             for (x = 0; x < texture_x; x++,
             i += 1) {
-                lookup_table_offset = clut_offset+(lookup_table_index*1024)+offset_mid
+                lookup_table_offset = clut_offset + (lookup_table_index * 1024) + offset_mid
 
                 pixel = u8(image_offset + (i))
-                if ((pixel+8) % 32 >= 24)
+                if ((pixel + 8) % 32 >= 24)
                     pixel -= 8
-                else if ((pixel+8) % 32 >= 16)
+                else if ((pixel + 8) % 32 >= 16)
                     pixel += 8
 
-                color_r = u8((pixel*4)+lookup_table_offset+0)
-                color_g = u8((pixel*4)+lookup_table_offset+1)
-                color_b = u8((pixel*4)+lookup_table_offset+2)
+                color_r = u8((pixel * 4) + lookup_table_offset + 0)
+                color_g = u8((pixel * 4) + lookup_table_offset + 1)
+                color_b = u8((pixel * 4) + lookup_table_offset + 2)
 
                 ctx.fillStyle = `rgb(${color_r}, ${color_g}, ${color_b})`
                 ctx.fillRect(x, y, 1, 1)
@@ -578,7 +393,6 @@ function rgba64_to_canvas() {
                 color_r = u8(image_offset + (i))
                 color_g = u8(image_offset + (i) + 1)
                 color_b = u8(image_offset + (i) + 2)
-                // color_a = u8(image_offset + (i) + 3)
 
                 ctx.fillStyle = `rgb(${color_r}, ${color_g}, ${color_b})`
                 ctx.fillRect(x, y, 1, 1)
@@ -599,32 +413,30 @@ function rgba64_to_canvas() {
     }
 
     temp_style = 'border:1px solid;background:white;'
-    if (game === "hot_wheels_velocity_x") {
+    if (g.game === "hot_wheels_velocity_x") {
         temp_style += 'transform:rotateX(180deg);'
     }
 
     data_ = canvas.toDataURL()
-    document.getElementById("file_editor").innerHTML += `<img style="${temp_style}" width='${width}' height='${height}' src='${data_}'></img>`
+    document.getElementById("file_editor").innerHTML += `<div style='text-align:center;'><img style="${temp_style}" width='${width}' height='${height}' src='${data_}'></img></div>`
 
 }
 
 function _72_to_canvas() {
     let tex_color_array = []
-    
-    for (let i = 0; i < 1024; i+=4) {
-    tex_color_array.push([u8(image_offset),u8(image_offset + 1),u8(image_offset + 2),u8(image_offset + 3)])
-    image_offset += 4
+
+    for (let i = 0; i < 1024; i += 4) {
+        tex_color_array.push([u8(image_offset), u8(image_offset + 1), u8(image_offset + 2), u8(image_offset + 3)])
+        image_offset += 4
     }
-    
+
     for (y = 0; y < texture_y; y += 1) {
         for (x = 0; x < texture_x; x += 1) {
-        ctx.fillStyle = `rgba( ${tex_color_array[u8(image_offset)].toString()} )`
-        ctx.fillRect(x, y, 1, 1)
+            ctx.fillStyle = `rgba( ${tex_color_array[u8(image_offset)].toString()} )`
+            ctx.fillRect(x, y, 1, 1)
 
             image_offset += 1
         }
-        //
-        console.log(image_offset)
     }
 
     data_ = canvas.toDataURL()
@@ -634,12 +446,10 @@ function _24_to_canvas() {
     for (y = 0; y < texture_y; y += 1) {
         for (x = 0; x < texture_x; x += 1) {
 
-        
+            ctx.fillStyle = `rgb(${u8(image_offset)}, ${u8(image_offset + 1)}, ${u8(image_offset + 2)})`
+            ctx.fillRect(x, y, 1, 1)
 
-        ctx.fillStyle = `rgb(${u8(image_offset)}, ${u8(image_offset +1)}, ${u8(image_offset +2)})`
-        ctx.fillRect(x, y, 1, 1)
-
-        image_offset+=3
+            image_offset += 3
 
         }
     }
@@ -687,11 +497,6 @@ function dxt5_to_canvas() {
 }
 
 function dxt5_color_codes() {
-    // codes0 = extract_bits(image_offset + 12, buffer)
-    // codes1 = extract_bits(image_offset + 13, buffer)
-    // codes2 = extract_bits(image_offset + 14, buffer)
-    // codes3 = extract_bits(image_offset + 15, buffer)
-
     var i = 0
     var temp_1 = 0
     var iii = 0
@@ -854,8 +659,7 @@ function dxt5_color() {
             if (parseInt(blue_color_3, 16) > 255) {
                 blue_color_3 = "FF"
             }
-            //
-            //
+
             if (red_color_4.length == 1) {
                 red_color_4 = '0' + red_color_4
             }
@@ -1068,23 +872,23 @@ function dxt1_gc_to_canvas() {
         dxt1_gc_file_id++
 
         if (texture_type_value == 193 && alpha_loop == 0) {
-            btf_offset = u32(offset_texture_entry + 8, is_little_endian)
+            btf_offset = u32(offset_texture_entry + 8)
             alpha_loop++
             divide_2 = false
         } else if (texture_type_value == 193 && alpha_loop == 1) {
-            btf_offset = u32(offset_texture_entry + 4, is_little_endian)
+            btf_offset = u32(offset_texture_entry + 4)
             alpha_loop++
             divide_2 = false
         } else if (texture_type_value == 194 && alpha_loop == 0) {
-            btf_offset = u32(offset_texture_entry + 8, is_little_endian)
+            btf_offset = u32(offset_texture_entry + 8)
             alpha_loop++
             divide_2 = false
         } else if (texture_type_value == 194 && alpha_loop == 1) {
-            btf_offset = u32(offset_texture_entry + 4, is_little_endian)
+            btf_offset = u32(offset_texture_entry + 4)
             alpha_loop++
             divide_2 = true
         } else {
-            btf_offset = u32(offset_texture_entry + 8, is_little_endian)
+            btf_offset = u32(offset_texture_entry + 8)
             alpha_loop += 2
             divide_2 = false
         }
@@ -1138,24 +942,15 @@ function dxt1_gc_to_canvas() {
         }
 
         data_ = canvas.toDataURL()
-        document.getElementById("file_editor").innerHTML += `<div 
+        document.getElementById("file_editor").innerHTML += `<div style='text-align:center;'
         data-texture_offset='${btf_offset}'
         data-texture_width='${texture_x}'
         data-texture_height='${texture_y}'
         data-texture_type='${texture_type_value}'
         data-texture_id='${dxt1_gc_file_id}'>
         <img width='256' height='256' src='${data_}'></img>
-        <input id="img-input${dxt1_gc_file_id}" type="file" name="fileTest" accept="image/*" />
-        <div id="root ${dxt1_gc_file_id}"></div>
 </div>`
     }
-    if (texture_type_value == 193 || texture_type_value == 194) {
-        document.getElementById("img-input1").addEventListener("change", generate_canvas_replacement);
-        document.getElementById("img-input2").addEventListener("change", generate_canvas_replacement);
-    } else {
-        document.getElementById("img-input1").addEventListener("change", generate_canvas_replacement);
-    }
-
 }
 
 function generate_canvas_replacement(ev) {
@@ -1275,9 +1070,9 @@ function get_pixels_to_dtx1_gc() {
                         // generate 2 interpolated colors
                         color_0 = high_color
                         color_1 = low_color
-                        //color 2 (2*color0 + color1) / 3	
+
                         color_2 = Math.round((2 * high_color + low_color) / 3)
-                        //color 3 (color0 + 2*color1) / 3
+
                         color_3 = Math.round((high_color + 2 * low_color) / 3)
 
                         counts = [color_0, color_1, color_2, color_3]
@@ -1403,7 +1198,7 @@ function get_pixels_to_dtx1_gc() {
 
                         let temp = new DataView(temp_pixel_buffer).getUint8(ii_length, true)
 
-                        new DataView(buffer).setUint8(texture_data_offset + ii_length, temp, is_little_endian)
+                        new DataView(buffer).setUint8(texture_data_offset + ii_length, temp)
                     }
 
                 }
@@ -1766,8 +1561,6 @@ function get_color() {
             if (parseInt(blue_color_3, 16) > 255) {
                 blue_color_3 = "FF"
             }
-            //
-            //
             if (red_color_4.length == 1) {
                 red_color_4 = '0' + red_color_4
             }

@@ -1,76 +1,8 @@
-// function gen_id() {
-
-//     let id_check = false
-//     while (id_check === false) {
-//         id = temp()
-
-//         id_list.includes(id) ? 0 : id_check = true
-
-//         function temp() {
-//             return id = "id|" + Math.random().toString(16).slice(2)
-//         }
-//     }
-
-//     id_list.push(id)
-
-//     return id
-
-// }
-
-// function gen_id() {
-// old
-//     let id;
-//     do {
-//         id = generateRandomId();
-//     } while (id_list.includes(id));
-
-//     id_list.push(id);
-
-//     return id;
-
-//     function generateRandomId() {
-//         // return "id|" + Math.random().toString(16).slice(2);
-//         // return Math.random();
-//         return id_list.length;
-//     }
-// }
-function gen_id() {
-    let id = id_list.length
-    id_list.push(id);
-    return id;
-}
-
-// function delete_id(id) {
-
-//     let index = id_list.indexOf(id)
-//     if (index != -1) {
-//         id_list.splice(index, 1)
-//         return true
-//     } else {
-//         return null
-//     }
-
-// }
-
-function delete_id(id) {
-    const index = id_list.indexOf(id);
-
-    if (index !== -1) {
-        id_list.splice(index, 1);
-        return true;
-    }
-
-    return null;
-}
-
-// document.getElementById('file_viewer').querySelectorAll(`div [data-type="x_d_models_folder"][data-XFA="1"]`)[0]
-//<a data-type="x_d_models_folder" data-xfa="1" class="file_hover_not_selected"> models </a>
-
+"use strict";
 function find_id(targetId, type) {
     const id = parseInt(targetId);
     let temp = ''
 
-    // console.log(id, type)
     var path = ''
     if (type === "x_d_folder") {
         return x[0].id === id ? '[0]' : ['idk'];
@@ -84,14 +16,10 @@ function find_id(targetId, type) {
 
     }
     if (temp === '') {
-        console.log('null')
+        console.log(`id ${id} / type ${type} not found`)
     }
     return temp
 
-    //////////////
-    //////////////
-    //////////////
-    //////////////
     function find_id__directory(x, i) {
         let html = `[0].directory[${i}]`
         if (type === 'x_d_sub_file') {
@@ -100,17 +28,6 @@ function find_id(targetId, type) {
             }
         } else {
             find_id__datapack(x.datapack[0], html, x.id)
-
-            // if (type === "x_d_sound_folder" || type === "x_d_sound") {
-            //      find_id__sound_folder(x.datapack[0], html, x.id)
-            // } else if (type === "x_d_model_folder" || type === "x_d_model_header" || type === "x_d_model_section" || type === "x_d_model") {//  find_id__model_folder(XFA.models, html, x.id)
-            // } else if (type === "x_d_textures_folder" || type === "x_d_textures") {//  find_id__texture_folder(XFA.textures, html, XFA.id)
-            // } else if (type === "x_d_texture_animations_folder" || type === "x_d_texture_animation" || type === "x_d_texture_animation_pattern" || type === "x_d_texture_animation_color" || type === "x_d_texture_animation_translation") {//  find_id__texture_animation_folder(XFA.texture_animations, html, XFA.id)
-            // }
-            // if (XFA.type_s === 'link') {//  find_id__link_folder(XFA.type_data[0].section_04.low_section_00[0], html)
-            // } else if (XFA.type_s === 'share') {//  find_id__share(XFA.type_data[0], html)
-            // } else if (XFA.type_s === 'interface') {//  find_id__interface(XFA.type_data[0].section_04.low_section_00[0], html, XFA.id)
-            // }
         }
 
     }
@@ -135,6 +52,10 @@ function find_id(targetId, type) {
         case "x_d_textures":
             find_id__texture_folder(x.ordered[0].textures, path + html, i)
             break
+        case 'x_d_texture_animations_folder':
+        case 'x_d_texture_animation_file':
+            find_id__texture_animation_folder(x.ordered[0].texture_animation, path + html, i)
+            break
         case "x_d_models__folder":
         case 'x_d_models__file':
         case 'x_d_model__sections':
@@ -143,8 +64,21 @@ function find_id(targetId, type) {
         case 'x_d_model_animation_1__file':
         case "x_d_model_animation_2__folder":
         case 'x_d_model_animation_2__file':
-        find_id__model_folder(x.ordered[0].models, path + html, i)
-    break
+            find_id__model_folder(x.ordered[0].models, path + html, i)
+            break
+        case 'x_d_World__folder':
+        case 'x_d_world_collision':
+        case 'x_d_world_route':
+        case "x_d_world_start_points":
+        case "x_d_world_sound":
+        case "x_d_world_Activators":
+        case "x_d_world_Respawnt4":
+        case "x_d_world_Respawnt11":
+        case "x_d_world_Stage":
+        case "x_d_world_Animation":
+        case "x_d_world_Objects":
+            find_id__world_folder(x.ordered[0].models, path + html, i)
+            break
         default:
             find_id__unordered(x.ordered[0], path + html, i)
         }
@@ -155,39 +89,12 @@ function find_id(targetId, type) {
         let xtype = type.replace('x_d_', '').split('__')[0]
         switch (type) {
         case 'x_d_' + xtype + '__folder':
-            // case 'x_d_car__folder':
-            // case 'x_d_link__folder':
-            // case 'x_d_idk__folder':
-            // case 'x_d_interface__folder':
-            // case 'x_d_frame_sparkler__folder':
-            // case 'x_d_frame_font__folder':
-            // case 'x_d_frame_multi_font__folder':
-            // case 'x_d_frame_text__folder':
-            // case 'x_d_sound_controls__folder':
-            // case 'x_d_sound_section__folder':
-            // case 'x_d_model_link__folder':
-            // case 'x_d_model_sub_link__folder':
-            // case 'x_d_wtf__folder':
-            // case 'x_d_unknown__folder':
-            // case 'x_d_unknown_00__folder':
-            // case 'x_d_activator__folder':
-            // case 'x_d_flag__folder':
-            // case 'x_d_var__folder':
-            // case 'x_d_gate__folder':
-            // case 'x_d_strange__folder':
-            // case 'x_d_object__folder':
-            // case 'x_d_um__folder':
-            // case 'x_d_world_settings__folder':
             if (i === id) {
                 return temp = [path + html + '.' + xtype, i]
             }
             break
         default:
-
-            // for (let i = 0; i < x.unordered[0][xtype].length; i++) {
-            //     xfilefunction[xtype](x.unordered[0][xtype], path + html + '.' + xtype, i)
-            // }
-            for (let i = 0; i < x.unordered[0][xtype].length; i++) {
+            for (let i = 0; i < x.unordered[0][xtype]?.length; i++) {
                 find_id__unordered_file(x.unordered[0][xtype], path + html + '.' + xtype, i, xtype)
             }
         }
@@ -247,18 +154,29 @@ function find_id(targetId, type) {
     function find_id__interface(x, path) {
         switch (type) {
         case 'x_d_interface__layer_file':
+        case 'x_d_interface__layer_folder':
             if (x.section_72.length) {
-                find_id__interface_layer(x.section_72, path)
+                find_id__interface_layer(x, path)
+            }
+            break
+        case 'x_d_interface__varible_file':
+        case 'x_d_interface__varible_folder':
+            if (x.section_04.length) {
+                find_id__interface_varible(x, path)
             }
             break
         }
     }
     function find_id__interface_layer(x, path) {
         let html = `.section_72`
-        if (type === 'x_d_interface__layer_file') {
+        if (type === 'x_d_interface__layer_folder') {
+            if (x.id === id) {
+                return temp = path + html
+            }
+        } else if (type === 'x_d_interface__layer_file') {
             let temp = path + html
-            for (let i = 0; i < x.length; i++) {
-                find_id__interface_layer_file(x[i], temp, i)
+            for (let i = 0; i < x.section_72.length; i++) {
+                find_id__interface_layer_file(x.section_72[i], temp, i)
             }
         }
     }
@@ -266,6 +184,31 @@ function find_id(targetId, type) {
     function find_id__interface_layer_file(x, path, i) {
         let html = `[${i}]`
         if (type === 'x_d_interface__layer_file') {
+            if (x.id === id) {
+                return temp = path + html
+
+            }
+
+        }
+    }
+
+    function find_id__interface_varible(x, path) {
+        let html = `.section_04[0]`
+        if (type === 'x_d_interface__varible_folder') {
+            if (x.id === id) {
+                return temp = path + html
+            }
+        } else if (type === 'x_d_interface__varible_file') {
+            let temp = path + html + '.section_04'
+            for (let i = 0; i < x.section_04[0].section_04.length; i++) {
+                find_id__interface_varible_file(x.section_04[0].section_04[i], temp, i)
+            }
+        }
+    }
+
+    function find_id__interface_varible_file(x, path, i) {
+        let html = `[${i}]`
+        if (type === 'x_d_interface__varible_file') {
             if (x.id === id) {
                 return temp = path + html
 
@@ -383,8 +326,10 @@ function find_id(targetId, type) {
         }
     }
     function find_id__world_settings(x, path) {
+        let html = ''
         switch (type) {
-        case '':
+        case 'x_d_world_settings__lighting':
+            return temp = path
             break
         }
     }
@@ -411,7 +356,7 @@ function find_id(targetId, type) {
     }
 
     function find_id__texture_animation_folder(XFA, path_string, prev_id) {
-        let html = `.texture_animations`
+        let html = `.texture_animation`
 
         if (type === 'x_d_texture_animations_folder') {
             if (prev_id === id) {
@@ -425,21 +370,9 @@ function find_id(targetId, type) {
     }
     function find_id__texture_animation(XFA, path_string, i) {
         let html = `[${i}]`
-        if (type === 'x_d_texture_animation') {
+        if (type === 'x_d_texture_animation_file') {
             if (XFA.id === id) {
                 return temp = [path_string + html, path_string, i]
-            }
-        } else if (type === "x_d_texture_animation_pattern") {
-            if (XFA.id === id) {
-                return temp = path_string + html + ".pattern[0]"
-            }
-        } else if (type === "x_d_texture_animation_color") {
-            if (XFA.id === id) {
-                return temp = path_string + html + ".color"
-            }
-        } else if (type === "x_d_texture_animation_translation") {
-            if (XFA.id === id) {
-                return temp = path_string + html + ".translation"
             }
         }
     }
@@ -540,29 +473,32 @@ function find_id(targetId, type) {
             }
         }
     }
-    // function find_id__link_folder(XFA, path_string) {
-    //     let html = '.type_data[0].section_04.low_section_00[0]'
 
-    //     if (type === 'x_d_link_folder') {
-    //         if (XFA.id === id) {
-    //             return temp = path_string + html
-    //         }
-    //     } else {
-    //         if (type === 'x_d_link_main' || type === 'x_d_link_main_group' || type === 'x_d_link_main_sub_group') {
-    //             find_id__link_main(XFA.section_main, path_string + html)
-    //         }
-    //         if (type === 'x_d_link_intro') {
-    //             find_id__link_intro(XFA.section_intro, path_string + html)
-    //         }
-    //         if (type === 'x_d_link_demo' || type === 'x_d_link_main_sub_group') {
-    //             if (XFA.section_demo[0] !== null) {
+    function find_id__world_folder(XFA, path_string, prev_id) {
+        let html = ``
 
-    //                 find_id__link_demo(XFA.section_demo, path_string + html)
-    //             }
-    //         }
+        if (prev_id === id) {
 
-    //     }
-    // }
+            switch (type) {
+            case 'x_d_World__folder':
+            case 'x_d_world_collision':
+            case 'x_d_world_route':
+            case "x_d_world_start_points":
+            case "x_d_world_sound":
+            case "x_d_world_Activators":
+            case "x_d_world_Respawnt4":
+            case "x_d_world_Respawnt11":
+            case "x_d_world_Stage":
+            case "x_d_world_Animation":
+            case "x_d_world_Objects":
+                return temp = path_string + html
+                break
+            }
+
+            if (type === 'x_d_World__folder') {}
+        }
+    }
+
     function find_id__link_intro(XFA, path_string) {
         let html = '.section_08'
         if (type === 'x_d_link__intro') {
@@ -585,7 +521,6 @@ function find_id(targetId, type) {
 
     function find_id__link_demo_sub_group(XFA, i, path_string) {
         if (type === 'x_d_link__main_sub_group') {
-            // console.log(XFA.id, id)
             if (XFA.id === id) {
                 return temp = [path_string + `[${i}]`, path_string, i]
 
@@ -624,7 +559,6 @@ function find_id(targetId, type) {
     }
     function find_id__link_main_sub_group(XFA, i, path_string) {
         let html = `.section_00[0].section_04[${i}]`
-        // console.log(XFA.id)
         if (type === 'x_d_link__main_sub_group') {
             if (XFA.id === id) {
                 return temp = [path_string + html, path_string + '.section_00[0].section_04', i]
@@ -633,22 +567,6 @@ function find_id(targetId, type) {
 
         }
     }
-    // function find_id__interface(XFA, path_string, xfaid) {
-    //     let html = `.type_data[0].section_04.low_section_00[0]`
-    //     if (type === 'x_d_interface_folder') {
-    //         if (xfaid === id) {
-    //             return temp = path_string + html
-
-    //         }
-
-    //     } else {
-    //         if (type === 'x_d_frames_folder' || type === 'x_d_frame' || type === 'x_d_varibles_folder' || type === 'x_d_varible' || type === 'x_d_layers_folder' || type === 'x_d_layer') {
-    //             find_id__interface_frames_folder(XFA.frames, path_string + html, xfaid)
-    //         } else if (type === 'x_d_texts_folder' || type === 'x_d_text') {
-    //             find_id__interface_texts_folder(XFA.texts, path_string + html, xfaid)
-    //         }
-    //     }
-    // }
     function find_id__interface_frames_folder(XFA, path_string, xfaid) {
         let html = `.frames`
         if (type === 'x_d_frames_folder') {
@@ -677,31 +595,6 @@ function find_id(targetId, type) {
             find_id__interface_layers_folder(XFA.layers_72, path_string + html, XFA.id)
         }
     }
-    function find_id__interface_varibles_folder(XFA, path_string, xfaid) {
-        let html = `.varibles_04[0].section_04`
-        if (type === 'x_d_varibles_folder') {
-            if (xfaid === id) {
-                return temp = path_string + html
-
-            }
-
-        } else if (type === 'x_d_varible') {
-            let temp = path_string + html
-            for (let i = 0; i < XFA.length; i++) {
-                find_id__interface_varible(XFA[i], temp, i)
-            }
-        }
-    }
-    function find_id__interface_varible(XFA, path_string, i) {
-        let html = `[${i}]`
-        if (type === 'x_d_varible') {
-            if (XFA.id === id) {
-                return temp = path_string + html
-
-            }
-
-        }
-    }
 
     function find_id__interface_layers_folder(XFA, path_string, xfaid) {
         let html = `.layers_72`
@@ -718,16 +611,6 @@ function find_id(targetId, type) {
             }
         }
     }
-    // function find_id__interface_layer(XFA, path_string, i) {
-    //     let html = `[${i}]`
-    //     if (type === 'x_d_layer') {
-    //         if (XFA.id === id) {
-    //             return temp = path_string + html
-
-    //         }
-
-    //     }
-    // }
     function find_id__interface_texts_folder(XFA, path_string, xfaid) {
         let html = `.texts`
         if (type === 'x_d_texts_folder') {
@@ -753,5 +636,3 @@ function find_id(targetId, type) {
         }
     }
 }
-
-id_list = []

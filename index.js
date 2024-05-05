@@ -1,78 +1,62 @@
+"use strict";
+
+const body = document.body;
+const file_viewer = getElementSafely('file_viewer');
+const file_editor = getElementSafely('file_editor');
+const outer_program = getElementSafely('outer_program');
+const show_debug = getElementSafely('show_debug');
+const drag_bar = getElementSafely('drag_bar');
+
+if (drag_bar) {
+    drag_bar.addEventListener("mousedown", handleDragBar);
+}
+
+if (show_debug) {
+    show_debug.addEventListener("click", checkDebugBox);
+}
+
+function handleDragBar(e) {
+    body.style.userSelect = "none";
+    window.addEventListener('mousemove', mouseMoveListener, {
+        passive: true
+    });
+    window.addEventListener('mouseup', mouseUpListener, {
+        passive: true
+    });
+}
+
 function mouseMoveListener(e) {
+    let mouse_offset = e.pageX;
+    let outer_box_offset = file_viewer.getBoundingClientRect().left;
+    let outer_box_width = outer_program.getBoundingClientRect().width;
 
-    // console.log(e.pageX)
-
-    mouse_offset = e.pageX
-    outer_box_offset = file_viewer.getBoundingClientRect().left
-
-    left_box = (mouse_offset - outer_box_offset) / outer_program.getBoundingClientRect().width * 99.5
-
-    right_box = 99.5 - left_box
+    let left_box = (mouse_offset - outer_box_offset) / outer_box_width * 99.5;
+    let right_box = 99.5 - left_box;
 
     if (right_box > 6 && left_box > 6) {
-        file_viewer.style.width = left_box + "%"
-        file_editor.style.width = right_box + "%"
+        file_viewer.style.width = left_box + "%";
+        file_editor.style.width = right_box + "%";
     }
 }
 
-function drag_bar(e) {
-    // console.log(e)
-    document.body.style.userSelect = "none"
-    window.addEventListener('mousemove', mouseMoveListener, true);
-    window.addEventListener('mouseup', mouseUpListener, true);
-
-}
 function mouseUpListener(e) {
-    console.log('mouse up');
-    window.removeEventListener('mousemove', mouseMoveListener, true);
-    document.body.style.userSelect = ""
+    window.removeEventListener('mousemove', mouseMoveListener, {
+        passive: true
+    });
+    body.style.userSelect = "";
 }
 
-class bitArray {
-    constructor(length) {
-        this.backingArray = Array.from({
-            length: Math.ceil(length / 32)
-        }, ()=>0)
-        this.length = length
-    }
-    get(n) {
-        return (this.backingArray[n / 32 | 0] & 1 << n % 32) > 0
-    }
-    on(n) {
-        this.backingArray[n / 32 | 0] |= 1 << n % 32
-    }
-    off(n) {
-        this.backingArray[n / 32 | 0] &= ~(1 << n % 32)
-    }
-    toggle(n) {
-        this.backingArray[n / 32 | 0] ^= 1 << n % 32
-    }
-    forEach(callback) {
-        this.backingArray.forEach((number,container)=>{
-            const max = container == this.backingArray.length - 1 ? this.length % 32 : 32
-            for (let x = 0; x < max; x++) {
-                callback((number & 1 << x) > 0, 32 * container + x)
-            }
-        }
-        )
+function checkDebugBox() {
+    const debugStyle = document.getElementById("debug_style");
+    if (debugStyle) {
+        debugStyle.innerHTML = `[data-debug="true"] { display: ${show_debug.checked ? 'block' : 'none'}; }`;
     }
 }
 
-function check_debug_box() {
-
-    if (document.getElementById("show_debug").checked == true) {
-
-        document.getElementById("debug_style").innerHTML = `[data-debug="true"]{
-    display:block;
-}
-`
-    } else {
-
-        document.getElementById("debug_style").innerHTML = `[data-debug="true"]{
-    display:none;
-}
-`
+function getElementSafely(id) {
+    const element = document.getElementById(id);
+    if (!element) {
+        console.error(`Element with id '${id}' not found.`);
     }
+    return element;
 }
-document.getElementById("show_debug").addEventListener("click", check_debug_box);
-document.getElementById("drag_bar").addEventListener("mousedown", drag_bar);

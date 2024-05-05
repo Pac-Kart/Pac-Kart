@@ -1,283 +1,155 @@
+#! fires whenever New File is clicked
+"use strict";
 async function input_file(event) {
-    g = {
-        divisible_prev_value: 0,
-    }
-
     const files = event.currentTarget.files;
-    last_file = files.length - 1
-    Object.keys(files).forEach(i=>{
+    const lastFileIndex = files.length - 1;
+    for (let i = 0; i < files.length; i++) {
 
-        // letinput_file file = files[i];
-        gfile = files[i];
-        filename = gfile.name
-        fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase()
-        const reader = new FileReader();
-        read_a_file(reader, i, gfile)
+        globalThis.g = {
+            debug: true,
+            divisible_prev_value: 0,
+            game: 0,
+            console: 0,
+            version: 0,
+            file_name: files[i].name,
+            endian: true
+        };
 
-        //     reader.readAsArrayBuffer(gfile)
-        //     reader.onload = (e)=>{
-        //         buffer = e.target.result
+        await readAFile(files[i], g, i, lastFileIndex);
 
-        //         var filename = gfile.name
-        //         fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase()
-
-        //         document.getElementById("file_input").value = ''
-        //         // return
-        //         // new Error('broke')
-
-        //         // buffer = e.target.result
-        //         u8 = new DataView(buffer).getUint8.bind(new DataView(buffer))
-        //         u16 = new DataView(buffer).getUint16.bind(new DataView(buffer))
-        //         u32 = new DataView(buffer).getUint32.bind(new DataView(buffer))
-        //         f32 = new DataView(buffer).getFloat32.bind(new DataView(buffer))
-
-        //         // dynamic array
-        //         XFA = []
-        //         x = []
-        //         id_list = [];
-        //         //.x* file array
-
-        //         document.getElementById("file_viewer").textContent = ''
-        //         document.getElementById("file_editor").textContent = ''
-
-        //         // check magic
-        //         if (u32(0, true) == 33620128) {
-        //             is_little_endian = true
-        //         } else if (u32(0, true) == 2684354818) {
-        //             is_little_endian = false
-        //         } else if (u32(4, true) == 4 && u32(284, true) == 1) {
-        //             //pc save file
-        //             is_little_endian = true;
-        //             save_file_import(filename, fileextension)
-        //             return;
-        //         } else if (u16(0, true) === 14407 && u32(64, true) === 761487696) {
-        //             //gc save file
-        //             is_little_endian = false;
-        //             save_file_import(filename, fileextension)
-        //             return;
-        //         } else {
-        //             wrong_file_type()
-        //             return
-        //         }
-
-        //         u8 = (o)=>new DataView(buffer).getUint8(o, is_little_endian)
-        //         u16 = (o)=>new DataView(buffer).getUint16(o, is_little_endian)
-        //         u32 = (o)=>new DataView(buffer).getUint32(o, is_little_endian)
-        //         f32 = (o)=>new DataView(buffer).getFloat32(o, is_little_endian)
-
-        //         // document.getElementById("save_button").addEventListener("click", save_buffer);
-
-        //         //any file past here is a .x* file
-
-        //         document.getElementById("file_viewer").innerHTML = `
-        //     <div data-file_name="${filename}" data-file_name="${fileextension}" style="width: 90%;text-align: center;"">choose type of file:</div>
-        //     <div id='hot_wheels_velocity_x' class="data_bar_options" style="width: 85%;">Hot Wheels Velocity X</div>     
-        //     <div id='snoopy_vs_the_red_baron' class="data_bar_options" style="width: 85%;">Snoopy vs The Red Baron</div>
-        //     <div id='pac_man_world_rally' class="data_bar_options" style="width: 85%;">Pac Man World Rally</div>
-        //     <div id='bigfoot_collision_course' class="data_bar_options" style="width: 85%;">Bigfoot: Collision Course</div>
-        //     `
-        //         document.getElementById("hot_wheels_velocity_x").addEventListener("click", choose_game_type);
-        //         document.getElementById("snoopy_vs_the_red_baron").addEventListener("click", choose_game_type);
-        //         document.getElementById("pac_man_world_rally").addEventListener("click", choose_game_type);
-        //         document.getElementById("bigfoot_collision_course").addEventListener("click", choose_game_type);
-
-        //         //testing
-        // if (filename === "_Bigfoot - mcp.xdx9") {
-        //     document.getElementById("bigfoot_collision_course").click();
-        // } else if (filename === "_HWVX_mcp.xpc") {
-        //     document.getElementById("hot_wheels_velocity_x").click();
-        // } else if (filename === "_Snoopy mcp.xpc") {
-        //     document.getElementById("snoopy_vs_the_red_baron").click();
-        // } else {
-        //     document.getElementById("pac_man_world_rally").click();
-        // }
-        // console.log(`%c ${filename}`, 'color:#ff10ff')
-        // if (last_file == Number(i)) {
-        //     array_log()
-        // }
-
-        //     }
     }
 
-    )
+    function readAFile(file, g, currentIndex, lastIndex) {
+        return new Promise((resolve,reject)=>{
 
-    // multi_files = event.target.files
-    // console.log(event.target.files.length)
+            const reader = new FileReader();
 
-    // // get file name/extension
+            reader.onload = function(e) {
+                globalThis.buffer = e.target.result
 
-    // var filename = document.getElementsByTagName("input")[0].files[0].name
-    // fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
-    // fileextension = fileextension.toLowerCase()
+                g.file_name = file.name
 
-    // file = event.target.files[0];
-    // var reader = new FileReader();
+                document.getElementById("file_input").value = ''
 
-    // buffer = reader.readAsArrayBuffer(file);
+                const dataView = new DataView(buffer);
 
-    // document.getElementById("file_input").value = ''
+                globalThis.u8 = (o)=>dataView.getUint8(o, g.endian);
+                globalThis.u16 = (o)=>dataView.getUint16(o, g.endian);
+                globalThis.u32 = (o)=>dataView.getUint32(o, g.endian);
+                globalThis.f32 = (o)=>dataView.getFloat32(o, g.endian);
 
-    // }
-}
+                // dynamic array
+                // XFA = []
+                globalThis.x = []
+                globalThis.id_list = [];
+                //.x* file array
 
-function read_a_file(reader, i, file) {
-    try {
-        reader.readAsArrayBuffer(file)
-        reader.onload = (e)=>{
-            buffer = e.target.result
+                file_viewer.textContent = ''
+                file_editor.textContent = ''
 
-            var filename = file.name
-            fileextension = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase()
+                filecheck()
 
-            document.getElementById("file_input").value = ''
-            // return
-            // new Error('broke')
+                console.log(`%c ${g.file_name}`, 'color:#ff10ff')
+                if (lastIndex == Number(currentIndex)) {
+                    array_log()
+                }
 
-            // buffer = e.target.result
-            u8 = new DataView(buffer).getUint8.bind(new DataView(buffer))
-            u16 = new DataView(buffer).getUint16.bind(new DataView(buffer))
-            u32 = new DataView(buffer).getUint32.bind(new DataView(buffer))
-            f32 = new DataView(buffer).getFloat32.bind(new DataView(buffer))
-
-            // dynamic array
-            XFA = []
-            x = []
-            id_list = [];
-            //.x* file array
-
-            document.getElementById("file_viewer").textContent = ''
-            document.getElementById("file_editor").textContent = ''
-
-            // check magic
-            if (new DataView(buffer).byteLength < 17) {
-                wrong_file_type()
-                return;
+                resolve();
             }
-            if (u32(0, true) == 33620128) {
-                is_little_endian = true
-            } else if (u32(0, true) == 2684354818) {
-                is_little_endian = false
-            } else if (u32(4, true) == 4 && u32(284, true) == 1) {
-                //pc save file
-                is_little_endian = true;
-                save_file_import(filename, fileextension)
-                return;
-            } else if (u16(0, true) === 14407 && u32(64, true) === 761487696) {
-                //gc save file
-                is_little_endian = false;
-                save_file_import(filename, fileextension)
-                return;
-            } else if (u32(4, true) == 4 && u32(8, true) === 9624) {
-                //ghost
-                is_little_endian = true;
-                save_file_import(filename, fileextension)
-                return;
-            } else {
-                wrong_file_type()
-                return
+            ;
+
+            reader.onerror = function(error) {
+                reject(error);
             }
+            ;
 
-            const dataView = new DataView(buffer);
-
-            u8 = (o)=>dataView.getUint8(o, is_little_endian);
-            u16 = (o)=>dataView.getUint16(o, is_little_endian);
-            u32 = (o)=>dataView.getUint32(o, is_little_endian);
-            f32 = (o)=>dataView.getFloat32(o, is_little_endian);
-
-            // u8 = (o)=>new DataView(buffer).getUint8(o, is_little_endian)
-            // u16 = (o)=>new DataView(buffer).getUint16(o, is_little_endian)
-            // u32 = (o)=>new DataView(buffer).getUint32(o, is_little_endian)
-            // f32 = (o)=>new DataView(buffer).getFloat32(o, is_little_endian)
-
-            // document.getElementById("save_button").addEventListener("click", save_buffer);
-
-            //any file past here is a .x* file
-
-            document.getElementById("file_viewer").innerHTML = `
-        <div data-file_name="${filename}" data-file_name="${fileextension}" style="width: 90%;text-align: center;"">choose type of file:</div>
-        <div id='hot_wheels_velocity_x' class="data_bar_options" style="width: 85%;">Hot Wheels Velocity X</div>     
-        <div id='snoopy_vs_the_red_baron' class="data_bar_options" style="width: 85%;">Snoopy vs The Red Baron</div>
-        <div id='pac_man_world_rally' class="data_bar_options" style="width: 85%;">Pac Man World Rally</div>
-        <div id='bigfoot_collision_course' class="data_bar_options" style="width: 85%;">Bigfoot: Collision Course</div>
-        `
-            document.getElementById("hot_wheels_velocity_x").addEventListener("click", choose_game_type);
-            document.getElementById("snoopy_vs_the_red_baron").addEventListener("click", choose_game_type);
-            document.getElementById("pac_man_world_rally").addEventListener("click", choose_game_type);
-            document.getElementById("bigfoot_collision_course").addEventListener("click", choose_game_type);
-
-            //testing
-            if (filename === "_Bigfoot - mcp.xdx9") {
-                // document.getElementById("bigfoot_collision_course").click();
-            } else if (filename === "_HWVX_mcp.xpc") {
-                // document.getElementById("hot_wheels_velocity_x").click();
-            } else if (filename === "_Snoopy mcp.xpc") {
-                // document.getElementById("snoopy_vs_the_red_baron").click();
-            } else {
-                // document.getElementById("pac_man_world_rally").click();
-            }
-                // document.getElementById("snoopy_vs_the_red_baron").click();
-
-            console.log(`%c ${filename}`, 'color:#ff10ff')
-            if (last_file == Number(i)) {
-                // array_log()
-            }
-
+            reader.readAsArrayBuffer(file);
         }
-    } catch (error) {}
+        );
+    }
 
-}
-
-function wrong_file_type() {
-    alert('wrong file type!')
-    buffer = null
-    u8 = null
-    u16 = null
-    u32 = null
-    f32 = null
-    XFA = null
 }
 
 function choose_game_type() {
-    if (document.getElementById("save_button") === null) {
-        document.getElementById("data_types_bar").innerHTML += `<a data-is_active="false" class="data_bar_options" id="save_button">Save</a>`
+
+    const saveButton = document.getElementById("save_button");
+    const dataTypesBar = document.getElementById("data_types_bar");
+
+    if (!saveButton) {
+        //sometimes the click event is removed?
+        dataTypesBar.innerHTML += `<a data-is_active="false" class="data_bar_options" id="save_button">Save</a>`;
         document.getElementById("save_button").addEventListener("click", save_file);
+        file_viewer.addEventListener("click", function(event) {
+            const target = event.target;
+
+            if (target.classList.contains("file_arrow")) {
+                // Arrow clicked
+                arrow_click(event)
+            } else if (target.classList.contains("file_hover_not_selected")) {
+                // 'file_hover_not_selected ' clicked
+                file_click(event)
+
+            }
+        });
+        file_viewer.addEventListener("keydown", file_move_with_key);
+
     }
 
-    game = this.id
-    // console.log(this)
-    let html = ''
-    if (fileextension === 'xpc' && game === "pac_man_world_rally" && u32(12) !== 2) {
+    let html = '';
+    const validConsoles = ['pc'];
 
-        im_x(this.id, 0, gfile.name)
+    //get_x_static = Importer/static_spider.js
+    //im_x = Importer/ordered/x.js
 
-        html = dynamic__x_generator()
-        // html = get_x_static(this.id, this.parentNode.children[0].dataset.file_name, false)
-        //temp
+    if (validConsoles.includes(g.console)) {
+        if (g.game === "pac_man_world_rally" && g.version !== 249) {
+            // if (show_debug.checked) {
+            //     html = get_x_static(g.file_name, false);
+            //     alert('bruh')
+            // } else {
+            im_x();
 
-        // get_X(this.id, 0, this.parentNode.children[0].dataset.file_name)
+            html = dynamic__x_generator();
+
+            delete globalThis.f32;
+            delete globalThis.u32;
+            delete globalThis.u16;
+            delete globalThis.u8;
+            delete globalThis.buffer;
+            // }
+        } else {
+            html = get_x_static(g.file_name, false);
+        }
     } else {
-        html = get_x_static(this.id, gfile.name, false)
+        html = get_x_static(g.file_name, false);
     }
 
-    document.getElementById("file_viewer").innerHTML = html
+    file_viewer.innerHTML = html;
 
-    // now addEventListener
-    x_addEventListener();
-
-    document.getElementsByClassName('file_hover_not_selected')[0].click()
-
-    document.getElementById("file_viewer").addEventListener("keydown", file_move_with_key);
-
-    document.getElementById("file_viewer").focus();
+    document.getElementsByClassName('file_hover_not_selected')[0].click();
+    file_viewer.focus();
 
 }
 
-function generate_file_view() {
-    game === "pac_man_world_rally" ? html = dynamic__x_generator() : html = get_x_file_list(this.id, this.parentNode.children[0].dataset.file_name, false)
+function arrow_click(e) {
+    const isOpening = e.srcElement.innerHTML === '→';
 
-    document.getElementById("file_viewer").innerHTML = html
+    e.srcElement.innerHTML = isOpening ? '↓' : '→';
+    e.srcElement.style.paddingRight = isOpening ? '6px' : '0px';
+    e.srcElement.style.paddingLeft = isOpening ? '4px' : '0px';
 
-    // now addEventListener
-    x_addEventListener();
+    for (let i = 3; i < e.srcElement.parentNode.children.length; i++)
+        e.srcElement.parentNode.children[i].style.display = isOpening ? 'block' : 'none';
+
+    const nextElementSibling = e.srcElement.nextElementSibling;
+    if (nextElementSibling && nextElementSibling.nextElementSibling.nextElementSibling) {
+        nextElementSibling.nextElementSibling.nextElementSibling.style.display = isOpening ? 'block' : 'none';
+    }
+    const position = document.getElementsByClassName("file_is_highlighted")[0]
+    if (position.getBoundingClientRect().x === 0 && position.getBoundingClientRect().y === 0) {
+        e.srcElement.parentElement.children[2].click()
+    }
+
 }
+
 document.getElementById("file_input").addEventListener("change", input_file);

@@ -4,7 +4,7 @@ function load_time_trials() {
 
     time_trials_import();
 
-    document.getElementById("file_editor").innerHTML = time_trials_html
+    file_editor.innerHTML = time_trials_html
 
     time_trials_data();
 
@@ -103,8 +103,8 @@ function time_trials_data() {
 
         document.getElementById("char_flap_" + time_trials_i).selectedIndex = (u8(save_offset.time_trials + (time_trials_i * 80) + 14))
         document.getElementById("char_flap_" + time_trials_i).dataset.offset = (save_offset.time_trials + (time_trials_i * 80) + 14)
-        document.getElementById("time_flap_" + time_trials_i).value = '' + msToTime(u32(save_offset.time_trials + (time_trials_i * 80) + 16, is_little_endian))
-        document.getElementById("time_flap_" + time_trials_i).dataset.actual_time = (u32(save_offset.time_trials + (time_trials_i * 80) + 16, is_little_endian))
+        document.getElementById("time_flap_" + time_trials_i).value = '' + msToTime(u32(save_offset.time_trials + (time_trials_i * 80) + 16 ))
+        document.getElementById("time_flap_" + time_trials_i).dataset.actual_time = (u32(save_offset.time_trials + (time_trials_i * 80) + 16 ))
         document.getElementById("time_flap_" + time_trials_i).dataset.offset = (save_offset.time_trials + (time_trials_i * 80) + 16)
 
         document.getElementById("show" + time_trials_i).addEventListener("change", save_value_changed);
@@ -125,8 +125,8 @@ function time_trials_data() {
             document.getElementById("char_" + time_trials_import_i + "_" + time_trials_i).selectedIndex = (u8(save_offset.time_trials + (time_trials_i * 80) + (time_trials_import_i * 12) + 27))
             document.getElementById("char_" + time_trials_import_i + "_" + time_trials_i).dataset.offset = (save_offset.time_trials + (time_trials_i * 80) + (time_trials_import_i * 12) + 27)
 
-            document.getElementById("time_" + time_trials_import_i + "_" + time_trials_i).value = '' + msToTime(u32(save_offset.time_trials + (time_trials_i * 80) + (time_trials_import_i * 12) + 28, is_little_endian))
-            document.getElementById("time_" + time_trials_import_i + "_" + time_trials_i).dataset.actual_time = u32(save_offset.time_trials + (time_trials_i * 80) + (time_trials_import_i * 12) + 28, is_little_endian)
+            document.getElementById("time_" + time_trials_import_i + "_" + time_trials_i).value = '' + msToTime(u32(save_offset.time_trials + (time_trials_i * 80) + (time_trials_import_i * 12) + 28 ))
+            document.getElementById("time_" + time_trials_import_i + "_" + time_trials_i).dataset.actual_time = u32(save_offset.time_trials + (time_trials_i * 80) + (time_trials_import_i * 12) + 28 )
             document.getElementById("time_" + time_trials_import_i + "_" + time_trials_i).dataset.offset = (save_offset.time_trials + (time_trials_i * 80) + (time_trials_import_i * 12) + 28)
 
             document.getElementById("letters_" + time_trials_import_i + "_" + time_trials_i).addEventListener("change", save_value_changed);
