@@ -343,7 +343,7 @@ function dynamic__model_section(x, i) {
         file_arrow = `y`
     }
 
-    let html = genFileInViewer(file_arrow, '?', 'x_d_model__sections', x.id, `Section ${i + 1}`)
+    let html = genFileInViewer(file_arrow, '?', 'x_d_model__sections', x.id, `LOD ${i + 1}`)
 
     for (let i = 0; i < x.sub_section.length; i++) {
         html += dynamic__model_sub_section(x.sub_section[i], i)
@@ -353,7 +353,7 @@ function dynamic__model_section(x, i) {
 }
 function dynamic__model_sub_section(x, i) {
 
-    let html = genFileInViewer('n', '?', 'x_d_model__model', x.id, `Model ${i + 1}`)
+    let html = genFileInViewer('n', '?', 'x_d_model__model', x.id, `Material ${i + 1}`)
 
     return `${html}</div>`
 }
@@ -641,7 +641,8 @@ function dynamic_car(x, id, name) {
 
 function dynamic_world(x, id, name) {
     let html = ''
-    // let html = genFileInViewer('n', '?', `x_d_world_collision`, id, 'Collision') + '</div>'
+    html+= genFileInViewer('n', '?', `x_d_world_collision`, id, 'Collision') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_scene`, id, 'World Scene') + '</div>'
     html += genFileInViewer('n', '?', `x_d_world_route`, id, 'World Route') + '</div>'
     html += genFileInViewer('n', '?', `x_d_world_start_points`, id, 'Start Points') + '</div>'
     html += genFileInViewer('n', '?', `x_d_world_sound`, id, 'Sound Area') + '</div>'

@@ -19,6 +19,7 @@ function get_x_static(file_name) {
     }
 
     switch (u32(4)) {
+    case 67174574:
     case 67174575:
         break
     default:
@@ -243,7 +244,10 @@ function get_x_datapack(offset, index) {
         case "link":
         case "audio":
         case "music":
-            // html += get_basic()
+            if (pk_debug) {
+
+                html += get_basic()
+            }
             break
         case "world":
             html += get_world()
@@ -1268,7 +1272,6 @@ function get_car_00_192_24(o) {//shifts
 //         ü(1, [u32, 0, u32, 4, u32, 8, u32, 12, f32, 16, f32, 20, u32, 24, u32, 28, ], o)
 //     }
 // }
-
 
 function get_car_00_196(o) {
     if (f32(o + 24) || f32(o + 28)) {

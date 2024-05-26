@@ -4,8 +4,6 @@
 // o = offset
 
 async function im_x() {
-    console.timeEnd('tox')
-
     x = []
     globalThis.id_list = 0
 

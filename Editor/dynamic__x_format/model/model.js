@@ -1,6 +1,6 @@
 "use strict";
 function load_x_d_model(id, outerid, sub_group_index) {
-    let html = `${load_world_canvas_string(TXFA.v_array.byteLength)}`
+    let html = `${load_world_canvas_string('model')}`
     file_editor.innerHTML = html
 
     file_editor_side_panel.innerHTML = `
@@ -44,6 +44,14 @@ function load_x_d_model(id, outerid, sub_group_index) {
                      <input style="width:100%" type='text' value="${TXFA.unknown_54}" data-outer_xfa="${id}"  data-inner_xfa="unknown_54" data-type="u8"><br>
                   <a>unknown_55</a><br>
                      <input style="width:100%" type='text' value="${TXFA.unknown_55}" data-outer_xfa="${id}"  data-inner_xfa="unknown_55" data-type="u8"><br>
+                  <a>unknown_56</a><br>
+                     <input style="width:100%" type='text' value="${TXFA.unknown_56}" data-outer_xfa="${id}"  data-inner_xfa="unknown_55" data-type="u32"><br>
+                  <a>unknown_60</a><br>
+                     <input style="width:100%" type='text' value="${TXFA.unknown_60}" data-outer_xfa="${id}"  data-inner_xfa="unknown_55" data-type="u32"><br>
+                  <a>unknown_64</a><br>
+                     <input style="width:100%" type='text' value="${TXFA.unknown_64}" data-outer_xfa="${id}"  data-inner_xfa="unknown_55" data-type="u32"><br>
+                  <a>unknown_88</a><br>
+                     <input style="width:100%" type='text' value="${TXFA.unknown_88}" data-outer_xfa="${id}"  data-inner_xfa="unknown_55" data-type="u32"><br>
 `
     let modelarray = [{
         v_array: TXFA.v_array,
@@ -52,5 +60,38 @@ function load_x_d_model(id, outerid, sub_group_index) {
         c_array: TXFA.c_array,
     }]
     gen_model_box(modelarray)
+
+// globalThis.gltfloader = new THREE.GLTFLoader()
+
+// gltfloader.load(
+// 	// resource URL
+// 	'bone_bridge_test.gltf',
+// 	// called when the resource is loaded
+// 	function ( gltf ) {
+
+// 		scene.add( gltf.scene );
+
+// 		gltf.animations; // Array<THREE.AnimationClip>
+// 		gltf.scene; // THREE.Group
+// 		gltf.scenes; // Array<THREE.Group>
+// 		gltf.cameras; // Array<THREE.Camera>
+// 		gltf.asset; // Object
+
+// 	},
+// 	// called while loading is progressing
+// 	// function ( xhr ) {
+
+// 	// 	console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+// 	// },
+// 	// // called when loading has errors
+// 	// function ( error ) {
+
+// 	// 	console.log( 'An error happened' );
+
+// 	// }
+// );
+
+
 
 }

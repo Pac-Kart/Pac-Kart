@@ -6,6 +6,10 @@ const file_editor = getElementSafely('file_editor');
 const outer_program = getElementSafely('outer_program');
 const show_debug = getElementSafely('show_debug');
 const drag_bar = getElementSafely('drag_bar');
+const pk_debug = false
+if (pk_debug) {
+    file_input.multiple = true
+}
 
 if (drag_bar) {
     drag_bar.addEventListener("mousedown", handleDragBar);

@@ -77,6 +77,7 @@ function find_id(targetId, type) {
         case "x_d_world_Stage":
         case "x_d_world_Animation":
         case "x_d_world_Objects":
+        case "x_d_world_scene":
             find_id__world_folder(x.ordered[0].models, path + html, i)
             break
         default:
@@ -491,6 +492,7 @@ function find_id(targetId, type) {
             case "x_d_world_Stage":
             case "x_d_world_Animation":
             case "x_d_world_Objects":
+            case "x_d_world_scene":
                 return temp = path_string + html
                 break
             }

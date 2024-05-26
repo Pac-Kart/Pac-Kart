@@ -142,117 +142,240 @@ function gen_model_box(models, editable=[]) {
     }
 
     let editable_objects = []
-    for (let model of editable) {
-        let mesh
-
-        mesh = new THREE.Mesh(new THREE.SphereGeometry(10,10,10),new THREE.MeshBasicMaterial({
-            color: "rgb(255, 0, 0)"
-        }))
-        mesh.position.set(model.x, model.y, model.z)
-
-        scene.add(mesh);
-        mesh.name = model.type
-        mesh.ref = model.ref
-        mesh.xid = model.id
-
-        if (mesh.name === 'route_point') {
-            let width = mesh.ref.f32_68
-            for (let i = 0; i < mesh.ref.section_64.length; i++) {
-                let index = mesh.ref.section_64[i].u32_00
-                let next_model = editable[index]
-            }
-
-        }
-        editable_objects.push(mesh)
-
-    }
-    if (editable_objects.length) {
-
-        const dragcontrol = new THREE.DragControls(editable_objects,camera,renderer.domElement)
-
-        var raycaster = new THREE.Raycaster();
-        var mouse = new THREE.Vector2();
-
-        var intersects = raycaster.intersectObjects(editable_objects, true);
-
-        function onMouseMove(event) {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    if (globalThis?.iscollision === true) {
+        //halp
+        let collision = TXFA.file_specific[0].section_04[0]
+        let gridcords = {
+            startx: collision.f32_00,
+            starty: collision.f32_04,
+            startz: collision.f32_08,
+            startw: collision.f32_12,
+            endx: collision.f32_16,
+            endy: collision.f32_20,
+            endz: collision.f32_24,
+            endw: collision.f32_28,
+            entryx: collision.f32_40,
+            entryy: collision.f32_44,
+            entryz: collision.f32_48,
         }
 
-        function render() {
-            raycaster.setFromCamera(mouse, camera);
-            raycaster.intersectObjects(scene.children);
-
-            for (var i = 0; i < intersects.length; i++) {
-                intersects[i].object.material.color.set(0x0000ff);
-            }
-
-            renderer.render(scene, camera);
+        let varcord = {
+            x: gridcords.startx,
+            y: gridcords.starty,
+            z: gridcords.startz,
         }
-        window.addEventListener('mousemove', onMouseMove, false);
-        window.requestAnimationFrame(render);
-
-        var selected_obj = null
-        dragcontrol.addEventListener('dragstart', (event)=>{
-            controls.enabled = false;
-            if (event.object.name === 'route_point') {
-                route_connect()
-            }
-            if (selected_obj) {
-                selected_obj.object.material.color.r = 1
-                selected_obj.object.material.color.g = 0
-                selected_obj.object.material.color.b = 0
-            }
-
-            let color = event.object.material.color
-            color.r = 0
-            color.g = 0
-            color.b = 1
-            edit_side_panel(event.object)
-            selected_obj = event
+        let endcord = {
+            x: gridcords.endx,
+            y: gridcords.endy,
+            z: gridcords.endz,
         }
-        )
 
-        dragcontrol.addEventListener('drag', (event)=>{
-            controls.enabled = false;
-            let new_position = selected_obj.object.position
-            if (document.getElementById('sidebar_x_position')) {
-                sidebar_x_position.value = new_position.x
-                sidebar_y_position.value = new_position.y
-                sidebar_z_position.value = new_position.z
+        let grid_i = 0
+        var material = new THREE.LineBasicMaterial({
+            color: 0x0000ff
+        });
+
+        function create_box(first, last) {
+            let points = []
+            // create cube from line
+            //also very lazy !!!
+            points.push(new THREE.Vector3(first.x,first.y,first.z));
+            points.push(new THREE.Vector3(last.x,first.y,first.z));
+            points.push(new THREE.Vector3(last.x,first.y,last.z));
+            points.push(new THREE.Vector3(first.x,first.y,last.z));
+            points.push(new THREE.Vector3(first.x,first.y,first.z));
+            //floor
+            points.push(new THREE.Vector3(first.x,last.y,first.z));
+            points.push(new THREE.Vector3(last.x,last.y,first.z));
+            points.push(new THREE.Vector3(last.x,last.y,last.z));
+            points.push(new THREE.Vector3(first.x,last.y,last.z));
+            points.push(new THREE.Vector3(first.x,last.y,first.z));
+            //ceiling
+            points.push(new THREE.Vector3(first.x,last.y,first.z));
+            points.push(new THREE.Vector3(last.x,last.y,first.z));
+            points.push(new THREE.Vector3(last.x,first.y,first.z));
+            points.push(new THREE.Vector3(last.x,first.y,last.z));
+            points.push(new THREE.Vector3(last.x,last.y,last.z));
+            points.push(new THREE.Vector3(first.x,last.y,last.z));
+            points.push(new THREE.Vector3(first.x,first.y,last.z));
+
+            let geometry = new THREE.BufferGeometry().setFromPoints(points);
+            let line = new THREE.Line(geometry,material);
+            scene.add(line);
+
+        }
+        create_box(varcord, endcord)
+
+        material = new THREE.LineBasicMaterial({
+            color: 0x00ffff
+        });
+
+        for (let y = 0; y < collision.u32_56; y++) {
+
+            varcord.z = gridcords.startz
+            for (let z = 0; z < collision.u32_60; z++) {
+                varcord.x = gridcords.startx
+                for (let x = 0; x < collision.u32_52; x++,
+                grid_i++) {
+                    let index = collision.section_64[grid_i].u32_00
+
+                    let model = editable[index]
+                    let points = []
+                    create_box({
+                        x: model.ref.f32_00,
+                        y: model.ref.f32_04,
+                        z: model.ref.f32_08
+                    }, {
+                        x: model.ref.f32_16,
+                        y: model.ref.f32_20,
+                        z: model.ref.f32_24
+                    })
+                    varcord.x += gridcords.entryx
+
+                    let geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    let line = new THREE.Line(geometry,material);
+
+                    scene.add(line);
+
+                }
+
+                varcord.z += gridcords.entryz
+
             }
-            if (event.object.name === 'route_point') {
+
+            varcord.y += gridcords.entryy
+
+        }
+
+        material = new THREE.LineBasicMaterial({
+            color: 0x00ff00
+        });
+
+        for (let i = 0; i < collision.section_84.length; i++) {
+            let points = []
+            // points.push(new THREE.Vector3(collision.section_84[i].f32_00,collision.section_84[i].f32_04,collision.section_84[i].f32_08));
+            points.push(new THREE.Vector3(collision.section_84[i].f32_16,collision.section_84[i].f32_20,collision.section_84[i].f32_24));
+            points.push(new THREE.Vector3(collision.section_84[i].f32_32,collision.section_84[i].f32_36,collision.section_84[i].f32_40));
+            let geometry = new THREE.BufferGeometry().setFromPoints(points);
+            let line = new THREE.Line(geometry,material);
+
+            scene.add(line);
+
+        }
+
+    } else {
+        for (let model of editable) {
+            let mesh
+
+            mesh = new THREE.Mesh(new THREE.SphereGeometry(10,10,10),new THREE.MeshBasicMaterial({
+                color: "rgb(255, 0, 0)"
+            }))
+            mesh.position.set(model.x, model.y, model.z)
+
+            scene.add(mesh);
+            mesh.name = model.type
+            mesh.ref = model.ref
+            mesh.xid = model.id
+
+            if (mesh.name === 'route_point') {
+                let width = mesh.ref.f32_68
+                for (let i = 0; i < mesh.ref.section_64.length; i++) {
+                    let index = mesh.ref.section_64[i].u32_00
+                    let next_model = editable[index]
+                }
+
+            }
+            editable_objects.push(mesh)
+
+        }
+        if (editable_objects.length) {
+
+            const dragcontrol = new THREE.DragControls(editable_objects,camera,renderer.domElement)
+
+            var raycaster = new THREE.Raycaster();
+            var mouse = new THREE.Vector2();
+
+            var intersects = raycaster.intersectObjects(editable_objects, true);
+
+            function onMouseMove(event) {
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            }
+
+            function render() {
+                raycaster.setFromCamera(mouse, camera);
+                raycaster.intersectObjects(scene.children);
+
+                for (var i = 0; i < intersects.length; i++) {
+                    intersects[i].object.material.color.set(0x0000ff);
+                }
+
+                renderer.render(scene, camera);
+            }
+            window.addEventListener('mousemove', onMouseMove, false);
+            window.requestAnimationFrame(render);
+
+            var selected_obj = null
+            dragcontrol.addEventListener('dragstart', (event)=>{
+                controls.enabled = false;
+                if (event.object.name === 'route_point') {
+                    route_connect()
+                }
+                if (selected_obj) {
+                    selected_obj.object.material.color.r = 1
+                    selected_obj.object.material.color.g = 0
+                    selected_obj.object.material.color.b = 0
+                }
+
+                let color = event.object.material.color
+                color.r = 0
+                color.g = 0
+                color.b = 1
+                edit_side_panel(event.object)
+                selected_obj = event
+            }
+            )
+
+            dragcontrol.addEventListener('drag', (event)=>{
+                controls.enabled = false;
+                let new_position = selected_obj.object.position
+                if (document.getElementById('sidebar_x_position')) {
+                    sidebar_x_position.value = new_position.x
+                    sidebar_y_position.value = new_position.y
+                    sidebar_z_position.value = new_position.z
+                }
+                if (event.object.name === 'route_point') {
+                    let xref = selected_obj.object.ref
+                    xref.f32_32 = new_position.x
+                    xref.f32_36 = new_position.y
+                    xref.f32_40 = new_position.z
+
+                    route_connect()
+                }
+
+            }
+            )
+
+            dragcontrol.addEventListener('dragend', (event)=>{
+                controls.enabled = true;
+                let new_position = selected_obj.object.position
                 let xref = selected_obj.object.ref
-                xref.f32_32 = new_position.x
-                xref.f32_36 = new_position.y
-                xref.f32_40 = new_position.z
-
-                route_connect()
+                if (event.object.name === 'respawn_type4') {
+                    xref.f32_80 = new_position.x
+                    xref.f32_84 = new_position.y
+                    xref.f32_88 = new_position.z
+                } else {
+                    xref.f32_32 = new_position.x
+                    xref.f32_36 = new_position.y
+                    xref.f32_40 = new_position.z
+                }
+                if (event.object.name === 'route_point') {
+                    route_connect()
+                }
             }
+            )
 
         }
-        )
-
-        dragcontrol.addEventListener('dragend', (event)=>{
-            controls.enabled = true;
-            let new_position = selected_obj.object.position
-            let xref = selected_obj.object.ref
-            if (event.object.name === 'respawn_type4') {
-                xref.f32_80 = new_position.x
-                xref.f32_84 = new_position.y
-                xref.f32_88 = new_position.z
-            } else {
-                xref.f32_32 = new_position.x
-                xref.f32_36 = new_position.y
-                xref.f32_40 = new_position.z
-            }
-            if (event.object.name === 'route_point') {
-                route_connect()
-            }
-        }
-        )
-
     }
 
     var ambientLight = new THREE.AmbientLight(0xffffff,0.5);
@@ -282,6 +405,7 @@ function gen_model_box(models, editable=[]) {
         });
     }
 
+    tempimporter()
     var cameraSpeed = 0.1;
 
     function animate() {

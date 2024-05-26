@@ -10,9 +10,17 @@ function load_world_folder(id) {
 }
 
 function load_world_canvas_string(file_editor_side_panel_default_text='') {
-    return `<span style='width:80%;height:100%;display:inherit;'>
+    let temp = ''
+    let invis = 'display:inherit'
+    if (file_editor_side_panel_default_text === 'model' || file_editor_side_panel_default_text === 'section') {
+        temp =`<label for='canvas_import_scene' class='data_bar_options_canvas'>Import (OBJ / GLTF)</label><input style='display:none;' id="canvas_import_scene" type="file">`
+    }
+    if (file_editor_side_panel_default_text === 'invis') {
+    invis = 'display:none;'
+    }
+    return `<span style='width:80%;height:100%;${invis};'>
                     <div class='data_types_bar' style='overflow:hidden;height:5%;border-bottom:solid 1px #9d9898;box-sizing:border-box;'>
-                        <a id='canvas_export_scene' class='data_bar_options_canvas'>Export</a>
+                        <a id='canvas_export_scene' class='data_bar_options_canvas'>Export (GLTF)</a>${temp}
                     </div>
                     <div id='outer_canvas' style='height:95%;'>
                     </div>

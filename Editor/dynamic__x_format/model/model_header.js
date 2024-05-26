@@ -1,6 +1,6 @@
 "use strict";
 function load_x_d_model_header(id, outerid, sub_group_index) {
-     let html = `<div style='overflow:hidden;height:100%'; ><div style="display:inline-block;width:95%;padding:5px;height:20%;">
+    let html = `<div style='overflow:hidden;height:100%'; ><div style="display:inline-block;width:95%;padding:5px;height:20%;">
     <input style='width:100%;' maxlength='52' data-outer_xfa="${id}" data-type="string" data-fixed="true" data-byte_amount="52" data-inner_xfa="name"  id='image_name' type='text' value='${TXFA.name}'>
     <br>
     <div>visibility
@@ -38,11 +38,14 @@ function load_x_d_model_header(id, outerid, sub_group_index) {
                   <td class='no_border'><input style="width:100%" type='text' value="${TXFA.visibility.w3}" data-outer_xfa="${id}.visibility" data-inner_xfa="w3" data-type="float">  </td>
                </tr>
             </tbody>
-         </table>   
+         </table>
       </div>
    </div>
 </div>
-                    <div id='outer_canvas' style='height:95%;'>
+<br>
+    <div style="display:flex;text-align:center;" class='save_records_boarder' data-type="[]" data-xfa='${id}'>
+             <label id='add_lod' class='plus_button noselect' style='flex:1;width:50%;color:#959595;font-size:150%;border-right:1px solid;'>+ LOD</label>
+             </div>
 
 `
 
@@ -50,6 +53,7 @@ function load_x_d_model_header(id, outerid, sub_group_index) {
 
     document.getElementById("_2nd_data_bar").innerHTML = ''
     document.getElementById("image_name").addEventListener('change', edit_change_name);
+    document.getElementById("add_lod").addEventListener('click', generate_model_section);
 
     let input_field = visibility_table.getElementsByTagName('INPUT')
     for (let i = 0; i < input_field.length; i++) {
@@ -57,15 +61,49 @@ function load_x_d_model_header(id, outerid, sub_group_index) {
     }
 
     function generate_model_section() {
-        let xid = gen_id()
-
         TXFA.sections.push({
             id: gen_id(),
-            render: 0,
-            sub_section: [],
+            render: 10000000,
+            sub_section: [{
+                id: gen_id(),
+                v_array: [],
+                c_array: [],
+                n_array: [],
+                u_array: [],
+                s_array: [],
+                unknown_00: 0,
+                unknown_08: 1432546377,
+                unknown_12: 0,
+                unknown_13: 0,
+                unknown_15: 0,
+                unknown_16: 1552,
+                unknown_24: 1,
+                unknown_24_animation: -1,
+                unknown_28: 1,
+                texture: [[0, 0, 0, 't']],
+                animation: -1,
+                unknown_44: 255,
+                unknown_45: 255,
+                unknown_46: 255,
+                unknown_47: 255,
+                unknown_48: 0,
+                unknown_49: 0,
+                unknown_52: 0,
+                unknown_53: 0,
+                unknown_54: 0,
+                unknown_55: 0,
+                unknown_56: 4656,
+                unknown_60: 13,
+                unknown_64: 0,
+                unknown_88: 1,
+                section_92: [{
+                    amount_00: 1552,
+                    section_12: [],
+                }],
+            }],
         })
 
-        outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement
+        let outer_html = document.getElementsByClassName("file_is_highlighted")[0].parentElement
         let html = ''
 
         for (let i = outer_html.children.length - 1; i > 2; i--) {
@@ -81,7 +119,6 @@ function load_x_d_model_header(id, outerid, sub_group_index) {
                 html += dynamic__model_section(TXFA.sections[i], i, )
             }
             outer_html.innerHTML += html
-            x_addEventListener_file_viewer(outer_html)
 
             outer_html.children[0].className = 'file_arrow'
             outer_html.children[0].click()

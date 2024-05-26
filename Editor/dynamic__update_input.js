@@ -92,6 +92,7 @@ function dyn_update_input(e) {
         }
     } else {
         console.log("datatype not def")
+        return
     }
     Object.byString(x, src.dataset.outer_xfa, src.dataset.inner_xfa, new_value)
     src.value = new_value
@@ -181,7 +182,14 @@ function add_events() {
 
 function generate_linkbox(path, innerpath, type, id) {
     const directory = path.slice(0, 16).replace('[0].directory[', '').replace(']', '');
-    const typelist = Object.byString(x, `[0].directory[${directory}].datapack[0].ordered[0].unordered[0]`)[type];
+    let typelist
+
+    if (type === 'models') {
+    typelist = Object.byString(x, `[0].directory[${directory}].datapack[0].ordered[0]`)[type];
+    }else{
+    typelist = Object.byString(x, `[0].directory[${directory}].datapack[0].ordered[0].unordered[0]`)[type];
+
+    }
 
     let html = `<select style="width:100%" title="${type} Selector" data-outer_xfa="${path}" data-inner_xfa="${innerpath}">
                     <option value="0"> </option>`;
@@ -189,6 +197,9 @@ function generate_linkbox(path, innerpath, type, id) {
     for (let i = 0; i < typelist.length; i++) {
         let name
         switch (type) {
+        case 'models':
+            name = typelist[i].name
+            break
         case 'model_link':
             name = typelist[i].section_04[0]
             break
@@ -206,6 +217,11 @@ function generate_linkbox(path, innerpath, type, id) {
 }
 
 function linkbox_clicked() {
+}
+
+function go_back_up(id) {
+    let directory = id.slice(0, 16).replace('[0].directory[', '').replace(']', '')
+    return Object.byString(x, `[0].directory[${directory}]`);
 }
 
 function generate_linkbox_special(path, id) {

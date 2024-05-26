@@ -1,6 +1,6 @@
 "use strict";
 function load_x_d_model_section(id, outerid, sub_group_index) {
-    let html = `${load_world_canvas_string(TXFA.sub_section)}`
+    let html = `${load_world_canvas_string('section')}`
 
     file_editor.innerHTML = html
     file_editor_side_panel.innerHTML = `<a>Render</a><br>

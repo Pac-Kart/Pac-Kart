@@ -248,6 +248,9 @@ function file_click(e) {
     case "x_d_world_start_points":
         load_world_start_points_d(path)
         break
+    case "x_d_world_scene":
+        load_world_scene(path)
+        break
     case "x_d_world_sound":
         load_world_sound(path)
         break

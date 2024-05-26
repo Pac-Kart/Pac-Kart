@@ -50,7 +50,7 @@ async function input_file(event) {
                 filecheck()
 
                 console.log(`%c ${g.file_name}`, 'color:#ff10ff')
-                if (lastIndex == Number(currentIndex)) {
+                if (pk_debug && lastIndex == Number(currentIndex)) {
                     array_log()
                 }
 
@@ -103,20 +103,20 @@ function choose_game_type() {
 
     if (validConsoles.includes(g.console)) {
         if (g.game === "pac_man_world_rally" && g.version !== 249) {
-            // if (show_debug.checked) {
-            //     html = get_x_static(g.file_name, false);
-            //     alert('bruh')
-            // } else {
-            im_x();
+            if (pk_debug && show_debug.checked) {
+                html = get_x_static(g.file_name, false);
+                alert('bruh')
+            } else {
+                im_x();
 
-            html = dynamic__x_generator();
+                html = dynamic__x_generator();
 
-            delete globalThis.f32;
-            delete globalThis.u32;
-            delete globalThis.u16;
-            delete globalThis.u8;
-            delete globalThis.buffer;
-            // }
+                delete globalThis.f32;
+                delete globalThis.u32;
+                delete globalThis.u16;
+                delete globalThis.u8;
+                delete globalThis.buffer;
+            }
         } else {
             html = get_x_static(g.file_name, false);
         }

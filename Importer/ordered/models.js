@@ -368,6 +368,10 @@ function im_models(offset, index) {
         if (temp_string !== "") {
 
             g.ordered_ref.models[index].second_names.push(temp_string)
+            if (temp_string.toLowerCase().includes('.tga')) {} else {
+                console.log(temp_string)
+            }
+
             end_offset += temp_string.length
         }
         while (u8(end_offset) === 0) {
