@@ -169,7 +169,29 @@ function get_x_datapack(offset, index) {
         offset_mid = u32(offset + 4) + after_datapack + (u32(offset + 12) * 4) + ((u32(offset + 16) + u32(offset + 28) + u32(offset + 52) + u32(offset + 56)) * 8)
         offset_datapack = offset
 
-        if (u32(offset + 08)) {
+        if (u32(offset + 8)) {
+            html += get_sounds(offset + 120)
+        }
+        offset_textures = u32(offset + 24)
+        html += get_textures()
+
+        return html
+    }
+
+    if (g.version === 183) {
+        after_datapack = 120 + offset + divisible(number_sounds * 4, 32)
+        offset_mid = divisible(((u32(offset + 16) + u32(offset + 28) + u32(offset + 52)) * 8), 32)
+        offset_mid = offset_mid + u32(offset + 4) + after_datapack
+        if ((g.console === "ps2")) {
+            xps_i = 0;
+            while ((after_datapack + u32(offset + 4) + xps_i) % 2048 !== 0) {
+                xps_i += 1
+            }
+            offset_mid = offset_mid + xps_i
+        }
+        offset_datapack = offset
+
+        if (u32(offset + 8)) {
             html += get_sounds(offset + 120)
         }
         offset_textures = u32(offset + 24)
@@ -185,23 +207,6 @@ function get_x_datapack(offset, index) {
     //get ordered list
 
     offset_datapack = offset
-
-    if ((id == HWVX_PROTO) && (game == "hot_wheels_velocity_x")) {
-        after_datapack = get_datapack_end() + offset + (u32(offset + 8) * 4)
-        offset_mid = u32(offset + 4) + after_datapack + (u32(offset + 12) * 4) + ((u32(offset + 16) + u32(offset + 28) + u32(offset + 52) + u32(offset + 56)) * 8);
-    } else {
-        after_datapack = get_datapack_end() + offset + divisible(number_sounds * 4, 32)
-        offset_mid = divisible(((u32(offset + 16) + u32(offset + 28) + u32(offset + 52)) * 8), 32)
-        offset_mid = offset_mid + u32(offset + 4) + after_datapack
-        if ((g.console === "ps2")) {
-            xps_i = 0;
-            while ((after_datapack + u32(offset + 4) + xps_i) % 2048 !== 0) {
-                xps_i += 1
-            }
-            offset_mid = offset_mid + xps_i
-        }
-
-    }
 
     index_patch_list = after_datapack + u32(offset + 4)
 
@@ -483,7 +488,7 @@ function get_x_datapack_hwvx_proto(o, i) {
     let indexpatchoffset = o + 120 + (number_sounds * 4)
     offset_mid = u32(o + 4) + indexpatchoffset + (u32(o + 12) * 4) + ((u32(o + 16) + u32(o + 28) + u32(o + 56)) * 8)
     end = offset_mid + u32(o + 0)
-    if (u32(o + 08)) {
+    if (u32(o + 8)) {
         html += get_sounds(o + 120)
 
         // let tex_offset = offset_mid + u32(o + 60)
