@@ -11,6 +11,7 @@ async function input_file(event) {
             game: 0,
             console: 0,
             version: 0,
+            type_string: 0,
             file_name: files[i].name,
             endian: true
         };
@@ -20,7 +21,7 @@ async function input_file(event) {
     }
 
     function readAFile(file, g, currentIndex, lastIndex) {
-        return new Promise((resolve,reject)=>{
+        return new Promise( (resolve, reject) => {
 
             const reader = new FileReader();
 
@@ -33,10 +34,10 @@ async function input_file(event) {
 
                 const dataView = new DataView(buffer);
 
-                globalThis.u8 = (o)=>dataView.getUint8(o, g.endian);
-                globalThis.u16 = (o)=>dataView.getUint16(o, g.endian);
-                globalThis.u32 = (o)=>dataView.getUint32(o, g.endian);
-                globalThis.f32 = (o)=>dataView.getFloat32(o, g.endian);
+                globalThis.u8 = (o) => dataView.getUint8(o, g.endian);
+                globalThis.u16 = (o) => dataView.getUint16(o, g.endian);
+                globalThis.u32 = (o) => dataView.getUint32(o, g.endian);
+                globalThis.f32 = (o) => dataView.getFloat32(o, g.endian);
 
                 // dynamic array
                 // XFA = []
@@ -100,33 +101,145 @@ function choose_game_type() {
 
     //get_x_static = Importer/static_spider.js
     //im_x = Importer/ordered/x.js
+    //im_*_x = Importer/dyn/*
+    g.datapack_end = buffer.byteLength;
 
-    if (validConsoles.includes(g.console)) {
-        if (g.game === "pac_man_world_rally" && g.version !== 249) {
-            if (pk_debug && show_debug.checked) {
-                html = get_x_static(g.file_name, false);
-                alert('bruh')
+    x = []
+    globalThis.id_list = 0
+
+    if (globalThis?.new_version_id !== undefined) {
+        switch (g.game) {
+        case "motor_mayhem":
+            im_mmcvl_x()
+            break
+        case "hot_wheels_velocity_x":
+            switch (g.version) {
+            case 177:
+            case 179:
+                im_hwvx_proto_x()
+                break
+            case 183:
+                switch (g.console) {
+                case 'pc':
+                    im_hwvx_pc_x()
+                    break
+                case 'gamecube':
+                    im_hwvx_gc_x()
+                    break
+                case 'ps2':
+                    im_hwvx_ps2_x()
+                    break
+                default:
+                    alert("hwvx", g.console)
+                }
+                break
+            default:
+                alert("hwvx", g.version)
+            }
+            break
+        case "pac_man_world_rally":
+            switch (g.console) {
+            case "ps2":
+                switch (g.version) {
+                case 249:
+                    im_pmwr_ps2_demo_x()
+                    break
+                default:
+                    im_pmwr_ps2_x()
+                }
+                break
+            case "xbox":
+                im_pmwr_xbox_x()
+                break
+            case "gamecube":
+                im_pmwr_gc_x()
+                break
+            case "pc":
+                // im_pmwr_pc_x()
+                    im_x();
+                break
+            case "psp":
+                im_pmwr_psp_x()
+                break
+            default:
+                alert("pmwr", g.version)
+            }
+            break
+        case "snoopy_vs_the_red_baron":
+            switch (g.console) {
+            case 'ps2':
+                im_svtrb_ps2_x()
+                break
+            case 'psp':
+                im_svtrb_psp_x()
+                break
+            case 'pc':
+                im_svtrb_pc_x()
+                break
+            }
+        case "bee_movie_game":
+            switch (g.console) {
+            case 'wii':
+                switch (g.version) {
+                case 288:
+                    im_bmg_demo_x()
+                    break
+                case 312:
+                    im_bmg_wii_x()
+                    break
+                }
+                break
+            case 'pc':
+                im_bmg_pc_x()
+                break
+            }
+            break
+        case "bigfoot_collision_course":
+            switch (g.console) {
+            case 'wii':
+                im_bcc_wii_x()
+                break
+            case 'pc':
+                im_bcc_pc_x()
+                break
+            }
+            break
+        default:
+            alert("???", g.game)
+        }
+
+    html = gen_array_view_file_first_time(x);
+
+    } else {
+
+        if (validConsoles.includes(g.console)) {
+            if (g.game === "pac_man_world_rally" && g.version !== 249) {
+                if (pk_debug && show_debug.checked) {
+                    html = get_x_static(g.file_name, false);
+                    alert('bruh')
+                } else {
+                    im_x();
+
+                    html = dynamic__x_generator();
+
+                    delete globalThis.f32;
+                    delete globalThis.u32;
+                    delete globalThis.u16;
+                    delete globalThis.u8;
+                    delete globalThis.buffer;
+                }
             } else {
-                im_x();
-
-                html = dynamic__x_generator();
-
-                delete globalThis.f32;
-                delete globalThis.u32;
-                delete globalThis.u16;
-                delete globalThis.u8;
-                delete globalThis.buffer;
+                html = get_x_static(g.file_name, false);
             }
         } else {
             html = get_x_static(g.file_name, false);
         }
-    } else {
-        html = get_x_static(g.file_name, false);
+
     }
 
     file_viewer.innerHTML = html;
 
-    document.getElementsByClassName('file_hover_not_selected')[0].click();
+    document.getElementsByClassName('file_hover_not_selected')[0]?.click();
     file_viewer.focus();
 
 }

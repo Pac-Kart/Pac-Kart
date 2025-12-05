@@ -379,9 +379,3 @@ function model_animation_padding() {
     }
 
 }
-
-function gen_id() {
-    let id = id_list
-    id_list++
-    return id
-}

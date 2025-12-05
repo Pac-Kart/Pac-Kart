@@ -144,7 +144,7 @@ function dynamic_order_file(x, i, name, id) {
         'world_settings': dynamic__world_settings,
     };
 
-    let dynamicHtmlFunction = dynamicHtmlFunctions[name] || (()=>'');
+    let dynamicHtmlFunction = dynamicHtmlFunctions[name] || ( () => '');
     html += dynamicHtmlFunction(x[i]);
 
     return `${html}</div>`;
@@ -641,7 +641,7 @@ function dynamic_car(x, id, name) {
 
 function dynamic_world(x, id, name) {
     let html = ''
-    html+= genFileInViewer('n', '?', `x_d_world_collision`, id, 'Collision') + '</div>'
+    html += genFileInViewer('n', '?', `x_d_world_collision`, id, 'Collision') + '</div>'
     html += genFileInViewer('n', '?', `x_d_world_scene`, id, 'World Scene') + '</div>'
     html += genFileInViewer('n', '?', `x_d_world_route`, id, 'World Route') + '</div>'
     html += genFileInViewer('n', '?', `x_d_world_start_points`, id, 'Start Points') + '</div>'
@@ -654,5 +654,72 @@ function dynamic_world(x, id, name) {
     html += genFileInViewer('n', '?', `x_d_world_Objects`, id, 'Collectibles') + '</div>'
 
     return html
+
+}
+
+function gen_array_view_file_first_time(path) {
+    let html = ''
+
+    html += gen_array_view_file_array(path, 0, 8)
+
+    // console.log(html)
+    return html
+
+}
+
+function gen_array_view_file_array(path, i_deep, limit=0) {
+    let html = ""
+    i_deep++
+    if (Array.isArray(path)) {
+        if (path.length === 0) {
+            return html
+        }
+    } else {
+        return html
+    }
+    if (i_deep >= limit) {
+        return html
+    }
+
+    for (let i = 0; i < path.length; i++) {
+        html += genFileInViewer("y", 'folder', 'x_d_sub_file', `${path[i].id}`, `${i_deep} -> [${i}]`)
+        html += gen_array_view_file_object(path[i], i_deep, limit)
+        html+= "</div>"
+    }
+
+    // gen_array_view_file_array(i_deep+=1,limit)
+    return html + "</div>"
+
+}
+
+function gen_array_view_file_object(path, i_deep, limit=0) {
+    let html = ""
+    i_deep++
+    if (Array.isArray(path)) {
+        return html
+    } else {
+    }
+    if (i_deep >= limit) {
+        return html
+    }
+
+    let amt_arrays = 0;
+
+    for (let entry of Object.entries(path)) {
+              if (Array.isArray(entry[1])) {
+                  amt_arrays++
+                html += genFileInViewer("y", 'file', 'x_d_sub_file', path.id, `${i_deep} -> id: ${path.id} [file]`)
+                html += gen_array_view_file_array(entry[1], i_deep, limit)
+                html+= "</div>"
+            }
+
+        // }
+    }
+
+    if (amt_arrays === 0) {
+    return  html +  "</div>"
+    }else{
+    return  html
+    }
 
 }

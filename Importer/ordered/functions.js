@@ -79,3 +79,9 @@ function im_debug(o, n) {
         new DataView(buffer).setUint8(o + i, 0xff)
     }
 }
+
+function gen_id() {
+    let id = id_list
+    id_list++
+    return id
+}
