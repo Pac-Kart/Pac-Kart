@@ -682,7 +682,7 @@ function gen_array_view_file_array(path, i_deep, limit=0) {
     }
 
     for (let i = 0; i < path.length; i++) {
-        html += genFileInViewer("y", 'folder', 'x_d_sub_file', `${path[i].id}`, `${i_deep} -> [${i}]`)
+        html += genFileInViewer("y", 'folder', 'ava', `${path[i].id}`, `${i_deep} -> [${i}]`)
         html += gen_array_view_file_object(path[i], i_deep, limit)
         html+= "</div>"
     }
@@ -708,7 +708,7 @@ function gen_array_view_file_object(path, i_deep, limit=0) {
     for (let entry of Object.entries(path)) {
               if (Array.isArray(entry[1])) {
                   amt_arrays++
-                html += genFileInViewer("y", 'file', 'x_d_sub_file', path.id, `${i_deep} -> id: ${path.id} [file]`)
+                html += genFileInViewer("y", 'file', 'avo', path.id, `${i_deep} -> id: ${path.id} [file]`)
                 html += gen_array_view_file_array(entry[1], i_deep, limit)
                 html+= "</div>"
             }

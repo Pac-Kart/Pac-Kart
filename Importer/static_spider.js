@@ -8649,7 +8649,7 @@ function html_to_import(inputHtml) {
         }
 
 
-jsFunction += `    sec_id: `
+jsFunction += `    sec_id: "`
 
 
         let temp_random = ''
@@ -8660,7 +8660,7 @@ jsFunction += `    sec_id: `
             }
             temp_random += String.fromCharCode(a)
         }
-jsFunction += temp_random + ',\n'
+jsFunction += temp_random + `",\n`
 
         function_sec_id_name.push({
             name:functionName,
@@ -9201,17 +9201,17 @@ function html_to_edit(inputHtml) {
         const rows = table.querySelectorAll('tr');
 
         // Initialize the JavaScript function string
-        jsFunction += "function add_" + functionName + "(o, ";
+        jsFunction += "function add_" + functionName + "(){\n";
         let is_i = 0
         if (table.children[1].children[0].children[0].innerText.includes('per') || i === 0) {
             is_i = 'i'
-            jsFunction += `i ,`
+            // jsFunction += `i ,`
         }
         let am_bytes = `\n// ${table.children[1].children[0].children[0].innerText.split('byte')[0].trim()} bytes;\n`
-        jsFunction += `x) {\n`
+        // jsFunction += `x) {\n`
 
         // Initialize an empty object for storing the data
-        jsFunction += 'x.push({\n';
+        jsFunction += 'return {\n';
 
         let offsets = ''
 
@@ -9231,10 +9231,10 @@ function html_to_edit(inputHtml) {
         }
 
 
-    jsFunction += `    sec_id: `
+    jsFunction += `    sec_id: "`
 
         if (in_list) {
-        jsFunction+= function_sec_id_name[in_list_i].sec_id + ',\n'
+        jsFunction+= function_sec_id_name[in_list_i].sec_id + '",\n'
         }else{
 
 
@@ -9247,7 +9247,7 @@ function html_to_edit(inputHtml) {
             }
             temp_random += String.fromCharCode(a)
         }
-jsFunction += temp_random + ',\n'
+jsFunction += temp_random + `",\n`
 
         function_sec_id_name.push({
             name:functionName,
@@ -9495,7 +9495,7 @@ for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
         // return x[0].id
 
         // Close the data object and the function
-        jsFunction += '});\n';
+        jsFunction += '};\n';
         if (offsets === '') {
             if (is_i === 0) {
                 // jsFunction += am_bytes + `\n}\n`
@@ -9573,9 +9573,400 @@ for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
     }
 }
 function html_to_info(inputHtml) {
-        // case 'Pwja':
-        // return "bmg_demo_world_settings"
-        // break
+    const parser = new DOMParser();
+    doc = parser.parseFromString(inputHtml, 'text/html');
+
+    let jsFunction = ''
+
+    const h2_amount = doc.getElementsByTagName('h2');
+    const table_amount = doc.getElementsByTagName('table');
+    for (let i = 0; i < h2_amount.length; i++) {
+        h2Element = h2_amount[i]
+        const table = table_amount[i]
+
+        // Find the <h2> element to extract the function name
+        // const h2Element = doc.querySelector('h2');
+        if (!h2Element) {
+            return "Failed to find the function name";
+        }
+
+        const functionName = h2Element.id;
+
+        // Find all the <tr> elements within the <table> for data extraction
+        // const table = doc.querySelector('table');
+        const rows = table.querySelectorAll('tr');
+
+        // Initialize the JavaScript function string
+        jsFunction += "function info_" + functionName + "(){\n";
+        let is_i = 0
+        if (table.children[1].children[0].children[0].innerText.includes('per') || i === 0) {
+            is_i = 'i'
+            // jsFunction += `i ,`
+        }
+        let am_bytes = `\n// ${table.children[1].children[0].children[0].innerText.split('byte')[0].trim()} bytes;\n`
+        // jsFunction += `x) {\n`
+
+        // Initialize an empty object for storing the data
+        jsFunction += 'return {\n';
+
+        let offsets = ''
+
+        if (is_i === "i") {
+            // jsFunction += `    id: gen_id(),\n`
+        }
+
+        // check if in list
+        let in_list = false
+        let in_list_i = 0
+        for (let i = 0; i < function_sec_id_name.length; i++) {
+            if (function_sec_id_name[i].name === functionName) {
+                in_list_i = i
+                i = function_sec_id_name.length + 1
+                in_list = true;
+            }
+        }
+
+
+    jsFunction += `    sec_id: "`
+
+        if (in_list) {
+        jsFunction+= function_sec_id_name[in_list_i].sec_id + '",\n'
+        }else{
+
+
+
+        let temp_random = ''
+        for (let i = 0; i < 4; i++) {
+            let a = Math.floor(Math.random() * 255)
+            while (a < 48 || a > 122 || a === 92 || a === 96) {
+                a = Math.floor(Math.random() * 255)
+            }
+            temp_random += String.fromCharCode(a)
+        }
+jsFunction += temp_random + `",\n`
+
+        function_sec_id_name.push({
+            name:functionName,
+            sec_id:temp_random,
+        })
+        }
+
+
+
+        // Loop through the table rows to extract data
+        rows.forEach((row,index)=>{
+            if (index === 0) {
+                // Skip the header row
+                return;
+            }
+            let multilink_amount = 0
+
+            const cells = row.querySelectorAll('td');
+            if (cells.length === 3) {
+                const offset = cells[0].textContent;
+                let type;
+                switch (cells[1].textContent) {
+                case "u32":
+                case "u16":
+                case "u8":
+                    type = cells[1].textContent;
+                    break;
+                case "float":
+                    type = "f32"
+                    break;
+                default:
+                    type = "// unknown"
+                }
+
+                // const type = cells[1].textContent;
+                let description
+                let ishook = false
+
+                if (cells[2].children.length) {
+                    if (cells[2].children.length === 1 && cells[2].children[0].tagName === "A") {
+                        let href = cells[2].children[0].href.split("#")[1]
+                        doc.getElementById(href)
+                        let t_h2_amount = doc.getElementsByTagName('h2');
+                        let ttable_amount = doc.getElementsByTagName('table');
+                        for (let ii = 1; ii < h2_amount.length; ii++) {
+                            t_h2_amount = h2_amount[ii]
+                            const table = ttable_amount[ii]
+
+                            if (t_h2_amount.id === href) {
+                                if (table.children[1].children[0].children[0].innerText.includes('per')) {
+                                    description = 'multi offset'
+                                    multilink_amount = parseInt(table.children[1].children[0].children[0].innerText.split("b")[0].trim())
+                                } else {
+                                    description = 'offset'
+                                }
+                                ii += 1000
+
+                            } else {
+                                switch (cells[2].innerHTML.split(`href="#`)[1].split(`"`)[0].trim()) {
+                                case "unknown":
+                                case "mysterious":
+                                    description = 'multi offset'
+                                    ishook = cells[2].innerHTML.split(`href="#`)[1].split(`"`)[0].trim()
+                                    break
+                                default:
+                                    description = 'unordered'
+                                }
+
+                            }
+
+                        }
+
+                        // description = 'offset'
+                    } else {
+                        description = 'unknown'
+                    }
+                } else {
+                    if (cells[2].innerText.trim() === "0") {
+                        description = '0'
+                    } else {
+                        description = 'normal'
+                    }
+                }
+
+                let is_case = false
+
+                if (cells[2].innerHTML.includes("based on type")) {
+                    let cases = cells[2].innerHTML.split('\n')
+                    is_case = ""
+                    for (let i = 0; i < cases.length; i++) {
+                        if (cases[i].includes("href")) {
+                            let casescomma = cases[i].split(`">`)[1].split("=")[0].trim().split(",")
+                            for (let ii = 0; ii < casescomma.length; ii++) {
+                                is_case += `    case ${casescomma[ii].trim()}:\n`
+                            }
+                            let tableid = cases[i].split("#")[1].split(`">`)[0].trim()
+                            let is_un = is_unordered(cases[i])
+                            // let is_un = "unknown"
+                            if (is_un === 'y') {
+                                is_case += `        u32(o + ${offset}) ? im_` + tableid + `(u32(o + ${offset}) + g.m,x[${is_i}]` + ".section_" + offset + `) : 0; \n`;
+
+                            } else {
+                                let is_ordered = getisordered(tableid)
+
+                                is_case += `x[${is_i}].section_` + offset + ` = in_ml(u32(o + ${offset}), g.${tableid}_array, im_` + tableid + `, g.` + is_ordered + `ordered_ref.${tableid});\n`;
+                            }
+                            is_case += "    break;\n"
+
+                        }
+
+                    }
+                    if (is_case === "") {
+                        is_case = false
+                    } else {
+                        let typeoffset = cells[2].innerHTML.split("based on type [")[1].split("<br>")[0].split("]")[0].trim()
+                        typeoffset = typeoffset.replace(/[^0-9]*/, '')
+
+                        let tabletds = table.getElementsByTagName("TD");
+                        let bintype = "//"
+
+                        for (let i = 0; i < tabletds.length; i += 3) {
+                            if (tabletds[i].innerText.trim() === typeoffset) {
+                                bintype = tabletds[i + 1].innerText
+                                i += 10000
+                            }
+                        }
+                        is_case = "switch(" + bintype + "(o + " + typeoffset + ")){\n" + is_case + "}"
+                    }
+
+                }
+
+                if (description === "normal") {
+
+                    if (cells[2].innerHTML.includes("string")) {
+                        let propertyName = "section_" + offset;
+
+                        jsFunction += `    ${propertyName}: ["Pac-Kart"],\n`;
+
+                    } else if (cells[2].innerHTML.includes("amount")) {
+                        let propertyName = type + "_" + offset;
+
+                        // Add the data extraction code to the function string
+                        jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//amount?\n`;
+                    } else if (cells[2].innerHTML.includes("patch")) {
+                        let propertyName = type + "_" + offset;
+                        getpatch(cells[2].innerHTML, offset, propertyName, type)
+
+                    } else {
+
+                        // Generate the property name for the data
+                        let propertyName = type + "_" + offset;
+
+                        // Add the data extraction code to the function string
+                        jsFunction += `    ${propertyName}: 0,\n`;
+                    }
+
+                } else if (description === 'offset') {
+                    let tableid = cells[2].children[0].href.split("#")[1]
+
+                    jsFunction += "    section_" + offset + ": [],\n";
+
+                    if (is_case !== false) {
+                        offsets += is_case
+                    } else {
+                        offsets += `u32(o + ${offset}) ? im_` + tableid + `(u32(o + ${offset}) + g.m,x[${is_i}]` + ".section_" + offset + `) : 0; \n`;
+                    }
+                    // if (cells[2].innerHTML.includes("based on type")) {
+                    // offsets += `// CASE // u32(o + ${offset}) ? im_` + tableid + `(u32(o + ${offset}) + g.m,x[${is_i}]` + ".section_" + offset + `) : 0; \n`;
+                    // }else{
+                    // }
+
+                } else if (description === 'unordered') {
+                    let tableid = cells[2].children[0].href.split("#")[1].trim()
+                    let is_ordered = getisordered(tableid)
+
+                    jsFunction += `    ` + is_ordered + `ordered_` + tableid + "_" + offset + `: 0,\n`;
+
+                    offsets += `x[${is_i}].` + is_ordered + `ordered_` + tableid + "_" + offset + ` = in_ml(u32(o + ${offset}), g.${tableid}_array, im_` + tableid + `, g.` + is_ordered + `ordered_ref.${tableid});\n`;
+                } else if (description === 'multi offset') {
+
+                    switch (ishook) {
+                    case "unknown":
+                        multilink_amount = "04"
+                        break
+                    case "mysterious":
+                        multilink_amount = "64"
+                        break
+                    }
+
+                    console.log('/?')
+                    let tableid = cells[2].children[0].href.split("#")[1]
+
+                    jsFunction += `    section_` + offset + `: [],\n`;
+
+                    let is_ii = 'ii'
+                    is_i === 0 ? is_ii = 'i' : 0;
+
+                    if (is_case !== false) {
+                        offsets += is_case
+                    }
+
+                    // if (cells[2].innerHTML.includes("based on type")) {
+                    // offsets+= "// CASE"
+                    // }
+                    let offsetamount = "___$$$___"
+                    if (cells[2].innerHTML.includes("based on amount")) {
+                        offsetamount = cells[2].innerHTML.split("based on amount [")[1].split("]")[0].trim()
+                    }
+
+                    offsets += `
+for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
+    im_` + tableid + `(u32(o + ${offset}) + (${is_ii} * ${multilink_amount}) + g.m, ${is_ii}, x[${is_i}].section_` + offset + `);
+}\n`;
+                } else if (description === '0') {} else {
+
+                    if (cells[2].innerHTML.includes("based on type")) {
+                        offsets += is_case
+                        jsFunction += `    section_` + offset + `: [],\n`;
+                    } else if (cells[2].innerHTML.includes("href")) {
+                        let tableid = cells[2].innerHTML.split("href")[1].split("#")[1].split(`"`)[0].trim()
+                        jsFunction += `    section_` + offset + `: [],\n`;
+                        offsets += `u32(o + ${offset}) ? im_` + tableid + `(u32(o + ${offset}) + g.m,x[${is_i}]` + ".section_" + offset + `) : 0; // offset? \n`;
+                    } else if (cells[2].innerHTML.includes("amount")) {
+                        let propertyName = type + "_" + offset;
+
+                        // Add the data extraction code to the function string
+                        jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//amount?\n`;
+
+                    } else {
+                        let propertyName = type + "_" + offset;
+
+                        // Add the data extraction code to the function string
+                        jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//check this\n`;
+                    }
+                }
+            }
+
+        }
+        );
+
+        if (i === 0) {
+            offsets += `return x[${is_i}].id`
+        }
+
+        // return x[0].id
+
+        // Close the data object and the function
+        jsFunction += '};\n';
+        if (offsets === '') {
+            if (is_i === 0) {
+                // jsFunction += am_bytes + `\n}\n`
+                jsFunction += `\n}\n`
+            } else {
+                jsFunction += `\n}\n`
+            }
+        } else {
+            if (is_i === 0 || i === 0) {
+                // jsFunction += `\n ${offsets} ${am_bytes}\n}\n`
+                jsFunction += `\n}\n`
+            } else {
+                // jsFunction += `\n ${offsets}\n}\n`
+                jsFunction += `\n}\n`
+            }
+
+        }
+
+    }
+    // console.log(jsFunction)
+
+    return jsFunction
+
+    function is_unordered(cases) {
+        let href = cases.split("href")[1].split("#")[1].split(`"`)[0]
+        doc.getElementById(href)
+        let t_h2_amount = doc.getElementsByTagName('h2');
+        let ttable_amount = doc.getElementsByTagName('table');
+        let temp = ''
+        for (let ii = 1; ii < h2_amount.length; ii++) {
+            t_h2_amount = h2_amount[ii]
+            const table = ttable_amount[ii]
+
+            if (t_h2_amount.id === href) {
+                if (table.children[1].children[0].children[0].innerText.includes('per')) {
+                    temp = 'y'
+                    multilink_amount = parseInt(table.children[1].children[0].children[0].innerText.split("b")[0].trim())
+                } else {
+                    temp = 'y'
+                }
+                ii += 1000
+
+            } else {
+                temp = 'unordered'
+            }
+
+        }
+
+        // description = 'offset'
+        return temp
+    }
+    function getisordered(html) {
+        let a = 'un'
+        switch (html) {
+        case "model_animation_1":
+        case "model_animation_2":
+        case "models":
+            a = ''
+            break;
+        }
+        return a
+    }
+    function getpatch(cells, offset, propertyName, type) {
+        if (cells.toLowerCase().includes("texture")) {
+            jsFunction += `    texture_` + offset + `: im_patch(g.texture_patch_ref, o + ${offset}),\n`;
+        } else if (cells.toLowerCase().includes("animation")) {
+            jsFunction += `    animation_` + offset + `: im_patch(g.animation_patch_ref, o + ${offset}),\n`;
+        } else if (cells.toLowerCase().includes("sound")) {
+            jsFunction += `    sound_` + offset + `: im_patch(g.sound_patch_ref, o + ${offset}),\n`;
+        } else if (cells.toLowerCase().includes("model")) {
+            jsFunction += `    model_` + offset + `: im_patch(g.model_ref, o + ${offset}),\n`;
+        } else {
+            jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//patch?\n`;
+        }
+    }
 
 }
 
@@ -9950,7 +10341,7 @@ function html_to_eximport(inputHtml) {
         }
 
     }
-    console.log(sec_id_html,import_html,edit_html,jsFunction)
+    console.log(sec_id_html,import_html,edit_html, info_html,jsFunction)
     // console.log(edit_html)
 
     function is_unordered(cases) {

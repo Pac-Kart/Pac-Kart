@@ -272,7 +272,12 @@ function file_click(e) {
     case "x_d_world_Objects":
         load_world_objects(path)
         break
-
+    case "ava":
+        array_view_array(path)
+        break
+    case "avo":
+        array_view_object(path)
+        break
     default:
         file_editor.innerHTML = `<div data-debug='true'>${e.srcElement.dataset.type}, ${parseInt(e.srcElement.dataset.offset)}</div>`;
         document.getElementById("_2nd_data_bar").innerHTML = ''
