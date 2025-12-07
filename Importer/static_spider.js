@@ -8679,7 +8679,7 @@ jsFunction += temp_random + `",\n`
 
             const cells = row.querySelectorAll('td');
             if (cells.length === 3) {
-                const offset = cells[0].textContent;
+                const offset = String(parseInt(cells[0].textContent));
                 let type;
                 switch (cells[1].textContent) {
                 case "u32":
@@ -9267,7 +9267,7 @@ jsFunction += temp_random + `",\n`
 
             const cells = row.querySelectorAll('td');
             if (cells.length === 3) {
-                const offset = cells[0].textContent;
+                const offset = String(parseInt(cells[0].textContent));
                 let type;
                 switch (cells[1].textContent) {
                 case "u32":
@@ -9560,13 +9560,13 @@ for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
     }
     function getpatch(cells, offset, propertyName, type) {
         if (cells.toLowerCase().includes("texture")) {
-            jsFunction += `    texture_` + offset + `: im_patch(g.texture_patch_ref, o + ${offset}),\n`;
+            jsFunction += `    texture_` + offset + `: [0, 0, 0, 't'],\n`;
         } else if (cells.toLowerCase().includes("animation")) {
-            jsFunction += `    animation_` + offset + `: im_patch(g.animation_patch_ref, o + ${offset}),\n`;
+            jsFunction += `    animation_` + offset + `: [0, 0, 0, 'a'],\n`;
         } else if (cells.toLowerCase().includes("sound")) {
-            jsFunction += `    sound_` + offset + `: im_patch(g.sound_patch_ref, o + ${offset}),\n`;
+            jsFunction += `    sound_` + offset + `: [0, 0, 0, 's'],\n`;
         } else if (cells.toLowerCase().includes("model")) {
-            jsFunction += `    model_` + offset + `: im_patch(g.model_ref, o + ${offset}),\n`;
+            jsFunction += `    model_` + offset + `: [0, 0, 0, 'm'],\n`;
         } else {
             jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//patch?\n`;
         }
@@ -9663,7 +9663,7 @@ jsFunction += temp_random + `",\n`
 
             const cells = row.querySelectorAll('td');
             if (cells.length === 3) {
-                const offset = cells[0].textContent;
+                const offset = String(parseInt(cells[0].textContent));
                 let type;
                 switch (cells[1].textContent) {
                 case "u32":
@@ -9802,6 +9802,8 @@ jsFunction += temp_random + `",\n`
 
                 } else if (description === 'offset') {
                     let tableid = cells[2].children[0].href.split("#")[1]
+                    // offset
+                    // function_sec_id_name
 
                     jsFunction += "    section_" + offset + ": [],\n";
 
@@ -9956,13 +9958,13 @@ for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
     }
     function getpatch(cells, offset, propertyName, type) {
         if (cells.toLowerCase().includes("texture")) {
-            jsFunction += `    texture_` + offset + `: im_patch(g.texture_patch_ref, o + ${offset}),\n`;
+            jsFunction += `    texture_` + offset + `: "texture_patch",\n`;
         } else if (cells.toLowerCase().includes("animation")) {
-            jsFunction += `    animation_` + offset + `: im_patch(g.animation_patch_ref, o + ${offset}),\n`;
+            jsFunction += `    animation_` + offset + `: "animation_patch",\n`;
         } else if (cells.toLowerCase().includes("sound")) {
-            jsFunction += `    sound_` + offset + `: im_patch(g.sound_patch_ref, o + ${offset}),\n`;
+            jsFunction += `    sound_` + offset + `: "sound_patch",\n`;
         } else if (cells.toLowerCase().includes("model")) {
-            jsFunction += `    model_` + offset + `: im_patch(g.model_ref, o + ${offset}),\n`;
+            jsFunction += `    model_` + offset + `: "model_patch",\n`;
         } else {
             jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//patch?\n`;
         }
@@ -10040,7 +10042,7 @@ function html_to_eximport(inputHtml) {
 
             const cells = row.querySelectorAll('td');
             if (cells.length === 3) {
-                const offset = cells[0].textContent;
+                const offset = String(parseInt(cells[0].textContent));
                 let type;
                 switch (cells[1].textContent) {
                 case "u32":

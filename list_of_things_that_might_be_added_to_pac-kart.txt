@@ -1,0 +1,240 @@
+random things im thinking of adding to pac-kart to make it less bad
+
+not everything here will be added probably
+some things may not be added because i am bad or because they are a bad idea
+--------------------------------
+pac-kart:
+
+code base:
+    update html_to_export and make html_to_eximport print all functions together
+
+    delete testing functions in static_spider.js that dont need to be there
+
+    add comments to the beginning of some functions showing what parameter type there are
+        or maybe just rename things better
+
+    split array_viewer functions away from the index sections
+
+    update html_to_eximport so auto float list have a maxlength for string
+
+    combine html_to_info/html_to_edit?
+
+    info_ sections should list next sections in array values
+
+    remove //amount? probably dont need this in info_ and add_
+
+    does x_spider_texture_animations.js do anything?
+
+info_ handle switch cases,
+    have ability to create select box from switch if possible
+    handle multi type like bmg_demo_extended_world_link
+    handle amount array and type like bmg_mysterious_4t5
+    handle sections like bmg_some_model_anim_36_4 ???
+    handle sections where amount somewhere else like bmg_world_28_80 ???
+
+info_ types idea
+    0 = default // type and offset are already in most key names
+    "texture_patch" // is this needed?
+    "animation_patch" // is this needed?
+    "sound_patch" // is this needed?
+    "model_patch" // is this needed?
+    {} // object indicates unique values?
+    {
+    d // value is disabled if true
+    n // non default key name if string
+    o // non default offset if value
+    t // non default type if string
+    s // switch case if not null, another object?
+        {
+        offset_format_type // usually u32, string
+        offset_type_target // where type is located, sometimes not in same section
+        offset_amount // uint value of amount, rare
+        }
+    c // color, this should probably only be for u32
+        {
+        red
+        green
+        blue
+        alpha
+        // this will split the u32 into 4 inputs, include 1 color box on the end
+        }
+    }
+
+array_viewer ideas:
+    have the file_viewer display the path instead of a file view
+
+    have it look something like this
+    x
+    [0]
+    .directory
+    [3]
+    .datapack
+    [0]
+    .ordered
+    [0]
+    .file_specific
+    [0]
+    .basic_04
+    [0]
+
+    clicking any of the lines will take you to that section
+    maybe have a toggle between them somewhere
+    maybe have a version showing history of sections clicked
+        have history arrows at the bottom of either the file viewer or file editor?
+
+    also have path in file editor section at the top would look like
+    Path: x[0].directory[3].datapack[0].ordered[0].file_specific[0].basic_04[0]
+
+    in an array entry with multiple other entries on either side
+        maybe have an arrow above / below somewhere in the file editor section
+            so able to loop/move between besides file viewer
+
+    have the ability to add a new file without importing
+    maybe rename new file to import file
+    and have it be like | create file | import file | save
+    when clicking create file will have to select the game->version same as when unknown version imported
+    save file would probably be selectable here as well
+
+    display somewhere on the screen how long it takes to load the file
+    have it dissapear after like 5 secs with an anim
+    also have one for when a file is exported
+
+    remove show extra information
+    this isnt really being used for anything important probably
+
+    maybe have the ability to load multiple .x* files at the same time
+    this might be usuful for shared files
+    when saving might just add to .zip file or smthn
+
+    unlink some files from the html array_viewer file
+
+have a settings section above the x array
+settings like:
+reduce padding checkbox
+    removes padding from the ordered list mostly
+    not sure if any padding in that is actually used/needed for anything
+    also not sure if end of file is used for anything either
+convert file version to another type/console
+    conversion probably just for console versions
+    converting different game versions is probably not possible without a lot of information being lost
+zip file name?
+
+have some way to import / export sections to json
+    not sure how to handle buffers in this
+
+in the array view, have some way to multi edit sections
+    section would probably be under the list of arrays
+    would have each object entry listed
+    would be able to click a select input and change values,
+    something like [object entry | selection box | input box(es) | save button]
+    select box would like:
+        equeals = set all array values for this object entry to this
+        change value based on, would use 3 input boxes
+            1 input box for the base value
+            2 selection box, increment/decrement value by fixed amount or spread amount based on 3rd box
+                if spread amount and 5 arrays and input 1 is 0 and input 3 is 100, values would be like [0,25,50,75,100]
+            3 input final box, based on 2
+
+make a collision editor (this will never happen sad)
+
+add a changelog somewhere
+
+add version number
+    v1 should prob be when all files are extractable
+    maybe add version number in title/ bottom right side
+        version could link to changelog
+            should open in new link
+
+add ability to change css colors, probably on file settings section
+
+add a pseudo console on top, will show last command ran or smthn
+--------------------------------
+ideas for pac-kart documentation:
+move the format for pac man world rally to its own file
+    also move the pmwr save file as well
+    PMR save file not listed
+
+update padding list
+
+based on type number entries supposed to be inside anchor tag
+
+maybe create sha1 file list for each version mayb
+
+bcc
+    update linked sections
+    verify bcc offsets
+    probably need to rename some sections
+    add structure box
+
+bmg
+    add patch list  list of links
+    research bmg audio missing sections
+    also rename some sections based on demo version
+    add structure box
+
+pmwr_ps2demo
+    pmwr_ps2demo or pmwr_ps2_demo or pmwr_demo ?
+    add structure box
+    probably need to rename some sections
+
+pmwr_xdx
+    add structure box
+
+svtrb
+    add structure box
+
+hwvx
+    some linked to by: sections missing entries
+    reorder some unordered sections
+
+hwvx_proto
+    should append _proto to the section names
+    move sections
+    maybe show psuedo code here
+
+mmvcl
+    some sections dont have mm listed
+    add patch list  list of links
+    should this be mm or mmvcl?
+--------------------------------
+ideas for pac-kart filetesting:
+
+reserch other save files?
+
+bcc
+    does bcc_world actually have a sound at offset 0 or is patch list misaligned
+        think its probably misaligned
+    reorder functions based on docs
+    research audio missing sections
+
+bmg
+    rename some sections based on demo version
+    research audio missing sections
+    research how world list is layed out
+    reorder functions based on docs
+
+pmwr_ps2demo
+    research how world list is layed out
+    reorder functions based on docs
+
+pmwr_xdx
+    research how world list is layed out
+    reorder functions based on docs
+
+pmwr
+    current version is just copied from xbox mostly so wrong format
+
+svtrb
+    research how world list is layed out
+    reorder functions based on docs
+
+hwvx
+    some linked to by: sections missing entries
+
+hwvx_proto
+    research how world list is layed out
+    reorder functions based on docs
+
+mmvcl
+    add the abbility to search the Patch List for Motor Mayhem: Vehicular Combat League
+        and find lost offsets/patches

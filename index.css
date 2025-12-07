@@ -306,6 +306,30 @@ th {
     color: slateblue;
 }
 
+.copy_button {
+    border: 0px;
+    text-align: center;
+    width: 10%;
+    cursor: pointer;
+}
+
+.copy_button:hover {
+    background: #8185df;
+    color: #ffffff;
+}
+
+.move_button {
+    border: 0px;
+    text-align: center;
+    width: 20%;
+    cursor: pointer;
+}
+
+.move_button:hover {
+    background: #bcbcbc;
+    color: #000000;
+}
+
 .plus_button {
     text-align: center;
     width: 100%;
@@ -316,6 +340,18 @@ th {
 .plus_button:hover {
     background: #00dbff;
 }
+.array_button {
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    border: 0px;
+}
+
+.array_button:hover {
+    background: #00dbff;
+}
+
+
 
 .content_select {
     flex: auto;
