@@ -8102,8 +8102,8 @@ function array_log() {
             <th>Description</th>
         </tr>`
 
-    let is_above = (currentValue)=>currentValue > 1000;
-    let is_below = (currentValue)=>currentValue < 0xfffffff;
+    let is_above = (currentValue) => currentValue > 1000;
+    let is_below = (currentValue) => currentValue < 0xfffffff;
 
     for (let i = 0; i < temp_array__[0].subarrays.length; i++) {
         last = log(temp_array__[0].subarrays[i], i)
@@ -8149,9 +8149,9 @@ function array_log() {
 
         for (let i = 0; i < struct_array.length; i++) {
 
-            if (struct_array[i].def.find((e)=>e.name === "f32")) {
+            if (struct_array[i].def.find( (e) => e.name === "f32")) {
                 struct_html += `f32, ${struct_array[i].n}, `
-            } else if (struct_array[i].def.find((e)=>e.name === "u8")) {
+            } else if (struct_array[i].def.find( (e) => e.name === "u8")) {
                 struct_html += `u8, ${struct_array[i].n}, u8, ${struct_array[i].n + 1}, u8, ${struct_array[i].n + 2}, u8, ${struct_array[i].n + 3}, `
             } else {
                 struct_html += `u32, ${struct_array[i].n}, `
@@ -8197,7 +8197,7 @@ function array_log() {
                     _3rd = 'offset maybe?'
                 } else {
                     if (a.a.length > 10) {
-                        _3rd = `${a.a.reduce((a,b)=>Math.min(a, b), Infinity)} - ${a.a.reduce((a,b)=>Math.max(a, b), -Infinity)}`
+                        _3rd = `${a.a.reduce( (a, b) => Math.min(a, b), Infinity)} - ${a.a.reduce( (a, b) => Math.max(a, b), -Infinity)}`
                     } else {
                         _3rd = a.a.toString()
                     }
@@ -8648,29 +8648,10 @@ function html_to_import(inputHtml) {
             jsFunction += `    id: gen_id(),\n`
         }
 
-
-jsFunction += `    sec_id: "`
-
-
-        let temp_random = ''
-        for (let i = 0; i < 4; i++) {
-            let a = Math.floor(Math.random() * 255)
-            while (a < 48 || a > 122 || a === 92 || a === 96) {
-                a = Math.floor(Math.random() * 255)
-            }
-            temp_random += String.fromCharCode(a)
-        }
-jsFunction += temp_random + `",\n`
-
-        function_sec_id_name.push({
-            name:functionName,
-            sec_id:temp_random,
-        })
-
-
+        jsFunction += `    sec_id: "${check_if_in_list_sec_id_list(functionName)}",\n`
 
         // Loop through the table rows to extract data
-        rows.forEach((row,index)=>{
+        rows.forEach( (row, index) => {
             if (index === 0) {
                 // Skip the header row
                 return;
@@ -8983,199 +8964,6 @@ for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
 
 }
 
-function html_to_export(inputHtml) {
-    let html = inputHtml.split("function")
-    // console.log(html)
-    let backtostring = ''
-    html.forEach((e)=>{
-        if (e) {
-            console.log(e)
-            let function_name = "ex" + e.split("(")[0].trim().split('im')[1]
-            aaa = e.replaceAll("\n", '')
-            let para_i = ' e,'
-            e.split(")")[0].split("(o, ")[1] === "x" ? para_i = "" : 0;
-            let isend = ''
-            if (para_i !== ' e,') {
-                isend = "    let e = o + " + e.split("//")[1].split("bytes")[0].trim() + "\n"
-            }
-            let xtable
-            if (e.split('x.push')[1].includes('({})')) {
-                xtable = ['//nothing']
-            } else {
-                xtable = e.split('x.push')[1].split('});')[0].split('({\n')[1].trim().split('\n')
-
-            }
-            let xhtml = ''
-            let xstring = ''
-            let xpatch = ''
-
-            let xdebug = `\n    g.debug ? ex_debug(o, "`
-            for (let i = 0; i < 4; i++) {
-                let a = Math.floor(Math.random() * 255)
-                while (a < 48 || a > 122) {
-                    a = Math.floor(Math.random() * 255)
-                }
-                xdebug += String.fromCharCode(a)
-            }
-            xdebug += `") : 0;\n`
-            let xlinks = ''
-            let xfor = ''
-            let xml = ''
-
-            for (let i = 0; i < xtable.length; i++) {
-                let tablesplit = xtable[i].split(":")
-                if (tablesplit[0].includes("//")) {//Skip
-                } else if (tablesplit[1].includes("o +")) {
-
-                    if (tablesplit[1].includes("im_patch")) {
-                        console.log(tablesplit)
-                        let xpatchoffset = (tablesplit[1].split(", o + ")[1].split(')')[0].trim())
-                        let xpatchtype = (tablesplit[1].split("im_patch(g.")[1].split(',')[0].trim())
-                        let xpatchname = (tablesplit[0].trim())
-
-                        if (xpatchtype === "texture_patch_ref") {
-                            xpatchtype = "g.texture_patch_array"
-                        } else if (xpatchtype === "animation_patch_ref") {
-                            xpatchtype = "g.animation_patch_array"
-                        } else if (xpatchtype === "sound_patch_ref") {
-                            xpatchtype = "g.sound_patch_array"
-                        } else if (xpatchtype === "model_patch_ref") {
-                            xpatchtype = "g.model_patch_array"
-                        } else {
-                            xpatchtype = '// xpatchtype unknown \n'
-                        }
-
-                        xpatch += '    ex_patch(o + ' + xpatchoffset + ", " + xpatchtype + ", x." + xpatchname + ");\n"
-
-                        //patch
-                    } else if (tablesplit[1].includes("im_string")) {
-                        //string offset
-                        let xstingoffset = (tablesplit[1].split("(o + ")[1].split(')')[0])
-                        let xstingname = (tablesplit[0].trim())
-                        xstring += "    e = ex_string(o + " + xstingoffset + ", e, x." + xstingname + ")\n"
-
-                    } else {
-
-                        let xobj;
-                        let offset = tablesplit[1].split("+")[1].split(")")[0].trim()
-                        let xname = tablesplit[0].trim()
-                        if (tablesplit[1].includes("u32")) {
-                            xobj = "u32"
-                        } else if (tablesplit[1].includes("u16")) {
-                            xobj = "u16"
-                        } else if (tablesplit[1].includes("u8")) {
-                            xobj = "u8"
-                        } else if (tablesplit[1].includes("f32")) {
-                            xobj = "f32"
-                        } else {
-                            xobj = 'xobj un'
-                        }
-                        tablesplit[0].split("u")
-                        xhtml += `    s` + xobj + `(o + ${offset}, x.${xname})\n`
-                    }
-                }
-                // offsets
-
-            }
-            next = e.split("x.push")[1].split("});")[1].trim().split('\n')
-
-            for (let i = 0; i < next.length; i++) {
-                if (next[i].includes("?") && next[i].includes(":")) {
-                    let functionname = next[i].split('im')[1].split('(')[0].trim()
-                    let offset = next[i].split('u32(o + ')[1].split(')')[0].trim()
-                    let sectiontype = next[i].split(']')[1].split(')')[0].trim()
-
-                    // offset
-                    // e = ex_s_offset(o + 56,e,dyn_frame_section_56,x.section_56,'up')
-                    xlinks += '\n    e = ex_s_offset(o + ' + offset + ", e, ex" + functionname + ", x" + sectiontype + `,'up')`
-                }
-            }
-            xlinks.length ? xlinks += "\n" : 0;
-
-            if (e.split("x.push")[1].split("});")[1].trim().includes('for')) {
-                xfor = '\n'
-                xis = e.split("x.push")[1].split("});")[1].trim().split('for')
-                for (let i = 0; i < xis.length; i++) {
-                    if (xis[i].includes("let")) {
-
-                        xis1 = xis[i].split('\n')
-                        let name = xis1[1].split("im")[1].split("(u")[0].trim()
-                        // functionname
-                        let offsetx = xis1[1].split('u32(o +')[1].split(")")[0].trim()
-                        // offset
-                        let amount = xis1[1].split('*')[1].split(')')[0].trim()
-                        // amount
-                        let amount_position = xis1[0].split('\n')[0].split("u32(o + ")[1].split(")")[0].trim()
-                        // amount offsets
-                        // position
-                        let x_ = xis1[1].split(');')[0].split("]")[1].trim()
-                        // x
-
-                        xfor += '    if(x' + x_ + ".length){\n"
-                        xfor += "        su32(o + " + amount_position + ", x" + x_ + ".length)\n"
-                        xfor += "        su32(o + " + offsetx + ", e - g.m)\n"
-                        xfor += "        g.oa.push(o + " + offsetx + ")\n"
-                        xfor += "        let temp_offset = e \n"
-                        xfor += "        e += divisible(x" + x_ + ".length * " + amount + ", 16) \n"
-                        xfor += "        for (let i = 0; i < x" + x_ + ".length; i++) { \n"
-                        xfor += "            e = ex" + name + "(temp_offset + (i * " + amount + "), e, x" + x_ + "[i])\n"
-                        xfor += "        };\n};\n\n"
-
-                    }
-                }
-
-            }
-
-            let xswitchhtml = ''
-
-            let xnextswitch = e.split("x.push")[1].split("});")[1].trim()
-            let checkswitch = xnextswitch.split('switch')
-
-            for (let switchi = 1; switchi < checkswitch.length; switchi++) {
-                let checkswitch_2 = checkswitch[switchi].split('}')[0]
-                xswitchhtml += checkswitch_2
-                let breakcheck = checkswitch_2.split('break')
-                let switchtype = breakcheck[0].split('{')[0].trim()
-
-                for (let breaki = 1; breaki < breakcheck.length; breaki++) {
-
-                    let casecheck = breakcheck[breaki].split('case')
-
-                    for (let casei = 1; casei < casecheck.length; casei++) {
-                        casecheck[casei].split(':')
-                    }
-
-                }
-
-            }
-
-            xnext = e.split("x.push")[1].split("});")[1].trim().split("\n")
-
-            for (let i = 0; i < xnext.length; i++) {
-                if (xnext[i].includes('in_ml')) {
-                    let xname = xnext[i].split('].')[1].split('=')[0].trim()
-                    let xarray = xnext[i].split('array')[0].split('g.')[1].split(",")[0].trim()
-                    let xfunction = xnext[i].split('array')[1].split('g.')[0].split(",")[1].split('im')[1].trim()
-                    let xref = xnext[i].split('array')[1].split('g.unordered_ref')[1].split(")")[0].trim()
-                    let xoffset = xnext[i].split('u32(o +')[1].split(')')[0].trim()
-                    xml += '    e = ex_ml(x.' + xname + ', g.' + xarray + 'array, ex' + xfunction + ', g.unordered_ref' + xref + ', o + ' + xoffset + ', e);\n'
-                }
-
-            }
-
-            backtostring += `
-function ${function_name}(o,${para_i} x){
-${isend}${xhtml}${xstring}${xpatch}${xlinks}${xfor}${xml}${xswitchhtml}${xdebug}
-    return e
-
-}
-`
-        }
-    }
-    )
-    console.log(backtostring)
-}
-
 function html_to_edit(inputHtml) {
     const parser = new DOMParser();
     doc = parser.parseFromString(inputHtml, 'text/html');
@@ -9219,46 +9007,10 @@ function html_to_edit(inputHtml) {
             jsFunction += `    id: gen_id(),\n`
         }
 
-        // check if in list
-        let in_list = false
-        let in_list_i = 0
-        for (let i = 0; i < function_sec_id_name.length; i++) {
-            if (function_sec_id_name[i].name === functionName) {
-                in_list_i = i
-                i = function_sec_id_name.length + 1
-                in_list = true;
-            }
-        }
-
-
-    jsFunction += `    sec_id: "`
-
-        if (in_list) {
-        jsFunction+= function_sec_id_name[in_list_i].sec_id + '",\n'
-        }else{
-
-
-
-        let temp_random = ''
-        for (let i = 0; i < 4; i++) {
-            let a = Math.floor(Math.random() * 255)
-            while (a < 48 || a > 122 || a === 92 || a === 96) {
-                a = Math.floor(Math.random() * 255)
-            }
-            temp_random += String.fromCharCode(a)
-        }
-jsFunction += temp_random + `",\n`
-
-        function_sec_id_name.push({
-            name:functionName,
-            sec_id:temp_random,
-        })
-        }
-
-
+        jsFunction += `    sec_id: "${check_if_in_list_sec_id_list(functionName)}",\n`
 
         // Loop through the table rows to extract data
-        rows.forEach((row,index)=>{
+        rows.forEach( (row, index) => {
             if (index === 0) {
                 // Skip the header row
                 return;
@@ -9390,7 +9142,7 @@ jsFunction += temp_random + `",\n`
                         let propertyName = type + "_" + offset;
 
                         // Add the data extraction code to the function string
-                        jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//amount?\n`;
+                        jsFunction += `    ${propertyName}: 0,\n`;
                     } else if (cells[2].innerHTML.includes("patch")) {
                         let propertyName = type + "_" + offset;
                         getpatch(cells[2].innerHTML, offset, propertyName, type)
@@ -9474,7 +9226,7 @@ for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
                         let propertyName = type + "_" + offset;
 
                         // Add the data extraction code to the function string
-                        jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//amount?\n`;
+                        jsFunction += `    ${propertyName}: 0,\n`;
 
                     } else {
                         let propertyName = type + "_" + offset;
@@ -9611,50 +9363,13 @@ function html_to_info(inputHtml) {
 
         let offsets = ''
 
-        if (is_i === "i") {
-            // jsFunction += `    id: gen_id(),\n`
+        if (is_i === "i") {// jsFunction += `    id: gen_id(),\n`
         }
 
-        // check if in list
-        let in_list = false
-        let in_list_i = 0
-        for (let i = 0; i < function_sec_id_name.length; i++) {
-            if (function_sec_id_name[i].name === functionName) {
-                in_list_i = i
-                i = function_sec_id_name.length + 1
-                in_list = true;
-            }
-        }
-
-
-    jsFunction += `    sec_id: "`
-
-        if (in_list) {
-        jsFunction+= function_sec_id_name[in_list_i].sec_id + '",\n'
-        }else{
-
-
-
-        let temp_random = ''
-        for (let i = 0; i < 4; i++) {
-            let a = Math.floor(Math.random() * 255)
-            while (a < 48 || a > 122 || a === 92 || a === 96) {
-                a = Math.floor(Math.random() * 255)
-            }
-            temp_random += String.fromCharCode(a)
-        }
-jsFunction += temp_random + `",\n`
-
-        function_sec_id_name.push({
-            name:functionName,
-            sec_id:temp_random,
-        })
-        }
-
-
+        jsFunction += `    sec_id: "${check_if_in_list_sec_id_list(functionName)}",\n`
 
         // Loop through the table rows to extract data
-        rows.forEach((row,index)=>{
+        rows.forEach( (row, index) => {
             if (index === 0) {
                 // Skip the header row
                 return;
@@ -9786,7 +9501,7 @@ jsFunction += temp_random + `",\n`
                         let propertyName = type + "_" + offset;
 
                         // Add the data extraction code to the function string
-                        jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//amount?\n`;
+                        jsFunction += `    ${propertyName}: {a:null},\n`;
                     } else if (cells[2].innerHTML.includes("patch")) {
                         let propertyName = type + "_" + offset;
                         getpatch(cells[2].innerHTML, offset, propertyName, type)
@@ -9805,7 +9520,7 @@ jsFunction += temp_random + `",\n`
                     // offset
                     // function_sec_id_name
 
-                    jsFunction += "    section_" + offset + ": [],\n";
+                    jsFunction += `    section_${offset} : ["${check_if_in_list_sec_id_list(tableid,true)}"],\n`;
 
                     if (is_case !== false) {
                         offsets += is_case
@@ -9838,7 +9553,8 @@ jsFunction += temp_random + `",\n`
                     console.log('/?')
                     let tableid = cells[2].children[0].href.split("#")[1]
 
-                    jsFunction += `    section_` + offset + `: [],\n`;
+                    // jsFunction += `    section_` + offset + `: [???? 1],\n`;
+                    jsFunction += `    section_${offset} : ["${check_if_in_list_sec_id_list(tableid,true)}"],\n`;
 
                     let is_ii = 'ii'
                     is_i === 0 ? is_ii = 'i' : 0;
@@ -9863,10 +9579,11 @@ for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
 
                     if (cells[2].innerHTML.includes("based on type")) {
                         offsets += is_case
-                        jsFunction += `    section_` + offset + `: [],\n`;
+                        jsFunction += `    section_` + offset + `: {s:0},\n`;
                     } else if (cells[2].innerHTML.includes("href")) {
                         let tableid = cells[2].innerHTML.split("href")[1].split("#")[1].split(`"`)[0].trim()
-                        jsFunction += `    section_` + offset + `: [],\n`;
+                        // jsFunction += `    section_` + offset + `: [???? 3],\n`;
+                        jsFunction += `    section_${offset} : ["${check_if_in_list_sec_id_list(tableid,true)}"],\n`;
                         offsets += `u32(o + ${offset}) ? im_` + tableid + `(u32(o + ${offset}) + g.m,x[${is_i}]` + ".section_" + offset + `) : 0; // offset? \n`;
                     } else if (cells[2].innerHTML.includes("amount")) {
                         let propertyName = type + "_" + offset;
@@ -9974,24 +9691,24 @@ for (let ${is_ii} = 0; ${is_ii} < u32(o + ${offsetamount}); ${is_ii}++) {
 
 function html_to_sec_list() {
     let html = "--- section list ---\n\n"
-for (let section of function_sec_id_name) {
-html+=`
+    for (let section of function_sec_id_name) {
+        html += `
     case '${section.sec_id}':
         return "${section.name}"
     break`
-}
-html+= " \n\n --- section list ---\n\n"
-return html
+    }
+    html += " \n\n --- section list ---\n\n"
+    return html
 }
 
-function html_to_eximport(inputHtml) {
+function html_to_export(inputHtml) {
     // also importer
-    globalThis.function_sec_id_name = []
-    let import_html = html_to_import(inputHtml)
-    let edit_html = html_to_edit(inputHtml)
-    let info_html = html_to_info(inputHtml)
-    let sec_id_html = html_to_sec_list(inputHtml)
-   // Parse the input HTML string into a DOM object
+    // globalThis.function_sec_id_name = []
+    // let import_html = html_to_import(inputHtml)
+    // let edit_html = html_to_edit(inputHtml)
+    // let info_html = html_to_info(inputHtml)
+    // let sec_id_html = html_to_sec_list(inputHtml)
+    // Parse the input HTML string into a DOM object
     const parser = new DOMParser();
     doc = parser.parseFromString(inputHtml, 'text/html');
 
@@ -10033,7 +9750,7 @@ function html_to_eximport(inputHtml) {
         let offsets = ''
 
         // Loop through the table rows to extract data
-        rows.forEach((row,index)=>{
+        rows.forEach( (row, index) => {
             if (index === 0) {
                 // Skip the header row
                 return;
@@ -10167,7 +9884,6 @@ function html_to_eximport(inputHtml) {
 
                     } else if (cells[2].innerHTML.includes("amount")) {
                         let propertyName = "x." + type + "_" + offset;
-
                         // Add the data extraction code to the function string
                         jsFunction += `//amount?   s` + type + `(o +` + offset + `, ${propertyName})\n`;
                     } else if (cells[2].innerHTML.includes("patch")) {
@@ -10297,8 +10013,6 @@ function html_to_eximport(inputHtml) {
                         // Add the data extraction code to the function string
                         jsFunction += `   s` + type + `(o +` + offset + `, ${propertyName}) //amount?\n`;
 
-                        // jsFunction += `    ${propertyName}: ${type}(o + ${offset}),//amount?\n`;
-
                     } else {
                         let propertyName = "x." + type + "_" + offset;
                         jsFunction += `   s` + type + `(o +` + offset + `, ${propertyName}) //?\n`;
@@ -10343,8 +10057,8 @@ function html_to_eximport(inputHtml) {
         }
 
     }
-    console.log(sec_id_html,import_html,edit_html, info_html,jsFunction)
     // console.log(edit_html)
+    return jsFunction
 
     function is_unordered(cases) {
         let href = cases.split("href")[1].split("#")[1].split(`"`)[0]
@@ -10399,4 +10113,75 @@ function html_to_eximport(inputHtml) {
         }
     }
 
+}
+
+function html_to_all_sec(inputHtml) {
+    globalThis.function_sec_id_name = []
+    let import_html = html_to_import(inputHtml)
+    let edit_html = html_to_edit(inputHtml)
+    let info_html = html_to_info(inputHtml)
+    let sec_id_html = html_to_sec_list(inputHtml)
+    let export_id_html = html_to_export(inputHtml)
+
+    console.log(`
+/* start sec id list */
+${sec_id_html}
+/* end sec id list */
+/////////////////////
+/* start import list */
+${import_html}
+/* end import list */
+/////////////////////
+/* start add list */
+${edit_html}
+/* end add list */
+/////////////////////
+/* start info list */
+${info_html}
+/* end info list */
+/////////////////////
+/* start export list */
+${export_id_html}
+/* end export list */
+`)
+
+}
+
+function check_if_in_list_sec_id_list(str_functionName,is_info = false) {
+
+    let str_random = ''
+    let in_list = false
+    let in_list_i = 0
+    for (let i = 0; i < function_sec_id_name.length; i++) {
+        if (function_sec_id_name[i].name === str_functionName) {
+            in_list_i = i
+            i = function_sec_id_name.length + 1
+            in_list = true;
+        }
+    }
+
+    if (in_list) {
+        str_random += function_sec_id_name[in_list_i].sec_id
+    } else {
+        if (is_info === true) {
+            return "change this"
+        }else {
+
+        let str_temp_random = ''
+        for (let i = 0; i < 4; i++) {
+            let a = Math.floor(Math.random() * 255)
+            while (a < 48 || a > 122 || a === 92 || a === 96) {
+                a = Math.floor(Math.random() * 255)
+            }
+            str_temp_random += String.fromCharCode(a)
+        }
+        str_random = str_temp_random
+
+        function_sec_id_name.push({
+            name: str_functionName,
+            sec_id: str_temp_random,
+        })
+    }
+        }
+    return str_random
 }

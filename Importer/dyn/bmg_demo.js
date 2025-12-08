@@ -1,14 +1,35 @@
 "use strict";
 
+/* start sec_id list */
+
 function get_bmg_demo_sec_id(string) {
     switch (string) {
     case '5S25':
         return "bmg_demo_file_heaader"
         break
+    case '^RrX':
+        return "bmg_demo_directory"
+        break
+    case '4akv':
+        return "bmg_demo_datapack"
+        break
+    case 'XH?<':
+        return "bmg_demo_basic_audio"
+        break
+    case '11Hn':
+        return "bmg_demo_basic_audio_0"
+        break
+    case 'Ry[O':
+        return "bmg_demo_basic_audio_0_0"
+        break
     default:
         return null
     }
 }
+
+/* end sec_id list */
+///////////////////////
+/* start import list */
 
 async function im_bmg_demo_x() {
     // console.log("?")
@@ -106,11 +127,20 @@ function im_bmg_demo_directory(o, x, i) {
 
     x.push({
         id: gen_id(),
-        version: u32(o),
-        type: type,
-        index: u32(o + 8),
-        unknown_12: [],
-        datapack: [],
+        sec_id: "^RrX",
+        u32_0: u32(o + 0),
+        u32_4: u32(o + 4),
+        //check this
+        u32_8: u32(o + 8),
+        u32_16: u32(o + 16),
+        //amount?
+        section_20: [],
+        // id: gen_id(),
+        // version: u32(o),
+        // type: type,
+        // index: u32(o + 8),
+        // unknown_12: [],
+        // datapack: [],
     })
 
     g.file_dir_type = type
@@ -364,99 +394,106 @@ function im_bmg_demo_directory(o, x, i) {
 
 // }
 
-function get_default(s) {
-    let split = s.split('_')
-    let value = split[0]
-    let number = Number(split[1])
-    return {
-        n: s,
-        v: 0,
-        o: number,
-        f: value,
-    }
-}
-
-function append_bmg_demo_world_settings() {// // need to append this to section
-// return {
-// id: gen_id(),
-// sec_id: "Pwja",
-// section_00: ["type"],
-// section_04: [],
-// f32_08: 0,
-// f32_12: 0,
-// u8_33: 0,
-// u32_52: 0,
-// section_56: [],
-// section_60: [],
-// texture_68: [0, 0, 0, 't'],
-// texture_72: [0, 0, 0, 't'],
-// texture_76: [0, 0, 0, 't'],
-// f32_80: 0,
-// f32_84: 0,
-// section_88: [],
-// f32_92: 0,
-// f32_96: 0,
-// section_100: [],
-// u32_104: 0,//amount?
-// section_108: [],
-// f32_120: 0,
-// f32_124: 0,
-// f32_128: 0,
-// f32_132: 0,
-// u8_137: 0,
-// f32_140: 0,
-// texture_144: [0, 0, 0, 't'],
-// f32_148: 0,
-// f32_152: 0,
-// f32_156: 0,
-// f32_160: 0,
-// f32_164: 0,
-// f32_168: 0,
-// unordered_bmg_demo_font_176: 0,
-// }
-}
-
-function info_bmg_demo_world_settings() {
-    // used when edit?
-    return {
+function im_bmg_demo_datapack(o, i, x) {
+    x.push({
         id: gen_id(),
-        sec_id: "Pwja",
-        section_00: ["type"],
-        section_04: [sec_id],
-        f32_08: get_default("f32_08"),
-        f32_12: get_default("f32_12"),
-        u8_33: 0,
-        u32_52: 0,
-        section_56: [],
-        section_60: [],
-        texture_68: [0, 0, 0, 't'],
-        texture_72: [0, 0, 0, 't'],
-        texture_76: [0, 0, 0, 't'],
-        f32_80: 0,
-        f32_84: 0,
-        section_88: [],
-        f32_92: 0,
-        f32_96: 0,
-        section_100: [],
-        u32_104: 0,
+        sec_id: "4akv",
+        u32_0: u32(o + 0),
+        u32_4: u32(o + 4),
+        u32_8: u32(o + 8),
         //amount?
+        u32_12: u32(o + 12),
+        //amount?
+        u32_16: u32(o + 16),
+        //amount?
+        u32_20: u32(o + 20),
+        u32_24: u32(o + 24),
+        u32_28: u32(o + 28),
+        //amount?
+        u32_32: u32(o + 32),
+        //amount?
+        u32_48: u32(o + 48),
+        //amount?
+        u32_52: u32(o + 52),
+        //amount?
+        model_56: im_patch(g.model_ref, o + 56),
+        section_60: [],
+        u32_80: u32(o + 80),
+        //amount?
+        u32_84: u32(o + 84),
+        u32_88: u32(o + 88),
+        u32_92: u32(o + 92),
+        u32_96: u32(o + 96),
+        u32_100: u32(o + 100),
+        u32_104: u32(o + 104),
         section_108: [],
-        f32_120: 0,
-        f32_124: 0,
-        f32_128: 0,
-        f32_132: 0,
-        u8_137: 0,
-        f32_140: 0,
-        texture_144: [0, 0, 0, 't'],
-        f32_148: 0,
-        f32_152: 0,
-        f32_156: 0,
-        f32_160: 0,
-        f32_164: 0,
-        f32_168: 0,
-        unordered_bmg_demo_font_176: 0,
-    }
+        u32_124: u32(o + 124),
+        u32_144: u32(o + 144),
+    });
+
+    u32(o + 60) ? im_bmg_demo_texture_anim(u32(o + 60) + g.m, x[i].section_60) : 0;
+    // offset? 
+    u32(o + 108) ? im_bmg_demo_datapack_108(u32(o + 108) + g.m, x[i].section_108) : 0;
+    // offset? 
+    return x[i].id
+    // 152 bytes;
+
 }
+
+function im_bmg_demo_basic_audio(o, i, x) {
+    x.push({
+        id: gen_id(),
+        sec_id: "XH?<",
+        section_0: [],
+    });
+
+    u32(o + 0) ? im_bmg_demo_basic_audio_0(u32(o + 0) + g.m, x[i].section_0) : 0;
+    // offset? 
+    return x[i].id
+    // 4 bytes;
+
+}
+function im_bmg_demo_basic_audio_0(o, x) {
+    x.push({
+        sec_id: "11Hn",
+        u32_0: u32(o + 0),
+        u32_4: u32(o + 4),
+        u32_8: u32(o + 8),
+        u32_12: u32(o + 12),
+    });
+
+    // 16 bytes;
+
+}
+function im_bmg_demo_basic_audio_0_0(o, x) {
+    x.push({
+        sec_id: "Ry[O",
+        u32_0: u32(o + 0),
+        u32_4: u32(o + 4),
+        u32_8: u32(o + 8),
+        u32_12: u32(o + 12),
+        u32_16: u32(o + 16),
+        u32_20: u32(o + 20),
+        u32_24: u32(o + 24),
+        u32_28: u32(o + 28),
+        u32_32: u32(o + 32),
+        u32_36: u32(o + 36),
+        u32_40: u32(o + 40),
+        u32_44: u32(o + 44),
+        u32_48: u32(o + 48),
+        u32_52: u32(o + 52),
+        u32_56: u32(o + 56),
+        u32_60: u32(o + 60),
+        u32_68: u32(o + 68),
+        u32_72: u32(o + 72),
+    });
+
+    // 96 bytes;
+
+}
+/* end import list */
+/////////////////////
+/* start add_ list */
 
 function add_bmg_demo_file_heaader() {
     return {
@@ -469,17 +506,216 @@ function add_bmg_demo_file_heaader() {
     };
 
 }
-function info_bmg_demo_file_heaader() {
+
+function add_bmg_demo_directory() {
     return {
         id: gen_id(),
+        sec_id: "^RrX",
+        u32_0: 0,
+        u32_4: u32(o + 4),
+        //check this
+        u32_8: 0,
+        u32_16: 0,
+        section_20: [],
+    };
+
+}
+
+function add_bmg_demo_datapack() {
+    return {
+        id: gen_id(),
+        sec_id: "4akv",
+        u32_0: 0,
+        u32_4: 0,
+        u32_8: 0,
+        u32_12: 0,
+        u32_16: 0,
+        u32_20: 0,
+        u32_24: 0,
+        u32_28: 0,
+        u32_32: 0,
+        u32_48: 0,
+        u32_52: 0,
+        model_56: [0, 0, 0, 'm'],
+        section_60: [],
+        u32_80: 0,
+        u32_84: 0,
+        u32_88: 0,
+        u32_92: 0,
+        u32_96: 0,
+        u32_100: 0,
+        u32_104: 0,
+        section_108: [],
+        u32_124: 0,
+        u32_144: 0,
+    };
+
+}
+
+function add_bmg_demo_basic_audio() {
+    return {
+        id: gen_id(),
+        sec_id: "XH?<",
+        section_0: [],
+    };
+
+}
+function add_bmg_demo_basic_audio_0() {
+    return {
+        sec_id: "11Hn",
+        u32_0: 0,
+        u32_4: 0,
+        u32_8: 0,
+        u32_12: 0,
+    };
+
+}
+function add_bmg_demo_basic_audio_0_0() {
+    return {
+        sec_id: "Ry[O",
+        u32_0: 0,
+        u32_4: 0,
+        u32_8: 0,
+        u32_12: 0,
+        u32_16: 0,
+        u32_20: 0,
+        u32_24: 0,
+        u32_28: 0,
+        u32_32: 0,
+        u32_36: 0,
+        u32_40: 0,
+        u32_44: 0,
+        u32_48: 0,
+        u32_52: 0,
+        u32_56: 0,
+        u32_60: 0,
+        u32_68: 0,
+        u32_72: 0,
+    };
+
+}
+
+/* end add list */
+/////////////////////
+/* start info list */
+
+function info_bmg_demo_file_heaader() {
+    return {
         sec_id: "5S25",
         u32_00: 0,
         u32_04: 0,
         u32_08: 0,
-        section_12: [],
+        section_12: ["^RrX"],
     };
 
 }
+function info_bmg_demo_directory() {
+    return {
+        sec_id: "^RrX",
+        u32_0: 0,
+        u32_4: u32(o + 4),
+        //check this
+        u32_8: 0,
+        u32_16: {
+            a: null
+        },
+        section_20: ["null"],
+    };
+
+}
+
+function info_bmg_demo_datapack() {
+    return {
+        sec_id: "4akv",
+        u32_0: 0,
+        u32_4: 0,
+        u32_8: {
+            a: null
+        },
+        u32_12: {
+            a: null
+        },
+        u32_16: {
+            a: null
+        },
+        u32_20: 0,
+        u32_24: 0,
+        u32_28: {
+            a: null
+        },
+        u32_32: {
+            a: null
+        },
+        u32_48: {
+            a: null
+        },
+        u32_52: {
+            a: null
+        },
+        model_56: "model_patch",
+        section_60: ["change this"],
+        u32_80: {
+            a: null
+        },
+        u32_84: 0,
+        u32_88: 0,
+        u32_92: 0,
+        u32_96: 0,
+        u32_100: 0,
+        u32_104: 0,
+        section_108: ["change this"],
+        u32_124: 0,
+        u32_144: 0,
+    };
+
+}
+
+function info_bmg_demo_basic_audio() {
+    return {
+        sec_id: "XH?<",
+        section_0: ["11Hn"],
+    };
+
+}
+function info_bmg_demo_basic_audio_0() {
+    return {
+        sec_id: "11Hn",
+        u32_0: 0,
+        u32_4: 0,
+        u32_8: 0,
+        u32_12: 0,
+    };
+
+}
+function info_bmg_demo_basic_audio_0_0() {
+    return {
+        sec_id: "Ry[O",
+        u32_0: 0,
+        u32_4: 0,
+        u32_8: 0,
+        u32_12: 0,
+        u32_16: 0,
+        u32_20: 0,
+        u32_24: 0,
+        u32_28: 0,
+        u32_32: 0,
+        u32_36: 0,
+        u32_40: 0,
+        u32_44: 0,
+        u32_48: 0,
+        u32_52: 0,
+        u32_56: 0,
+        u32_60: 0,
+        u32_68: 0,
+        u32_72: 0,
+    };
+
+}
+
+/* end info list */
+///////////////////
+/* start ex list */
+
 function ex_bmg_demo_file_heaader(o, x) {
     let e = o + 16
     su32(o + 0, x.u32_00)
@@ -491,3 +727,91 @@ function ex_bmg_demo_file_heaader(o, x) {
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
 }
+
+function ex_bmg_demo_directory(o, e, x) {
+    su32(o + 0, x.u32_0)
+    su32(o + 4, x.u32_4)
+    //?
+    su32(o + 8, x.u32_8)
+    //amount?   su32(o +16, x.u32_16)
+
+    e = ex_s_offset(o + 20, e, ex_bmg_demo_datapack, x.section_20, 'down');
+
+    g.debug ? ex_debug(o, x.sec_id) : 0;
+    return e
+}
+
+function ex_bmg_demo_datapack(o, x) {
+    let e = o + 152
+    su32(o + 0, x.u32_0)
+    su32(o + 4, x.u32_4)
+    //amount?   su32(o +8, x.u32_8)
+    //amount?   su32(o +12, x.u32_12)
+    //amount?   su32(o +16, x.u32_16)
+    su32(o + 20, x.u32_20)
+    su32(o + 24, x.u32_24)
+    //amount?   su32(o +28, x.u32_28)
+    //amount?   su32(o +32, x.u32_32)
+    //amount?   su32(o +48, x.u32_48)
+    //amount?   su32(o +52, x.u32_52)
+    ex_patch(o + 56, g.model_array, x.model_56)
+    //amount?   su32(o +80, x.u32_80)
+    su32(o + 84, x.u32_84)
+    su32(o + 88, x.u32_88)
+    su32(o + 92, x.u32_92)
+    su32(o + 96, x.u32_96)
+    su32(o + 100, x.u32_100)
+    su32(o + 104, x.u32_104)
+    su32(o + 124, x.u32_124)
+    su32(o + 144, x.u32_144)
+
+    e = ex_s_offset(o + 60, e, ex_bmg_demo_texture_anim, x.section_60, 'down');
+    e = ex_s_offset(o + 108, e, ex_bmg_demo_datapack_108, x.section_108, 'down');
+
+    g.debug ? ex_debug(o, x.sec_id) : 0;
+    return e
+}
+
+function ex_bmg_demo_basic_audio(o, e, x) {
+
+    e = ex_s_offset(o + 0, e, ex_bmg_demo_basic_audio_0, x.section_0, 'down');
+
+    g.debug ? ex_debug(o, x.sec_id) : 0;
+    return e
+}
+function ex_bmg_demo_basic_audio_0(o, x) {
+    let e = o + 16
+    su32(o + 0, x.u32_0)
+    su32(o + 4, x.u32_4)
+    su32(o + 8, x.u32_8)
+    su32(o + 12, x.u32_12)
+
+    g.debug ? ex_debug(o, x.sec_id) : 0;
+    return e
+}
+function ex_bmg_demo_basic_audio_0_0(o, x) {
+    let e = o + 96
+    su32(o + 0, x.u32_0)
+    su32(o + 4, x.u32_4)
+    su32(o + 8, x.u32_8)
+    su32(o + 12, x.u32_12)
+    su32(o + 16, x.u32_16)
+    su32(o + 20, x.u32_20)
+    su32(o + 24, x.u32_24)
+    su32(o + 28, x.u32_28)
+    su32(o + 32, x.u32_32)
+    su32(o + 36, x.u32_36)
+    su32(o + 40, x.u32_40)
+    su32(o + 44, x.u32_44)
+    su32(o + 48, x.u32_48)
+    su32(o + 52, x.u32_52)
+    su32(o + 56, x.u32_56)
+    su32(o + 60, x.u32_60)
+    su32(o + 68, x.u32_68)
+    su32(o + 72, x.u32_72)
+
+    g.debug ? ex_debug(o, x.sec_id) : 0;
+    return e
+}
+
+/* end export list */
