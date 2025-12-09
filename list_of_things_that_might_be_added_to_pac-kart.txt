@@ -15,8 +15,6 @@ code base:
 
     combine html_to_info/html_to_edit?
 
-    move the html_to function to file testing
-
 info_ handle switch cases,
     have ability to create select box from switch if possible
     handle multi type like bmg_demo_extended_world_link
@@ -151,15 +149,12 @@ bmg_demo
 ect
 --------------------------------
 ideas for pac-kart documentation:
-move the format for pac man world rally to its own file
-    also move the pmwr save file as well
-    PMR save file not listed
 
 update padding list
 
 based on type number entries supposed to be inside anchor tag
 
-maybe create sha1 file list for each version mayb
+add sha1 for Pac Man World Rally PS2 pal
 
 list if offset is 'up' or 'down' based on general offset list patch list
 
