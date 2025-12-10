@@ -199,8 +199,6 @@ ideas for pac-kart filetesting:
 
 reserch other save files?
 
-make auto float list have a maxlength for string
-
 have better way to generate tables with the html_to sections
 
 remove extra new lines from <hr/> above <h2> tags
@@ -241,5 +239,4 @@ hwvx_proto
     reorder functions based on docs
 
 mmvcl
-    add the abbility to search the Patch List for Motor Mayhem: Vehicular Combat League
-        and find lost offsets/patches
+    find lost offsets
