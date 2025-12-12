@@ -11,8 +11,6 @@ code base:
     add comments to the beginning of some functions showing what parameter type there are
         or maybe just rename things better
 
-    split array_viewer functions away from the index sections
-
     combine html_to_info/html_to_edit?
 
 info_ handle switch cases,
@@ -83,8 +81,6 @@ array_viewer ideas:
             so able to loop/move between besides file viewer
 
     have the ability to add a new file without importing
-    maybe rename new file to import file
-    and have it be like | create file | import file | save
     when clicking create file will have to select the game->version same as when unknown version imported
     save file would probably be selectable here as well
 
@@ -98,8 +94,6 @@ array_viewer ideas:
     maybe have the ability to load multiple .x* files at the same time
     this might be usuful for shared files
     when saving might just add to .zip file or smthn
-
-    unlink some files from the html array_viewer file
 
 have a settings section above the x array
 settings like:

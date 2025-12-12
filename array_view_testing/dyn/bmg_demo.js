@@ -34,7 +34,15 @@ function get_bmg_demo_sec_id(string) {
 async function im_bmg_demo_x() {
     // console.log("?")
 
-    im_bmg_demo_file_heaader(0, 0, x)
+    x.push({
+        sec_id: "AAAA",
+        format: [],
+        game: g.game,
+        console: g.console,
+        name: g.file_name,
+    })
+
+    im_bmg_demo_file_heaader(0, 0, x[0].format)
 
     delete globalThis.buffer
 
@@ -48,10 +56,6 @@ function im_bmg_demo_file_heaader(o, i, x) {
         u32_04: u32(o + 4),
         u32_08: u32(o + 8),
         section_12: [],
-        game: g.game,
-        console: g.console,
-        name: g.file_name,
-        // directory: [],
     })
     let directory_offset = (u32(12) * 24) + 16
 

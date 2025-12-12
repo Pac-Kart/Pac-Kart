@@ -101,43 +101,32 @@ function choose_game_type() {
 
     //get_x_static = Importer/static_spider.js
     //im_x = Importer/ordered/x.js
-    //im_*_x = Importer/dyn/*
     g.datapack_end = buffer.byteLength;
 
     x = []
     globalThis.id_list = 0
 
-    if (globalThis?.new_version_id !== undefined) {
-
-    window[("im_" + g.type_string + "_x")]()
-
-    html = gen_array_view_file_first_time(x);
-
-    } else {
-
-        if (validConsoles.includes(g.console)) {
-            if (g.game === "pac_man_world_rally" && g.version !== 249) {
-                if (pk_debug && show_debug.checked) {
-                    html = get_x_static(g.file_name, false);
-                    alert('bruh')
-                } else {
-                    im_x();
-
-                    html = dynamic__x_generator();
-
-                    delete globalThis.f32;
-                    delete globalThis.u32;
-                    delete globalThis.u16;
-                    delete globalThis.u8;
-                    delete globalThis.buffer;
-                }
-            } else {
+    if (validConsoles.includes(g.console)) {
+        if (g.game === "pac_man_world_rally" && g.version !== 249) {
+            if (pk_debug && show_debug.checked) {
                 html = get_x_static(g.file_name, false);
+                alert('bruh')
+            } else {
+                im_x();
+
+                html = dynamic__x_generator();
+
+                delete globalThis.f32;
+                delete globalThis.u32;
+                delete globalThis.u16;
+                delete globalThis.u8;
+                delete globalThis.buffer;
             }
         } else {
             html = get_x_static(g.file_name, false);
         }
-
+    } else {
+        html = get_x_static(g.file_name, false);
     }
 
     file_viewer.innerHTML = html;
