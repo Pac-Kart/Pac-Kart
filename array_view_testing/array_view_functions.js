@@ -1,73 +1,218 @@
-#! fires whenever New File is clicked
+#! fires whenever New File/import file is clicked
 "use strict";
-async function input_file(event) {
-    const files = event.currentTarget.files;
-    const lastFileIndex = files.length - 1;
-    for (let i = 0; i < files.length; i++) {
 
-        globalThis.g = get_g_obj(files[i])
+document.getElementById("file_input").addEventListener("change", import_new_file);
+document.getElementById("create_file_button").addEventListener("click", create_new_file);
 
-        await readAFile(files[i], g, i, lastFileIndex);
+async function import_new_file(event) {
+    globalThis.temp_files = event.currentTarget.files;
+    const lastFileIndex = temp_files.length - 1;
 
-    }
+    globalThis.x = []
+    globalThis.id_list = [];
+    let last_file_i = -1
 
-    function readAFile(file, g, currentIndex, lastIndex) {
-        return new Promise( (resolve, reject) => {
+    Object.keys(temp_files).forEach(i => {
+        const reader = new FileReader();
+        read_a_file(reader, i, temp_files[i])
 
-            const reader = new FileReader();
+        function read_a_file(reader, i, file) {
+            try {
+                reader.readAsArrayBuffer(file)
+                reader.onload = (e) => {
 
-            reader.onload = function(e) {
-                globalThis.buffer = e.target.result
+                    last_file_i++
 
-                g.file_name = file.name
+                    globalThis.g = get_g_obj(temp_files[i])
 
-                document.getElementById("file_input").value = ''
+                    // globalThis.g = {
+                    //     debug: false,
+                    //     divisible_prev_value: 0,
+                    //     game: 0,
+                    //     console: 0,
+                    //     version: 0,
+                    //     file_name: file.name,
+                    //     endian: true,
+                    //     datapack_end: 0,
+                    // };
 
-                const dataView = new DataView(buffer);
+                    globalThis.buffer = e.target.result
 
-                globalThis.u8 = (o) => dataView.getUint8(o, g.endian);
-                globalThis.u16 = (o) => dataView.getUint16(o, g.endian);
-                globalThis.u32 = (o) => dataView.getUint32(o, g.endian);
-                globalThis.f32 = (o) => dataView.getFloat32(o, g.endian);
+                    const dataView = new DataView(buffer);
+                    //.x* file array
 
-                // dynamic array
-                // XFA = []
-                globalThis.x = []
-                globalThis.id_list = [];
-                //.x* file array
+                    file_viewer.textContent = ''
+                    file_editor.textContent = ''
 
-                file_viewer.textContent = ''
-                file_editor.textContent = ''
+                    get_type_from_file()
+                    window[("im_" + g.type_string + "_x")](last_file_i)
 
-                filecheck()
+                    // filecheck()
 
-                console.log(`%c ${g.file_name}`, 'color:#ff10ff')
-                if (pk_debug && lastIndex == Number(currentIndex)) {
-                    array_log()
+                    // sha1_file_list_index.push(i)
+
+                    console.log(`%c ${g.file_name} || ${last_file_i}/${lastFileIndex}`, 'color:#ff10ff')
+                    // for (let temp_array_index = 0; temp_array_index < temp_array__.length; temp_array_index++) {
+                    // if (temp_array__[temp_array_index].files.includes(g.file_name)) {
+                    //     temp_array__[temp_array_index].console += `<a class='f'> ${g.file_name}</a><hr><br>`
+                    //     }
+                    // }
+                    if (lastFileIndex == last_file_i) {
+                        globalThis.g.last_file = true;
+                        create_new_array_view()
+                        document.getElementById("file_input").value = ''
+                    }
+                    //sorted by a-z, also by size
+
                 }
+            } catch (error) {}
 
-                resolve();
-            }
-            ;
-
-            reader.onerror = function(error) {
-                reject(error);
-            }
-            ;
-
-            reader.readAsArrayBuffer(file);
         }
-        );
     }
+
+    )
+}
+function u8(o) {
+    return new DataView(buffer).getUint8(o, g.endian);
+}
+function u16(o) {
+    return new DataView(buffer).getUint16(o, g.endian);
+}
+function u32(o) {
+    return new DataView(buffer).getUint32(o, g.endian);
+}
+function f32(o) {
+    return new DataView(buffer).getFloat32(o, g.endian);
+}
+
+// async function import_new_file__x(event) {
+//     const files = event.currentTarget.files;
+//     const lastFileIndex = files.length - 1;
+
+//                 globalThis.x = []
+//                 globalThis.id_list = [];
+
+//     for (let i = 0; i < files.length; i++) {
+
+//         globalThis.g = get_g_obj(files[i])
+
+//         await readAFile(files[i], g, i, lastFileIndex);
+
+//     }
+
+//     function readAFile(file, g, currentIndex, lastIndex) {
+//         return new Promise( (resolve, reject) => {
+
+//             const reader = new FileReader();
+
+//             reader.onload = function(e) {
+//                 globalThis.buffer = e.target.result
+
+//                 g.file_name = file.name
+
+//                 document.getElementById("file_input").value = ''
+
+//                 const dataView = new DataView(buffer);
+
+//                 globalThis.u8 = (o) => dataView.getUint8(o, g.endian);
+//                 globalThis.u16 = (o) => dataView.getUint16(o, g.endian);
+//                 globalThis.u32 = (o) => dataView.getUint32(o, g.endian);
+//                 globalThis.f32 = (o) => dataView.getFloat32(o, g.endian);
+
+//                 // dynamic array
+//                 // XFA = []
+//                 //.x* file array
+
+//                 file_viewer.textContent = ''
+//                 file_editor.textContent = ''
+
+//                 get_type_from_file()
+
+//                 // g.datapack_end = buffer.byteLength;
+//                 window[("im_" + g.type_string + "_x")]()
+
+//                 console.log(`%c ${g.file_name}`, 'color:#ff10ff')
+//                 if (lastIndex == Number(currentIndex)) {
+//                     globalThis.g.last_file = true;
+//                     create_new_array_view()
+//                 }
+
+//                 resolve();
+//             }
+//             ;
+
+//             reader.onerror = function(error) {
+//                 reject(error);
+//             }
+//             ;
+
+//             reader.readAsArrayBuffer(file);
+//         }
+//         );
+//     }
+
+// }
+
+function create_new_file() {
+
+    globalThis.g = get_g_obj()
+    choose_file_format()
 
 }
 
-function choose_game_type() {
+function create_new_array_view() {
+
+    if (g.last_file === false) {
+        return
+    }
 
     const saveButton = document.getElementById("save_button");
-    const dataTypesBar = document.getElementById("data_types_bar");
 
     if (!saveButton) {
+        first_array_view()
+    }
+
+    let str_html = '';
+    generate_x_obj()
+
+    // if (g.is_import === true) {
+    // g.datapack_end = buffer.byteLength;
+    // window[("im_" + g.type_string + "_x")]()
+    // } else {
+    // window[("add_" + g.type_string + "_x")]()
+    // }
+
+    append_to_x_files()
+
+    str_html = gen_array_view_file_first_time(x);
+
+    file_viewer.innerHTML = str_html;
+
+    document.getElementsByClassName('file_hover_not_selected')[0]?.click();
+    file_viewer.focus();
+
+    globalThis.PK_path = {
+        array_path: ["0"],
+        obj: 0,
+    }
+
+    // array_view_object()
+    array_view_get_type(PK_path.array_path)
+    add_events()
+
+    // console.log(x_global)
+
+    /* x_global[0].x_files = */
+
+    function append_to_x_files() {
+        // if (x_global[0].x_files.length) {
+        x_global[0].x_files = x
+        // }
+    }
+
+    function first_array_view() {
+        const dataTypesBar = document.getElementById("data_types_bar");
+
         //sometimes the click event is removed?
         dataTypesBar.innerHTML += `<a data-is_active="false" class="data_bar_options" id="save_button">Save</a>`;
         document.getElementById("save_button").addEventListener("click", save_file);
@@ -87,39 +232,20 @@ function choose_game_type() {
 
     }
 
-    let html = '';
-
-    if (g.is_import === true) {
-
-        generate_x_obj()
-
-        g.datapack_end = buffer.byteLength;
-
-        window[("im_" + g.type_string + "_x")]()
-
-        html = gen_array_view_file_first_time(x);
-
-        file_viewer.innerHTML = html;
-
-        document.getElementsByClassName('file_hover_not_selected')[0]?.click();
-        file_viewer.focus();
-    } else {
-        g.type_string = "bmg_demo"
-        generate_x_obj()
+    function generate_x_obj() {
+        globalThis.x_global = []
+        x_global.push({
+            sec_id: "XSET",
+            x_files: [],
+            global_version: g.type_string,
+            padding_cull: false,
+        })
+        if (globalThis.id_list) {} else {
+            globalThis.id_list = 0
+            globalThis.x = []
+        }
 
     }
-
-}
-
-function generate_x_obj() {
-globalThis.x_global = {
-sec_id:"XSET",
-x_files:[],
-global_version:g.type_string,
-padding_cull:false,
-}
-        globalThis.id_list = 0
-        globalThis.x = []
 
 }
 
@@ -144,15 +270,14 @@ function arrow_click(e) {
 
 }
 
-document.getElementById("file_input").addEventListener("change", input_file);
-document.getElementById("create_file_button").addEventListener("click", create_new_file);
-
 function get_g_obj(is_file) {
     let name = 'not_file'
     let is_import = false
+    let last_file = true
     if (is_file?.name) {
         name = is_file.name
         is_import = true
+        last_file = false
     }
 
     return {
@@ -165,29 +290,41 @@ function get_g_obj(is_file) {
         file_name: name,
         endian: true,
         is_import: is_import,
+        last_file: last_file,
     };
 
 }
 
-function create_new_file() {
+function choose_file_format() {
 
-    // {
-    //     game:"Motor_Mayhem_Vehicular_Combat_League",
-    //     types:[
-    //         {
-    //             version:motor_mayhem,
-    //             string:,
-    //         },
-    //         {},
-    //     ],
-    // }
+    choose_game_version(g.game)
 
-    globalThis.g = get_g_obj()
+    function choose_game_version(str_game) {
+        switch (str_game) {
+        case "Motor_Mayhem_Vehicular_Combat_League":
+            choose_mm_version()
+            break
+        case "hot_wheels_velocity_x":
+            choose_hwvx_version()
+            break
+        case "snoopy_vs_the_red_baron":
+            choose_svtrb_version()
+            break
+        case "pac_man_world_rally":
+            choose_pmwr_version()
+            break
+        case "bee_movie_game":
+            choose_bmg_version()
+            break
+        case "bigfoot_collision_course":
+            choose_bcc_version()
+            break
+        default:
+            choose_game()
+        }
+    }
 
-    // create version array?
-    choose_x_game()
-
-    function choose_x_game() {
+    function choose_game() {
         file_viewer.innerHTML = `
         <div style="width: 90%;text-align: center;">choose type of file:</div>
         <div id='Motor_Mayhem_Vehicular_Combat_League' class="select_option_fileview">Motor Mayhem: Vehicular Combat League</div>
@@ -201,38 +338,106 @@ function create_new_file() {
         for (let i = 0; i < games.length; i++) {
             games[i].addEventListener("click", choose_x_game_click);
         }
-
     }
 
     function choose_x_game_click() {
         g.game = this.id
-        choose_x_console()
+        choose_game_version(g.game)
     }
 
-    function choose_x_console() {
+    function choose_mm_version() {
         file_viewer.innerHTML = `
-        <div style="width: 90%;text-align: center;">choose console type:</div>
-        <div id='pc' class="select_option_fileview">PC</div>
-        <div id='gamecube' class="select_option_fileview">GameCube</div>
-        <div id='xbox' class="select_option_fileview">Xbox</div>
-        <div id='psp' class="select_option_fileview">PSP</div>
-        <div id='ps2' class="select_option_fileview">PS2</div>
-        <div id='wii' class="select_option_fileview">Wii</div>
+        <div style="width: 90%;text-align: center;">choose Version type:</div>
+        <div data-version="4" data-console="pS2" data-endian="false" id='mm' class="select_option_fileview">PS2</div>
         `
+
+        add_clickable_version_list()
+
+    }
+
+    function choose_hwvx_version() {
+        file_viewer.innerHTML = `
+        <div style="width: 90%;text-align: center;">choose Version type:</div>
+        <div data-version="177" data-console="pS2" data-endian="false" id='hwvx_proto' class="select_option_fileview">PS2 Proto</div>
+        <div data-version="183" data-console="pS2" data-endian="false" id='hwvx_ps2' class="select_option_fileview">PS2</div>
+        <div data-version="183" data-console="pc" data-endian="false" id='hwvx_pc' class="select_option_fileview">PC</div>
+        <div data-version="183" data-console="gc" data-endian="true" id='hwvx_gc' class="select_option_fileview">Gamecube</div>
+        `
+
+        add_clickable_version_list()
+
+    }
+
+    function choose_svtrb_version() {
+        file_viewer.innerHTML = `
+        <div style="width: 90%;text-align: center;">choose Version type:</div>
+        <div data-version="273" data-console="pS2" data-endian="false" id='svtrb_ps2' class="select_option_fileview">PS2</div>
+        <div data-version="273" data-console="psp" data-endian="false" id='svtrb_psp' class="select_option_fileview">PSP</div>
+        <div data-version="274" data-console="pc" data-endian="false" id='svtrb_pc' class="select_option_fileview">PC</div>
+        `
+
+        add_clickable_version_list()
+
+    }
+
+    function choose_pmwr_version() {
+        file_viewer.innerHTML = `
+        <div style="width: 90%;text-align: center;">choose Version type:</div>
+        <div data-version="243" data-console="xbox" data-endian="false" id='pmwr' class="select_option_fileview">Xbox</div>
+        <div data-version="249" data-console="pS2" data-endian="false" id='pmwr' class="select_option_fileview">PS2 Demo</div>
+        <div data-version="267" data-console="gc" data-endian="true" id='pmwr' class="select_option_fileview">Gamecube</div>
+        <div data-version="267" data-console="pc" data-endian="false" id='pmwr' class="select_option_fileview">PC</div>
+        <div data-version="267" data-console="pS2" data-endian="false" id='pmwr' class="select_option_fileview">Ps2 (ntsc)</div>
+        <div data-version="274" data-console="sps" data-endian="false" id='pmwr' class="select_option_fileview">PSP</div>
+        `
+
+        add_clickable_version_list()
+
+    }
+
+    function choose_bmg_version() {
+        file_viewer.innerHTML = `
+        <div style="width: 90%;text-align: center;">choose Version type:</div>
+        <div data-version="288" data-console="wii" data-endian="true" id='bmg_demo' class="select_option_fileview">Wii Demo</div>
+        <div data-version="312" data-console="wii" data-endian="true" id='bmg_demo' class="select_option_fileview">Wii</div>
+        <div data-version="312" data-console="pc" data-endian="false" id='bmg_demo' class="select_option_fileview">PC</div>
+        `
+
+        add_clickable_version_list()
+
+    }
+
+    function choose_bcc_version() {
+        file_viewer.innerHTML = `
+        <div style="width: 90%;text-align: center;">choose Version type:</div>
+        <div data-version="315" data-console="wii" data-endian="true" id='bcc_wii' class="select_option_fileview">Wii</div>
+        <div data-version="315" data-console="pc" data-endian="false" id='bcc_pc' class="select_option_fileview">PC</div>
+        `
+
+        add_clickable_version_list()
+
+    }
+
+    function add_clickable_version_list() {
         let consoles = document.getElementsByClassName('select_option_fileview')
         for (let i = 0; i < consoles.length; i++) {
-            consoles[i].addEventListener("click", choose_x_console_click);
+            consoles[i].addEventListener("click", choose_version_click);
         }
-
     }
-    function choose_x_console_click() {
-        g.console = this.id
-        choose_game_type()
+
+    function choose_version_click() {
+        g.type_string = this.id
+        g.version = this.dataset.version
+        g.console = this.dataset.console
+        if (this.dataset.endian === "false") {
+            g.endian = false
+        }
+        create_new_array_view()
     }
 
 }
 
-function filecheck() {
+function get_type_from_file() {
     let extension = g.file_name.slice((g.file_name.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase()
 
     if (new DataView(buffer).byteLength < 17) {
@@ -262,7 +467,7 @@ function filecheck() {
         case 134348960:
             g.type_string = "mmcvl"
             g.game = "motor_mayhem"
-            choose_game_type()
+            create_new_array_view()
             return
             break
         case 67174574:
@@ -287,27 +492,27 @@ function filecheck() {
             g.console = "ps2"
             g.type_string = "hwvx_proto"
             //proto ps2 hwvx
-            choose_game_type()
+            create_new_array_view()
             break
         case 183:
             switch (extension) {
             case 'xpc':
                 g.type_string = "hwvx_pc"
                 g.console = "pc"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xgc':
                 g.type_string = "hwvx_gc"
                 g.console = "gamecube"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xps':
                 g.type_string = "hwvx_ps2"
                 g.console = "ps2"
-                choose_game_type()
+                create_new_array_view()
                 break
             default:
-                choose_x_game()
+                choose_file_format()
             }
             break
         }
@@ -321,14 +526,14 @@ function filecheck() {
             g.game = "pac_man_world_rally"
             g.console = "xbox"
             //demo xbox pmwr
-            choose_game_type()
+            create_new_array_view()
             break
         case 249:
             g.type_string = "pmwr_ps2_demo"
             g.game = "pac_man_world_rally"
             g.console = "ps2"
             //demo ps2 pmwr
-            choose_game_type()
+            create_new_array_view()
             break
         case 267:
             g.game = "pac_man_world_rally"
@@ -336,20 +541,20 @@ function filecheck() {
             case 'xgc':
                 g.type_string = "pmwr_gc"
                 g.console = "gamecube"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xps':
                 g.type_string = "pmwr_ps2"
                 g.console = "ps2"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xpc':
                 g.type_string = "pmwr_pc"
                 g.console = "pc"
-                choose_game_type()
+                create_new_array_view()
                 break
             default:
-                choose_x_game()
+                choose_file_format()
             }
             break
         case 273:
@@ -358,12 +563,12 @@ function filecheck() {
             case 'xps':
                 g.type_string = "svtrb_ps2"
                 g.console = "ps2"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xpp':
                 g.type_string = "svtrb_psp"
                 g.console = "psp"
-                choose_game_type()
+                create_new_array_view()
             }
             break
         case 274:
@@ -372,22 +577,22 @@ function filecheck() {
                 g.game = "pac_man_world_rally"
                 g.type_string = "pmwr_psp"
                 g.console = "psp"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xps':
                 g.game = "pac_man_world_rally"
                 g.type_string = "pmwr_ps2"
                 g.console = "ps2"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xpc':
                 g.game = "snoopy_vs_the_red_baron"
                 g.type_string = "svtrb_pc"
                 g.console = "pc"
-                choose_game_type()
+                create_new_array_view()
                 break
             default:
-                choose_x_game()
+                choose_file_format()
             }
             break
         case 288:
@@ -395,7 +600,7 @@ function filecheck() {
             g.type_string = "bmg_demo"
             g.console = "wii"
             //demo wii version
-            choose_game_type()
+            create_new_array_view()
             break
         case 312:
             g.game = "bee_movie_game"
@@ -403,12 +608,12 @@ function filecheck() {
             case 'xwi':
                 g.type_string = "bmg_wii"
                 g.console = "wii"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xdx9':
                 g.type_string = "bmg_pc"
                 g.console = "pc"
-                choose_game_type()
+                create_new_array_view()
                 break
             }
             break
@@ -418,18 +623,18 @@ function filecheck() {
             case 'xwi':
                 g.type_string = "bcc_wii"
                 g.console = "wii"
-                choose_game_type()
+                create_new_array_view()
                 break
             case 'xdx9':
                 g.type_string = "bcc_pc"
                 g.console = "pc"
-                choose_game_type()
+                create_new_array_view()
                 break
             }
             break
         default:
             console.log(g.version)
-            choose_x_game()
+            choose_file_format()
         }
     }
 
@@ -469,98 +674,20 @@ function filecheck() {
         x = null
     }
 
-    function choose_x_game() {
-        file_viewer.innerHTML = `
-        <div style="width: 90%;text-align: center;">choose type of file:</div>
-        <div id='hot_wheels_velocity_x' class="select_option_fileview">Hot Wheels Velocity X</div>
-        <div id='snoopy_vs_the_red_baron' class="select_option_fileview">Snoopy vs The Red Baron</div>
-        <div id='pac_man_world_rally' class="select_option_fileview">Pac Man World Rally</div>
-        <div id='bee_movie_game' class="select_option_fileview">Bee Movie Game</div>
-        <div id='bigfoot_collision_course' class="select_option_fileview">Bigfoot: Collision Course</div>
-        `
-        let games = document.getElementsByClassName('select_option_fileview')
-        for (let i = 0; i < games.length; i++) {
-            games[i].addEventListener("click", choose_x_game_click);
-        }
-
-    }
-
-    function choose_x_game_click() {
-        g.game = this.id
-        switch (extension) {
-        case 'xpc':
-            g.console = "pc"
-            choose_game_type()
-            break
-        case 'xgc':
-            g.console = "gamecube"
-            choose_game_type()
-            break
-        case 'xdx':
-            g.console = "xbox"
-            choose_game_type()
-            break
-        case 'xpp':
-            g.console = "psp"
-            choose_game_type()
-            break
-        case 'xps':
-            g.console = "ps2"
-            choose_game_type()
-            break
-        case 'xwi':
-            g.console = "wii"
-            choose_game_type()
-            break
-        case 'xdx9':
-            g.console = "pc"
-            choose_game_type()
-            break
-        default:
-            choose_x_console()
-            break
-        }
-
-    }
-
-    function choose_x_console() {
-        file_viewer.innerHTML = `
-        <div style="width: 90%;text-align: center;">choose console type:</div>
-        <div id='pc' class="select_option_fileview">PC</div>
-        <div id='gamecube' class="select_option_fileview">GameCube</div>
-        <div id='xbox' class="select_option_fileview">Xbox</div>
-        <div id='psp' class="select_option_fileview">PSP</div>
-        <div id='ps2' class="select_option_fileview">PS2</div>
-        <div id='wii' class="select_option_fileview">Wii</div>
-        `
-        let consoles = document.getElementsByClassName('select_option_fileview')
-        for (let i = 0; i < consoles.length; i++) {
-            consoles[i].addEventListener("click", choose_x_console_click);
-        }
-
-    }
-    function choose_x_console_click() {
-        g.console = this.id
-        choose_game_type()
-    }
-
 }
 
-function array_view_array(str_path) {
+function array_view_array(array_path) {
 
-    if (str_path === "") {
-        str_path = x
-    }
-
-    array_view_path(str_path)
+    PK_path.obj = get_full_path(PK_path.array_path)
+    let sec_name = get_section_name()
 
     let html_list = ""
     let section_id = ""
-    for (let i = 0; i < str_path.length; i++) {
-        section_id = window[("get_" + g.type_string + "_sec_id")](str_path[i].sec_id)
+    for (let i = 0; i < PK_path.obj.length; i++) {
+        // section_id = window[("get_" + g.type_string + "_sec_id")](array_path[i].sec_id)
         html_list += `
-               <tr>
-                  <td class='no_border data-array_number="${i}" noselect array_button'>${section_id} | Array ${i + 1}
+               <tr id="${i}">
+                  <td class='no_border data-array_number="${i}" noselect array_button'>${i} | Array ${i + 1}
                   </td>
                   <td colspan="4" class='no_border noselect arrow_buttons'>
                       <div>
@@ -579,7 +706,7 @@ function array_view_array(str_path) {
     let html = `
 <div style="display:inline-block;padding:5px;">
 
-   <div style='height:23%'>
+   <div style='height:23%'> ${sec_name}
       <div class='save_records_boarder'>
          <table style='width:100%;' >
             <tbody>
@@ -599,14 +726,39 @@ function array_view_array(str_path) {
     // document.getElementById('game').value = TXFA.game
     // document.getElementById("name").addEventListener('change', edit_change_name);
 
+}
+
+function add_events() {
     const fileEditor = document.getElementById('file_editor');
+    const fileview = document.getElementById('file_viewer');
 
     fileEditor.addEventListener('click', function(event) {
         const target = event.target;
         let classname = target.className
         if (classname.includes("array_button")) {
-            // console.log('?')
-            array_view_object(str_path[target.dataset.array_number])
+            let key_i = target.parentElement.id
+            // let str_array = array_path_local[key_i]
+
+            PK_path.array_path.push(key_i)
+
+            array_view_get_type(PK_path.array_path)
+            // array_view_object()
+
+        }
+        if (classname.includes("obj_to_array")) {
+            let key_i = target.parentElement.parentElement.id
+            let str_key = Object.keys(PK_path.obj)[key_i]
+
+            if (str_key == undefined) {
+                return
+            }
+
+            PK_path.array_path.push(str_key)
+
+            array_view_get_type(PK_path.array_path)
+
+            // array_view_array()
+
         } else if (classname.includes("move_button")) {
             if (target.innerText = "Up ▲") {// move up
             } else {// move down
@@ -621,12 +773,155 @@ function array_view_array(str_path) {
 
     });
 
-    // add_events()
+    fileview.addEventListener('click', function(event) {
+        const target = event.target;
+        let classname = target.className
+        if (classname.includes("plus_button")) {
+            let key_i = target.dataset.x_id
+            let index = Number(target.dataset.index)
+            globalThis.temp_key_i = target
+
+            let new_path = []
+            for (let i = 0; i - 1 < index; i++) {
+                new_path.push(PK_path.array_path[i])
+            }
+
+            PK_path.array_path = new_path
+
+            array_view_get_type(PK_path.array_path)
+
+            // temp_key_i.parentElement.parentElement.children
+            // let str_array = array_path_local[key_i]
+
+            // PK_path.array_path.push(key_i)
+
+        }
+    });
 
 }
 
-function array_view_object(str_path) {
-    console.log(str_path)
+function array_view_get_type(array) {
+    PK_path.obj = get_full_path(array)
+
+    if (Array.isArray(PK_path.obj)) {
+        array_view_array(array)
+    } else {
+        array_view_object(array)
+    }
+
+}
+
+function array_view_object() {
+
+    PK_path.obj = get_full_path(PK_path.array_path)
+    let sec_name = get_section_name()
+
+    let values_array = Object.values(PK_path.obj);
+    let keys_array = Object.keys(PK_path.obj)
+
+    let html_list = ""
+    let section_id = ""
+    for (let i = 0; i < keys_array.length; i++) {
+        let input_type = get_input_type(values_array[i])
+
+        // section_id = window[("get_" + g.type_string + "_sec_id")](str_path[i].sec_id)
+        html_list += `
+               <tr id="${i}">
+                  <td class='no_border' data-x_id="${keys_array[i]}" noselect'>${keys_array[i]}
+                  </td>
+                   <td class='no_border noselect arrow_buttons'>
+                       ${input_type}
+                 </td>
+               </tr>
+`
+    }
+
+    let html = `
+<div style="display:inline-block;width:95%;padding:5px;">
+
+   <div style='height:15%'> ${sec_name}
+      <div class='save_records_boarder'>
+         <table style='width:100%;' >
+            <tbody>
+            ${html_list}
+            </tbody>
+        </table>
+      </div>
+   </div>
+</div>`
+
+    file_editor.innerHTML = html
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+
+    // document.getElementById('game').value = TXFA.game
+    // document.getElementById("name").addEventListener('change', edit_change_name);
+}
+
+function get_full_path(array_path) {
+
+    let path_array = array_path
+
+    let temp_array = x_global
+
+    for (let i = 0; i < path_array.length; i++) {
+        let temp_path = temp_array[path_array[i]]
+        // temp_array = Object.values(temp_path);
+        temp_array = temp_path
+
+    }
+
+    if (array_path.length === 0) {
+        temp_array = x_global[0]
+        PK_path.array_path = ["0"]
+    }
+
+    update_pk_section_list()
+    return temp_array
+    // x_global[path_array[0]]
+}
+
+function update_pk_section_list() {
+    let html_list = ''
+
+    for (let i = 0; i < PK_path.array_path.length; i++) {
+        // let input_type = get_input_type(values_array[i])
+
+        // section_id = window[("get_" + g.type_string + "_sec_id")](str_path[i].sec_id)
+        html_list += `
+               <tr id="${i}">
+                  <td class='no_border plus_button noselect' data-x_id="${PK_path.array_path[i]}" data-index="${i}">${PK_path.array_path[i]}
+                  </td>
+               </tr>
+`
+    }
+
+    let html = `
+<div style="display:inline-block;width:100%">
+         <table style='width:100%;' >
+            <tbody>
+            ${html_list}
+            </tbody>
+        </table>
+</div>`
+
+    file_viewer.innerHTML = html
+
+}
+
+function get_input_type(value) {
+    let input_type = ''
+    if (Array.isArray(value)) {
+        input_type = `<input class="obj_to_array" style='width:100%;' type='button' value="Array ${value.length}">`
+    } else {
+        input_type = `<input style='width:100%;' type='text'  value="${value}">`
+    }
+
+    return input_type
+
+}
+
+function display_path(str_path) {
+    return `<a id="path">PATH: ${str_path.toString().replaceAll(',', ' -> ')}</a>`
 }
 
 function array_view_path(str_path) {
@@ -667,6 +962,30 @@ function gen_array_view_file_array(path, i_deep, limit=0) {
 
 }
 
+function get_section_name() {
+    let str_name = 'not found'
+    if (Array.isArray(PK_path.obj)) {
+        return ''
+    } else {
+
+        let str_sec_id = PK_path.obj.sec_id
+        if (PK_path.array_path.length < 4) {
+            switch (str_sec_id) {
+            case "XSET":
+                str_name = "global"
+                break
+            case "AAAA":
+                str_name = "file"
+                break
+            }
+        } else {
+            str_name = window[("get_" + g.type_string + "_sec_id")](str_sec_id)
+        }
+
+        return str_name
+    }
+}
+
 function gen_array_view_file_object(path, i_deep, limit=0) {
     let html = ""
     i_deep++
@@ -698,7 +1017,6 @@ function gen_array_view_file_object(path, i_deep, limit=0) {
 
 }
 
-"use strict";
 function save_file(e) {
 
     //calculate what type of file is being saved
@@ -756,8 +1074,6 @@ function download_file(buffer, filename) {
     downloadLink.remove();
 
 }
-
-"use strict";
 
 function file_move_with_key(e) {
     if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {

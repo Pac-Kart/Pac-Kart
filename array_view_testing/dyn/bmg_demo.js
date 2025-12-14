@@ -31,7 +31,7 @@ function get_bmg_demo_sec_id(string) {
 ///////////////////////
 /* start import list */
 
-async function im_bmg_demo_x() {
+async function im_bmg_demo_x(i) {
     // console.log("?")
 
     x.push({
@@ -42,7 +42,7 @@ async function im_bmg_demo_x() {
         name: g.file_name,
     })
 
-    im_bmg_demo_file_heaader(0, 0, x[0].format)
+    im_bmg_demo_file_heaader(0, 0, x[i].format)
 
     delete globalThis.buffer
 
@@ -65,7 +65,7 @@ function im_bmg_demo_file_heaader(o, i, x) {
         im_bmg_demo_directory(16 + (i * 24), x[0].section_12, i)
         time_array.push(Date.now() - a)
     }
-    console.log(time_array)
+    // console.log(time_array)
 
 }
 
@@ -87,6 +87,7 @@ function im_bmg_demo_directory(o, x, i) {
         ordered_ref: 0,
         unordered_ref: 0,
         m: 0,
+        last_file:false,
         bmg_demo_model_anim_1_array: [],
         bmg_demo_model_anim_1_type_a_array: [],
         bmg_demo_model_anim_1_type_b_array: [],
@@ -498,6 +499,17 @@ function im_bmg_demo_basic_audio_0_0(o, x) {
 /* end import list */
 /////////////////////
 /* start add_ list */
+
+function add_bmg_demo_x() {
+    x.push({
+        sec_id: "AAAA",
+        format: [],
+        game: g.game,
+        console: g.console,
+        name: g.file_name,
+    })
+
+}
 
 function add_bmg_demo_file_heaader() {
     return {

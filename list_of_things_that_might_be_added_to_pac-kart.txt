@@ -53,22 +53,6 @@ have some way to edit add_ sections
 
 array_viewer ideas:
     have the file_viewer display the path instead of a file view
-
-    have it look something like this
-    x
-    [0]
-    .directory
-    [3]
-    .datapack
-    [0]
-    .ordered
-    [0]
-    .file_specific
-    [0]
-    .basic_04
-    [0]
-
-    clicking any of the lines will take you to that section
     maybe have a toggle between them somewhere
     maybe have a version showing history of sections clicked
         have history arrows at the bottom of either the file viewer or file editor?
@@ -87,9 +71,6 @@ array_viewer ideas:
     display somewhere on the screen how long it takes to load the file
     have it dissapear after like 5 secs with an anim
     also have one for when a file is exported
-
-    remove show extra information
-    this isnt really being used for anything important probably
 
     maybe have the ability to load multiple .x* files at the same time
     this might be usuful for shared files
@@ -146,9 +127,10 @@ ideas for pac-kart documentation:
 
 update padding list
 
-based on type number entries supposed to be inside anchor tag
-
 add sha1 for Pac Man World Rally PS2 pal
+add sha1 for how wheels velocity x demo
+
+research other region formats
 
 list if offset is 'up' or 'down' based on general offset list patch list
 
@@ -163,6 +145,9 @@ bmg
     research bmg audio missing sections
     also rename some sections based on demo version
     add structure box
+
+pmwr
+    sections dont have pmwr listed
 
 pmwr_ps2demo
     pmwr_ps2demo or pmwr_ps2_demo or pmwr_demo ?
@@ -188,12 +173,15 @@ mmvcl
     some sections dont have mm listed
     add patch list  list of links
     should this be mm or mmvcl?
+        should be mm prob
 --------------------------------
 ideas for pac-kart filetesting:
 
 reserch other save files?
 
 have better way to generate tables with the html_to sections
+
+reorder generated switch functions
 
 bcc
     does bcc_world actually have a sound at offset 0 or is patch list misaligned
