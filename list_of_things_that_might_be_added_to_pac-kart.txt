@@ -47,13 +47,15 @@ info_ types idea
         alpha
         // this will split the u32 into 4 inputs, include 1 color box on the end
         }
+    b // value is either true or false
+    m // multi linked section, string of the section linked
     }
 
 have some way to edit add_ sections
 
 array_viewer ideas:
     have the file_viewer display the path instead of a file view
-    maybe have a toggle between them somewhere
+    maybe have a toggle between them at the bottom of the file viewer, 3 buttons for file view, section list, history
     maybe have a version showing history of sections clicked
         have history arrows at the bottom of either the file viewer or file editor?
 
@@ -65,8 +67,7 @@ array_viewer ideas:
             so able to loop/move between besides file viewer
 
     have the ability to add a new file without importing
-    when clicking create file will have to select the game->version same as when unknown version imported
-    save file would probably be selectable here as well
+        save file would probably be selectable here as well
 
     display somewhere on the screen how long it takes to load the file
     have it dissapear after like 5 secs with an anim
@@ -75,6 +76,20 @@ array_viewer ideas:
     maybe have the ability to load multiple .x* files at the same time
     this might be usuful for shared files
     when saving might just add to .zip file or smthn
+
+    array shortcuts:
+    ctrl + click array button in object
+        takes you to the first array object, skiping the list of arrays
+        changes the button text
+        if no array creates one
+    shift + click array button in object
+        takes you to the last array object, skiping the list of arrays
+        changes the button text
+        if no array creates one
+    alt + click array button in object
+        takes you to a random array object because idk
+        changes the button text
+        if no array creates one
 
 have a settings section above the x array
 settings like:
@@ -90,7 +105,8 @@ zip file name?
 have some way to import / export sections to json
     not sure how to handle buffers in this
 
-in the array view, have some way to multi edit sections
+in the arrays array view:
+have some way to multi edit sections
     section would probably be under the list of arrays
     would have each object entry listed
     would be able to click a select input and change values,
@@ -102,8 +118,14 @@ in the array view, have some way to multi edit sections
             2 selection box, increment/decrement value by fixed amount or spread amount based on 3rd box
                 if spread amount and 5 arrays and input 1 is 0 and input 3 is 100, values would be like [0,25,50,75,100]
             3 input final box, based on 2
+have a way to randomize the array list
+have some way to flip the array list
+have a way to drag/drop arrays
+have some way to detect if array is a multilink or is a single link
 
 make a collision editor (this will never happen sad)
+    if this ever happens have the abiilty to edit the x,y,z values of a world
+        so a mirror like world version is possible
 
 add a changelog somewhere
 
@@ -122,6 +144,8 @@ bcc
 bmg
 bmg_demo
 ect
+
+have some way to save settings
 --------------------------------
 ideas for pac-kart documentation:
 
@@ -141,7 +165,6 @@ bcc
     add structure box
 
 bmg
-    add patch list  list of links
     research bmg audio missing sections
     also rename some sections based on demo version
     add structure box

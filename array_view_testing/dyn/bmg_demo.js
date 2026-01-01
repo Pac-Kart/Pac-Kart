@@ -5,7 +5,7 @@
 function get_bmg_demo_sec_id(string) {
     switch (string) {
     case '5S25':
-        return "bmg_demo_file_heaader"
+        return "bmg_demo_file_header"
         break
     case '^RrX':
         return "bmg_demo_directory"
@@ -42,13 +42,13 @@ async function im_bmg_demo_x(i) {
         name: g.file_name,
     })
 
-    im_bmg_demo_file_heaader(0, 0, x[i].format)
+    im_bmg_demo_file_header(0, 0, x[i].format)
 
     delete globalThis.buffer
 
 }
 
-function im_bmg_demo_file_heaader(o, i, x) {
+function im_bmg_demo_file_header(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "5S25",
@@ -511,7 +511,7 @@ function add_bmg_demo_x() {
 
 }
 
-function add_bmg_demo_file_heaader() {
+function add_bmg_demo_file_header() {
     return {
         id: gen_id(),
         sec_id: "5S25",
@@ -615,7 +615,7 @@ function add_bmg_demo_basic_audio_0_0() {
 /////////////////////
 /* start info list */
 
-function info_bmg_demo_file_heaader() {
+function info_bmg_demo_file_header() {
     return {
         sec_id: "5S25",
         u32_00: 0,
@@ -732,7 +732,7 @@ function info_bmg_demo_basic_audio_0_0() {
 ///////////////////
 /* start ex list */
 
-function ex_bmg_demo_file_heaader(o, x) {
+function ex_bmg_demo_file_header(o, x) {
     let e = o + 16
     su32(o + 0, x.u32_00)
     su32(o + 4, x.u32_04)
