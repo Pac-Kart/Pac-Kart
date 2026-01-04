@@ -167,7 +167,6 @@ bcc
 bmg
     research bmg audio missing sections
     also rename some sections based on demo version
-    add structure box
 
 pmwr
     sections dont have pmwr listed
@@ -202,10 +201,6 @@ ideas for pac-kart filetesting:
 
 reserch other save files?
 
-have better way to generate tables with the html_to sections
-
-reorder generated switch functions
-
 bcc
     does bcc_world actually have a sound at offset 0 or is patch list misaligned
         think its probably misaligned
@@ -215,7 +210,6 @@ bcc
 bmg
     rename some sections based on demo version
     research audio missing sections
-    research how world list is layed out
     reorder functions based on docs
 
 pmwr_ps2demo
