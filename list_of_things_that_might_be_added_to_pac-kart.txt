@@ -166,7 +166,6 @@ bcc
 
 bmg
     research bmg audio missing sections
-    also rename some sections based on demo version
 
 pmwr
     sections dont have pmwr listed
@@ -208,9 +207,8 @@ bcc
     research audio missing sections
 
 bmg
-    rename some sections based on demo version
     research audio missing sections
-    reorder functions based on docs
+    find model length sections calculated
 
 pmwr_ps2demo
     research how world list is layed out
