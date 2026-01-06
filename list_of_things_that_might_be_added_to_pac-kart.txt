@@ -55,6 +55,8 @@ have some way to edit add_ sections
 
 array_viewer ideas:
     have the file_viewer display the path instead of a file view
+        when going back up path list the paths below in grey?
+            when a new path is clicked remove these
     maybe have a toggle between them at the bottom of the file viewer, 3 buttons for file view, section list, history
     maybe have a version showing history of sections clicked
         have history arrows at the bottom of either the file viewer or file editor?
@@ -104,6 +106,7 @@ zip file name?
 
 have some way to import / export sections to json
     not sure how to handle buffers in this
+        just convert buffers to base64
 
 in the arrays array view:
 have some way to multi edit sections
@@ -139,11 +142,50 @@ add ability to change css colors, probably on file settings section
 
 add a pseudo console on top, will show last command ran or smthn
 
-add import/export tables for:
-bcc
-bmg
-bmg_demo
-ect
+add ability to check sha1 of imported file
+    will tell you if file is not known/custom ?
+
+add import/export tables for outer datapack/sound only sections
+    mmcvl
+    hwvx_proto
+    hwvx_gc
+    hwvx_pc
+    hwvx_ps2
+    svtrb_pc
+    svtrb_psp
+    svtrb_ps2
+    pmwr_gc
+    pmwr_pc
+    pmwr_ps2_demo
+    pmwr_ps2
+    pmwr_psp
+    pmwr_xbox
+    bmg_demo
+    bmg_pc
+    bmg_wii
+    bcc_pc
+    bcc_wii
+
+add import/export tables for all sections
+    mmcvl
+    hwvx_proto
+    hwvx_gc
+    hwvx_pc
+    hwvx_ps2
+    svtrb_pc
+    svtrb_psp
+    svtrb_ps2
+    pmwr_gc
+    pmwr_pc
+    pmwr_ps2_demo
+    pmwr_ps2
+    pmwr_psp
+    pmwr_xbox
+    bmg_demo
+    bmg_pc
+    bmg_wii
+    bcc_pc
+    bcc_wii
 
 have some way to save settings
 --------------------------------
@@ -200,6 +242,9 @@ ideas for pac-kart filetesting:
 
 reserch other save files?
 
+have way to format full doc for the import tables
+    so dont have to slice table
+
 bcc
     does bcc_world actually have a sound at offset 0 or is patch list misaligned
         think its probably misaligned
@@ -209,6 +254,7 @@ bcc
 bmg
     research audio missing sections
     find model length sections calculated
+    find how mcp.xdx9 actualy calculates its datapack offset
 
 pmwr_ps2demo
     research how world list is layed out
