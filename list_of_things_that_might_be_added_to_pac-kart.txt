@@ -216,12 +216,6 @@ pmwr_ps2demo
     probably need to rename some sections
     update unordered list
 
-pmwr_xdx
-    add structure box
-
-svtrb
-    add structure box
-
 hwvx
     some linked to by: sections missing entries
     reorder some unordered sections
