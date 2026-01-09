@@ -214,7 +214,6 @@ pmwr
 pmwr_ps2demo
     pmwr_ps2demo or pmwr_ps2_demo or pmwr_demo ?
     probably need to rename some sections
-    update unordered list
 
 hwvx
     some linked to by: sections missing entries
@@ -255,6 +254,7 @@ pmwr_ps2demo
 
 pmwr_xdx
     research how world list is layed out
+    research music section
     reorder functions based on docs
 
 pmwr
