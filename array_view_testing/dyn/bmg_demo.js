@@ -738,20 +738,38 @@ function ex_bmg_demo_file_header(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    e = ex_s_offset(o + 12, e, ex_bmg_demo_directory, x.section_12, 'down');
+    let temp_offset = e
+    let global = ((x[0].section_12.length) * 24) + 16
+    e = e + (x[0].section_12.length * 24)
+
+    for (let i = 0; i < x[0].section_12.length; i++) {
+        let a = Date.now()
+
+        e = ex_bmg_demo_directory(temp_offset + (i * 24), e, x[0].section_12[i], global)
+        time_array.push(Date.now() - a)
+    }
+
+    // e = ex_s_offset(o + 12, e, ex_bmg_demo_directory, x.section_12, 'down');
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
+
+    globalThis.end_buffer = new ArrayBuffer(128)
+
+    let i = 0
+    for (; i < end_buffer.byteLength; i++) {
+        su8(i, 32)
+    }
+
     return e
 }
 
-function ex_bmg_demo_directory(o, e, x) {
+function ex_bmg_demo_directory(o, e, x, global) {
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
-    //?
     su32(o + 8, x.u32_8)
-    //amount?   su32(o +16, x.u32_16)
+    su32(o + 20, e - global)
 
-    e = ex_s_offset(o + 20, e, ex_bmg_demo_datapack, x.section_20, 'down');
+    e = ex_bmg_demo_datapack(e, x.section_20[0])
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e

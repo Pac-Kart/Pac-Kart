@@ -72,6 +72,35 @@ async function import_new_file(event) {
 
     )
 }
+
+// function import_single_file(event) {
+//     const uploadlink = document.createElement("input");
+//     uploadlink.type = "file";
+//     // uploadlink.hidden = "true";
+//     uploadlink.id = "single_input_file";
+
+//     document.getElementById("_2nd_data_bar").appendChild(uploadlink);
+
+//     document.getElementById("single_input_file").addEventListener("change", function(e) {
+//         const reader = new FileReader();
+//         try {
+//             reader.readAsText(e.target.files[0])
+//             reader.onload = (e) => {
+//                 let result = e.target.result
+//                 console.log(result)
+
+//                 // console.log(e.target.files)
+//                 // uploadlink.remove();
+//                 return result
+//             }
+//         } catch (error) {}
+
+//     });
+
+//     uploadlink.click();
+
+// }
+
 function u8(o) {
     return new DataView(buffer).getUint8(o, g.endian);
 }
@@ -664,7 +693,10 @@ function get_type_from_file() {
     }
 
     function wrong_file_type() {
-        alert('wrong file type!')
+        // alert('wrong file type!')
+
+        check_if_json()
+
         buffer = null
         u8 = null
         u16 = null
@@ -672,6 +704,30 @@ function get_type_from_file() {
         f32 = null
         XFA = null
         x = null
+    }
+
+    function check_if_json() {
+        // convert buffer to text first
+        let is_json = false
+        let testblob = new Blob([buffer])
+        var reader = new FileReader();
+        reader.onload = function() {
+        let text = testblob.text()
+        is_json = isJsonString(text)
+        }
+        reader.readAsText(testblob);
+
+
+        function isJsonString(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
+
+        console.log(is_json,testblob)
     }
 
 }
@@ -735,6 +791,7 @@ function add_events() {
     fileEditor.addEventListener('click', function(event) {
         const target = event.target;
         let classname = target.className
+        let id = target.id
         if (classname.includes("array_button")) {
             let key_i = target.parentElement.id
             // let str_array = array_path_local[key_i]
@@ -769,6 +826,15 @@ function add_events() {
             console.log('?')
         } else if (classname.includes("plus_button")) {
             console.log('?')
+        } else if (id.includes("json_download_button")) {
+            let json_string = JSON.stringify(PK_path.obj)
+            let string_filename = `PK_${g.type_string}_${get_section_name()}.json`
+            download_file(json_string, string_filename)
+        } else if (id.includes("json_upload_button")) {
+            let imported_file = import_single_file()
+            globalThis.file_test = imported_file
+            // then check sec_id
+            // if sec_id correct convert into x file
         }
 
     });
@@ -839,7 +905,12 @@ function array_view_object() {
     let html = `
 <div style="display:inline-block;width:95%;padding:5px;">
 
-   <div style='height:15%'> ${sec_name}
+   <div style='height:15%'>
+        <span style="display: flex;width: 100%;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;height: 20px;"><a>${sec_name}</a><div style="display: flex;">
+        <button title="download json" id="json_download_button">⤓</button>
+        <button title="upload json" id="json_upload_button">⤒</button>
+        </div>
+        </span>
       <div class='save_records_boarder'>
          <table style='width:100%;' >
             <tbody>
@@ -1019,12 +1090,13 @@ function gen_array_view_file_object(path, i_deep, limit=0) {
 
 function save_file(e) {
 
+    x_global[0].global_version
+
     //calculate what type of file is being saved
-    const fileName = g.file_name
+    const fileName = x_global[0].x_files[0].name
     let temp_buffer
     if (x.length) {
         temp_buffer = dynamic_save()
-        //Exporter/ordered/buffer.js
     } else {
         temp_buffer = buffer
         if (g.version === 'save') {
@@ -1035,31 +1107,33 @@ function save_file(e) {
 
     download_file(temp_buffer, fileName)
 
-    // const objectURL = URL.createObjectURL(new Blob([temp_buffer]));
+}
 
-    // const downloadLink = document.createElement("a");
-    // downloadLink.href = objectURL;
-    // downloadLink.download = fileName;
+function dynamic_save() {
 
-    // document.getElementById("_2nd_data_bar").appendChild(downloadLink);
+    globalThis.buffer_array = []
+    globalThis.dynamic_buffer = new ArrayBuffer(268435455)
 
-    // // Simulate click on the download link
-    // downloadLink.click();
+    // only 1st x file for now
+    window[("ex_" + g.type_string + "_file_header")](0, x_global[0].x_files[0].format[0])
 
-    // // Clean up by removing the download link
-    // downloadLink.remove();
+    let totalbytelength = 0
+    for (let buffer of buffer_array) {
+        totalbytelength += buffer.byteLength
+    }
+    let final_array = new Uint8Array(totalbytelength)
+    let offset = 0
 
-    // // let objectURL = URL.createObjectURL(new Blob([temp_buffer]))
+    for (let i = 0; i < buffer_array.length; i++) {
+        final_array.set(new Uint8Array(buffer_array[i]), offset)
+        offset += buffer_array[i].byteLength
+    }
 
-    // // let download_file = document.createElement("a")
-    // // download_file.id = 'temp_download_file'
-    // // download_file.href = objectURL
-    // // download_file.download = name
-    // // document.getElementById("_2nd_data_bar").appendChild(download_file)
+    delete globalThis.buffer_array
+    delete globalThis.dynamic_buffer
 
-    // // document.getElementById("temp_download_file").click()
+    return final_array
 
-    // // document.getElementById("temp_download_file").remove()
 }
 
 function download_file(buffer, filename) {
@@ -1184,4 +1258,251 @@ function gen_id() {
     let id = id_list
     id_list++
     return id
+}
+
+function ex_patch(o, a, x, m) {
+    // o = offset
+    // a = array
+    // x = file array
+    // m = model offset
+
+    if (x !== -1 && o) {
+        x[0][0] = o
+
+        if (x[0][3] === "m") {
+            su32(o, m)
+        } else {
+            if (g.console === 'gamecube') {
+                if (x[0][3] === "s") {
+                    su16(o, x[0][1])
+                    su16(o + 2, x[0][2])
+                } else {
+                    su16(o, x[0][2])
+                    su8(o + 2, x[0][1])
+                }
+            } else {
+
+                su16(o + 0, x[0][1])
+                if (x[0][3] === "s") {
+                    su16(o + 2, x[0][2])
+                } else {
+                    su16(o + 2, 52428)
+                }
+            }
+        }
+        a.push(x[0])
+    }
+    // ex_patch(o + 4, texturearray, x.texture) ?
+}
+
+// end_block = dyn_multilink(XFA.type_section_08, frame_array, dyn_frame, outer_XFA.frames, offset + 8, mid, end_block)
+
+// end_block = ex_ml(XFA.texture_04, model_array, dyn_model, main_XFA.models, offset + 4, mid, end_block,true,true,"model")
+function ex_ml(ID, ARRAY, FUNCTION, XFA, OFFSET, END_OFFSET, GLOBAL_OFFSET, IS_APPEND, CUSTOM, model_offset_temp) {
+    if (ID !== 0) {
+        if (FUNCTION.name === "ex_models" && Array.isArray(ID)) {
+            ex_patch(OFFSET, g.model_patch_array, ID, model_offset_temp)
+            return END_OFFSET
+        } else {
+
+            let temp_index = ARRAY[0].a_ids.indexOf(ID)
+            if (temp_index === null) {
+                //not linked
+                console.log(XFA, 'not linked')
+                return END_OFFSET
+            } else {
+
+                let temp_offset = ARRAY[0].a_offsets[temp_index]
+
+                if (GLOBAL_OFFSET === 'up') {
+                    g.oa.push(OFFSET)
+                }
+
+                if (temp_offset === false) {
+                    //append first time
+
+                    ARRAY[0].a_offsets[temp_index] = END_OFFSET
+                    temp_offset = ARRAY[0].a_offsets[temp_index]
+                    END_OFFSET = FUNCTION(temp_offset, XFA[temp_index])
+
+                }
+                if (GLOBAL_OFFSET === 'down') {
+                    g.oa.push(OFFSET)
+                }
+
+                if (IS_APPEND) {
+                    su32(OFFSET, temp_offset)
+                } else {
+                    su32(OFFSET, temp_offset)
+                }
+                if (CUSTOM === "model") {
+                    g.model_patch_array.push([OFFSET, temp_index, 0])
+                }
+            }
+        }
+    } else {// console.log(XFA,'nonlinked')
+    }
+    return END_OFFSET
+}
+
+function ex_ma(XFA, ARRAY, FUNCTION, OFFSET, MID) {
+    // wats ex ma
+    //multi append section
+    let END_OFFSET = OFFSET
+    if (XFA.length) {
+
+        let temp_index
+
+        for (let i = 0; i < XFA.length; i++) {
+            END_OFFSET = ex_byte_alignment_testing(END_OFFSET)
+            temp_index = ARRAY[0].a_ids.indexOf(XFA[i].id)
+
+            if (temp_index === null) {
+                //not linked
+                console.log(XFA, 'not linked')
+                return END_OFFSET
+            } else {
+                ARRAY[0].a_offsets[temp_index] = END_OFFSET - MID
+                END_OFFSET = FUNCTION(END_OFFSET, XFA[temp_index])
+            }
+        }
+    }
+    return END_OFFSET
+}
+
+function ex_string(o, e, x, d, oa) {
+    // o = offset
+    // e = end
+    // x = file array
+    // d = divisible
+    // oa = offset array 
+
+    if (x[0] !== null && x[0] !== "") {
+
+        if (oa === 0) {} else {
+            g.oa.push(o)
+        }
+
+        su32(o, e)
+
+        if (d === undefined) {
+            d = g.divisibility
+        }
+
+        let i = 0
+        if (x.length) {
+
+            for (; i < x[0].length; i++) {
+                su8(e + i, x[0][i].charCodeAt())
+            }
+            i++
+            i = divisible(i, d)
+        }
+        return e + i
+    }
+    return e
+
+}
+
+function dyn_string(offset, XFA_string, mid, divis) {
+    if (divis === undefined) {
+        divis = g.divisibility
+    }
+    let i = 0
+    if (XFA_string.length) {
+
+        for (; i < XFA_string.length; i++) {
+            su8(offset + i, XFA_string[i].charCodeAt())
+        }
+        i++
+        i = divisible(i, divis)
+    }
+    g.divisible_prev_value = [offset, XFA_string, mid, divis]
+    return offset + i
+}
+
+function generate_id_offset_array(array, XFA) {
+    if (XFA.length !== null) {
+
+        array.push({
+            a_ids: [],
+            a_offsets: []
+        })
+        for (let i = 0; i < XFA.length; i++) {
+            array[0].a_ids.push(XFA[i].id)
+            array[0].a_offsets.push(false)
+        }
+    }
+}
+
+function replacement_divisibility(value, divisibility, offset, replacement) {
+    let temp_value = value
+    let i = 0
+    g.divisible_prev_value = [value, divisibility, offset, replacement]
+    while ((temp_value) % divisibility !== 0) {
+        su8(offset + i, replacement)
+        temp_value++
+        i++
+    }
+    return temp_value
+}
+
+function ex_debug(o, a) {
+    //print on file
+    for (let i = 0; i < a.length; i++) {
+        su8(o + i, a[i].charCodeAt())
+    }
+}
+
+function ex_s_offset(o, e, f, x, p) {
+    // o = offset
+    // e = end
+    // f = function
+    // x = file array
+    // p = offset array position
+
+    if (o && x !== undefined && x.length) {
+        su32(o, e)
+
+        if (p === "up") {
+            g.oa.push(o)
+            e = f(e, x[0])
+        } else if (p === "down") {
+            e = f(e, x[0])
+            g.oa.push(o)
+        } else {
+            e = f(e, x[0])
+        }
+
+        return e
+
+    } else {
+        return e
+    }
+
+}
+
+function ex_find(y, n) {
+    let html = `good val: ${y} -> ${y + g.m}\n bad val: ${n} -> ${n + g.m}`
+    console.log(html)
+}
+
+function su8(o, v) {
+    new DataView(dynamic_buffer).setUint8(o, v, g.endian)
+}
+function su16(o, v) {
+    new DataView(dynamic_buffer).setUint16(o, v, g.endian)
+}
+function su32(o, v) {
+    new DataView(dynamic_buffer).setUint32(o, v, g.endian)
+}
+function sf32(o, v) {
+    new DataView(dynamic_buffer).setFloat32(o, v, g.endian)
+}
+
+function ex_byte_alignment_testing(o) {
+    let e = o
+
+    return e
+
 }

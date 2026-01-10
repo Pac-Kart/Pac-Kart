@@ -107,6 +107,7 @@ zip file name?
 have some way to import / export sections to json
     not sure how to handle buffers in this
         just convert buffers to base64
+    have ability to import full json files from the import file button also
 
 in the arrays array view:
 have some way to multi edit sections
