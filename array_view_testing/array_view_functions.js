@@ -45,7 +45,12 @@ async function import_new_file(event) {
                     file_editor.textContent = ''
 
                     get_type_from_file()
-                    window[("im_" + g.type_string + "_x")](last_file_i)
+
+                    if (g.type_string === "json") {} else if (g.type_string) {
+                        window[("im_" + g.type_string + "_x")](last_file_i)
+                    }
+                    {// not file
+                    }
 
                     // filecheck()
 
@@ -73,33 +78,67 @@ async function import_new_file(event) {
     )
 }
 
-// function import_single_file(event) {
-//     const uploadlink = document.createElement("input");
-//     uploadlink.type = "file";
-//     // uploadlink.hidden = "true";
-//     uploadlink.id = "single_input_file";
+function import_single_file(from_function, event) {
+    const uploadlink = document.createElement("input");
+    uploadlink.type = "file";
+    // uploadlink.hidden = "true";
+    uploadlink.id = "single_input_file";
 
-//     document.getElementById("_2nd_data_bar").appendChild(uploadlink);
+    document.getElementById("_2nd_data_bar").appendChild(uploadlink);
 
-//     document.getElementById("single_input_file").addEventListener("change", function(e) {
-//         const reader = new FileReader();
-//         try {
-//             reader.readAsText(e.target.files[0])
-//             reader.onload = (e) => {
-//                 let result = e.target.result
-//                 console.log(result)
+    document.getElementById("single_input_file").addEventListener("change", function(e) {
+        const reader = new FileReader();
+        try {
+            reader.readAsText(e.target.files[0])
+            reader.onload = (e) => {
+                let result = e.target.result
+                console.log(result)
 
-//                 // console.log(e.target.files)
-//                 // uploadlink.remove();
-//                 return result
-//             }
-//         } catch (error) {}
+                uploadlink.remove();
+                from_function(result)
+            }
+        } catch (error) {}
 
-//     });
+    });
 
-//     uploadlink.click();
+    uploadlink.click();
 
-// }
+}
+
+function check_if_json(string) {
+    let is_json = isJsonString(string)
+
+    if (is_json) {
+        import_json_file(string)
+    } else {
+        return false
+    }
+
+    function isJsonString(string) {
+        try {
+            JSON.parse(string);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+}
+
+function import_json_file(string) {
+    let jsonobj = JSON.parse(string)
+    let sec_id = jsonobj.sec_id
+
+    if (PK_path.obj.sec_id === sec_id) {
+        PK_path.obj = jsonobj
+        console.log('imported json / replaced x')
+    } else {
+        alert(`
+    imported section does not match section id\n
+    expected sec_id: ${PK_path.obj.sec_id}
+    imported sec_id: ${sec_id}`)
+    }
+
+}
 
 function u8(o) {
     return new DataView(buffer).getUint8(o, g.endian);
@@ -149,7 +188,6 @@ function f32(o) {
 //                 globalThis.f32 = (o) => dataView.getFloat32(o, g.endian);
 
 //                 // dynamic array
-//                 // XFA = []
 //                 //.x* file array
 
 //                 file_viewer.textContent = ''
@@ -693,41 +731,14 @@ function get_type_from_file() {
     }
 
     function wrong_file_type() {
-        // alert('wrong file type!')
-
-        check_if_json()
+        alert('wrong file type!')
 
         buffer = null
         u8 = null
         u16 = null
         u32 = null
         f32 = null
-        XFA = null
         x = null
-    }
-
-    function check_if_json() {
-        // convert buffer to text first
-        let is_json = false
-        let testblob = new Blob([buffer])
-        var reader = new FileReader();
-        reader.onload = function() {
-        let text = testblob.text()
-        is_json = isJsonString(text)
-        }
-        reader.readAsText(testblob);
-
-
-        function isJsonString(str) {
-            try {
-                JSON.parse(str);
-            } catch (e) {
-                return false;
-            }
-            return true;
-        }
-
-        console.log(is_json,testblob)
     }
 
 }
@@ -831,10 +842,7 @@ function add_events() {
             let string_filename = `PK_${g.type_string}_${get_section_name()}.json`
             download_file(json_string, string_filename)
         } else if (id.includes("json_upload_button")) {
-            let imported_file = import_single_file()
-            globalThis.file_test = imported_file
-            // then check sec_id
-            // if sec_id correct convert into x file
+            import_single_file(check_if_json)
         }
 
     });

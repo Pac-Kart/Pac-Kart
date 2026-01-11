@@ -207,7 +207,8 @@ bcc
     probably need to rename some sections
 
 bmg
-    research bmg audio missing sections
+    research bmg missing sections in datapack
+    also what is patch list 3
 
 pmwr
     sections dont have pmwr listed
