@@ -3,6 +3,20 @@
 
 document.getElementById("file_input").addEventListener("change", import_new_file);
 document.getElementById("create_file_button").addEventListener("click", create_new_file);
+document.getElementById("log_checkbox").addEventListener("click", log_is_checked);
+
+function log_is_checked(e) {
+    let is_checked = e.srcElement.checked
+    pk_debug = is_checked
+    if (!pk_debug) {
+        const element_log = document.getElementById('print_log_console');
+        element_log.innerHTML = ''
+        console.pk_log(`clear log`)
+    }
+
+    console.pk_log(`pk_debug = ${pk_debug}`)
+
+}
 
 async function import_new_file(event) {
     globalThis.temp_files = event.currentTarget.files;
@@ -56,8 +70,9 @@ async function import_new_file(event) {
 
                     // sha1_file_list_index.push(i)
 
-                    console.log(`%c ${g.file_name} || ${last_file_i}/${lastFileIndex}`, 'color:#ff10ff')
-                    // for (let temp_array_index = 0; temp_array_index < temp_array__.length; temp_array_index++) {
+                    pk_debug ? console.pk_log(`${g.file_name} || ${last_file_i + 1}/${lastFileIndex + 1}`) : 0;
+                    // console.log(`%c ${g.file_name} || ${last_file_i}/${lastFileIndex}`, 'color:#ff10ff')
+                    // for (let temp_array_inCdex = 0; temp_array_index < temp_array__.length; temp_array_index++) {
                     // if (temp_array__[temp_array_index].files.includes(g.file_name)) {
                     //     temp_array__[temp_array_index].console += `<a class='f'> ${g.file_name}</a><hr><br>`
                     //     }
@@ -78,6 +93,38 @@ async function import_new_file(event) {
     )
 }
 
+console.pk_log = function(string_message) {
+    let is_string = typeof string_message === 'string'
+
+    if (!is_string) {
+        string_message = String(string_message)
+    }
+
+    const element_log = document.getElementById('print_log_console');
+    var text = document.createElement('div')
+    if (!pk_debug) {
+        text.classList.add('disappearing-text');
+    }
+    text.innerHTML = string_message
+    element_log.appendChild(text)
+
+    console.log('PK_Log: ' + string_message)
+
+    if (pk_debug) {
+        return
+        // no remove
+    }
+
+    // set to scroll?
+    setTimeout(function() {
+        // Set the text content to an empty string, removing the text
+        if (text) {
+            console.log('?')
+            text.remove()
+        }
+    }, 5000);
+}
+
 function import_single_file(from_function, event) {
     const uploadlink = document.createElement("input");
     uploadlink.type = "file";
@@ -92,7 +139,8 @@ function import_single_file(from_function, event) {
             reader.readAsText(e.target.files[0])
             reader.onload = (e) => {
                 let result = e.target.result
-                console.log(result)
+                // console.pk_log(result)
+                // console.log(result)
 
                 uploadlink.remove();
                 from_function(result)
@@ -130,9 +178,10 @@ function import_json_file(string) {
 
     if (PK_path.obj.sec_id === sec_id) {
         PK_path.obj = jsonobj
-        console.log('imported json / replaced x')
+        console.pk_log('imported json / replaced x')
+        // console.log('imported json / replaced x')
     } else {
-        alert(`
+        console.pk_log(`
     imported section does not match section id\n
     expected sec_id: ${PK_path.obj.sec_id}
     imported sec_id: ${sec_id}`)
@@ -545,7 +594,8 @@ function get_type_from_file() {
             is_later_game()
             break
         default:
-            alert('magic 2 diff val: ', u32(4))
+            console.pk_log(`magic value at u32(4)unexpected | expected magic values:67174573,67174574,67174575,134348960<br>
+                 u32(4) value is ${u32(4)}`)
         }
 
     }
@@ -700,7 +750,8 @@ function get_type_from_file() {
             }
             break
         default:
-            console.log(g.version)
+            console.pk_log(g.version)
+            // console.log(g.version)
             choose_file_format()
         }
     }
@@ -731,13 +782,9 @@ function get_type_from_file() {
     }
 
     function wrong_file_type() {
-        alert('wrong file type!')
+        console.pk_log(`<a style="color:red;">wrong file type!</a>`)
 
         buffer = null
-        u8 = null
-        u16 = null
-        u32 = null
-        f32 = null
         x = null
     }
 
@@ -798,6 +845,7 @@ function array_view_array(array_path) {
 function add_events() {
     const fileEditor = document.getElementById('file_editor');
     const fileview = document.getElementById('file_viewer');
+    var key = 'none'
 
     fileEditor.addEventListener('click', function(event) {
         const target = event.target;
@@ -828,15 +876,22 @@ function add_events() {
             // array_view_array()
 
         } else if (classname.includes("move_button")) {
-            if (target.innerText = "Up ▲") {// move up
-            } else {// move down
+            if (target.innerText = "Up ▲") {
+                console.pk_log('up not added')
+                // move up
+            } else {
+                console.pk_log('down not added')
+                // move down
             }
         } else if (classname.includes("copy_button")) {
-            console.log('?')
+            console.pk_log('copy_button not added')
+            // console.log('?')
         } else if (classname.includes("x_button")) {
-            console.log('?')
+            console.pk_log('x_button not added')
+            // console.log('?')
         } else if (classname.includes("plus_button")) {
-            console.log('?')
+            console.pk_log('plus_button not added')
+            // console.log('?')
         } else if (id.includes("json_download_button")) {
             let json_string = JSON.stringify(PK_path.obj)
             let string_filename = `PK_${g.type_string}_${get_section_name()}.json`
@@ -846,6 +901,43 @@ function add_events() {
         }
 
     });
+
+    fileEditor.addEventListener('mouseover', function(event) {
+        fileEditor.focus()
+
+        const target = event.target;
+        let classname = target.className
+
+        if (classname.includes("obj_to_array")) {
+            if (key === "Control") {
+            target.value = "-> jump to first array"
+            }else if (key === "Shift") {
+            target.value = "-> jump to last array"
+            }else if (key === "Alt") {
+            target.value = "-> jump to random array"
+            }
+
+        }
+
+        })
+
+
+    fileEditor.addEventListener('mouseout', function(event) {
+        const target = event.target;
+        let classname = target.className
+
+        if (classname.includes("obj_to_array")) {
+            target.value = "Array"
+        }
+
+        })
+
+    fileEditor.addEventListener("keydown", function(event) {
+         key = event.key
+    })
+    fileEditor.addEventListener("keyup", function(event) {
+        key = 'none'
+    })
 
     fileview.addEventListener('click', function(event) {
         const target = event.target;
@@ -1004,7 +1096,8 @@ function display_path(str_path) {
 }
 
 function array_view_path(str_path) {
-    console.log(str_path)
+    console.pk_log(str_path)
+    // console.log(str_path)
 }
 function gen_array_view_file_first_time(path) {
     let html = ''
@@ -1512,5 +1605,55 @@ function ex_byte_alignment_testing(o) {
     let e = o
 
     return e
+
+}
+
+const drag_row = getElementSafely('drag_row');
+
+if (drag_row) {
+    drag_row.addEventListener("mousedown", handleDragBar);
+    function handleDragBar(e) {
+        body.style.userSelect = "none";
+        window.addEventListener('mousemove', mouseMoveListener, {
+            passive: true
+        });
+        window.addEventListener('mouseup', mouseUpListener, {
+            passive: true
+        });
+    }
+
+    function mouseMoveListener(e) {
+        let mouse_offset = e.pageY;
+        let main_program_height = outer_program.getBoundingClientRect().height;
+        let log_height = log.getBoundingClientRect().height;
+
+        let total = 825
+        let set_log_height = total - main_program_height
+        let set_main_program_height = mouse_offset
+
+        if (set_main_program_height < 101) {
+            set_main_program_height = 100
+        }
+        if (set_main_program_height > 788) {
+            set_main_program_height = 787
+        }
+        if (set_log_height < 35) {
+            set_log_height = 35
+        }
+        if (set_log_height > 745) {
+            set_log_height = 745
+        }
+
+        outer_program.style.height = set_main_program_height + "px";
+        log.style.height = set_log_height + "px";
+
+    }
+
+    function mouseUpListener(e) {
+        window.removeEventListener('mousemove', mouseMoveListener, {
+            passive: true
+        });
+        body.style.userSelect = "";
+    }
 
 }

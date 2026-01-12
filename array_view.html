@@ -26,7 +26,7 @@
         <script defer type="text/javascript" src="array_view_testing/dyn/bcc_pc.js"></script>
         <script defer type="text/javascript" src="array_view_testing/dyn/bcc_wii.js"></script>
     </head>
-    <body style='padding-top:3%'>
+    <body style='padding-top:0%'>
         <style id="debug_style">
             [data-debug="true"] {
                 display: none;
@@ -48,14 +48,21 @@
                         </span>
                         <span style="display: inline-block;width: 50.6%;text-align:end;" id="_2nd_data_bar"></span>
                     </div>
-                    <div style="white-space:nowrap" id="outer_program"><div class='noselect' style="padding-left:5px;width: 30%;height: 100%;overflow-y: auto;border: solid 1px #9d9898;display: inline-block;height:100%;box-sizing: border-box;" id="file_viewer" tabindex="0"></div><div style="background: #f2f2f2;width:0.5%;cursor: col-resize;display: inline-block;height:100%;" id="drag_bar"></div><div id="file_editor" style="width:69.5%;border:solid 1px #9d9898;display: inline-block;height:100%;overflow:auto;box-sizing: border-box;"></div>
+                    <div style="white-space:nowrap" id="outer_program"><div class='noselect' style="padding-left:5px;width: 30%;height: 100%;overflow-y: auto;border: solid 1px #9d9898;display: inline-block;height:100%;box-sizing: border-box;" id="file_viewer" tabindex="0"></div><div style="background: #f2f2f2;width:0.5%;cursor: col-resize;display: inline-block;height:100%;" id="drag_bar"></div><div id="file_editor" tabindex="1" style="width:69.5%;border:solid 1px #9d9898;display: inline-block;height:100%;overflow:auto;box-sizing: border-box;"></div>
                     </div>
                     <div id="show_debug" class="bar" style="border-left:solid 1px #9d9898;border-bottom:solid 1px #9d9898;border-right:solid 1px #9d9898;width: 100%;box-sizing:border-box;">
+                </div>
                     </div>
-                    <p style="margin: 2%;">
+<div style="height: 1%;background:white;cursor:ns-resize" class="bar" id="drag_row">
+                    </div>
+<div id="log" class="data_types_bar noselect" style="display: inline-grid; border: 1px solid rgb(157, 152, 152); width: 100%; box-sizing: border-box; white-space: nowrap; overflow-y: auto; scrollbar-width: none; height: 38px; align-content: space-between;">
+<div id="print_log_console" style="height: 100%;padding: 1%;"></div>
+<div id="button" style="padding-top: 50px;background: #f2f2f2;z-index:2;">
+<hr><a>don't disappear / show all logs</a><input id="log_checkbox" type="checkbox"></div>
+
+</div>                    <p style="margin: 0%;">
                         <a id="new_version_id" href="index.html">Go to the old version</a>
                     </p>
-                </div>
             </div>
         </section>
     </body>

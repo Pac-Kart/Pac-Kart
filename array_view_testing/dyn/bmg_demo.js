@@ -65,7 +65,7 @@ function im_bmg_demo_file_header(o, i, x) {
         im_bmg_demo_directory(16 + (i * 24), x[0].section_12, i)
         time_array.push(Date.now() - a)
     }
-    // console.log(time_array)
+    console.pk_log(`time in ms each ${g.file_name} datapack imported ${time_array}`)
 
 }
 
@@ -742,6 +742,8 @@ function ex_bmg_demo_file_header(o, x) {
     let global = ((x[0].section_12.length) * 24) + 16
     e = e + (x[0].section_12.length * 24)
 
+    let time_array = []
+
     for (let i = 0; i < x[0].section_12.length; i++) {
         let a = Date.now()
 
@@ -750,6 +752,8 @@ function ex_bmg_demo_file_header(o, x) {
     }
 
     // e = ex_s_offset(o + 12, e, ex_bmg_demo_directory, x.section_12, 'down');
+
+    console.pk_log(`time in ms each ${g.file_name} datapack exported ${time_array}`)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
 

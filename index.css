@@ -380,3 +380,22 @@ th {
 .log-log { color: silver }
 
 .log-warn, .log-error { font-weight: bold; }
+
+
+.disappearing-text {
+    /* Apply the animation */
+    animation-name: fadeOut;
+    animation-duration: 5s; /* How long the animation takes */
+    animation-timing-function: ease-in; /* Speed curve */
+    animation-fill-mode: forwards; /* Ensures the element stays disappeared after the animation ends */
+}
+
+/* Define the animation keyframes */
+@keyframes fadeOut {
+    0% {
+        opacity: 1; /* Fully visible at the start */
+    }
+    100% {
+        opacity: 0; /* Fully transparent at the end */
+    }
+}

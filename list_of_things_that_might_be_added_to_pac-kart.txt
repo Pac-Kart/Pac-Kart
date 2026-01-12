@@ -71,10 +71,6 @@ array_viewer ideas:
     have the ability to add a new file without importing
         save file would probably be selectable here as well
 
-    display somewhere on the screen how long it takes to load the file
-    have it dissapear after like 5 secs with an anim
-    also have one for when a file is exported
-
     maybe have the ability to load multiple .x* files at the same time
     this might be usuful for shared files
     when saving might just add to .zip file or smthn
@@ -140,8 +136,6 @@ add version number
             should open in new link
 
 add ability to change css colors, probably on file settings section
-
-add a pseudo console on top, will show last command ran or smthn
 
 add ability to check sha1 of imported file
     will tell you if file is not known/custom ?
