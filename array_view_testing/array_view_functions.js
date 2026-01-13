@@ -4,6 +4,7 @@
 document.getElementById("file_input").addEventListener("change", import_new_file);
 document.getElementById("create_file_button").addEventListener("click", create_new_file);
 document.getElementById("log_checkbox").addEventListener("click", log_is_checked);
+const inner_file_viewer = getElementSafely('inner_file_viewer');
 
 function log_is_checked(e) {
     let is_checked = e.srcElement.checked
@@ -55,7 +56,7 @@ async function import_new_file(event) {
                     const dataView = new DataView(buffer);
                     //.x* file array
 
-                    file_viewer.textContent = ''
+                    inner_file_viewer.textContent = ''
                     file_editor.textContent = ''
 
                     get_type_from_file()
@@ -119,7 +120,7 @@ console.pk_log = function(string_message) {
     setTimeout(function() {
         // Set the text content to an empty string, removing the text
         if (text) {
-            console.log('?')
+            // console.log('?')
             text.remove()
         }
     }, 5000);
@@ -202,73 +203,6 @@ function f32(o) {
     return new DataView(buffer).getFloat32(o, g.endian);
 }
 
-// async function import_new_file__x(event) {
-//     const files = event.currentTarget.files;
-//     const lastFileIndex = files.length - 1;
-
-//                 globalThis.x = []
-//                 globalThis.id_list = [];
-
-//     for (let i = 0; i < files.length; i++) {
-
-//         globalThis.g = get_g_obj(files[i])
-
-//         await readAFile(files[i], g, i, lastFileIndex);
-
-//     }
-
-//     function readAFile(file, g, currentIndex, lastIndex) {
-//         return new Promise( (resolve, reject) => {
-
-//             const reader = new FileReader();
-
-//             reader.onload = function(e) {
-//                 globalThis.buffer = e.target.result
-
-//                 g.file_name = file.name
-
-//                 document.getElementById("file_input").value = ''
-
-//                 const dataView = new DataView(buffer);
-
-//                 globalThis.u8 = (o) => dataView.getUint8(o, g.endian);
-//                 globalThis.u16 = (o) => dataView.getUint16(o, g.endian);
-//                 globalThis.u32 = (o) => dataView.getUint32(o, g.endian);
-//                 globalThis.f32 = (o) => dataView.getFloat32(o, g.endian);
-
-//                 // dynamic array
-//                 //.x* file array
-
-//                 file_viewer.textContent = ''
-//                 file_editor.textContent = ''
-
-//                 get_type_from_file()
-
-//                 // g.datapack_end = buffer.byteLength;
-//                 window[("im_" + g.type_string + "_x")]()
-
-//                 console.log(`%c ${g.file_name}`, 'color:#ff10ff')
-//                 if (lastIndex == Number(currentIndex)) {
-//                     globalThis.g.last_file = true;
-//                     create_new_array_view()
-//                 }
-
-//                 resolve();
-//             }
-//             ;
-
-//             reader.onerror = function(error) {
-//                 reject(error);
-//             }
-//             ;
-
-//             reader.readAsArrayBuffer(file);
-//         }
-//         );
-//     }
-
-// }
-
 function create_new_file() {
 
     globalThis.g = get_g_obj()
@@ -302,7 +236,7 @@ function create_new_array_view() {
 
     str_html = gen_array_view_file_first_time(x);
 
-    file_viewer.innerHTML = str_html;
+    // inner_file_viewer.innerHTML = str_html;
 
     document.getElementsByClassName('file_hover_not_selected')[0]?.click();
     file_viewer.focus();
@@ -310,6 +244,8 @@ function create_new_array_view() {
     globalThis.PK_path = {
         array_path: ["0"],
         obj: 0,
+        view: "path",
+        history: [],
     }
 
     // array_view_object()
@@ -397,7 +333,7 @@ function get_g_obj(is_file) {
     }
 
     return {
-        debug: true,
+        debug: false,
         divisible_prev_value: 0,
         game: 0,
         console: 0,
@@ -441,7 +377,7 @@ function choose_file_format() {
     }
 
     function choose_game() {
-        file_viewer.innerHTML = `
+        inner_file_viewer.innerHTML = `
         <div style="width: 90%;text-align: center;">choose type of file:</div>
         <div id='Motor_Mayhem_Vehicular_Combat_League' class="select_option_fileview">Motor Mayhem: Vehicular Combat League</div>
         <div id='hot_wheels_velocity_x' class="select_option_fileview">Hot Wheels Velocity X</div>
@@ -462,7 +398,7 @@ function choose_file_format() {
     }
 
     function choose_mm_version() {
-        file_viewer.innerHTML = `
+        inner_file_viewer.innerHTML = `
         <div style="width: 90%;text-align: center;">choose Version type:</div>
         <div data-version="4" data-console="pS2" data-endian="false" id='mm' class="select_option_fileview">PS2</div>
         `
@@ -472,7 +408,7 @@ function choose_file_format() {
     }
 
     function choose_hwvx_version() {
-        file_viewer.innerHTML = `
+        inner_file_viewer.innerHTML = `
         <div style="width: 90%;text-align: center;">choose Version type:</div>
         <div data-version="177" data-console="pS2" data-endian="false" id='hwvx_proto' class="select_option_fileview">PS2 Proto</div>
         <div data-version="183" data-console="pS2" data-endian="false" id='hwvx_ps2' class="select_option_fileview">PS2</div>
@@ -485,7 +421,7 @@ function choose_file_format() {
     }
 
     function choose_svtrb_version() {
-        file_viewer.innerHTML = `
+        inner_file_viewer.innerHTML = `
         <div style="width: 90%;text-align: center;">choose Version type:</div>
         <div data-version="273" data-console="pS2" data-endian="false" id='svtrb_ps2' class="select_option_fileview">PS2</div>
         <div data-version="273" data-console="psp" data-endian="false" id='svtrb_psp' class="select_option_fileview">PSP</div>
@@ -497,7 +433,7 @@ function choose_file_format() {
     }
 
     function choose_pmwr_version() {
-        file_viewer.innerHTML = `
+        inner_file_viewer.innerHTML = `
         <div style="width: 90%;text-align: center;">choose Version type:</div>
         <div data-version="243" data-console="xbox" data-endian="false" id='pmwr' class="select_option_fileview">Xbox</div>
         <div data-version="249" data-console="pS2" data-endian="false" id='pmwr' class="select_option_fileview">PS2 Demo</div>
@@ -512,7 +448,7 @@ function choose_file_format() {
     }
 
     function choose_bmg_version() {
-        file_viewer.innerHTML = `
+        inner_file_viewer.innerHTML = `
         <div style="width: 90%;text-align: center;">choose Version type:</div>
         <div data-version="288" data-console="wii" data-endian="true" id='bmg_demo' class="select_option_fileview">Wii Demo</div>
         <div data-version="312" data-console="wii" data-endian="true" id='bmg_demo' class="select_option_fileview">Wii</div>
@@ -524,7 +460,7 @@ function choose_file_format() {
     }
 
     function choose_bcc_version() {
-        file_viewer.innerHTML = `
+        inner_file_viewer.innerHTML = `
         <div style="width: 90%;text-align: center;">choose Version type:</div>
         <div data-version="315" data-console="wii" data-endian="true" id='bcc_wii' class="select_option_fileview">Wii</div>
         <div data-version="315" data-console="pc" data-endian="false" id='bcc_pc' class="select_option_fileview">PC</div>
@@ -581,7 +517,7 @@ function get_type_from_file() {
         switch (u32(4)) {
         case 67174573:
         case 134348960:
-            g.type_string = "mmcvl"
+            g.type_string = "mm"
             g.game = "motor_mayhem"
             create_new_array_view()
             return
@@ -791,7 +727,6 @@ function get_type_from_file() {
 }
 
 function array_view_array(array_path) {
-
     PK_path.obj = get_full_path(PK_path.array_path)
     let sec_name = get_section_name()
 
@@ -853,6 +788,7 @@ function add_events() {
         let id = target.id
         if (classname.includes("array_button")) {
             let key_i = target.parentElement.id
+
             // let str_array = array_path_local[key_i]
 
             PK_path.array_path.push(key_i)
@@ -868,8 +804,24 @@ function add_events() {
             if (str_key == undefined) {
                 return
             }
-
             PK_path.array_path.push(str_key)
+
+            if (key !== "none") {
+                PK_path.obj = get_full_path(PK_path.array_path)
+                let path_length = PK_path.obj.length - 1
+
+                if (key === "Control") {
+                    // check if first entry exists
+                    PK_path.array_path.push('0')
+                } else if (key === "Shift") {
+                    PK_path.array_path.push(path_length)
+                } else if (key === "Alt") {
+                    let n = Math.random() * path_length
+                    n = Math.round(n)
+                    PK_path.array_path.push(n)
+                }
+
+            }
 
             array_view_get_type(PK_path.array_path)
 
@@ -910,17 +862,16 @@ function add_events() {
 
         if (classname.includes("obj_to_array")) {
             if (key === "Control") {
-            target.value = "-> jump to first array"
-            }else if (key === "Shift") {
-            target.value = "-> jump to last array"
-            }else if (key === "Alt") {
-            target.value = "-> jump to random array"
+                target.value = "-> jump to first array"
+            } else if (key === "Shift") {
+                target.value = "-> jump to last array"
+            } else if (key === "Alt") {
+                target.value = "-> jump to random array"
             }
 
         }
 
-        })
-
+    })
 
     fileEditor.addEventListener('mouseout', function(event) {
         const target = event.target;
@@ -930,10 +881,10 @@ function add_events() {
             target.value = "Array"
         }
 
-        })
+    })
 
     fileEditor.addEventListener("keydown", function(event) {
-         key = event.key
+        key = event.key
     })
     fileEditor.addEventListener("keyup", function(event) {
         key = 'none'
@@ -942,6 +893,8 @@ function add_events() {
     fileview.addEventListener('click', function(event) {
         const target = event.target;
         let classname = target.className
+        let id = target.id
+
         if (classname.includes("plus_button")) {
             let key_i = target.dataset.x_id
             let index = Number(target.dataset.index)
@@ -961,12 +914,48 @@ function add_events() {
 
             // PK_path.array_path.push(key_i)
 
+        } else if (classname.includes("history_button")) {
+            let key_i = target.dataset.x_id
+            let index = Number(target.dataset.index)
+            let go_to_array = PK_path.history[index]
+
+            array_view_get_type(go_to_array)
+
+            // temp_key_i.parentElement.parentElement.children
+            // let str_array = array_path_local[key_i]
+
+            // PK_path.array_path.push(key_i)
+
+        } else if (id.includes("tree_view")) {
+            if (PK_path.view === "tree") {// already checked
+            } else {
+                console.pk_log('tree_view selected')
+                PK_path.view = "tree"
+                update_pk_tree_list()
+            }
+        } else if (id.includes("history_view")) {
+            if (PK_path.view === "history") {// already checked
+            } else {
+                console.pk_log('history view selected')
+                PK_path.view = "history"
+                update_pk_history_list()
+            }
+
+            // console.pk_log('history not added')
+        } else if (id.includes("path_view")) {
+            if (PK_path.view === "path") {// already checked
+            } else {
+                console.pk_log('path view selected')
+                PK_path.view = "path"
+                update_pk_path_list()
+            }
         }
     });
 
 }
 
 function array_view_get_type(array) {
+    format_pk_history_array(array)
     PK_path.obj = get_full_path(array)
 
     if (Array.isArray(PK_path.obj)) {
@@ -980,6 +969,10 @@ function array_view_get_type(array) {
 function array_view_object() {
 
     PK_path.obj = get_full_path(PK_path.array_path)
+    if (PK_path.obj === undefined) {
+        console.pk_log('PK_path.obj is undefined')
+        return
+    }
     let sec_name = get_section_name()
 
     let values_array = Object.values(PK_path.obj);
@@ -1041,17 +1034,52 @@ function get_full_path(array_path) {
 
     }
 
+    if (temp_array === undefined) {
+        console.pk_log("temp_array is undefined, moving to x_global[0]")
+        temp_array = x_global[0]
+        PK_path.array_path = ["0"]
+    }
+
     if (array_path.length === 0) {
         temp_array = x_global[0]
         PK_path.array_path = ["0"]
     }
 
-    update_pk_section_list()
+    get_update_pk_list_type()
+    // update_pk_path_list()
     return temp_array
-    // x_global[path_array[0]]
 }
 
-function update_pk_section_list() {
+function get_update_pk_list_type() {
+    switch (PK_path.view) {
+    case "tree":
+        update_pk_tree_list()
+        break
+    case "history":
+        update_pk_history_list()
+        break
+    case "path":
+        update_pk_path_list()
+        break
+    default:
+        console.pk_log(`unknown view ${PK_path.view}`)
+    }
+}
+
+function format_pk_history_array(array) {
+    console.pk_log(`history ${array}`)
+    PK_path.history.push(array)
+
+    // reduce duplicate arrays
+    PK_path.history = Array.from(new Set(PK_path.history.map(JSON.stringify)), JSON.parse)
+
+    while (PK_path.history.length > 20) {
+        PK_path.history.pop(-1)
+    }
+
+}
+
+function update_pk_path_list() {
     let html_list = ''
 
     for (let i = 0; i < PK_path.array_path.length; i++) {
@@ -1067,15 +1095,46 @@ function update_pk_section_list() {
     }
 
     let html = `
-<div style="display:inline-block;width:100%">
          <table style='width:100%;' >
             <tbody>
             ${html_list}
             </tbody>
         </table>
-</div>`
+`
 
-    file_viewer.innerHTML = html
+    inner_file_viewer.innerHTML = html
+
+}
+
+function update_pk_history_list() {
+    let html_list = ''
+
+    for (let i = 0; i < PK_path.history.length; i++) {
+        // let input_type = get_input_type(values_array[i])
+
+        // section_id = window[("get_" + g.type_string + "_sec_id")](str_path[i].sec_id)
+        html_list += `
+               <tr id="${i}">
+                  <td class='no_border history_button noselect' data-x_id="${i}" data-index="${i}">${PK_path.history[i].toString()}
+                  </td>
+               </tr>
+`
+    }
+
+    let html = `
+         <table style='width:100%;' >
+            <tbody>
+            ${html_list}
+            </tbody>
+        </table>
+`
+
+    inner_file_viewer.innerHTML = html
+
+}
+
+function update_pk_tree_list() {
+    inner_file_viewer.innerHTML = "wip"
 
 }
 
@@ -1136,7 +1195,12 @@ function gen_array_view_file_array(path, i_deep, limit=0) {
 
 function get_section_name() {
     let str_name = 'not found'
+    if (PK_path.obj === undefined) {
+        console.pk_log('PK_path.obj is undefined')
+        return ''
+    }
     if (Array.isArray(PK_path.obj)) {
+        // console.pk_log('PK_path.obj is array')
         return ''
     } else {
 
@@ -1216,7 +1280,7 @@ function dynamic_save() {
     globalThis.dynamic_buffer = new ArrayBuffer(268435455)
 
     // only 1st x file for now
-    window[("ex_" + g.type_string + "_file_header")](0, x_global[0].x_files[0].format[0])
+    window[("ex_" + g.type_string + "_x")](0, x_global[0].x_files[0].format[0])
 
     let totalbytelength = 0
     for (let buffer of buffer_array) {
@@ -1656,4 +1720,25 @@ if (drag_row) {
         body.style.userSelect = "";
     }
 
+}
+
+function convert_arraybuffer_base64(buffer) {
+    var binary = '';
+    var bytes = new Uint8Array(buffer);
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return {
+        buffer: window.btoa(binary),
+    };
+}
+
+function convert_base64_arraybuffer(string_base64) {
+    var binaryString = atob(string_base64.buffer);
+    var bytes = new Uint8Array(binaryString.length);
+    for (var i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
 }

@@ -77,16 +77,10 @@ array_viewer ideas:
 
     array shortcuts:
     ctrl + click array button in object
-        takes you to the first array object, skiping the list of arrays
-        changes the button text
         if no array creates one
     shift + click array button in object
-        takes you to the last array object, skiping the list of arrays
-        changes the button text
         if no array creates one
     alt + click array button in object
-        takes you to a random array object because idk
-        changes the button text
         if no array creates one
 
 have a settings section above the x array

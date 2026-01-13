@@ -340,6 +340,19 @@ th {
 .plus_button:hover {
     background: #00dbff;
 }
+
+.history_button {
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+    border: 0px;
+    height:5%;
+}
+
+.history_button:hover {
+    background: #a5ff00;
+}
+
 .array_button {
     text-align: center;
     width: 100%;
@@ -398,4 +411,15 @@ th {
     100% {
         opacity: 0; /* Fully transparent at the end */
     }
+}
+
+.fileview_display_options{
+    cursor: pointer;
+    align-content:center;
+    height:100%;
+}
+
+.fileview_display_options:hover {
+    color: white;
+    background: #787878;
 }

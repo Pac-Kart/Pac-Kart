@@ -150,29 +150,37 @@ function im_bmg_demo_directory(o, x, i) {
 
     g.file_dir_type = type
 
-    // im_bmg_demo_datapack(u32(o + 20) + directory_offset, x[i].datapack)
+    im_bmg_demo_datapack(u32(o + 20) + directory_offset, x[i].datapack, u32(o + 16))
 }
 
-// function im_bmg_demo_datapack(o, x) {
+// function im_bmg_demo_datapack(o, x, e) {
 //     g.m = 0
-//     x.push({
-//         id: gen_id(),
-//         audio: [],
-//         index_patch_list: [],
-//         audio_index_patch_padding: 0,
-//         ordered: [],
-//         linked_files: {
-//             string_1: [im_string(o + 80, o + 91)],
-//             u32_92: u32(o + 92),
-//             u32_96: u32(o + 96),
-//             string_2: [im_string(o + 100, o + 111)],
-//             u32_112: u32(o + 112),
-//             u32_116: u32(o + 116),
-//         },
-//     })
+//     // x.push({
+//     //     id: gen_id(),
+//     //     audio: [],
+//     //     index_patch_list: [],
+//     //     audio_index_patch_padding: 0,
+//     //     ordered: [],
+//     //     linked_files: {
+//     //         string_1: [im_string(o + 80, o + 91)],
+//     //         u32_92: u32(o + 92),
+//     //         u32_96: u32(o + 96),
+//     //         string_2: [im_string(o + 100, o + 111)],
+//     //         u32_112: u32(o + 112),
+//     //         u32_116: u32(o + 116),
+//     //     },
+//     // })
+//     let end_datapack = o + e
+//     let offset_patch_list = end_datapack - (u32(o + 12) * 4 + (u32(o + 56) * 8))
+//     offset_mid = offset_patch_list - u32(o)
+//     let index_patch_list_amount = u32(o + 16) + u32(o + 52) + u32(o + 28)
+//     index_patch_list_amount *= 8
 
-//     g.datapack_offset = o
-//     g.datapack_ref = x[0]
+//     index_patch_list_amount = divisible(index_patch_list_amount, 32)
+//     let index_patch_list = offset_mid - index_patch_list_amount
+
+//     // g.datapack_offset = o
+//     // g.datapack_ref = x[0]
 
 //     //calulate end of datapack
 //     let offset_after_datapack = get_datapack_end(o)
@@ -436,9 +444,15 @@ function im_bmg_demo_datapack(o, i, x) {
         u32_144: u32(o + 144),
     });
 
-    u32(o + 60) ? im_bmg_demo_texture_anim(u32(o + 60) + g.m, x[i].section_60) : 0;
+     x.push({
+        index_patch_list_buffer: buffer.slice(o, endoffset),
+        ordered_list_buffer: buffer.slice(o, endoffset),
+        offset_patch_list: buffer.slice(o, endoffset)
+    });
+
+    // u32(o + 60) ? im_bmg_demo_texture_anim(u32(o + 60) + g.m, x[i].section_60) : 0;
     // offset? 
-    u32(o + 108) ? im_bmg_demo_datapack_108(u32(o + 108) + g.m, x[i].section_108) : 0;
+    // u32(o + 108) ? im_bmg_demo_datapack_108(u32(o + 108) + g.m, x[i].section_108) : 0;
     // offset? 
     return x[i].id
     // 152 bytes;
