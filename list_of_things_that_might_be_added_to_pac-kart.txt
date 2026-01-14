@@ -131,11 +131,8 @@ add version number
 
 add ability to change css colors, probably on file settings section
 
-add ability to check sha1 of imported file
-    will tell you if file is not known/custom ?
-
 add import/export tables for outer datapack/sound only sections
-    mmcvl
+    mmcvl [f]
     hwvx_proto
     hwvx_gc
     hwvx_pc

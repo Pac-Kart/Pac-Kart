@@ -71,6 +71,7 @@ function im_mm_datapack(o, i, x) {
         // section_36: [],
         u32_36: u32(o + 36),
         u32_40: u32(o + 40),
+        u32_44: u32(o + 44),
         //amount?
         ordered: [],
         patch_list: [],
@@ -210,7 +211,7 @@ function ex_mm_file_header(o, x) {
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     su32(o + 8, x.u32_8)
-    ex_mm_datapack(o, x.section_datapack[0])
+    ex_mm_datapack(e, x.section_datapack[0])
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
@@ -229,6 +230,7 @@ function ex_mm_datapack(o, x) {
     su32(o +36, x.u32_36)
     su32(o +32, x.u32_32)
     su32(o +40, x.u32_40)
+    su32(o +44, x.u32_44)
 
     let ordered_length = x.u32_0
     let patch_offset = 60
