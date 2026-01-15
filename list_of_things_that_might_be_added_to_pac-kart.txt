@@ -26,6 +26,7 @@ info_ types idea
     "animation_patch" // is this needed?
     "sound_patch" // is this needed?
     "model_patch" // is this needed?
+    "multi" | "single" = only 1 section linked | "multi" = multiple sections |
     {} // object indicates unique values?
     {
     a // amount, number points to section if not null
@@ -71,10 +72,6 @@ array_viewer ideas:
     have the ability to add a new file without importing
         save file would probably be selectable here as well
 
-    maybe have the ability to load multiple .x* files at the same time
-    this might be usuful for shared files
-    when saving might just add to .zip file or smthn
-
     array shortcuts:
     ctrl + click array button in object
         if no array creates one
@@ -92,12 +89,10 @@ reduce padding checkbox
 convert file version to another type/console
     conversion probably just for console versions
     converting different game versions is probably not possible without a lot of information being lost
-zip file name?
 
-have some way to import / export sections to json
-    not sure how to handle buffers in this
-        just convert buffers to base64
-    have ability to import full json files from the import file button also
+have ability to import full json files from the import file button
+    how to handle multi import sections?
+    if json is imported this will override x files ?
 
 in the arrays array view:
 have some way to multi edit sections

@@ -23,8 +23,9 @@ async function import_new_file(event) {
     globalThis.temp_files = event.currentTarget.files;
     const lastFileIndex = temp_files.length - 1;
 
+    globalThis.x_global = []
     globalThis.x = []
-    globalThis.id_list = [];
+    globalThis.id_list = 0;
     let last_file_i = -1
 
     Object.keys(temp_files).forEach(i => {
@@ -39,49 +40,78 @@ async function import_new_file(event) {
                     last_file_i++
 
                     globalThis.g = get_g_obj(temp_files[i])
-
-                    // globalThis.g = {
-                    //     debug: false,
-                    //     divisible_prev_value: 0,
-                    //     game: 0,
-                    //     console: 0,
-                    //     version: 0,
-                    //     file_name: file.name,
-                    //     endian: true,
-                    //     datapack_end: 0,
-                    // };
-
                     globalThis.buffer = e.target.result
 
                     const dataView = new DataView(buffer);
-                    //.x* file array
 
                     inner_file_viewer.textContent = ''
                     file_editor.textContent = ''
 
                     get_type_from_file()
 
-                    if (g.type_string === "json") {} else if (g.type_string) {
+                    let import_end = false;
+
+                    if (g.type_string === 'not_binary') {
+                        // read
+                        const text_reader = new FileReader();
+                        try {
+                            text_reader.readAsText(file)
+                            text_reader.onload = (e) => {
+                                let string = e.target.result
+                                let is_json = isJsonString(string)
+                                console.pk_log(`${g.file_name} || ${last_file_i + 1}/last`)
+
+                                if (is_json) {
+                                    let is_right_version = import_json_file_to_top(string)
+                                    if (is_right_version !== false) {
+                                        x_global[0] = is_right_version
+                                        import_end = true
+                                        file_import_end()
+                                    }
+                                } else {
+                                    return false
+                                }
+
+                                function isJsonString(string) {
+                                    try {
+                                        JSON.parse(string);
+                                    } catch (e) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+
+                            }
+
+                        } catch (error) {}
+
+                    }
+
+                    if (g.type_string === "not_binary") {} else if (g.type_string === "json") {
+                        import_end = true
+                        x.push({})
+                    } else if (g.type_string) {
                         window[("im_" + g.type_string + "_x")](last_file_i)
                     }
-                    {// not file
+
+                    if (lastFileIndex === last_file_i) {
+                        if (g.type_string !== "not_binary") {
+                            import_end = true
+                        }
                     }
 
-                    // filecheck()
-
-                    // sha1_file_list_index.push(i)
-
-                    pk_debug ? console.pk_log(`${g.file_name} || ${last_file_i + 1}/${lastFileIndex + 1}`) : 0;
+                    // pk_debug ? console.pk_log(`${g.file_name} || ${last_file_i + 1}/${lastFileIndex + 1}`) : 0;
                     // console.log(`%c ${g.file_name} || ${last_file_i}/${lastFileIndex}`, 'color:#ff10ff')
                     // for (let temp_array_inCdex = 0; temp_array_index < temp_array__.length; temp_array_index++) {
                     // if (temp_array__[temp_array_index].files.includes(g.file_name)) {
                     //     temp_array__[temp_array_index].console += `<a class='f'> ${g.file_name}</a><hr><br>`
                     //     }
                     // }
-                    if (lastFileIndex == last_file_i) {
-                        globalThis.g.last_file = true;
-                        create_new_array_view()
-                        document.getElementById("file_input").value = ''
+                    if (import_end) {
+                        console.pk_log(`${g.file_name} || ${last_file_i + 1}/last`)
+                        file_import_end()
+                    } else {
+                        console.pk_log(`${g.file_name} || ${last_file_i + 1}/${lastFileIndex + 1}`)
                     }
                     //sorted by a-z, also by size
 
@@ -92,6 +122,12 @@ async function import_new_file(event) {
     }
 
     )
+}
+
+function file_import_end() {
+    globalThis.g.last_file = true;
+    create_new_array_view()
+    document.getElementById("file_input").value = ''
 }
 
 console.pk_log = function(string_message) {
@@ -126,7 +162,7 @@ console.pk_log = function(string_message) {
     }, 5000);
 }
 
-function import_single_file(from_function, event) {
+function import_single_file(from_function, type, id=0) {
     const uploadlink = document.createElement("input");
     uploadlink.type = "file";
     // uploadlink.hidden = "true";
@@ -137,14 +173,19 @@ function import_single_file(from_function, event) {
     document.getElementById("single_input_file").addEventListener("change", function(e) {
         const reader = new FileReader();
         try {
-            reader.readAsText(e.target.files[0])
+            if (type === "buffer") {
+                reader.readAsArrayBuffer(e.target.files[0])
+            } else {
+                reader.readAsText(e.target.files[0])
+            }
+
             reader.onload = (e) => {
                 let result = e.target.result
                 // console.pk_log(result)
                 // console.log(result)
 
                 uploadlink.remove();
-                from_function(result)
+                from_function(result, id)
             }
         } catch (error) {}
 
@@ -173,14 +214,46 @@ function check_if_json(string) {
     }
 }
 
+function check_if_buffer(buffer, id) {
+
+    let keys_array = Object.keys(PK_path.obj)
+    let values_array = Object.values(PK_path.obj);
+    let key = keys_array[id]
+    let value = values_array[id]
+
+    let base_string = convert_arraybuffer_base64(buffer)
+    PK_path.obj[key] = base_string
+    console.pk_log(`buffer uploaded to ${key}`)
+
+    array_view_get_type(PK_path.array_path)
+}
+
+function import_json_file_to_top(string) {
+    let jsonobj = JSON.parse(string)
+    let sec_id = jsonobj.sec_id
+
+    if (sec_id === "XSET") {
+        g.type_string = "json"
+        console.pk_log('imported json / replaced x')
+        return jsonobj
+    } else {
+        console.pk_log(`
+    imported section does not match section id\n
+    expected sec_id: XSET
+    imported sec_id: ${sec_id}`)
+        return false
+    }
+
+}
+
 function import_json_file(string) {
     let jsonobj = JSON.parse(string)
     let sec_id = jsonobj.sec_id
 
     if (PK_path.obj.sec_id === sec_id) {
-        PK_path.obj = jsonobj
         console.pk_log('imported json / replaced x')
-        // console.log('imported json / replaced x')
+        update_x_array_from_json(jsonobj)
+        array_view_get_type(PK_path.array_path)
     } else {
         console.pk_log(`
     imported section does not match section id\n
@@ -223,23 +296,19 @@ function create_new_array_view() {
     }
 
     let str_html = '';
+    if (g.type_string === "json") {
+    g.type_string = x_global[0].global_version
+    }else{
     generate_x_obj()
-
-    // if (g.is_import === true) {
-    // g.datapack_end = buffer.byteLength;
-    // window[("im_" + g.type_string + "_x")]()
-    // } else {
-    // window[("add_" + g.type_string + "_x")]()
-    // }
-
     append_to_x_files()
+    }
 
     str_html = gen_array_view_file_first_time(x);
 
     // inner_file_viewer.innerHTML = str_html;
 
     document.getElementsByClassName('file_hover_not_selected')[0]?.click();
-    file_viewer.focus();
+    file_editor.focus();
 
     globalThis.PK_path = {
         array_path: ["0"],
@@ -285,6 +354,7 @@ function create_new_array_view() {
     }
 
     function generate_x_obj() {
+
         globalThis.x_global = []
         x_global.push({
             sec_id: "XSET",
@@ -718,6 +788,7 @@ function get_type_from_file() {
     }
 
     function wrong_file_type() {
+        g.type_string = 'not_binary'
         console.pk_log(`<a style="color:red;">wrong file type!</a>`)
 
         buffer = null
@@ -781,6 +852,7 @@ function add_events() {
     const fileEditor = document.getElementById('file_editor');
     const fileview = document.getElementById('file_viewer');
     var key = 'none'
+    // var focus = 0;
 
     fileEditor.addEventListener('click', function(event) {
         const target = event.target;
@@ -843,22 +915,48 @@ function add_events() {
             // console.log('?')
         } else if (classname.includes("plus_button")) {
             console.pk_log('plus_button not added')
-            // console.log('?')
+            // need to diff between single and multi
+            // go up 1 to get sec id
+            // go to sepecific sorce and add
+            // readd arrayview so add button removes if single
+        } else if (classname.includes("download_buffer")) {
+            let keys_array = Object.keys(PK_path.obj)
+            let values_array = Object.values(PK_path.obj);
+            let key = keys_array[target.dataset.key_id]
+            let value = values_array[target.dataset.key_id]
+
+            let buffer = convert_base64_arraybuffer(value)
+            let string_filename = `PK_${g.type_string}_${get_section_name()}_${key}.dat`
+
+            download_file(buffer, string_filename)
+        } else if (classname.includes("upload_buffer")) {
+            import_single_file(check_if_buffer, "buffer", target.dataset.key_id)
+
         } else if (id.includes("json_download_button")) {
             let json_string = JSON.stringify(PK_path.obj)
             let string_filename = `PK_${g.type_string}_${get_section_name()}.json`
             download_file(json_string, string_filename)
         } else if (id.includes("json_upload_button")) {
-            import_single_file(check_if_json)
+            import_single_file(check_if_json, "text")
         }
 
     });
 
     fileEditor.addEventListener('mouseover', function(event) {
-        fileEditor.focus()
+        // if (focus === 0) {
+        // console.pk_log('file editor focused')
+        // fileEditor.focus()
+        //     focus = 1
+        // }
 
         const target = event.target;
         let classname = target.className
+
+        // if (fileEditor.contains(document.target)) {
+        //         console.pk_log('file editor contains true')
+        // }else{
+        //         console.pk_log('file editor contains false')
+        // }
 
         if (classname.includes("obj_to_array")) {
             if (key === "Control") {
@@ -952,6 +1050,14 @@ function add_events() {
         }
     });
 
+    // fileview.addEventListener('mouseover', function(event) {
+    //     if (focus === 1) {
+    //     console.pk_log('fileview focused')
+    //     fileview.focus()
+    //     focus = 0
+    //     }
+    // })
+
 }
 
 function array_view_get_type(array) {
@@ -981,7 +1087,7 @@ function array_view_object() {
     let html_list = ""
     let section_id = ""
     for (let i = 0; i < keys_array.length; i++) {
-        let input_type = get_input_type(values_array[i])
+        let input_type = get_input_type(values_array[i], i)
 
         // section_id = window[("get_" + g.type_string + "_sec_id")](str_path[i].sec_id)
         html_list += `
@@ -1048,6 +1154,23 @@ function get_full_path(array_path) {
     get_update_pk_list_type()
     // update_pk_path_list()
     return temp_array
+}
+
+function update_x_array_from_json(obj) {
+    let temp_array = x_global
+    let path = PK_path.array_path
+    let last_path = path[path.length - 1]
+    let temp_path;
+
+    for (let i = 0; i < path.length - 1; i++) {
+        temp_path = temp_array[path[i]]
+        // temp_array = Object.values(temp_path);
+        temp_array = temp_path
+
+    }
+
+    temp_array[last_path] = obj
+
 }
 
 function get_update_pk_list_type() {
@@ -1136,14 +1259,36 @@ function update_pk_history_list() {
 function update_pk_tree_list() {
     inner_file_viewer.innerHTML = "wip"
 
+    // probably need to have these saved somewhere
+    // 0 = closed
+    // 1 = open
+
 }
 
-function get_input_type(value) {
+function get_input_type(value, i=-1) {
     let input_type = ''
     if (Array.isArray(value)) {
         input_type = `<input class="obj_to_array" style='width:100%;' type='button' value="Array ${value.length}">`
+    } else if (typeof value === 'string') {
+        input_type = `<input style='width:100%;' type='text' value="${value}">`
+    } else if (value === true || value === false) {
+        input_type = `<input style='width:100%;' type='checkbox' value="${value}">`
+    } else if (typeof value === "number") {
+        input_type = `<input style='width:100%;' type='text' value="${value}">`
+    } else if (value === null) {
+        input_type = `<input style='width:100%;' type='text' value="${value}">`
+    } else if ("buffer"in value) {
+        input_type = `
+        <span style="display: inline-flex;width: 100%;justify-content: space-between;">
+        <a> buffer (${convert_base64_arraybuffer(value).byteLength}) bytes </a>
+        <span>
+            <button data-key_id="${i}" class="download_buffer" title="download buffer">⤓</button>
+            <button data-key_id="${i}" class="upload_buffer" title="upload buffer">⤒</button>
+        </span>
+        </span>
+`
     } else {
-        input_type = `<input style='width:100%;' type='text'  value="${value}">`
+        input_type = `<input style='width:100%;' type='text' value="${value}">`
     }
 
     return input_type
@@ -1200,7 +1345,8 @@ function get_section_name() {
         return ''
     }
     if (Array.isArray(PK_path.obj)) {
-        // console.pk_log('PK_path.obj is array')
+        console.pk_log('PK_path.obj is array')
+        // go up 1
         return ''
     } else {
 
@@ -1255,31 +1401,32 @@ function gen_array_view_file_object(path, i_deep, limit=0) {
 
 function save_file(e) {
 
-    //calculate what type of file is being saved
-    const fileName = x_global[0].x_files[0].name
-    let temp_buffer = dynamic_save()
+    let amt_files = x_global[0].x_files.length
 
-    temp_buffer.then( (value) => {
-        if (value === null) {
-            console.pk_log("buffer is null")
-            return
-        } else {
-            download_file(value, fileName)
+    for (let i = 0; i < amt_files; i++) {
+        let fileName = x_global[0].x_files[i].name
+        let temp_buffer = dynamic_save(x_global[0].x_files[i])
+
+        temp_buffer.then( (value) => {
+            if (value === null) {
+                console.pk_log("buffer is null")
+                return
+            } else {
+                download_file(value, fileName)
+            }
         }
+        )
     }
-    )
-
-    // download_file(temp_buffer, fileName)
 
 }
 
-async function dynamic_save() {
+async function dynamic_save(obj_x) {
 
     globalThis.buffer_array = []
     globalThis.dynamic_buffer = new ArrayBuffer(268435455)
 
     // only 1st x file for now
-    window[("ex_" + g.type_string + "_x")](0, x_global[0].x_files[0].format[0])
+    window[("ex_" + g.type_string + "_x")](0, obj_x.format[0])
 
     let totalbytelength = 0
     for (let buffer of buffer_array) {
@@ -1778,4 +1925,19 @@ function convert_base64_arraybuffer(string_base64) {
         bytes[i] = binaryString.charCodeAt(i);
     }
     return bytes.buffer;
+}
+
+function im_string(startIndex, endIndex, isNoEnd=undefined) {
+    if (startIndex === 0)
+        return '';
+    const chars = [];
+
+    while (!isNoEnd && u8(startIndex + g.m) !== 0) {
+        chars.push(String.fromCharCode(u8(startIndex + g.m)));
+        startIndex++;
+    }
+    if (chars.length === 0)
+        return '';
+
+    return chars.join('');
 }

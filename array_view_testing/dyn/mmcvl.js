@@ -17,7 +17,7 @@ function get_mm_sec_id(string) {
 /////////////////////
 /* start import list */
 
-async function im_mm_x() {
+async function im_mm_x(index) {
     x.push({
         sec_id: "AAAA",
         format: [],
@@ -26,7 +26,7 @@ async function im_mm_x() {
         name: g.file_name,
     })
 
-    im_mm_file_header(0, 0, x[0].format)
+    im_mm_file_header(0, 0, x[index].format)
 }
 
 function im_mm_file_header(o, i, x) {
@@ -144,6 +144,7 @@ function add_mm_datapack() {
 /* start info list */
 function info_mm_file_header() {
     return {
+        multi: 0,
         sec_id: ":zlA",
         u32_0: 0,
         u32_4: u32(o + 4),
