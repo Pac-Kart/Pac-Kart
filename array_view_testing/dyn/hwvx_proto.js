@@ -4,7 +4,7 @@
 function get_hwvx_proto_sec_id(string) {
     switch (string) {
     case 'gjbf':
-        return "file_header_x"
+        return "hwvx_proto_file_header"
         break
     case ']7Zf':
         return "hwvx_proto_directory"
@@ -48,13 +48,13 @@ function im_hwvx_proto_file_header(o, i, x) {
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
         u32_8: u32(o + 8),
-        section_12: [],
+        directory: [],
     });
 
     let time_array = []
-   for (let i = 0; i < u32(12); i++) {
+    for (let i = 0; i < u32(12); i++) {
         let a = Date.now()
-        im_hwvx_proto_directory(16 + (i * 24), i, x[i].section_12)
+        im_hwvx_proto_directory(16 + (i * 24), i, x[i].directory)
         time_array.push(Date.now() - a)
     }
     console.pk_log(`saved in ${time_array}`)
@@ -65,19 +65,42 @@ function im_hwvx_proto_file_header(o, i, x) {
 }
 
 function im_hwvx_proto_directory(o, i, x) {
-     let next_offset = o + 24
+    let next_offset = o + 24
+
+       g = {
+            divisible_prev_value: [],
+            debug: pk_debug,
+            type_string:g.type_string,
+            game: g.game,
+            console: g.console,
+            file_version: u32(8),
+            file_dir_type: 0,
+            file_name: g.file_name,
+            endian: g.endian,
+            datapack_offset: 0,
+            datapack_ref: 0,
+            ordered_ref: 0,
+            unordered_ref: 0,
+            m: 0,
+            texture_patch_ref: 0,
+            animation_patch_ref: 0,
+            sound_patch_ref: 0,
+            model_patch_ref: 0,
+            models_array: [],
+            // other arrays heres 
+          }
+
+    g.file_dir_type = return_directory_type(u32(o + 4))
 
     x.push({
         id: gen_id(),
         sec_id: "]7Zf",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
-        //check this
         u32_8: u32(o + 8),
         u32_12: u32(o + 12),
         u32_16: u32(o + 16),
-        //amount?
-        section_20: [],
+        section_datapack: [],
     });
 
     switch (u32(o + 4)) {
@@ -90,10 +113,10 @@ function im_hwvx_proto_directory(o, i, x) {
     case 8:
     case 9:
     case 10:
-    u32(o + 16) ? im_hwvx_proto_datapack(next_offset + u32(o + 20),0, x[i].section_20) : 0;
+        u32(o + 16) ? im_hwvx_proto_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack) : 0;
         break;
     case 7:
-    u32(o + 16) ? im_hwvx_proto_geo_datapack(next_offset + u32(o + 20),0, x[i].section_20) : 0;
+        u32(o + 16) ? im_hwvx_proto_geo_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack) : 0;
         break;
     }
     return x[i].id
@@ -112,7 +135,7 @@ function im_hwvx_proto_datapack(o, i, x) {
         let calc_audio = o + 120
         let afteroffsetlist = calc_audio + (u32(o + 8) * 4)
         for (let i = 0; i < u32(o + 8); i++) {
-            im_hwvx_proto_sound_offset_list(u32(calc_audio + (i * 4)) + afteroffsetlist, (i+1) == u32(o + 8),afteroffsetlist,end_datapack,o)
+            im_hwvx_proto_sound_offset_list(u32(calc_audio + (i * 4)) + afteroffsetlist, (i + 1) == u32(o + 8), afteroffsetlist, end_datapack, o)
         }
     }
 
@@ -255,14 +278,14 @@ function im_hwvx_proto_audio_list(o, i, x) {
 /* end import list */
 /////////////////////
 /* start add list */
-function add_file_header_x() {
+function add_hwvx_proto_file_header() {
     return {
         id: gen_id(),
         sec_id: "gjbf",
         u32_0: 0,
         u32_4: 0,
         u32_8: 0,
-        section_12: [],
+        directory: [],
     };
 
 }
@@ -271,13 +294,13 @@ function add_hwvx_proto_directory() {
     return {
         id: gen_id(),
         sec_id: "]7Zf",
+        multi:1,
         u32_0: 0,
-        u32_4: u32(o + 4),
-        //check this
+        u32_4: 0,
         u32_8: 0,
         u32_12: 0,
         u32_16: 0,
-        section_20: [],
+        section_datapack: [],
     };
 
 }
@@ -353,30 +376,32 @@ function add_hwvx_proto_audio_list() {
 /* end add list */
 /////////////////////
 /* start info list */
-function info_file_header_x() {
+function info_hwvx_proto_file_header() {
     return {
         sec_id: "gjbf",
-        u32_0: 0,
-        u32_4: 0,
-        u32_8: 0,
-        section_12: ["change this"],
+        multi: 0,
+        u32_0: {
+            n: "magic 1"
+        },
+        u32_4: {
+            n: "magic 2"
+        },
+        u32_8: {
+            n: "version"
+        },
+        section_12: ["]7Zf"],
     };
 
 }
 function info_hwvx_proto_directory() {
     return {
         sec_id: "]7Zf",
-        u32_0: 0,
-        u32_4: u32(o + 4),
-        //check this
-        u32_8: 0,
+        u32_0: {n:"version"},
+        u32_4: {n:"file type"},
+        u32_8:  {n:"index"},
         u32_12: 0,
-        u32_16: {
-            a: null
-        },
-        section_20: {
-            s: 0
-        },
+        u32_16: {n:"length"},
+        section_datapack: {s: null},
     };
 
 }
@@ -481,25 +506,85 @@ function info_hwvx_proto_audio_list() {
 /* end info list */
 /////////////////////
 /* start export list */
-function ex_file_header_x(o, x) {
-    let e = o + 16
-    su32(o + 0, x.u32_0)
-    su32(o + 4, x.u32_4)
-    su32(o + 8, x.u32_8)
+function ex_hwvx_proto_x(o, x) {
 
-    e = ex_s_offset(o + 12, e, ex_hwvx_proto_directory, x.section_12, 'down');
+    g = {
+        divisibility: 16,
+        divisible_prev_value: [],
+        type_string:g.type_string,
+        debug: pk_debug,
+        endian: g.endian,
+        file_dir_type: 0,
+        ordered_ref: 0,
+        unordered_ref: 0,
+        m: 0,
+        oa: [],
+        texture_patch_array: [],
+        animation_patch_array: [],
+        sound_patch_array: [],
+        model_patch_array: [],
+        tex_anims: 0,
+        /*
+        need to get arrays here
+        */
+    }
+
+    globalThis.directory_buffer = new ArrayBuffer(268435455)
+
+    buffer_array.push(directory_buffer)
+    dynamic_buffer = directory_buffer
+
+    let time_array = []
+    let a = Date.now()
+
+    ex_hwvx_proto_file_header(o, x)
+
+    time_array.push(Date.now() - a)
+
+    console.pk_log("saved in " + time_array)
+
+}
+
+function ex_hwvx_proto_file_header(o, x) {
+    let e = o + 16
+    su32(0, x.u32_0)
+    su32(4, x.u32_4)
+    su32(8, x.u32_8)
+    su32(12, x[0].directory.length)
+
+    let global = ((x[0].directory.length) * 24) + 16
+    e = e + (x[0].directory.length * 24)
+
+    let time_array = []
+    for (let i = 0; i < x[0].directory.length; i++) {
+        let a = Date.now()
+
+        e = ex_hwvx_proto_directory(16 + (i * 24), e, x[0].directory[i], global)
+        time_array.push(Date.now() - a)
+
+    }
+
+    console.pk_log("saved in " + time_array)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
 }
+function ex_hwvx_proto_directory(o, e, x, global) {
+    g.oa = []
+    g.texture_patch_array = []
+    g.animation_patch_array = []
+    g.sound_patch_array = []
+    g.model_patch_array = []
+    // add other arrays heres later
 
-function ex_hwvx_proto_directory(o, e, x) {
+    let ce = e
+    g.file_dir_type = return_directory_type(x.u32_4)
+
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
-    //?
     su32(o + 8, x.u32_8)
     su32(o + 12, x.u32_12)
-    //amount?   su32(o +16, x.u32_16)
+    su32(o + 20, e - global)
 
     switch (x.u32_4) {
     case 1:
@@ -511,12 +596,16 @@ function ex_hwvx_proto_directory(o, e, x) {
     case 8:
     case 9:
     case 10:
-        e = ex_ml(x.section_20, g.hwvx_proto_datapack_array, ex_hwvx_proto_datapack, g.unordered_ref.hwvx_proto_datapack, o + 20, e, 'down');
+        e = ex_hwvx_proto_datapack(16 + (i * 24), e, x[0].section_datapack[i], global)
         break;
     case 7:
-        e = ex_ml(x.section_20, g.hwvx_proto_geo_datapack_array, ex_hwvx_proto_geo_datapack, g.unordered_ref.hwvx_proto_geo_datapack, o + 20, e, 'down');
+        e = ex_hwvx_proto_geo_datapack(16 + (i * 24), e, x[0].section_datapack[i], global)
         break;
     }
+
+    dynamic_buffer = directory_buffer
+    su32(o + 16, datapack_buffer.byteLength + patch_buffer.byteLength + ordered_buffer.byteLength)
+
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
 }

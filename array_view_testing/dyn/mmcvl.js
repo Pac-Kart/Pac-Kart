@@ -190,6 +190,25 @@ function info_mm_datapack() {
 /////////////////////
 /* start export list */
 function ex_mm_x(o, x) {
+    g = {
+        divisibility: 16,
+        divisible_prev_value: [],
+        debug: pk_debug,
+        endian: g.endian,
+        file_dir_type: 0,
+        ordered_ref: 0,
+        unordered_ref: 0,
+        m: 0,
+        oa: [],
+        texture_patch_array: [],
+        animation_patch_array: [],
+        sound_patch_array: [],
+        model_patch_array: [],
+        tex_anims: 0,
+        /*
+        need to get arrays here
+        */
+    }
     globalThis.datapack_buffer = new ArrayBuffer(60)
 
     buffer_array.push(datapack_buffer)

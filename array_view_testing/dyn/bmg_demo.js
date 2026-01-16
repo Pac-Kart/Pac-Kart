@@ -31,9 +31,7 @@ function get_bmg_demo_sec_id(string) {
 ///////////////////////
 /* start import list */
 
-async function im_bmg_demo_x(i) {
-    // console.log("?")
-
+async function im_bmg_demo_x(index) {
     x.push({
         sec_id: "AAAA",
         format: [],
@@ -42,7 +40,7 @@ async function im_bmg_demo_x(i) {
         name: g.file_name,
     })
 
-    im_bmg_demo_file_header(0, 0, x[i].format)
+    im_bmg_demo_file_header(0, 0, x[index].format)
 
     delete globalThis.buffer
 
@@ -745,6 +743,44 @@ function info_bmg_demo_basic_audio_0_0() {
 /* end info list */
 ///////////////////
 /* start ex list */
+
+function ex_bmg_demo_x(o, x) {
+
+    g = {
+        divisibility: 16,
+        divisible_prev_value: [],
+        debug: pk_debug,
+        endian: g.endian,
+        file_dir_type: 0,
+        ordered_ref: 0,
+        unordered_ref: 0,
+        m: 0,
+        oa: [],
+        texture_patch_array: [],
+        animation_patch_array: [],
+        sound_patch_array: [],
+        model_patch_array: [],
+        tex_anims: 0,
+        /*
+        need to get arrays here
+        */
+    }
+
+    globalThis.directory_buffer = new ArrayBuffer(268435455)
+
+    buffer_array.push(directory_buffer)
+    dynamic_buffer = directory_buffer
+
+    let time_array = []
+    let a = Date.now()
+
+    ex_bmg_demo_file_header(o,x)
+
+    time_array.push(Date.now() - a)
+
+    console.pk_log("saved in " + time_array)
+
+}
 
 function ex_bmg_demo_file_header(o, x) {
     let e = o + 16

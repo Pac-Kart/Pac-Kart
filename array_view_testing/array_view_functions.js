@@ -297,10 +297,10 @@ function create_new_array_view() {
 
     let str_html = '';
     if (g.type_string === "json") {
-    g.type_string = x_global[0].global_version
-    }else{
-    generate_x_obj()
-    append_to_x_files()
+        g.type_string = x_global[0].global_version
+    } else {
+        generate_x_obj()
+        append_to_x_files()
     }
 
     str_html = gen_array_view_file_first_time(x);
@@ -1941,3 +1941,94 @@ function im_string(startIndex, endIndex, isNoEnd=undefined) {
 
     return chars.join('');
 }
+
+function return_directory_type(value) {
+    return ['car', 'interface', 'item', 'link', 'world', 'colliders', 'world texture', 'geometry', 'share', 'audio', 'music'][value];
+
+}
+
+function divisible(value, divisibility) {
+    const remainder = value % divisibility;
+    g.divisible_prev_value = [value, divisibility]
+    return remainder === 0 ? value : value + (divisibility - remainder);
+}
+
+function im_patch_list(o, a, t) {
+
+    const offsets = (g.console === "gamecube") ? [0, 6, 4] : [0, 4, 6];
+
+    return Array.from({
+        length: a
+    }, (_, i) => {
+        const baseOffset = i * 8;
+        return [u32(o + baseOffset + offsets[0]), u16(o + baseOffset + offsets[1]), u16(o + baseOffset + offsets[2]), t];
+    }
+    );
+}
+
+function in_ml(o, array, tfunction, x, offset_check, model_n) {
+    //multi linked
+    // append_global_multilinked
+    if (o) {
+        if (offset_check === o + g.m && tfunction.name === "im_models") {
+            if (model_n == undefined)
+                model_n = 0;
+            // if (model_n == undefined) {
+            //     model_n = 0
+            // }
+            return im_patch(g.model_patch_ref, o + g.m + model_n)
+            // shared model
+        } else {
+            let id = 0
+            if (array.includes(o)) {
+                let i = array.indexOf(o)
+                id = x[i].id
+            } else {
+                array.push(o)
+                id = tfunction(o + g.m, x.length, x)
+            }
+            return id
+        }
+        return 0
+    }
+    return 0
+
+}
+
+function im_patch(array, o, is_model) {
+    const patched_index = is_model ? 1 : 0;
+
+    for (const item of array) {
+        if (item[patched_index] === (o - g.m)) {
+            return [item];
+        }
+    }
+
+    return -1;
+}
+
+function get_string(begin, end, is_no_end) {
+
+    let temp_string
+    if (is_no_end === undefined) {
+        for (temp_string = ""; begin < end; begin++) {
+            temp_string += String.fromCharCode(u8(begin))
+        }
+    } else {
+        temp_string = ''
+        if (u8(begin) === 0) {
+            is_no_end = true
+        }
+        while (is_no_end === false) {
+            temp_string += String.fromCharCode(u8(begin))
+            begin++
+            if (u8(begin) === 0) {
+                is_no_end = true
+            }
+        }
+
+    }
+
+    return temp_string
+}
+
