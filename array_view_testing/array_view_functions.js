@@ -854,6 +854,14 @@ function add_events() {
     var key = 'none'
     // var focus = 0;
 
+    fileEditor.addEventListener('change', function(event) {
+        const target = event.target;
+        let keys_array = Object.keys(PK_path.obj)
+        let key_id = keys_array[target.dataset.key_id]
+        PK_path.obj[key_id] = target.value
+        console.pk_log(`changed ${key_id} to ${target.value}`)
+    });
+
     fileEditor.addEventListener('click', function(event) {
         const target = event.target;
         let classname = target.className
@@ -943,12 +951,6 @@ function add_events() {
     });
 
     fileEditor.addEventListener('mouseover', function(event) {
-        // if (focus === 0) {
-        // console.pk_log('file editor focused')
-        // fileEditor.focus()
-        //     focus = 1
-        // }
-
         const target = event.target;
         let classname = target.className
 
@@ -978,13 +980,12 @@ function add_events() {
         if (classname.includes("obj_to_array")) {
             target.value = "Array"
         }
-
     })
 
-    fileEditor.addEventListener("keydown", function(event) {
+    document.addEventListener("keydown", function(event) {
         key = event.key
     })
-    fileEditor.addEventListener("keyup", function(event) {
+    document.addEventListener("keyup", function(event) {
         key = 'none'
     })
 
@@ -1066,10 +1067,47 @@ function array_view_get_type(array) {
 
     if (Array.isArray(PK_path.obj)) {
         array_view_array(array)
+    } else if (typeof PK_path.obj === "string") {
+        array_view_string(array)
     } else {
         array_view_object(array)
     }
 
+}
+
+function array_view_string() {
+
+    PK_path.obj = get_full_path(PK_path.array_path)
+    let html = `
+<div style="display:inline-block;width:95%;padding:5px;">
+
+   <div style='height:15%'>
+        <span style="display: flex;width: 100%;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;height: 20px;"><a>string</a><div style="display: flex;">
+        <button title="download json" id="json_download_button">⤓</button>
+        <button title="upload json" id="json_upload_button">⤒</button>
+        </div>
+        </span>
+      <div class='save_records_boarder'>
+         <table style='width:100%;' >
+            <tbody>
+               <tr id="0">
+                  <td class='no_border' data-x_id="0" noselect'>string
+                  </td>
+                   <td class='no_border noselect arrow_buttons'>
+                       ${get_input_type(PK_path.obj, 0)}
+                 </td>
+               </tr>
+            </tbody>
+        </table>
+      </div>
+   </div>
+</div>`
+
+    file_editor.innerHTML = html
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+
+    // document.getElementById('game').value = TXFA.game
+    // document.getElementById("name").addEventListener('change', edit_change_name);
 }
 
 function array_view_object() {
@@ -1268,16 +1306,18 @@ function update_pk_tree_list() {
 function get_input_type(value, i=-1) {
     let input_type = ''
     if (Array.isArray(value)) {
-        input_type = `<input class="obj_to_array" style='width:100%;' type='button' value="Array ${value.length}">`
-    } else if (typeof value === 'string') {
-        input_type = `<input style='width:100%;' type='text' value="${value}">`
+        input_type = `<input data-key_id="${i}" class="obj_to_array" style='width:100%;' type='button' value="Array ${value.length}">`
     } else if (value === true || value === false) {
-        input_type = `<input style='width:100%;' type='checkbox' value="${value}">`
-    } else if (typeof value === "number") {
-        input_type = `<input style='width:100%;' type='text' value="${value}">`
+        input_type = `<input data-key_id="${i}" style='width:100%;' type='checkbox' value="${value}">`
     } else if (value === null) {
-        input_type = `<input style='width:100%;' type='text' value="${value}">`
-    } else if ("buffer"in value) {
+        input_type = `<input data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
+    } else if (typeof value === 'string') {
+        input_type = `<input data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
+    } else if (typeof value === "number") {
+        input_type = `<input data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
+    } else if ("string"in value) {
+        input_type = `<input data-key_id="${i}" style='width:100%;' type='text' value="${value.string}">`
+   } else if ("buffer"in value) {
         input_type = `
         <span style="display: inline-flex;width: 100%;justify-content: space-between;">
         <a> buffer (${convert_base64_arraybuffer(value).byteLength}) bytes </a>
@@ -1288,7 +1328,7 @@ function get_input_type(value, i=-1) {
         </span>
 `
     } else {
-        input_type = `<input style='width:100%;' type='text' value="${value}">`
+        input_type = `<input data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
     }
 
     return input_type
@@ -1928,18 +1968,25 @@ function convert_base64_arraybuffer(string_base64) {
 }
 
 function im_string(startIndex, endIndex, isNoEnd=undefined) {
-    if (startIndex === 0)
-        return '';
+    let return_string = ''
+    if (startIndex === 0) {
+        return {
+            string: return_string,
+        };
+    }
     const chars = [];
 
     while (!isNoEnd && u8(startIndex + g.m) !== 0) {
         chars.push(String.fromCharCode(u8(startIndex + g.m)));
         startIndex++;
     }
-    if (chars.length === 0)
-        return '';
 
-    return chars.join('');
+    return_string = chars?.join('')
+
+    return {
+        string: return_string,
+    };
+
 }
 
 function return_directory_type(value) {
@@ -2029,6 +2076,7 @@ function get_string(begin, end, is_no_end) {
 
     }
 
-    return temp_string
+    return {
+        string: temp_string
+    }
 }
-
