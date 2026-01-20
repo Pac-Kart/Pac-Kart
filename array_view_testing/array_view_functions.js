@@ -162,6 +162,9 @@ console.pk_log = function(string_message) {
     }, 5000);
 }
 
+console.pk_log(`<a style="color:red;">section is very unfinished</a>`)
+
+
 function import_single_file(from_function, type, id=0) {
     const uploadlink = document.createElement("input");
     uploadlink.type = "file";
@@ -1317,7 +1320,7 @@ function get_input_type(value, i=-1) {
         input_type = `<input data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
     } else if ("string"in value) {
         input_type = `<input data-key_id="${i}" style='width:100%;' type='text' value="${value.string}">`
-   } else if ("buffer"in value) {
+    } else if ("buffer"in value) {
         input_type = `
         <span style="display: inline-flex;width: 100%;justify-content: space-between;">
         <a> buffer (${convert_base64_arraybuffer(value).byteLength}) bytes </a>
@@ -1764,9 +1767,9 @@ function ex_string(o, e, x, d, oa) {
     // e = end
     // x = file array
     // d = divisible
-    // oa = offset array 
+    // oa = offset array
 
-    if (x[0] !== null && x[0] !== "") {
+    if (x !== null && x.string !== "") {
 
         if (oa === 0) {} else {
             g.oa.push(o)
@@ -1779,10 +1782,10 @@ function ex_string(o, e, x, d, oa) {
         }
 
         let i = 0
-        if (x.length) {
+        if (x.string.length) {
 
-            for (; i < x[0].length; i++) {
-                su8(e + i, x[0][i].charCodeAt())
+            for (; i < x.string.length; i++) {
+                su8(e + i, x.string[i].charCodeAt())
             }
             i++
             i = divisible(i, d)
@@ -1891,7 +1894,7 @@ function sf32(o, v) {
 
 function ex_byte_alignment_testing(o) {
     let e = o
-
+    e = window[("ex_" + g.type_string + "_byte_alignment_testing")](o)
     return e
 
 }
@@ -2079,4 +2082,21 @@ function get_string(begin, end, is_no_end) {
     return {
         string: temp_string
     }
+}
+
+function dyn_string(offset, XFA_string, mid, divis) {
+    if (divis === undefined) {
+        divis = g.divisibility
+    }
+    let i = 0
+    if (XFA_string.length) {
+
+        for (; i < XFA_string.length; i++) {
+            su8(offset + i, XFA_string[i].charCodeAt())
+        }
+        i++
+        i = divisible(i, divis)
+    }
+    g.divisible_prev_value = [offset, XFA_string, mid, divis]
+    return offset + i
 }

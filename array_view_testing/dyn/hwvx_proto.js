@@ -67,28 +67,28 @@ function im_hwvx_proto_file_header(o, i, x) {
 function im_hwvx_proto_directory(o, i, x) {
     let next_offset = o + 24
 
-       g = {
-            divisible_prev_value: [],
-            debug: pk_debug,
-            type_string:g.type_string,
-            game: g.game,
-            console: g.console,
-            file_version: u32(8),
-            file_dir_type: 0,
-            file_name: g.file_name,
-            endian: g.endian,
-            datapack_offset: 0,
-            datapack_ref: 0,
-            ordered_ref: 0,
-            unordered_ref: 0,
-            m: 0,
-            texture_patch_ref: 0,
-            animation_patch_ref: 0,
-            sound_patch_ref: 0,
-            model_patch_ref: 0,
-            models_array: [],
-            // other arrays heres 
-          }
+    g = {
+        divisible_prev_value: [],
+        debug: pk_debug,
+        type_string: g.type_string,
+        game: g.game,
+        console: g.console,
+        file_version: u32(8),
+        file_dir_type: 0,
+        file_name: g.file_name,
+        endian: g.endian,
+        datapack_offset: 0,
+        datapack_ref: 0,
+        ordered_ref: 0,
+        unordered_ref: 0,
+        m: 0,
+        texture_patch_ref: 0,
+        animation_patch_ref: 0,
+        sound_patch_ref: 0,
+        model_patch_ref: 0,
+        models_array: [],
+        // other arrays heres 
+    }
 
     g.file_dir_type = return_directory_type(u32(o + 4))
 
@@ -294,7 +294,7 @@ function add_hwvx_proto_directory() {
     return {
         id: gen_id(),
         sec_id: "]7Zf",
-        multi:1,
+        multi: 1,
         u32_0: 0,
         u32_4: 0,
         u32_8: 0,
@@ -396,12 +396,22 @@ function info_hwvx_proto_file_header() {
 function info_hwvx_proto_directory() {
     return {
         sec_id: "]7Zf",
-        u32_0: {n:"version"},
-        u32_4: {n:"file type"},
-        u32_8:  {n:"index"},
+        u32_0: {
+            n: "version"
+        },
+        u32_4: {
+            n: "file type"
+        },
+        u32_8: {
+            n: "index"
+        },
         u32_12: 0,
-        u32_16: {n:"length"},
-        section_datapack: {s: null},
+        u32_16: {
+            n: "length"
+        },
+        section_datapack: {
+            s: null
+        },
     };
 
 }
@@ -511,7 +521,7 @@ function ex_hwvx_proto_x(o, x) {
     g = {
         divisibility: 16,
         divisible_prev_value: [],
-        type_string:g.type_string,
+        type_string: g.type_string,
         debug: pk_debug,
         endian: g.endian,
         file_dir_type: 0,
