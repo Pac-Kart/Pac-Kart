@@ -54,12 +54,12 @@ function im_hwvx_proto_file_header(o, i, x) {
     let time_array = []
     for (let i = 0; i < u32(12); i++) {
         let a = Date.now()
-        im_hwvx_proto_directory(16 + (i * 24), i, x[i].directory)
+        im_hwvx_proto_directory(16 + (i * 24), i, x[0].directory)
         time_array.push(Date.now() - a)
     }
     console.pk_log(`saved in ${time_array}`)
 
-    return x[i].id
+    return x[0].id
     // 16 bytes;
 
 }
@@ -127,21 +127,6 @@ function im_hwvx_proto_directory(o, i, x) {
 function im_hwvx_proto_datapack(o, i, x) {
     let end_datapack = o + 120
 
-    if (u32(o + 8) || u32(o + 4)) {
-        end_datapack += (u32(o + 8) * 4 + u32(o + 4))
-    }
-
-    if (u32(o + 8)) {
-        let calc_audio = o + 120
-        let afteroffsetlist = calc_audio + (u32(o + 8) * 4)
-        for (let i = 0; i < u32(o + 8); i++) {
-            im_hwvx_proto_sound_offset_list(u32(calc_audio + (i * 4)) + afteroffsetlist, (i + 1) == u32(o + 8), afteroffsetlist, end_datapack, o)
-        }
-    }
-
-    let patchlistoffset = end_datapack
-    g.m = patchlistoffset + (u32(o + 12) * 4) + ((u32(o + 16) + u32(o + 28) + u32(o + 52) + u32(o + 56)) * 8);
-
     x.push({
         id: gen_id(),
         sec_id: "E@3Z",
@@ -181,7 +166,34 @@ function im_hwvx_proto_datapack(o, i, x) {
         u32_112: u32(o + 112),
         ordered: [],
         patch_list: [],
+        section_audio: [],
+        hwvx_proto_audio_index_patch_padding:[],
     });
+
+    if (u32(o + 8) || u32(o + 4)) {
+        end_datapack += (u32(o + 8) * 4 + u32(o + 4))
+    }
+
+    // if (u32(o + 8)) {
+    //     let offset_audio_list = o + 120
+    //     let offset_after_audio = offset_audio_list + (u32(o + 8) * 4)
+    //     for (let ii = 0; ii < u32(o + 8); ii++) {
+    //         im_hwvx_proto_sound_offset_list(offset_audio_list + (ii *4), ii, x[i].section_audio, offset_after_audio)
+    //     }
+    // }
+
+    let offset_after_datapack = o + 120
+    let offset_start_hwvx_proto_audio_list = offset_after_datapack + (u32(o + 8) * 4)
+    let offset_start_impulse_tracker = offset_start_hwvx_proto_audio_list + u32(o + 72)
+    let offset_start_hwvx_proto_audio_data_2 = offset_start_impulse_tracker + u32(o + 76)
+    let offset_index_patch = offset_start_hwvx_proto_audio_list + u32(o + 4)
+
+    let patchlistoffset = end_datapack
+    g.m = patchlistoffset + (u32(o + 12) * 4) + ((u32(o + 16) + u32(o + 28) + u32(o + 52) + u32(o + 56)) * 8);
+
+    let padding_test = im_hwvx_proto_audio(offset_after_datapack, x[i].section_audio, u32(o + 8))
+
+    x[0].hwvx_proto_audio_index_patch_padding = offset_index_patch - padding_test
 
     // let end_datapack = o + 120
 
@@ -190,10 +202,10 @@ function im_hwvx_proto_datapack(o, i, x) {
     // }
 
     // if (u32(o + 8)) {
-    //     let calc_audio = o + 120
-    //     let afteroffsetlist = calc_audio + (u32(o + 8) * 4)
+    //     let offset_audio_list = o + 120
+    //     let offset_after_audio = offset_audio_list + (u32(o + 8) * 4)
     //     for (let i = 0; i < u32(o + 8); i++) {
-    //         im_hwvx_proto_sound_offset_list(u32(calc_audio + (i * 4)) + afteroffsetlist, (i+1) == u32(o + 8),afteroffsetlist,end_datapack,o)
+    //         im_hwvx_proto_sound_offset_list(u32(offset_audio_list + (i * 4)) + offset_after_audio, (i+1) == u32(o + 8),offset_after_audio,end_datapack,o)
     //     }
     // }
 
@@ -248,7 +260,7 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
 
 }
 
-function im_hwvx_proto_sound_offset_list(o, i, x) {
+function im_hwvx_proto_sound_offset_list(o, i, x, e) {
     x.push({
         id: gen_id(),
         sec_id: "Fgpx",
@@ -274,6 +286,46 @@ function im_hwvx_proto_audio_list(o, i, x) {
     });
 
 }
+
+
+function im_hwvx_proto_audio(o, x, a) {
+
+    const after_offset_list = o + (a * 4)
+    let padding_test = after_offset_list + (a * 32)
+
+    x.push({
+        sec_id: "audi",
+        sound: []
+    })
+
+    for (let i = 0; i < a; i++) {
+        padding_test = im_hwvx_proto_audio_00(after_offset_list + u32(o + (i * 4)), x[0].sound, i)
+    }
+
+    return padding_test
+
+    function im_hwvx_proto_audio_00(o, x, i) {
+        x.push({
+            sec_id: "ad00",
+            id: gen_id(),
+            pmwr_pc_unknown1: u32(o + 8),
+            soundsamplerate: u32(o + 12),
+            pmwr_pc_unknown2: u32(o + 16),
+            pmwr_pc_unknown3: u32(o + 20),
+            sound_data: [],
+            padding: (u32(o + 0) + after_offset_list) - padding_test
+        })
+        const start_offset = u32(o + 0) + after_offset_list
+        const sound_buffer = convert_arraybuffer_base64(buffer.slice(start_offset, start_offset + u32(o + 4)))
+
+        x[i].sound_data.push(sound_buffer)
+
+        return start_offset + u32(o + 4)
+
+    }
+
+}
+
 
 /* end import list */
 /////////////////////
@@ -331,6 +383,7 @@ function add_hwvx_proto_datapack() {
         u32_92: 0,
         section_100: ["Pac-Kart"],
         u32_112: 0,
+        section_audio:[],
     };
 
 }
@@ -464,6 +517,7 @@ function info_hwvx_proto_datapack() {
         u32_92: 0,
         section_100: ["Pac-Kart"],
         u32_112: 0,
+        section_audio:["change this"],
     };
 
 }
@@ -622,30 +676,32 @@ function ex_hwvx_proto_directory(o, e, x, global) {
 
 function ex_hwvx_proto_datapack(o, x) {
     let e = o + 120
-    //amount?   su32(o +8, x.u32_8)
-    //amount?   su32(o +12, x.u32_12)
-    //amount?   su32(o +16, x.u32_16)
-    //amount?   su32(o +20, x.u32_20)
-    //amount?   su32(o +28, x.u32_28)
-    //amount?   su32(o +32, x.u32_32)
-    //amount?   su32(o +40, x.u32_40)
-    //amount?   su32(o +48, x.u32_48)
-    //amount?   su32(o +52, x.u32_52)
-    //amount?   su32(o +56, x.u32_56)
-    //amount?   su32(o +64, x.u32_64)
+    su32(o +8, x.u32_8)
+    su32(o +12, x.u32_12)
+    su32(o +16, x.u32_16)
+    su32(o +20, x.u32_20)
+    su32(o +28, x.u32_28)
+    su32(o +32, x.u32_32)
+    su32(o +40, x.u32_40)
+    su32(o +48, x.u32_48)
+    su32(o +52, x.u32_52)
+    su32(o +56, x.u32_56)
+    su32(o +64, x.u32_64)
     su32(o + 92, x.u32_92)
     su32(o + 112, x.u32_112)
 
-    e = ex_s_offset(o + 0, e, ex_ordered_list, x.section_0, 'down');
-    e = ex_s_offset(o + 4, e, ex_audio_section, x.section_4, 'down');
-    e = ex_s_offset(o + 24, e, ex_hwvx_proto_texture, x.section_24, 'down');
-    e = ex_s_offset(o + 44, e, ex_color_table, x.section_44, 'down');
-    e = ex_s_offset(o + 60, e, ex_hwvx_proto_texture_anims, x.section_60, 'down');
-    e = ex_s_offset(o + 68, e, ex_hwvx_proto_datapack_68, x.section_68, 'down');
-    e = ex_s_offset(o + 72, e, ex_impulse_tracker, x.section_72, 'down');
-    e = ex_s_offset(o + 76, e, ex_hwvx_proto_audio_data_2, x.section_76, 'down');
-    e = ex_string(o + 80, e, x.section_80)
-    e = ex_string(o + 100, e, x.section_100)
+    // x.section_audio
+
+    // e = ex_s_offset(o + 0, e, ex_ordered_list, x.section_0, 'down');
+    // e = ex_s_offset(o + 4, e, ex_audio_section, x.section_4, 'down');
+    // e = ex_s_offset(o + 24, e, ex_hwvx_proto_texture, x.section_24, 'down');
+    // e = ex_s_offset(o + 44, e, ex_color_table, x.section_44, 'down');
+    // e = ex_s_offset(o + 60, e, ex_hwvx_proto_texture_anims, x.section_60, 'down');
+    // e = ex_s_offset(o + 68, e, ex_hwvx_proto_datapack_68, x.section_68, 'down');
+    // e = ex_s_offset(o + 72, e, ex_impulse_tracker, x.section_72, 'down');
+    // e = ex_s_offset(o + 76, e, ex_hwvx_proto_audio_data_2, x.section_76, 'down');
+    // e = ex_string(o + 80, e, x.section_80)
+    // e = ex_string(o + 100, e, x.section_100)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e

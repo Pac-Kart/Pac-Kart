@@ -205,7 +205,7 @@ function get_pmwr_pc_sec_id(string) {
         return "pmwr_pc_world_24_12"
         break
     case 'oKj7':
-        return "pmwr_pc_pmwr_pc_texture_animation_section"
+        return "pmwr_pc_texture_animation_section"
         break
     case 'oVKp':
         return "pmwr_pc_pmwr_pc_texture_anim_1"
@@ -322,7 +322,7 @@ function get_pmwr_pc_sec_id(string) {
         return "pmwr_pc_GC_models_04_04_00_76_16"
         break
     case 'f>0G':
-        return "pmwr_pc_pmwr_pc_texture_animation_section"
+        return "pmwr_pc_texture_animation_section"
         break
     case 'DO;O':
         return "pmwr_pc_models_old"
@@ -2128,7 +2128,7 @@ function im_ordered(o, x) {
     }
 
     for (let i = 0; i < u32(g.datapack_offset + 48); i++) {
-        im_pmwr_pc_pmwr_pc_texture_animation_section(u32(g.datapack_offset + 60) + (i * 12) + g.m, i, x[0].pmwr_pc_texture_animation)
+        im_pmwr_pc_texture_animation_section(u32(g.datapack_offset + 60) + (i * 12) + g.m, i, x[0].pmwr_pc_texture_animation)
     }
 
     return
@@ -3591,7 +3591,7 @@ function im_pmwr_pc_texture(o, x) {
     return e
 }
 
-function im_pmwr_pc_pmwr_pc_texture_animation_section(o, i, x) {
+function im_pmwr_pc_texture_animation_section(o, i, x) {
     x.push({
         sec_id: "oKj7",
         id: gen_id(),
@@ -12742,8 +12742,6 @@ function ex_datapack(o, x) {
 
     ex_pmwr_pc_index_patch_list(io)
 
-    // g.mmm = io + index_patch_buffer.byteLength
-
     dynamic_buffer = datapack_buffer
 
     // g.pmwr_pc_texture_patch_array
@@ -12794,7 +12792,6 @@ function ex_ordered(o, x) {
     // if (x.file_specific.length && g.file_dir_type === 'share') {
     //     o -= 4
     // }
-    g.mmm = o
     let aftero = o
     let e = o
     o = 0
@@ -12888,7 +12885,7 @@ function ex_ordered(o, x) {
 
         for (let i = 0; i < g.ordered_ref.pmwr_pc_texture_animation.length; i++) {
 
-            e = ex_pmwr_pc_pmwr_pc_texture_animation_section(g.tex_anims + (i * 12), e, g.ordered_ref.pmwr_pc_texture_animation[i])
+            e = ex_pmwr_pc_texture_animation_section(g.tex_anims + (i * 12), e, g.ordered_ref.pmwr_pc_texture_animation[i])
         }
     }
 
@@ -14223,7 +14220,6 @@ function ex_pmwr_pc_world_08(o, x) {
     } else {
         su32(o + 20, o)
         g.oa.push(o + 20)
-        //???????
     }
 
     if (x.section_16.length) {
@@ -14474,7 +14470,7 @@ function ex_pmwr_pc_world_24_12(o, e, x) {
     return e
 }
 
-function ex_pmwr_pc_pmwr_pc_texture_animation_section(o, e, x) {
+function ex_pmwr_pc_texture_animation_section(o, e, x) {
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_pmwr_pc_texture_anim_1, x.section_00, 'none');
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
@@ -15548,7 +15544,7 @@ function dyn_model(offset, XFA) {
             return end_block
         }
 
-        function ex_pmwr_pc_pmwr_pc_texture_animation_section(o, e, x) {
+        function ex_pmwr_pc_texture_animation_section(o, e, x) {
 
             e = ex_ml(x.unordered_pmwr_pc_pmwr_pc_texture_anim_1_00, g.pmwr_pc_pmwr_pc_texture_anim_1_array, ex_pmwr_pc_pmwr_pc_texture_anim_1, g.unordered_ref.pmwr_pc_pmwr_pc_texture_anim_1, o + 0, e, 'down');
 
@@ -15854,7 +15850,7 @@ function ex_pmwr_pc_byte_alignment_testing(o) {
     if (g.file_name === 'Autosave.xpc') {
         switch (o) {
         case 32:
-            if (g.mmm === 208) {
+            if (g.m === 208) {
                 e += 512
             } else {
                 e += 576

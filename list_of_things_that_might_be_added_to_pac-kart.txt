@@ -158,11 +158,14 @@ add import/export tables for all sections
     svtrb_ps2
     pmwr_gc
     pmwr_pc
+        connect exporter to save function
     pmwr_ps2_demo
     pmwr_ps2
     pmwr_psp
     pmwr_xbox
     bmg_demo
+        how to handle bmg_demo_world_0_76 ?
+        how to handle ex_bmg_demo_world_28 [56] ?
     bmg_pc
     bmg_wii
     bcc_pc
@@ -202,7 +205,6 @@ hwvx
     reorder some unordered sections
 
 hwvx_proto
-    should append _proto to the section names
     move sections
     maybe show psuedo code here
 
