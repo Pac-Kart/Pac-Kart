@@ -1128,7 +1128,7 @@ function array_view_object() {
     let html_list = ""
     let section_id = ""
     for (let i = 0; i < keys_array.length; i++) {
-        let input_type = get_input_type(values_array[i], i)
+        let input_type = get_input_type(values_array[i], i, keys_array[i])
 
         // section_id = window[("get_" + g.type_string + "_sec_id")](str_path[i].sec_id)
         html_list += `
@@ -1164,8 +1164,33 @@ function array_view_object() {
     file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
 
+    check_section(sec_name)
     // document.getElementById('game').value = TXFA.game
     // document.getElementById("name").addEventListener('change', edit_change_name);
+}
+
+function check_section(string_name) {
+    let import_function = window[("im_" + string_name)]
+    let add_function = window[("add_" + string_name)]
+    let info_function = window[("info_" + string_name)]
+    let export_function = window[("ex_" + string_name)]
+
+    if (typeof import_function === "function") {
+    }else{
+        console.pk_log(`<a style="color:red;">${string_name} import_function null</a>`)
+    }
+    if (typeof add_function === "function") {
+    }else{
+        console.pk_log(`<a style="color:red;">${string_name} add_function null</a>`)
+    }
+    if (typeof info_function === "function") {
+    }else{
+        console.pk_log(`<a style="color:red;">${string_name} info_function null</a>`)
+    }
+    if (typeof export_function === "function") {
+    }else{
+        console.pk_log(`<a style="color:red;">${string_name} export_function null</a>`)
+    }
 }
 
 function get_full_path(array_path) {
@@ -1231,7 +1256,7 @@ function get_update_pk_list_type() {
 }
 
 function format_pk_history_array(array) {
-    console.pk_log(`history ${array}`)
+    // console.pk_log(`history ${array}`)
     PK_path.history.push(array)
 
     // reduce duplicate arrays
@@ -1306,9 +1331,11 @@ function update_pk_tree_list() {
 
 }
 
-function get_input_type(value, i=-1) {
+function get_input_type(value, i=-1, key="null") {
     let input_type = ''
-    if (Array.isArray(value)) {
+    if (key === "id" || key === "sec_id") {
+        input_type = `<input class="top_settings" data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
+    }else if (Array.isArray(value)) {
         input_type = `<input data-key_id="${i}" class="obj_to_array" style='width:100%;' type='button' value="Array ${value.length}">`
     } else if (value === true || value === false) {
         input_type = `<input data-key_id="${i}" style='width:100%;' type='checkbox' value="${value}">`
@@ -1388,7 +1415,7 @@ function get_section_name() {
         return ''
     }
     if (Array.isArray(PK_path.obj)) {
-        console.pk_log('PK_path.obj is array')
+        // console.pk_log('PK_path.obj is array')
         // go up 1
         return ''
     } else {
@@ -1405,6 +1432,10 @@ function get_section_name() {
             }
         } else {
             str_name = window[("get_" + g.type_string + "_sec_id")](str_sec_id)
+        }
+
+        if (str_name === null) {
+            console.pk_log(`<a style="color:red;">str_name is null</a>`)
         }
 
         return str_name
