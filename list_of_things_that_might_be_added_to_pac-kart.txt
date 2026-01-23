@@ -163,11 +163,10 @@ add import/export tables for all sections
     pmwr_ps2
     pmwr_psp
     pmwr_xbox
-    bmg_demo
+    bmg_demo [traversable, no exports]
         how to handle bmg_demo_world_0_76 ?
         how to handle ex_bmg_demo_world_28 [56] ?
-        im_bmg_demo_model_anim_1_type_a unfinshed
-        add log_array ?
+        fix ex_bmg_demo_ordered_list
     bmg_pc
     bmg_wii
     bcc_pc

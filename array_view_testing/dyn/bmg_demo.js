@@ -1022,6 +1022,9 @@ function get_bmg_demo_sec_id(string) {
     case 'gZtS':
         return "bmg_demo_model_anim_3_32"
         break
+    case 'mlao':
+        return "bmg_demo_model_anim_1"
+        break
     case 'fed9':
         return "bmg_demo_model_anim_1_type_a"
         break
@@ -1085,7 +1088,9 @@ function get_bmg_demo_sec_id(string) {
     case '3l7b':
         return "bmg_demo_model_anim_1_type_b_36t6"
         break
-
+    case '2tpa':
+        return "im_bmg_demo_model_anim_2"
+        break
     case 'Ca2a':
         return "bmg_demo_model_anim_2_type_a"
         break
@@ -1215,7 +1220,14 @@ function im_bmg_demo_directory(o, x, i, directory_offset) {
         model_patch_ref: 0,
     }
 
-    let type = ['car', 'interface', 'item', 'link', 'world', 'colliders', 'world texture', 'geometry', 'share', 'audio', 'music'][u32(o + 4)];
+    globalThis.log_array = {
+        p_offset: {
+            offset: 0,
+            array: [],
+            pointers: [],
+        },
+
+    }
 
     x.push({
         id: gen_id(),
@@ -1227,7 +1239,7 @@ function im_bmg_demo_directory(o, x, i, directory_offset) {
         datapack: [],
     })
 
-    g.file_dir_type = type
+    g.file_dir_type = return_directory_type(u32(o + 4))
 
     im_bmg_demo_datapack(u32(o + 20) + directory_offset, 0, x[i].datapack, u32(o + 16))
 }
@@ -1254,7 +1266,7 @@ function im_bmg_demo_datapack(o, i, x, e) {
         //amount?
         u32_52: u32(o + 52),
         //amount?
-        model_56: im_patch(g.model_ref, o + 56),
+        model_56: u32(o + 56),
         section_60: [],
         u32_80: u32(o + 80),
         //amount?
@@ -1270,12 +1282,14 @@ function im_bmg_demo_datapack(o, i, x, e) {
         u32_144: u32(o + 144),
         ordered: [],
         index_patch_list: [],
+        audio: [],
     });
 
     g.datapack_offset = o
     g.datapack_ref = x
 
     let end_datapack = o + e
+    let audio_offset = o + 152
     let offset_patch_list = end_datapack - (u32(o + 12) * 4 + (u32(o + 56) * 8))
     g.m = offset_patch_list - u32(o)
 
@@ -1285,16 +1299,24 @@ function im_bmg_demo_datapack(o, i, x, e) {
     index_patch_list_amount = divisible(index_patch_list_amount, 32)
     let index_patch_list = g.m - index_patch_list_amount
 
+    im_bmg_demo_get_general_offsets_list(o, g.m + u32(o))
+
     im_bmg_demo_index_patch_list(index_patch_list, x[0].index_patch_list)
 
     im_bmg_demo_ordered(g.m, x[i].ordered)
 
-    x[i].index_patch_list.push({// index_patch_list_buffer: buffer.slice(o, endoffset),
+    x[i].index_patch_list.push({
+    // index_patch_list_buffer: buffer.slice(o, endoffset),
     // ordered_list_buffer: buffer.slice(o, endoffset),
     // offset_patch_list: buffer.slice(o, endoffset)
     });
 
-    // for (let i = 0; i < u32(o + 48); i++) {
+    if (u32(o + 4)) {
+        let end_after_datapack = audio_offset + divisible((u32(o + 8) * 4), 32)
+        for (let ii = 0; ii < u32(o + 32); ii++) {
+            im_bmg_demo_basic_audio(audio_offset + (ii * 4), ii, x[i].audio, end_after_datapack)
+        }
+    }
 
     for (let ii = 0; ii < u32(o + 48); ii++) {
         im_bmg_demo_texture_anim(u32(o + 60) + (ii * 12) + g.m, ii, x[i].section_60);
@@ -1304,41 +1326,44 @@ function im_bmg_demo_datapack(o, i, x, e) {
         im_bmg_demo_datapack_108(u32(o + 108) + (ii * 8) + g.m, ii, x[i].section_108);
     }
 
-    // u32(o + 60) ? im_bmg_demo_texture_anim(u32(o + 60) + g.m, x[i].section_60) : 0;
-    // offset?
-    // u32(o + 108) ? im_bmg_demo_datapack_108(u32(o + 108) + g.m, x[i].section_108) : 0;
-    // offset?
     return x[i].id
     // 152 bytes;
 
 }
 
-function im_bmg_demo_basic_audio(o, i, x) {
+function im_bmg_demo_basic_audio(o, i, x, end) {
     x.push({
         id: gen_id(),
         sec_id: "XH?<",
         section_0: [],
     });
 
-    u32(o + 0) ? im_bmg_demo_basic_audio_0(u32(o + 0) + g.m, x[i].section_0) : 0;
-    // offset? 
+    im_bmg_demo_basic_audio_0(u32(o + 0) + end, x[i].section_0,end)
+    // offset?
     return x[i].id
     // 4 bytes;
 
 }
-function im_bmg_demo_basic_audio_0(o, x) {
+function im_bmg_demo_basic_audio_0(o, x,end) {
+    let start = end + u32(o + 0)
+    let start_string = start + u32(o + 4)
     x.push({
         sec_id: "11Hn",
-        u32_0: u32(o + 0),
+        section_0: [],
         u32_4: u32(o + 4),
         u32_8: u32(o + 8),
         u32_12: u32(o + 12),
+        string: im_string(start_string -g.m, 0, false),
     });
+
+    u32(o + 0) ? im_bmg_demo_basic_audio_0_0(u32(o + 0) + end, x[0].section_0,end,u32(o + 4)) : 0;
 
     // 16 bytes;
 
 }
-function im_bmg_demo_basic_audio_0_0(o, x) {
+function im_bmg_demo_basic_audio_0_0(o, x,end,length) {
+    let e = o + 96
+    let buffer_end_offset = e + length
     x.push({
         sec_id: "Ry[O",
         u32_0: u32(o + 0),
@@ -1359,6 +1384,7 @@ function im_bmg_demo_basic_audio_0_0(o, x) {
         u32_60: u32(o + 60),
         u32_68: u32(o + 68),
         u32_72: u32(o + 72),
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(e, buffer_end_offset)),
     });
 
     // 96 bytes;
@@ -1383,19 +1409,31 @@ function im_bmg_demo_index_patch_list(o, x) {
     // no reason to keep this in x
 }
 
+function im_bmg_demo_get_general_offsets_list(o, patch_offset) {
+    let patchlistoffset = patch_offset
+    patchlistoffset += u32(o + 56) * 8
+
+    log_array.p_offset.offset = patchlistoffset
+    for (let i = 0; i < u32(o + 12); i++) {
+        log_array.p_offset.array.push(u32(patchlistoffset + (i * 4)))
+    }
+
+    log_array.p_offset.array.sort(function(a, b) {
+        return a - b;
+    });
+
+}
+
 function im_bmg_demo_ordered(o, x) {
 
     x.push({
         sec_id: "ordr",
         id: gen_id(),
         bmg_demo_file_specific_section: [],
-        bmg_demo_texture_anim: [],
-        bmg_demo_datapack_108: [],
         bmg_demo_model_anim_1: [],
         bmg_demo_model_anim_2: [],
         bmg_demo_model_anim_3: [],
         bmg_demo_unordered_list: [],
-        bmg_demo_texture_anim_0: [],
         bmg_demo_offset_patch_list: [],
 
     })
@@ -1443,7 +1481,6 @@ function im_bmg_demo_unordered(o, x) {
         bmg_demo_world_4: [],
         bmg_demo_model_anim_1_type_a: [],
         bmg_demo_model_anim_2_type_a: [],
-        bmg_demo_model_anim_3: [],
         bmg_demo_activator: [],
         bmg_demo_event: [],
         bmg_demo_flag: [],
@@ -2245,7 +2282,7 @@ function im_bmg_demo_font(o, i, x) {
         section_28: [],
     });
 
-    x[i].unordered_bmg_demo_model_anim_3_4 = in_ml(u32(o + 4), g.bmg_demo_model_anim_3_array, im_bmg_demo_model_anim_3, g.unordered_ref.bmg_demo_model_anim_3);
+    x[i].unordered_bmg_demo_model_anim_3_4 = in_ml(u32(o + 4), g.bmg_demo_model_anim_3_array, im_bmg_demo_model_anim_3, g.ordered_ref.bmg_demo_model_anim_3);
     u32(o + 20) ? im_bmg_demo_font_20(u32(o + 20) + g.m, x[i].section_20) : 0;
 
     for (let ii = 0; ii < u32(o + 24); ii++) {
@@ -3607,7 +3644,7 @@ function im_bmg_demo_model_link(o, i, x) {
     });
 
     x[i].unordered_bmg_demo_model_sub_link_12 = in_ml(u32(o + 12), g.bmg_demo_model_sub_link_array, im_bmg_demo_model_sub_link, g.unordered_ref.bmg_demo_model_sub_link);
-    u32(o + 16) ? im_bmg_demo_model_anim_1(u32(o + 16) + g.m, x[i].section_16) : 0;
+    x[i].section_16 = in_ml(u32(o + 16), g.bmg_demo_model_anim_1_array, im_bmg_demo_model_anim_1, g.ordered_ref.bmg_demo_model_anim_1);
 
     u32(o + 28) ? im_bmg_demo_model_link_28(u32(o + 28) + g.m, x[i].section_28) : 0;
     u32(o + 32) ? im_bmg_demo_model_link_32(u32(o + 32) + g.m, x[i].section_32) : 0;
@@ -3618,12 +3655,20 @@ function im_bmg_demo_model_link(o, i, x) {
 
 }
 
-function im_bmg_demo_model_anim_1(o, x) {
+function im_bmg_demo_model_anim_1(o, i, x) {
+    x.push({
+        sec_id: "mlao",
+        type: 0,
+        section: [],
+    });
 
     if (u32(o) === 2860548033) {
-        im_bmg_demo_model_anim_1_type_b(o, 0, x)
+        x[i].type = "b"
+        // x[i].section = in_ml(o - g.m, g.bmg_demo_model_anim_1_type_a_array, im_bmg_demo_model_anim_1_type_a, g.unordered_ref.bmg_demo_model_anim_1_type_a);
+        im_bmg_demo_model_anim_1_type_b(o, 0, x[i].section)
     } else {
-        im_bmg_demo_model_anim_1_type_a(o, 0, x)
+        x[i].type = "a"
+        x[i].section = in_ml(o - g.m, g.bmg_demo_model_anim_1_type_a_array, im_bmg_demo_model_anim_1_type_a, g.unordered_ref.bmg_demo_model_anim_1_type_a);
     }
 
 }
@@ -3677,7 +3722,8 @@ function im_bmg_demo_model_sub_link(o, i, x) {
     });
 
     // x[0].unordered_bmg_demo_font_12 = in_ml(u32(o + 12), g.bmg_demo_font_array, im_bmg_demo_font, g.unordered_ref.bmg_demo_font);
-    u32(o + 0) ? bmg_demo_model_anim_2(u32(o + 0) + g.m, x[i].section_0) : 0;
+    x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_model_anim_2_array, im_bmg_demo_model_anim_2, g.ordered_ref.bmg_demo_model_anim_2);
+    // u32(o + 0) ? bmg_demo_model_anim_2(u32(o + 0) + g.m, x[i].section_0) : 0;
     // offset?
 
     for (let ii = 0; ii < u32(o + 4); ii++) {
@@ -3692,11 +3738,18 @@ function im_bmg_demo_model_sub_link(o, i, x) {
 
 }
 
-function bmg_demo_model_anim_2(o, x) {
+function im_bmg_demo_model_anim_2(o, i, x) {
+    x.push({
+        sec_id: "2tpa",
+        type: 0,
+        section: [],
+    });
     if (u32(o) === 2852208671) {
-        im_bmg_demo_model_anim_2_type_b(o, 0, x)
+        x[0].type = "b"
+        im_bmg_demo_model_anim_2_type_b(o, 0, x[i].section)
     } else {
-        im_bmg_demo_model_anim_2_type_a(o, 0, x)
+        x[0].type = "a"
+        x[i].section = in_ml(o - g.m, g.bmg_demo_model_anim_2_type_a_array, im_bmg_demo_model_anim_2_type_a, g.unordered_ref.bmg_demo_model_anim_2_type_a);
     }
 }
 
@@ -5274,14 +5327,14 @@ function im_bmg_demo_extended_world_link(o, i, x) {
         f32_24: f32(o + 24),
     });
 
-   switch (u8(o + 8)) {
-   case 0:
+    switch (u8(o + 8)) {
+    case 0:
         switch (u8(o + 4)) {
         case 1:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_20_array, im_bmg_demo_world_20, g.unordered_ref.bmg_demo_world_20);
+            x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_20_array, im_bmg_demo_world_20, g.unordered_ref.bmg_demo_world_20);
             break
         case 11:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_84_array, im_bmg_demo_world_84, g.unordered_ref.bmg_demo_world_84);
+            x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_84_array, im_bmg_demo_world_84, g.unordered_ref.bmg_demo_world_84);
             break
         default:
         }
@@ -5289,19 +5342,19 @@ function im_bmg_demo_extended_world_link(o, i, x) {
     case 1:
         switch (u8(o + 7)) {
         case 0:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_12_array, im_bmg_demo_world_12, g.unordered_ref.bmg_demo_world_12);
+            x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_12_array, im_bmg_demo_world_12, g.unordered_ref.bmg_demo_world_12);
             break
         case 1:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_20_array, im_bmg_demo_world_20, g.unordered_ref.bmg_demo_world_20);
+            x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_20_array, im_bmg_demo_world_20, g.unordered_ref.bmg_demo_world_20);
             break
         case 10:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_68_array, im_bmg_demo_world_68, g.unordered_ref.bmg_demo_world_68);
+            x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_68_array, im_bmg_demo_world_68, g.unordered_ref.bmg_demo_world_68);
             break
         case 11:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_84_array, im_bmg_demo_world_84, g.unordered_ref.bmg_demo_world_84);
+            x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_84_array, im_bmg_demo_world_84, g.unordered_ref.bmg_demo_world_84);
             break
         case 13:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_92_array, im_bmg_demo_world_92, g.unordered_ref.bmg_demo_world_92);
+            x[i].section_0 = in_ml(u32(o + 0), g.bmg_demo_world_92_array, im_bmg_demo_world_92, g.unordered_ref.bmg_demo_world_92);
             break
         default:
             if (u32(o + 0)) {
@@ -5312,7 +5365,7 @@ function im_bmg_demo_extended_world_link(o, i, x) {
         break
     case 2:
     case 4:
-           x[i].section_0 = u32(o + 0)
+        x[i].section_0 = u32(o + 0)
         break
     default:
     }
@@ -6091,35 +6144,63 @@ function im_bmg_demo_model_anim_1_type_a(o, i, x) {
         u32_60: u32(o + 60),
     });
 
-    // u32(o + 24) ? im_bmg_demo_model_anim_1_type_a_24(u32(o + 24) + g.m, x[i].section_24) : 0;
-    // // offset? 
-    // u32(o + 28) ? im_bmg_demo_model_anim_1_type_a_28(u32(o + 28) + g.m, x[i].section_28) : 0;
-    // // offset? 
-    // u32(o + 32) ? im_bmg_demo_model_anim_1_type_a_32(u32(o + 32) + g.m, x[i].section_32) : 0;
-    // // offset? 
-    // u32(o + 36) ? im_bmg_demo_model_anim_1_type_a_36(u32(o + 36) + g.m, x[i].section_36) : 0;
-    // // offset? 
-    // u32(o + 52) ? im_bmg_demo_model_anim_1_type_a_52(u32(o + 52) + g.m, x[i].section_52) : 0;
+    if (log_array.p_offset.array.includes(o + 24 - g.m)) {
+        im_bmg_demo_model_anim_1_type_a_24(u32(o + 24) + g.m, x[i].section_24)
+    } else {
+        x[i].section_24 = u32(o + 24)
+    }
+
+    if (log_array.p_offset.array.includes(o + 28 - g.m)) {
+        im_bmg_demo_model_anim_1_type_a_28(u32(o + 28) + g.m, x[i].section_28)
+    } else {
+        x[i].section_28 = u32(o + 28)
+    }
+
+    if (log_array.p_offset.array.includes(o + 32 - g.m)) {
+        for (let ii = 0; ii < u32(o + 16); ii++) {
+            im_bmg_demo_model_anim_1_type_a_32(u32(o + 32) + (ii * 4) + g.m, ii, x[i].section_32);
+        }
+    } else {
+        x[i].section_32 = u32(o + 32)
+    }
+
+    if (log_array.p_offset.array.includes(o + 36 - g.m)) {
+        im_bmg_demo_model_anim_1_type_a_36(u32(o + 36) + g.m, x[i].section_36)
+    } else {
+        x[i].section_36 = u32(o + 36)
+    }
+
+    if (log_array.p_offset.array.includes(o + 52 - g.m)) {
+        im_bmg_demo_model_anim_1_type_a_52(u32(o + 52) + g.m, 0, x[i].section_52)
+    } else {
+        x[i].section_52 = u32(o + 52)
+    }
+
     return x[i].id
     // 64 bytes;
 
 }
 function im_bmg_demo_model_anim_1_type_a_24(o, x) {
+    let find_next_offset_i = (o + 1) - g.m
+
+    find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+
     x.push({
         sec_id: "e6Dh",
-        f32_0: f32(o + 0),
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
 
     // ??? bytes;
 
 }
 function im_bmg_demo_model_anim_1_type_a_28(o, x) {
+    let find_next_offset_i = (o + 1) - g.m
+
+    find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
     x.push({
         sec_id: "ZOf5",
-        f32_0: f32(o + 0),
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
-
-    // ??? bytes;
 
 }
 function im_bmg_demo_model_anim_1_type_a_32(o, i, x) {
@@ -6131,15 +6212,18 @@ function im_bmg_demo_model_anim_1_type_a_32(o, i, x) {
 
 }
 function im_bmg_demo_model_anim_1_type_a_36(o, x) {
+    let find_next_offset_i = (o + 1) - g.m
+
+    find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
     x.push({
         sec_id: "JeUR",
-        f32_0: f32(o + 0),
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
 
     // ??? bytes;
 
 }
-function im_bmg_demo_model_anim_1_type_a_52(o, x) {
+function im_bmg_demo_model_anim_1_type_a_52(o, i, x) {
     x.push({
         sec_id: "yToO",
         u32_0: u32(o + 0),
@@ -6153,16 +6237,53 @@ function im_bmg_demo_model_anim_1_type_a_52(o, x) {
         section_32: [],
     });
 
-    u32(o + 12) ? im_bmg_demo_model_anim_1_type_a_52_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    if (log_array.p_offset.array.includes(o + 12 - g.m)) {
+        for (let ii = 0; ii < u32(o + 0); ii++) {
+            im_bmg_demo_model_anim_1_type_a_52_12(u32(o + 12) + (ii * 2) + g.m, ii, x[i].section_12);
+        }
+    } else {
+        x[i].section_12 = u32(o + 12)
+    }
+
+    if (log_array.p_offset.array.includes(o + 16 - g.m)) {
+        for (let ii = 0; ii < u32(o + 8); ii++) {
+            im_bmg_demo_model_anim_1_type_a_52_16(u32(o + 16) + (ii * 2) + g.m, ii, x[i].section_16);
+        }
+    } else {
+        x[i].section_16 = u32(o + 16)
+    }
+
+    if (log_array.p_offset.array.includes(o + 20 - g.m)) {
+        for (let ii = 0; ii < u32(o + 4); ii++) {
+            im_bmg_demo_model_anim_1_type_a_52_20(u32(o + 20) + (ii * 2) + g.m, ii, x[i].section_20);
+        }
+    } else {
+        x[i].section_20 = u32(o + 20)
+    }
+
+    if (log_array.p_offset.array.includes(o + 24 - g.m)) {
+        for (let ii = 0; ii < u32(o + 0); ii++) {
+            im_bmg_demo_model_anim_1_type_a_52_24(u32(o + 24) + (ii * 4) + g.m, ii, x[i].section_24);
+        }
+    } else {
+        x[i].section_24 = u32(o + 24)
+    }
+
+    if (log_array.p_offset.array.includes(o + 28 - g.m)) {
+        u32(o + 28) ? im_bmg_demo_model_anim_1_type_a_52_28(u32(o + 28) + g.m, x[0].section_28) : 0;
+    } else {
+        x[i].section_28 = u32(o + 28)
+    }
+    if (log_array.p_offset.array.includes(o + 32 - g.m)) {
+        u32(o + 32) ? im_bmg_demo_model_anim_1_type_a_52_32(u32(o + 32) + g.m, x[0].section_32) : 0;
+    } else {
+        x[i].section_32 = u32(o + 32)
+    }
+
     // offset? 
-    u32(o + 16) ? im_bmg_demo_model_anim_1_type_a_52_16(u32(o + 16) + g.m, x[0].section_16) : 0;
     // offset? 
-    u32(o + 20) ? im_bmg_demo_model_anim_1_type_a_52_20(u32(o + 20) + g.m, x[0].section_20) : 0;
     // offset? 
-    u32(o + 24) ? im_bmg_demo_model_anim_1_type_a_52_24(u32(o + 24) + g.m, x[0].section_24) : 0;
     // offset? 
-    u32(o + 28) ? im_bmg_demo_model_anim_1_type_a_52_28(u32(o + 28) + g.m, x[0].section_28) : 0;
-    u32(o + 32) ? im_bmg_demo_model_anim_1_type_a_52_32(u32(o + 32) + g.m, x[0].section_32) : 0;
 
     // 36 bytes;
 
@@ -6202,18 +6323,24 @@ function im_bmg_demo_model_anim_1_type_a_52_24(o, i, x) {
 
 }
 function im_bmg_demo_model_anim_1_type_a_52_28(o, x) {
+    let find_next_offset_i = (o + 1) - g.m
+
+    find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
     x.push({
         sec_id: "cbDb",
-        f32_0: f32(o + 0),
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
 
     // ??? bytes;
 
 }
 function im_bmg_demo_model_anim_1_type_a_52_32(o, x) {
+    let find_next_offset_i = (o + 1) - g.m
+
+    find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
     x.push({
         sec_id: "]ZtJ",
-        f32_0: f32(o + 0),
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
 
     // 00 bytes;
@@ -6256,12 +6383,24 @@ function im_bmg_demo_model_anim_1_type_b_32(o, i, x) {
 function im_bmg_demo_model_anim_1_type_b_36(o, x) {
     x.push({
         sec_id: "GaI0",
+        type: u8(o),
         section_0: [],
     });
 
-    u32(o + 0) ? im_bmg_demo_model_anim_1_type_b_36t0(u32(o + 0) + g.m, x[0].section_0) : 0;
-    // offset? 
-
+    switch (x[0].type) {
+    case 0:
+     im_bmg_demo_model_anim_1_type_b_36t0(o, x[0].section_0)
+        break
+    case 3:
+     im_bmg_demo_model_anim_1_type_b_36t3(o, x[0].section_0)
+        break
+    case 5:
+     im_bmg_demo_model_anim_1_type_b_36t5(o, x[0].section_0)
+        break
+    case 6:
+     im_bmg_demo_model_anim_1_type_b_36t6(o, x[0].section_0)
+        break
+    }
     // 16/32 bytes;
 
 }
@@ -6292,7 +6431,7 @@ function im_bmg_demo_model_anim_1_type_b_36t3(o, x) {
 
     u32(o + 4) ? im_bmg_demo_model_anim_1_type_b_36(u32(o + 4) + g.m, x[0].section_4) : 0;
 
-    for (let i = 0; i < u32(o + 3); i++) {
+    for (let i = 0; i < u8(o + 3); i++) {
         im_bmg_demo_model_anim_1_type_b_36t3_8(u32(o + 8) + (i * 4) + g.m, i, x[0].section_8);
     }
 
@@ -6323,7 +6462,7 @@ function im_bmg_demo_model_anim_1_type_b_36t5(o, x) {
 
     u32(o + 4) ? im_bmg_demo_model_anim_1_type_b_36(u32(o + 4) + g.m, x[0].section_4) : 0;
 
-    for (let i = 0; i < u32(o + 3); i++) {
+    for (let i = 0; i < u8(o + 3); i++) {
         im_bmg_demo_model_anim_1_type_b_36t5_16(u32(o + 16) + (i * 1) + g.m, i, x[0].section_16);
     }
 
@@ -6609,7 +6748,7 @@ function im_bmg_demo_texture_anim(o, i, x) {
         section_0: [],
     });
 
-    u32(o + 0) ? im_bmg_demo_texture_anim_0(u32(o + 0) + g.m,0, x[i].section_0) : 0;
+    u32(o + 0) ? im_bmg_demo_texture_anim_0(u32(o + 0) + g.m, 0, x[i].section_0) : 0;
     // offset? 
     return x[i].id
     // 12 bytes;
@@ -6700,14 +6839,28 @@ function im_bmg_demo_world(o, i, x) {
     u32(o + 0) ? im_bmg_demo_world_0(u32(o + 0) + g.m, x[i].section_0) : 0;
     x[i].unordered_bmg_demo_world_4_4 = in_ml(u32(o + 4), g.bmg_demo_world_4_array, im_bmg_demo_world_4, g.unordered_ref.bmg_demo_world_4);
     x[i].unordered_bmg_demo_world_12_12 = in_ml(u32(o + 12), g.bmg_demo_world_12_array, im_bmg_demo_world_12, g.unordered_ref.bmg_demo_world_12);
-    x[i].unordered_bmg_demo_world_20_20 = in_ml(u32(o + 20), g.bmg_demo_world_20_array, im_bmg_demo_world_20, g.unordered_ref.bmg_demo_world_20);
+    for (let ii = 0; ii < u32(o + 16); ii++) {
+        x[i].section_20 = in_ml(u32(o + 20) + (ii * 128), g.bmg_demo_world_20_array, im_bmg_demo_world_20, g.unordered_ref.bmg_demo_world_20);
+        // im_bmg_demo_world_20(u32(o + 20) + (ii * 128) + g.m, ii, x[i].section_20);
+    }
     for (let ii = 0; ii < u32(o + 24); ii++) {
         im_bmg_demo_world_28(u32(o + 28) + (ii * 112) + g.m, ii, x[i].unordered_bmg_demo_world_28_28);
     }
-    x[i].unordered_bmg_demo_world_68_68 = in_ml(u32(o + 68), g.bmg_demo_world_68_array, im_bmg_demo_world_68, g.unordered_ref.bmg_demo_world_68);
+    for (let ii = 0; ii < u32(o + 64); ii++) {
+        x[i].section_68 = in_ml(u32(o + 68) + (ii * 112), g.bmg_demo_world_68_array, im_bmg_demo_world_68, g.unordered_ref.bmg_demo_world_68);
+        // im_bmg_demo_world_68(u32(o + 68)  + g.m, ii, x[i].);
+    }
     x[i].unordered_bmg_demo_world_84_84 = in_ml(u32(o + 84), g.bmg_demo_world_84_array, im_bmg_demo_world_84, g.unordered_ref.bmg_demo_world_84);
-    x[i].unordered_bmg_demo_world_92_92 = in_ml(u32(o + 92), g.bmg_demo_world_92_array, im_bmg_demo_world_92, g.unordered_ref.bmg_demo_world_92);
-    x[i].unordered_bmg_demo_world_116_116 = in_ml(u32(o + 116), g.bmg_demo_world_116_array, im_bmg_demo_world_116, g.unordered_ref.bmg_demo_world_116);
+
+    for (let ii = 0; ii < u32(o + 88); ii++) {
+        x[i].section_92 = in_ml(u32(o + 92) + (ii * 96), g.bmg_demo_world_92_array, im_bmg_demo_world_92, g.unordered_ref.bmg_demo_world_92);
+        // im_bmg_demo_world_92(u32(o + 92) + (ii * 96) + g.m, ii, x[i].section_92);
+    }
+
+    for (let ii = 0; ii < u32(o + 112); ii++) {
+        x[i].unordered_bmg_demo_world_116_116 = in_ml(u32(o + 116) + (ii * 112), g.bmg_demo_world_116_array, im_bmg_demo_world_116, g.unordered_ref.bmg_demo_world_116);
+        // im_bmg_demo_world_116(u32(o + 116) + (ii * 112) + g.m, ii, x[i].section_116);
+    }
     u32(o + 120) ? im_bmg_demo_world_120(u32(o + 120) + g.m, x[i].unordered_bmg_demo_world_120_120) : 0;
     x[i].unordered_bmg_demo_world_settings_172 = in_ml(u32(o + 172), g.bmg_demo_world_settings_array, im_bmg_demo_world_settings, g.unordered_ref.bmg_demo_world_settings);
 
@@ -6953,9 +7106,9 @@ function im_bmg_demo_world_28_72(o, x) {
     });
 
     if (u32(o)) {
-    for (let i = 0; i < get_bmg_demo_world_28_72_count; i++) {
-        im_bmg_demo_world_28_72_0(u32(o + 0) + (i * 4) + g.m, i, x[0].section_0);
-    }
+        for (let i = 0; i < get_bmg_demo_world_28_72_count; i++) {
+            im_bmg_demo_world_28_72_0(u32(o + 0) + (i * 4) + g.m, i, x[0].section_0);
+        }
     }
 
     // 32 bytes;
@@ -7039,7 +7192,8 @@ function im_bmg_demo_world_68(o, i, x) {
         u32_84: u32(o + 84),
     });
 
-    x[i].section_64 = in_ml(u32(o + 64), g.bmg_demo_activator_array, im_bmg_demo_activator, g.unordered_ref.bmg_demo_activator);    // offset? 
+    x[i].section_64 = in_ml(u32(o + 64), g.bmg_demo_activator_array, im_bmg_demo_activator, g.unordered_ref.bmg_demo_activator);
+    // offset? 
     return x[i].id
     // 112 bytes;
 
@@ -7059,8 +7213,8 @@ function im_bmg_demo_world_84(o, i, x) {
         section_64: [],
     });
 
-   x[0].section_64 = in_ml(u32(o + 64), g.bmg_demo_world_12_array, im_bmg_demo_world_12, g.unordered_ref.bmg_demo_world_12);
-  // offset? 
+    x[0].section_64 = in_ml(u32(o + 64), g.bmg_demo_world_12_array, im_bmg_demo_world_12, g.unordered_ref.bmg_demo_world_12);
+    // offset? 
     return x[i].id
     // 96 bytes;
 
@@ -14944,14 +15098,20 @@ function info_bmg_demo_model_anim_2_type_b_20_40() {
 
 function ex_bmg_demo_x(o, x) {
 
+    console.pk_log("save not finished")
+
+    return null
+
     g = {
         divisibility: 16,
         divisible_prev_value: [],
         debug: pk_debug,
         endian: g.endian,
         file_dir_type: 0,
+        type_string: g.type_string,
         ordered_ref: 0,
         unordered_ref: 0,
+        datapack_ref: 0,
         m: 0,
         oa: [],
         texture_patch_array: [],
@@ -14993,7 +15153,6 @@ function ex_bmg_demo_x(o, x) {
         bmg_demo_mysterious_array: [],
         bmg_demo_world_link_type_array: [],
         bmg_demo_world_settings_array: [],
-        bmg_demo_texture_anim_0_array: [],
     }
 
     globalThis.directory_buffer = new ArrayBuffer(268435455)
@@ -15019,15 +15178,15 @@ function ex_bmg_demo_file_header(o, x) {
     su32(o + 8, x.u32_08)
 
     let temp_offset = e
-    let global = ((x[0].section_12.length) * 24) + 16
-    e = e + (x[0].section_12.length * 24)
+    let global = ((x.section_12.length) * 24) + 16
+    e = e + (x.section_12.length * 24)
 
     let time_array = []
 
-    for (let i = 0; i < x[0].section_12.length; i++) {
+    for (let i = 0; i < x.section_12.length; i++) {
         let a = Date.now()
 
-        e = ex_bmg_demo_directory(temp_offset + (i * 24), e, x[0].section_12[i], global)
+        e = ex_bmg_demo_directory(temp_offset + (i * 24), e, x.section_12[i], global)
         time_array.push(Date.now() - a)
     }
 
@@ -15083,20 +15242,26 @@ function ex_bmg_demo_directory(o, e, x, global) {
     g.bmg_demo_mysterious_array = []
     g.bmg_demo_world_link_type_array = []
     g.bmg_demo_world_settings_array = []
-    g.bmg_demo_texture_anim_0_array = []
 
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     su32(o + 8, x.u32_8)
     su32(o + 20, e - global)
 
-    e = ex_bmg_demo_datapack(e, x.section_20[0])
+    e = ex_bmg_demo_datapack(e, x.datapack[0])
+    dynamic_buffer = directory_buffer
+    su32(o + 16, datapack_buffer.byteLength + index_patch_buffer.byteLength + ordered_buffer.byteLength + offset_patch_buffer.byteLength)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
 }
 
 function ex_bmg_demo_datapack(o, x) {
+    globalThis.datapack_buffer = new ArrayBuffer(268435455)
+
+    buffer_array.push(datapack_buffer)
+    dynamic_buffer = datapack_buffer
+
     let e = o + 152
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
@@ -15120,13 +15285,40 @@ function ex_bmg_demo_datapack(o, x) {
     su32(o + 124, x.u32_124)
     su32(o + 144, x.u32_144)
 
+    g.datapack_ref = x
+
     // e = ex_s_offset(o + 60, e, ex_bmg_demo_texture_anim, x.section_60, 'down');
     // e = ex_s_offset(o + 108, e, ex_bmg_demo_datapack_108, x.section_108, 'down');
 
     g.m = 0
-    ex_bmg_demo_ordered(g.m, x.ordered)
+    datapack_buffer = datapack_buffer.slice(0, io - o)
+
+    buffer_array[buffer_array.length - 1] = datapack_buffer
+
+    e = ex_bmg_demo_ordered(g.m, x.ordered[0])
+
+    if (x.section_60.length) {
+        dynamic_buffer = datapack_buffer
+        let temp_offset = e
+        su32(48, x.section_60.length)
+        dynamic_buffer = ordered_buffer
+
+        for (let i = 0; i < x.section_60.length; i++) {
+            e = ex_bmg_demo_texture_anim(g.tex_anims + (i * 12), e, x.section_60[i])
+        }
+    }
+
+    dynamic_buffer = datapack_buffer
+
+    ex_bmg_demo_index_patch_list(io)
+
+    dynamic_buffer = datapack_buffer
+
+    su32(0, ordered_buffer.byteLength)
+    e = ex_bmg_demo_offset_patch_list(e) + index_patch_buffer.byteLength
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
+
     return e
 }
 
@@ -15172,6 +15364,63 @@ function ex_bmg_demo_basic_audio_0_0(o, x) {
     return e
 }
 
+function ex_bmg_demo_offset_patch_list(o) {
+    globalThis.offset_patch_buffer = new ArrayBuffer((g.oa.length * 4) + (g.model_patch_array.length * 8))
+
+    buffer_array.push(offset_patch_buffer)
+    dynamic_buffer = offset_patch_buffer
+
+    let e = o + (g.oa.length * 4) + (g.model_patch_array.length * 8)
+    let i = 0
+    for (let m_i = 0; m_i < g.model_patch_array.length; m_i++,
+    i += 8) {
+        // su32(offset + (i * 8), g.model_patch_array[i])
+        su32(i, g.model_patch_array[m_i][0])
+        su16(i + 4, g.model_patch_array[m_i][1])
+        su16(i + 6, g.model_patch_array[m_i][2])
+    }
+    for (let g_i = 0; g_i < g.oa.length; g_i++,
+    i += 4) {
+        su32(i, g.oa[g_i])
+    }
+
+    // buffer_array[buffer_array.length -1] = offset_patch_buffer.slice(0,(g.oa.length * 4) + (g.model_patch_array.length * 8))
+
+    // index_patch_buffer = index_patch_buffer.slice(0,(g.oa.length * 4) + (g.model_patch_array.length * 8))
+
+    return e
+
+}
+function ex_bmg_demo_index_patch_list(o) {
+    let section_length = divisible((g.texture_patch_array.length + g.animation_patch_array.length + g.sound_patch_array.length) * 8, 32)
+    globalThis.index_patch_buffer = new ArrayBuffer(section_length)
+
+    buffer_array.push(index_patch_buffer)
+    dynamic_buffer = index_patch_buffer
+
+    let i = 0
+    for (let t_i = 0; t_i < g.texture_patch_array.length; t_i++,
+    i++) {
+        su32(i * 8, g.texture_patch_array[t_i][0])
+        su16((i * 8) + 4, g.texture_patch_array[t_i][1])
+        su16((i * 8) + 6, g.texture_patch_array[t_i][2])
+    }
+    for (let ta_i = 0; ta_i < g.animation_patch_array.length; ta_i++,
+    i++) {
+        su32((i * 8), g.animation_patch_array[ta_i][0])
+        su16((i * 8) + 4, g.animation_patch_array[ta_i][1])
+        su16((i * 8) + 6, g.animation_patch_array[ta_i][2])
+    }
+    for (let s_i = 0; s_i < g.sound_patch_array.length; s_i++,
+    i++) {
+        su32((i * 8), g.sound_patch_array[s_i][0])
+        su16((i * 8) + 4, g.sound_patch_array[s_i][1])
+        su16((i * 8) + 6, g.sound_patch_array[s_i][2])
+    }
+    // buffer_array[buffer_array.length -1] = index_patch_buffer.slice(0,i*8)
+    // index_patch_buffer = index_patch_buffer.slice(0,i*8)
+}
+
 function ex_bmg_demo_ordered(o, x) {
     globalThis.ordered_buffer = new ArrayBuffer(268435455)
 
@@ -15182,10 +15431,10 @@ function ex_bmg_demo_ordered(o, x) {
     let e = o
     o = 0
     g.m = o
-    g.unordered_ref = x.unordered[0]
+    g.unordered_ref = x.bmg_demo_unordered_list[0]
     g.ordered_ref = x
 
-    ex_bmg_demo_unordered(x.unordered[0])
+    ex_bmg_demo_unordered(x.bmg_demo_unordered_list[0])
 
     switch (g.file_dir_type) {
     case "interface":
@@ -15247,10 +15496,54 @@ function ex_bmg_demo_unordered(x) {
     generate_id_offset_array(g.bmg_demo_mysterious_array = [], x.bmg_demo_mysterious)
     generate_id_offset_array(g.bmg_demo_world_link_type_array = [], x.bmg_demo_world_link_type)
     generate_id_offset_array(g.bmg_demo_world_settings_array = [], x.bmg_demo_world_settings)
-    generate_id_offset_array(g.bmg_demo_texture_anim_0_array = [], x.bmg_demo_texture_anim_0)
 
 }
 
+function ex_bmg_demo_ordered_list(o) {
+    let e = o
+
+    if (g.datapack_ref.section_60.length) {
+        //this is calculated later
+        g.tex_anims = e
+        for (let i = 0; i < g.datapack_ref.section_60.length; i++) {
+            g.oa.push(g.tex_anims + (i * 12))
+        }
+        e += divisible(g.datapack_ref.section_60.length * 12, 16)
+    }
+
+    // if (g.ordered_ref.pmwr_pc_model_animation_1.length) {
+    //     e = ex_ma(g.ordered_ref.pmwr_pc_model_animation_1, g.pmwr_pc_model_animation_1_array, ex_pmwr_pc_model_animation_1, e, g.m)
+    // }
+    // if (g.ordered_ref.pmwr_pc_model_animation_2.length) {
+    //     e = ex_ma(g.ordered_ref.pmwr_pc_model_animation_2, g.pmwr_pc_model_animation_2_array, ex_pmwr_pc_model_animation_2, e, g.m)
+    // }
+
+    // if (g.ordered_ref.pmwr_pc_textures.length) {
+    //     dynamic_buffer = datapack_buffer
+
+    //     su32(20, g.ordered_ref.pmwr_pc_textures.length)
+    //     su32(24, e)
+    //     dynamic_buffer = ordered_buffer
+
+    //     let temp_offset = e
+    //     e += divisible(g.ordered_ref.pmwr_pc_textures.length * 64, g.divisibility) + g.ordered_ref.pmwr_pc_texturepadding
+    //     for (let i = 0; i < g.ordered_ref.pmwr_pc_textures.length; i++) {
+    //         e = ex_pmwr_pc_textures(temp_offset + (i * 64), e, g.ordered_ref.pmwr_pc_textures[i])
+    //     }
+    //     ;if (g.console === 'ps2') {
+    //         e += 16
+    //     }
+    // }
+
+    // e = dyn_multiappend(g.ordered_ref.pmwr_pc_models, model_array, dyn_model, mid_section_2 + 16, mid)
+    // e = ex_ml(g.ordered_ref.pmwr_pc_models, g.pmwr_pc_link_array, ex_pmwr_pc_link, g.unordered_ref.pmwr_pc_link, o + 0, e, 'up');
+
+    // e = ex_s_offset(g.datapack_offset + 24, e, ex_pmwr_pc_textures, g.ordered_ref.pmwr_pc_textures, null)
+
+    // e = ex_ml(g.ordered_ref.pmwr_pc_textures, null , ex_pmwr_pc_texture, g.ordered_ref.pmwr_pc_textures, g.datapack_offset + 0, e, 'up');
+
+    return e
+}
 function ex_bmg_demo_basic(o, x) {
     let e = o + 32
     su32(o + 0, x.u32_0)
@@ -15263,6 +15556,8 @@ function ex_bmg_demo_basic(o, x) {
 function ex_bmg_demo_basic_4(o, x) {
     let e = o + 32
     su32(o + 4, x.u32_4)
+
+    e = ex_bmg_demo_ordered_list(e)
 
     switch (g.file_dir_type) {
     case "interface":
@@ -15353,6 +15648,8 @@ function ex_bmg_demo_world(o, x) {
     e = ex_ml(x.unordered_bmg_demo_world_settings_172, g.bmg_demo_world_settings_array, ex_bmg_demo_world_settings, g.unordered_ref.bmg_demo_world_settings, o + 172, e, 'down');
     e = ex_ml(x.unordered_bmg_demo_world_176_176, g.bmg_demo_world_176_array, ex_bmg_demo_world_176, g.unordered_ref.bmg_demo_world_176, o + 176, e, 'down');
     e = ex_ml(x.unordered_bmg_demo_world_208_208, g.bmg_demo_world_208_array, ex_bmg_demo_world_208, g.unordered_ref.bmg_demo_world_208, o + 208, e, 'down');
+
+    e = ex_bmg_demo_ordered_list(e)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
@@ -15641,7 +15938,7 @@ function ex_bmg_demo_world_68(o, e, x) {
     su32(o + 80, x.u32_80)
     su32(o + 84, x.u32_84)
 
-    e = ex_ml(x.section_64,g.bmg_demo_activator_array ,ex_bmg_demo_activator,g.unordered_ref.bmg_demo_activator, o + 64, e, 'down');
+    e = ex_ml(x.section_64, g.bmg_demo_activator_array, ex_bmg_demo_activator, g.unordered_ref.bmg_demo_activator, o + 64, e, 'down');
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
@@ -16416,7 +16713,7 @@ function ex_bmg_demo_font(o, x) {
     su32(o + 16, x.u32_16)
     //amount?   su32(o +24, x.u32_24)
 
-    e = ex_ml(x.unordered_bmg_demo_model_anim_3_4, g.bmg_demo_model_anim_3_array, ex_bmg_demo_model_anim_3, g.unordered_ref.bmg_demo_model_anim_3, o + 4, e, 'down');
+    e = ex_ml(x.unordered_bmg_demo_model_anim_3_4, g.bmg_demo_model_anim_3_array, ex_bmg_demo_model_anim_3, g.ordered_ref.bmg_demo_model_anim_3, o + 4, e, 'down');
     e = ex_s_offset(o + 20, e, ex_bmg_demo_font_20, x.section_20, 'down');
     if (x.section_28.length) {
         su32(o + 24, x.section_28.length)
@@ -19746,17 +20043,42 @@ function ex_bmg_demo_model_anim_1_type_a(o, x) {
     sf32(o + 12, x.f32_12)
     su32(o + 16, x.u32_16)
     su32(o + 20, x.u32_20)
-    //amount?   su32(o +40, x.u32_40)
+    su32(o + 40, x.u32_40)
+    //amount?
     su32(o + 44, x.u32_44)
     su32(o + 48, x.u32_48)
     su32(o + 56, x.u32_56)
     su32(o + 60, x.u32_60)
 
-    e = ex_s_offset(o + 24, e, ex_bmg_demo_model_anim_1_type_a_24, x.section_24, 'down');
-    e = ex_s_offset(o + 28, e, ex_bmg_demo_model_anim_1_type_a_28, x.section_28, 'down');
-    e = ex_s_offset(o + 32, e, ex_bmg_demo_model_anim_1_type_a_32, x.section_32, 'down');
-    e = ex_s_offset(o + 36, e, ex_bmg_demo_model_anim_1_type_a_36, x.section_36, 'down');
-    e = ex_s_offset(o + 52, e, ex_bmg_demo_model_anim_1_type_a_52, x.section_52, 'down');
+    if (Array.isArray(x.section_24)) {
+        e = ex_s_offset(o + 24, e, ex_bmg_demo_model_anim_1_type_a_24, x.section_24, 'down');
+    } else {
+        su32(o + 24, x.section_24)
+    }
+
+    if (Array.isArray(x.section_28)) {
+        e = ex_s_offset(o + 28, e, ex_bmg_demo_model_anim_1_type_a_28, x.section_28, 'down');
+    } else {
+        su32(o + 28, x.section_28)
+    }
+
+    if (Array.isArray(x.section_32)) {
+        e = ex_s_offset(o + 32, e, ex_bmg_demo_model_anim_1_type_a_32, x.section_32, 'down');
+    } else {
+        su32(o + 32, x.section_32)
+    }
+
+    if (Array.isArray(x.section_36)) {
+        e = ex_s_offset(o + 36, e, ex_bmg_demo_model_anim_1_type_a_36, x.section_36, 'down');
+    } else {
+        su32(o + 36, x.section_36)
+    }
+
+    if (Array.isArray(x.section_52)) {
+        e = ex_s_offset(o + 52, e, ex_bmg_demo_model_anim_1_type_a_52, x.section_52, 'down');
+    } else {
+        su32(o + 52, x.section_52)
+    }
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
@@ -19794,12 +20116,41 @@ function ex_bmg_demo_model_anim_1_type_a_52(o, x) {
     su32(o + 4, x.u32_4)
     su32(o + 8, x.u32_8)
 
-    e = ex_s_offset(o + 12, e, ex_bmg_demo_model_anim_1_type_a_52_12, x.section_12, 'down');
-    e = ex_s_offset(o + 16, e, ex_bmg_demo_model_anim_1_type_a_52_16, x.section_16, 'down');
-    e = ex_s_offset(o + 20, e, ex_bmg_demo_model_anim_1_type_a_52_20, x.section_20, 'down');
-    e = ex_s_offset(o + 24, e, ex_bmg_demo_model_anim_1_type_a_52_24, x.section_24, 'down');
-    e = ex_s_offset(o + 28, e, ex_bmg_demo_model_anim_1_type_a_52_28, x.section_28, 'down');
-    e = ex_s_offset(o + 32, e, ex_bmg_demo_model_anim_1_type_a_52_32, x.section_32, 'down');
+    if (Array.isArray(x.section_12)) {
+        e = ex_s_offset(o + 12, e, ex_bmg_demo_model_anim_1_type_a_52_12, x.section_12, 'down');
+    } else {
+        su32(o + 12, x.section_12)
+    }
+
+    if (Array.isArray(x.section_16)) {
+        e = ex_s_offset(o + 16, e, ex_bmg_demo_model_anim_1_type_a_52_16, x.section_16, 'down');
+    } else {
+        su32(o + 16, x.section_16)
+    }
+
+    if (Array.isArray(x.section_20)) {
+        e = ex_s_offset(o + 20, e, ex_bmg_demo_model_anim_1_type_a_52_20, x.section_20, 'down');
+    } else {
+        su32(o + 20, x.section_20)
+    }
+
+    if (Array.isArray(x.section_24)) {
+        e = ex_s_offset(o + 24, e, ex_bmg_demo_model_anim_1_type_a_52_24, x.section_24, 'down');
+    } else {
+        su32(o + 24, x.section_24)
+    }
+
+    if (Array.isArray(x.section_28)) {
+        e = ex_s_offset(o + 28, e, ex_bmg_demo_model_anim_1_type_a_52_28, x.section_28, 'down');
+    } else {
+        su32(o + 28, x.section_28)
+    }
+
+    if (Array.isArray(x.section_32)) {
+        e = ex_s_offset(o + 32, e, ex_bmg_demo_model_anim_1_type_a_52_32, x.section_32, 'down');
+    } else {
+        su32(o + 32, x.section_32)
+    }
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
@@ -20058,5 +20409,4 @@ function ex_bmg_demo_model_anim_2_type_b_20_40(o, e, x) {
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
 }
-
 /* end export list */

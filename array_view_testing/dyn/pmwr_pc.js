@@ -12696,7 +12696,6 @@ function ex_datapack(o, x) {
 
     buffer_array.push(datapack_buffer)
     dynamic_buffer = datapack_buffer
-    let buffer_o = o
 
     let e = o
     g.datapack_offset = o
@@ -13015,7 +13014,6 @@ function ex_ordered_list(o) {
         }
     }
 
-    // e = dyn_multiappend(g.ordered_ref.pmwr_pc_models, model_array, dyn_model, mid_section_2 + 16, mid)
     // e = ex_ml(g.ordered_ref.pmwr_pc_models, g.pmwr_pc_link_array, ex_pmwr_pc_link, g.unordered_ref.pmwr_pc_link, o + 0, e, 'up');
 
     // e = ex_s_offset(g.datapack_offset + 24, e, ex_pmwr_pc_textures, g.ordered_ref.pmwr_pc_textures, null)

@@ -1485,7 +1485,10 @@ function save_file(e) {
             if (value === null) {
                 console.pk_log("buffer is null")
                 return
-            } else {
+            }else if (value.byteLength === 0) {
+                console.pk_log("buffer size is 0")
+                return
+            }else {
                 download_file(value, fileName)
             }
         }
@@ -1512,6 +1515,10 @@ async function dynamic_save(obj_x) {
     for (let i = 0; i < buffer_array.length; i++) {
         final_array.set(new Uint8Array(buffer_array[i]), offset)
         offset += buffer_array[i].byteLength
+    }
+
+    if (1000000000 < offset) {
+        alert(`offset is very large, ${offset}`)
     }
 
     let file_is_same = true
@@ -2130,4 +2137,19 @@ function dyn_string(offset, XFA_string, mid, divis) {
     }
     g.divisible_prev_value = [offset, XFA_string, mid, divis]
     return offset + i
+}
+
+function get_next_value_in_array(arr, value) {
+  let nextHigher = Infinity; // Initialize with Infinity
+  let found = false;
+
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] > value) {
+      if (arr[i] < nextHigher) {
+        nextHigher = arr[i];
+        found = true;
+      }
+    }
+  }
+  return found ? nextHigher : null;
 }
