@@ -1868,10 +1868,13 @@ function im_bmg_demo_activator_236_32_76_12t8(o, x) {
         sec_id: "3XRv",
         u32_0: u32(o + 0),
         //amount?
-        unordered_bmg_demo_mysterious_4: 0,
+        unordered_bmg_demo_mysterious_4: [],
     });
 
-    x[0].unordered_bmg_demo_mysterious_4 = in_ml(u32(o + 4), g.bmg_demo_mysterious_array, im_bmg_demo_mysterious, g.unordered_ref.bmg_demo_mysterious);
+
+    for (let i = 0; i < u32(o + 0); i++) {
+        im_bmg_demo_mysterious(u32(o + 4) + (i * 64) + g.m, i, x[0].unordered_bmg_demo_mysterious_4);
+    }
 
     // 32 bytes;
 
@@ -1881,10 +1884,12 @@ function im_bmg_demo_activator_236_32_76_12t23(o, x) {
         sec_id: "g]4K",
         u32_0: u32(o + 0),
         //amount?
-        unordered_bmg_demo_mysterious_4: 0,
+        unordered_bmg_demo_mysterious_4: [],
     });
 
-    x[0].unordered_bmg_demo_mysterious_4 = in_ml(u32(o + 4), g.bmg_demo_mysterious_array, im_bmg_demo_mysterious, g.unordered_ref.bmg_demo_mysterious);
+for (let i = 0; i < u32(o + 0); i++) {
+    im_bmg_demo_mysterious(u32(o + 4) + (i * 64) + g.m, i, x[0].unordered_bmg_demo_mysterious_4);
+}
 
     // 32 bytes;
 
@@ -1903,10 +1908,12 @@ function im_bmg_demo_activator_252(o, x) {
         sec_id: "RcKR",
         u32_0: u32(o + 0),
         //amount?
-        unordered_bmg_demo_mysterious_4: 0,
+        unordered_bmg_demo_mysterious_4: [],
     });
 
-    x[0].unordered_bmg_demo_mysterious_4 = in_ml(u32(o + 4), g.bmg_demo_mysterious_array, im_bmg_demo_mysterious, g.unordered_ref.bmg_demo_mysterious);
+for (let i = 0; i < u32(o + 0); i++) {
+    im_bmg_demo_mysterious(u32(o + 4) + (i * 64) + g.m, i, x[0].unordered_bmg_demo_mysterious_4);
+}
 
     // 32 bytes;
 
@@ -2322,7 +2329,7 @@ function im_bmg_demo_idk(o, i, x) {
         section_24: [],
         u32_52: u32(o + 52),
         //amount?
-        unordered_bmg_demo_mysterious_56: 0,
+        unordered_bmg_demo_mysterious_56: [],
         u8_64: u8(o + 64),
         u8_65: u8(o + 65),
         u8_66: u8(o + 66),
@@ -2338,7 +2345,9 @@ function im_bmg_demo_idk(o, i, x) {
         break;
     }
     u32(o + 24) ? im_bmg_demo_idk_24(u32(o + 24) + g.m, x[i].section_24) : 0;
-    x[i].unordered_bmg_demo_mysterious_56 = in_ml(u32(o + 56), g.bmg_demo_mysterious_array, im_bmg_demo_mysterious, g.unordered_ref.bmg_demo_mysterious);
+for (let ii = 0; ii < u32(o + 52); ii++) {
+    im_bmg_demo_mysterious(u32(o + 56) + (ii * 64) + g.m, ii, x[i].unordered_bmg_demo_mysterious_56);
+}
     return x[i].id
     // 96 bytes;
 
@@ -3640,7 +3649,7 @@ function im_bmg_demo_model_link(o, i, x) {
         section_48: [],
         u32_52: u32(o + 52),
         //amount?
-        unordered_bmg_demo_mysterious_56: 0,
+        unordered_bmg_demo_mysterious_56: [],
     });
 
     x[i].unordered_bmg_demo_model_sub_link_12 = in_ml(u32(o + 12), g.bmg_demo_model_sub_link_array, im_bmg_demo_model_sub_link, g.unordered_ref.bmg_demo_model_sub_link);
@@ -3649,7 +3658,9 @@ function im_bmg_demo_model_link(o, i, x) {
     u32(o + 28) ? im_bmg_demo_model_link_28(u32(o + 28) + g.m, x[i].section_28) : 0;
     u32(o + 32) ? im_bmg_demo_model_link_32(u32(o + 32) + g.m, x[i].section_32) : 0;
     u32(o + 48) ? im_bmg_demo_model_link_48(u32(o + 48) + g.m, x[i].section_48) : 0;
-    x[i].unordered_bmg_demo_mysterious_56 = in_ml(u32(o + 56), g.bmg_demo_mysterious_array, im_bmg_demo_mysterious, g.unordered_ref.bmg_demo_mysterious);
+for (let ii = 0; ii < u32(o + 52); ii++) {
+    im_bmg_demo_mysterious(u32(o + 56) + (ii * 64) + g.m, ii, x[i].unordered_bmg_demo_mysterious_56);
+}
     return x[i].id
     // 64 bytes;
 

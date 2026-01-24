@@ -168,6 +168,8 @@ add import/export tables for all sections
         how to handle ex_bmg_demo_world_28 [56] ?
         fix ex_bmg_demo_ordered_list
     bmg_pc
+        fix ex_bmg_extended_world_link & ex_bmg_world_link links
+        figure out how texture length is calculated
     bmg_wii
     bcc_pc
     bcc_wii
