@@ -167,10 +167,10 @@ add import/export tables for all sections
         how to handle bmg_demo_world_0_76 ?
         how to handle ex_bmg_demo_world_28 [56] ?
         fix ex_bmg_demo_ordered_list
-    bmg_pc
+    bmg_pc [traversable, no exports]
         fix ex_bmg_extended_world_link & ex_bmg_world_link links
-        figure out how texture length is calculated
-    bmg_wii
+    bmg_wii [traversable, no exports]
+        does the D3DX9 section exist here?
     bcc_pc
     bcc_wii
 

@@ -29,6 +29,9 @@ function get_bmg_pc_sec_id(string) {
     case 'i3wP':
         return "bmg_pc_texture_offset_list_0"
         break
+    case 'atjj':
+        return "bmg_pc_d3dx9"
+        break
     case 'qf;h':
         return "bmg_pc_world"
         break
@@ -2796,7 +2799,14 @@ function im_bmg_pc_datapack(o, i, x, e) {
             im_bmg_pc_basic_audio(after_datapack + (ii * 8), ii, x[i].audio)
         }
 
-        end_after_datapack = end_after_datapack + u32(o + 4)
+        if (g.console === "pc") {
+            end_after_datapack = end_after_datapack + u32(o + 4)
+        } else {
+            end_after_datapack = divisible(end_after_datapack + u32(o + 4), 32)
+
+        }
+
+
     }
 
     // after the audio section
@@ -2813,12 +2823,20 @@ function im_bmg_pc_datapack(o, i, x, e) {
     }
 
     if (u32(o + 20)) {
+        globalThis.is_last_texture = false
         for (let ii = 0; ii < u32(o + 20); ii++) {
             im_bmg_pc_get_texture_offsets(end_after_datapack + ii * 4, end_after_datapack)
         }
 
         for (let ii = 0; ii < u32(o + 20); ii++) {
+              if (ii+1 === u32(o + 20)) {
+                  is_last_texture = true
+              }
               im_bmg_pc_texture_offset_list(end_after_datapack + (ii * 4), ii, x[i].textures)
+        }
+
+        if (is_last_texture && g.console === "pc") {
+              im_bmg_pc_d3dx9(is_last_texture, x[i].D3DX9_section)
         }
     }
 
@@ -2910,46 +2928,100 @@ function im_bmg_pc_texture_offset_list_0(o, x) {
         texture_section_12: [],
         u32_16: im_string(u32(o + 16) + end_after_datapack - g.m, 0, false),
         texture_section_20: [],
+        end_padding: [],
     });
 
-    // u32(o + 8) ? im_bmg_pc_texture_offset_list_0_8(u32(o + 8) + end_after_datapack, x[0].texture_section_8) : 0;
-    // u32(o + 12) ? im_bmg_pc_texture_offset_list_0_12(u32(o + 12) + end_after_datapack, x[0].texture_section_12) : 0;
-    // u32(o + 20) ? im_bmg_pc_texture_offset_list_0_20(u32(o + 20) + end_after_datapack, x[0].texture_section_20) : 0;
+
+    // calculate texture length
+    let texture_x = Math.pow(2, u8(o + 6))
+    let texture_y = Math.pow(2, u8(o + 7))
+    let total_length = 0
+    switch (u8(o + 4)) {
+    case 24:
+        total_length = texture_x * texture_y * 3
+        break
+    case 69:
+        total_length = texture_x * texture_y / 2
+        break
+    case 160:
+        total_length = texture_x * texture_y * 4
+        break
+    case 197:
+        total_length = texture_x * texture_y / 2
+        break
+    case 198:
+        total_length = texture_x * texture_y / 2
+        break
+    case 202:
+        total_length = texture_x * texture_y
+        break
+    default:
+        console.pk_log(`unknown texture type ${u8(o + 4)}`)
+    }
+    let start_08_texture = u32(o + 8)
+    let start_20_texture = u32(o + 20)
+    let end_20_texture = start_20_texture + total_length
+    let end_08_texture  = start_08_texture + total_length
+    // 20 and 16 has mips
+    // 12 no mips
+
+    if (u32(o + 12)) {
+        let calculate_12_length = total_length * 2
+        let start = u32(o + 12) + end_after_datapack
+        let end = calculate_12_length + start
+        x[0].texture_section_12 = convert_arraybuffer_base64(buffer.slice(start, end))
+    }
+        if (u8(o + 5) === 0) {
+            // no mipmaps
+            if (u32(o + 8)) {
+            x[0].texture_section_8.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+            }
+            if (u32(o + 20)) {
+            x[0].texture_section_20.push(convert_arraybuffer_base64(buffer.slice(start_20_texture, end_20_texture)))
+            }
+
+        }else{
+        let mipmap_offset = total_length
+
+        for (let i = 0; i < u8(o + 5) + 1; i++) {
+
+            if (u32(o + 8)) {
+            x[0].texture_section_8.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+            }
+            if (u32(o + 20)) {
+            x[0].texture_section_20.push(convert_arraybuffer_base64(buffer.slice(start_20_texture, end_20_texture)))
+            }
+            start_08_texture += mipmap_offset
+            start_20_texture+= mipmap_offset
+            mipmap_offset = Math.round(mipmap_offset / 4)
+            if (u8(o + 5) !== i) {
+                end_08_texture += mipmap_offset
+                end_20_texture += mipmap_offset
+            }
+
+        }
+
+    }
+
+    if (g.console === "pc") {
+        let after_padding = u32(o + 16) + end_after_datapack
+        while (u8(after_padding) !== 0) {
+            after_padding++
+        }
+        if (is_last_texture) {
+            is_last_texture = after_padding
+        }else{
+        x[0].end_padding = get_next_value_in_array(temp_array_for_unkown_lengths, after_padding) - after_padding
+        }
+    }else{
+        if (u32(o + 20)) {
+        x[0].end_padding = get_next_value_in_array(temp_array_for_unkown_lengths, end_20_texture) - end_20_texture
+        }else{
+        x[0].end_padding = get_next_value_in_array(temp_array_for_unkown_lengths, end_08_texture) - end_08_texture
+        }
+    }
 
     // 32 bytes;
-
-}
-
-function im_bmg_pc_texture_offset_list_0_8(o,x) {
-    let find_next_offset_i = o + 1
-
-    find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
-    x.push({
-        sec_id: "Bx?t",
-        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
-    });
-
-}
-
-function im_bmg_pc_texture_offset_list_0_12(o,x) {
-    // let find_next_offset_i = (o + 1) - g.m
-
-    // find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
-    // x.push({
-    //     sec_id: "Bx?t",
-    //     temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
-    // });
-
-}
-
-function im_bmg_pc_texture_offset_list_0_20(o,x) {
-    let find_next_offset_i = (o + 1) - g.m
-
-    find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
-    x.push({
-        sec_id: "Bx?t",
-        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
-    });
 
 }
 
@@ -2977,6 +3049,20 @@ function get_bmg_texture_offset_list_0(o, section_offset) {
     // 32 bytes;
 
 }
+
+function im_bmg_pc_d3dx9(o, x) {
+    let find_next_offset_i = (o + 1)
+
+    find_next_offset_i = get_next_value_in_array(temp_array_for_unkown_lengths, find_next_offset_i)
+    x.push({
+        sec_id: "atjj",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i)),
+    });
+
+    // ? bytes;
+
+}
+
 function im_bmg_pc_index_patch_list(o, x) {
     let bmg_pc_texture_animation_offset = o + (u32(g.datapack_offset + 16) * 8)
     let sound_offset = o + ((u32(g.datapack_offset + 16) + u32(g.datapack_offset + 52)) * 8)
@@ -3954,7 +4040,7 @@ function im_bmg_pc_world_120_0(o, i, x) {
         im_bmg_pc_world_120_0_68(u32(o + 68) + (ii * 4) + g.m, ii, x[i].section_68);
     }
 
-    for (let ii = 0; ii < u32(o + 72); ii++) {
+    for (let ii = 0; ii < u32(o + 64); ii++) {
         im_bmg_pc_world_120_0_72(u32(o + 72) + (ii * 4) + g.m, ii, x[i].section_72);
     }
 
@@ -4416,7 +4502,7 @@ function im_bmg_pc_model_20_4_0twiit1(o, x) {
     u32(o + 196) ? im_bmg_pc_model_20_4_0twiit1_196(u32(o + 196) + g.m, x[0].section_196) : 0;
     u32(o + 200) ? im_bmg_pc_model_20_4_0twiit1_200(u32(o + 200) + g.m, x[0].section_200) : 0;
 
-    for (let i = 0; i < u32(o + 212); i++) {
+    for (let i = 0; i < u16(o + 212); i++) {
         im_bmg_pc_model_20_4_0twiit1_204(u32(o + 204) + (i * 8) + g.m, i, x[0].section_204);
     }
     u32(o + 208) ? im_bmg_pc_model_20_4_0twiit1_208(u32(o + 208) + g.m, x[0].section_208) : 0;
@@ -4673,7 +4759,7 @@ function im_bmg_pc_model_20_4_0twiit3(o, x) {
     u32(o + 196) ? im_bmg_pc_model_20_4_0twiit3_196(u32(o + 196) + g.m, x[0].section_196) : 0;
     u32(o + 200) ? im_bmg_pc_model_20_4_0twiit3_200(u32(o + 200) + g.m, x[0].section_200) : 0;
 
-    for (let i = 0; i < u32(o + 212); i++) {
+    for (let i = 0; i < u16(o + 212); i++) {
         im_bmg_pc_model_20_4_0twiit3_204(u32(o + 204) + (i * 8) + g.m, i, x[0].section_204);
     }
     u32(o + 208) ? im_bmg_pc_model_20_4_0twiit3_208(u32(o + 208) + g.m, x[0].section_208) : 0;
@@ -4750,7 +4836,6 @@ function im_bmg_pc_model_20_4_0twiit3_204(o, i, x) {
     });
 
     u32(o + 4) ? im_bmg_pc_model_20_4_0twiit3_204_4(u32(o + 4) + g.m, x[i].section_4) : 0;
-
 }
 function im_bmg_pc_model_20_4_0twiit3_204_4(o, x) {
     let find_next_offset_i = (o + 1) - g.m
@@ -5175,6 +5260,7 @@ function im_bmg_pc_datapack_132(o, i, x) {
 
 function im_bmg_pc_model_anim_2(o, i, x) {
     x.push({
+        id: gen_id(),
         sec_id: "amrw",
         type: 0,
         section: [],
@@ -8899,7 +8985,7 @@ function im_bmg_pc_world_settings_4_36(o, x) {
         f32_36: f32(o + 36),
     });
 
-    for (let i = 0; i < u32(o + 4); i++) {
+    for (let i = 0; i < u32(o + 0); i++) {
         im_bmg_pc_world_settings_4_36_4(u32(o + 4) + (i * 20) + g.m, i, x[0].section_4);
     }
 
@@ -9240,23 +9326,23 @@ function im_bmg_pc_world_link_type(o, i, x) {
 
     switch (u8(o + 4)) {
     case 10:
-        u32(o + 0) ? im_bmg_pc_world_link_type_0t10(u32(o + 0) + g.m, x[i].section_0) : 0;
-        break;
+        u32(o + 0) ? im_bmg_pc_world_link_type_0t10(u32(o + 0) + g.m,x[i].section_0) : 0; 
+    break;
     case 11:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_pc_world_link_type_0t11_array, im_bmg_pc_world_link_type_0t11, g.unordered_ref.bmg_pc_world_link_type_0t11);
-        break;
+        u32(o + 0) ? im_bmg_pc_world_link_type_0t11(u32(o + 0) + g.m,x[i].section_0) : 0; 
+    break;
     case 12:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_pc_world_link_type_0t12_array, im_bmg_pc_world_link_type_0t12, g.unordered_ref.bmg_pc_world_link_type_0t12);
-        break;
+        u32(o + 0) ? im_bmg_pc_world_link_type_0t12(u32(o + 0) + g.m,x[i].section_0) : 0; 
+    break;
     case 13:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_pc_world_link_type_0t13_array, im_bmg_pc_world_link_type_0t13, g.unordered_ref.bmg_pc_world_link_type_0t13);
-        break;
+        u32(o + 0) ? im_bmg_pc_world_link_type_0t13(u32(o + 0) + g.m,x[i].section_0) : 0; 
+    break;
     case 14:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_pc_world_link_type_0t14_array, im_bmg_pc_world_link_type_0t14, g.unordered_ref.bmg_pc_world_link_type_0t14);
-        break;
+        u32(o + 0) ? im_bmg_pc_world_link_type_0t14(u32(o + 0) + g.m,x[i].section_0) : 0; 
+    break;
     case 16:
-        x[i].section_0 = in_ml(u32(o + 0), g.bmg_pc_world_link_type_0t16_array, im_bmg_pc_world_link_type_0t16, g.unordered_ref.bmg_pc_world_link_type_0t16);
-        break;
+        u32(o + 0) ? im_bmg_pc_world_link_type_0t16(u32(o + 0) + g.m,x[i].section_0) : 0; 
+    break;
     }
     return x[i].id
     // 16 bytes;
@@ -11693,7 +11779,7 @@ function im_bmg_pc_interface_84_24_4t11_4_12t107_8_8t0_4(o, i, x) {
         section_12: [],
     });
 
-    for (let ii = 0; ii < u32(o + 4); ii++) {
+    for (let ii = 0; ii < u32(o + 0); ii++) {
         im_bmg_pc_interface_84_24_4t11_4_12t107_8_8t0_4_4(u32(o + 4) + (ii * 4) + g.m, ii, x[i].section_4);
     }
     u32(o + 12) ? im_bmg_pc_interface_84_24_4t11_4_12t107_8_8t0_4_12(u32(o + 12) + g.m, x[i].section_12) : 0;
@@ -13071,7 +13157,6 @@ function im_bmg_pc_font(o, i, x) {
         section_28: [],
     });
 
-    // x[i].unordered_bmg_pc_model_anim_2_type_b_4 = in_ml(u32(o + ), g.bmg_pc_model_anim_2_type_b_array, im_bmg_pc_model_anim_2_type_b, g.unordered_ref.bmg_pc_model_anim_2_type_b);
     x[i].unordered_bmg_pc_model_anim_2_type_b_4 = in_ml(u32(o + 4), g.bmg_pc_model_anim_2_array, im_bmg_pc_model_anim_2, g.ordered_ref.bmg_pc_model_anim_2);
 
     // x[i].unordered_bmg_pc_model_anim_2_type_b_4 = in_ml(u32(o + 4), g.bmg_pc_model_anim_2_type_c_array, im_bmg_pc_model_anim_2_type_c, g.unordered_ref.bmg_pc_model_anim_2_type_c);
