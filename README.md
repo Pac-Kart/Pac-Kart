@@ -16,7 +16,7 @@ Pages
 ============
 
 2 pages are listed.
-Main Page: https://pac-kart.github.io/Pac-Kart/
+Main Page: https://pac-kart.github.io/Pac-Kart/  
 Array View Page: https://pac-kart.github.io/Pac-Kart/array_view.html
 
 The Main Page is an older version and is not currently being updated.
@@ -28,7 +28,6 @@ Main Page
 --------
 ### Features only on the Main Page:
 
-* Pac Man World Rally PC partial xpc editor and full File Exporter
 * Model Viewer, Import and Exporter (Pac Man World Rally PC Only)
 * Pac Man World Rally Save file Editor
 * Texture Viewer and importer (Only some formats)
@@ -58,15 +57,11 @@ Array View
 * Bee Movie Game (PC)
 * Bee Movie Game (Wii)
 * Bee Movie Game (Demo)
-* Pac Man World Rally (PC)
 
 ### Formats Traversable + Exportable in Array View:
-* nothing yet
+* Pac Man World Rally (PC)
 
 Current Progress
 ============
 ### Working on making these formats Traversable
 * Hot Wheels Velocity X (Proto)
-
-### Working on making these formats Exportable
-* Pac Man World Rally (PC)

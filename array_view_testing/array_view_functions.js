@@ -164,7 +164,6 @@ console.pk_log = function(string_message) {
 
 console.pk_log(`<a style="color:red;">section is very unfinished</a>`)
 
-
 function import_single_file(from_function, type, id=0) {
     const uploadlink = document.createElement("input");
     uploadlink.type = "file";
@@ -861,7 +860,19 @@ function add_events() {
         const target = event.target;
         let keys_array = Object.keys(PK_path.obj)
         let key_id = keys_array[target.dataset.key_id]
+        if (typeof PK_path.obj[key_id] === "object") {
+            let key_path = PK_path.obj[key_id]
+            let array_inner_keys = Object.keys(key_path)
+
+            if (array_inner_keys.length === 1) {
+                key_path[array_inner_keys[0]] = target.value
+            } else {
+                console.pk_log(`array_inner_keys is ${array_inner_keys}`)
+            }
+
+        }else{
         PK_path.obj[key_id] = target.value
+        }
         console.pk_log(`changed ${key_id} to ${target.value}`)
     });
 
@@ -1175,20 +1186,16 @@ function check_section(string_name) {
     let info_function = window[("info_" + string_name)]
     let export_function = window[("ex_" + string_name)]
 
-    if (typeof import_function === "function") {
-    }else{
+    if (typeof import_function === "function") {} else {
         console.pk_log(`<a style="color:red;">${string_name} import_function null</a>`)
     }
-    if (typeof add_function === "function") {
-    }else{
+    if (typeof add_function === "function") {} else {
         console.pk_log(`<a style="color:red;">${string_name} add_function null</a>`)
     }
-    if (typeof info_function === "function") {
-    }else{
+    if (typeof info_function === "function") {} else {
         console.pk_log(`<a style="color:red;">${string_name} info_function null</a>`)
     }
-    if (typeof export_function === "function") {
-    }else{
+    if (typeof export_function === "function") {} else {
         console.pk_log(`<a style="color:red;">${string_name} export_function null</a>`)
     }
 }
@@ -1335,7 +1342,7 @@ function get_input_type(value, i=-1, key="null") {
     let input_type = ''
     if (key === "id" || key === "sec_id") {
         input_type = `<input class="top_settings" data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
-    }else if (Array.isArray(value)) {
+    } else if (Array.isArray(value)) {
         input_type = `<input data-key_id="${i}" class="obj_to_array" style='width:100%;' type='button' value="Array ${value.length}">`
     } else if (value === true || value === false) {
         input_type = `<input data-key_id="${i}" style='width:100%;' type='checkbox' value="${value}">`
@@ -1485,10 +1492,10 @@ function save_file(e) {
             if (value === null) {
                 console.pk_log("buffer is null")
                 return
-            }else if (value.byteLength === 0) {
+            } else if (value.byteLength === 0) {
                 console.pk_log("buffer size is 0")
                 return
-            }else {
+            } else {
                 download_file(value, fileName)
             }
         }
@@ -2000,6 +2007,9 @@ function convert_arraybuffer_base64(buffer) {
 }
 
 function convert_base64_arraybuffer(string_base64) {
+    if (string_base64.length === 0) {
+        return new ArrayBuffer(0)
+    }
     var binaryString = atob(string_base64.buffer);
     var bytes = new Uint8Array(binaryString.length);
     for (var i = 0; i < binaryString.length; i++) {
@@ -2058,7 +2068,7 @@ function in_ml(o, array, tfunction, x, offset_check, model_n) {
     //multi linked
     // append_global_multilinked
     if (o) {
-        if (offset_check === o + g.m && tfunction.name === "im_models") {
+        if (offset_check === o + g.m && tfunction.name.endsWith('models')) {
             if (model_n == undefined)
                 model_n = 0;
             // if (model_n == undefined) {
@@ -2140,16 +2150,17 @@ function dyn_string(offset, XFA_string, mid, divis) {
 }
 
 function get_next_value_in_array(arr, value) {
-  let nextHigher = Infinity; // Initialize with Infinity
-  let found = false;
+    let nextHigher = Infinity;
+    // Initialize with Infinity
+    let found = false;
 
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] > value) {
-      if (arr[i] < nextHigher) {
-        nextHigher = arr[i];
-        found = true;
-      }
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] > value) {
+            if (arr[i] < nextHigher) {
+                nextHigher = arr[i];
+                found = true;
+            }
+        }
     }
-  }
-  return found ? nextHigher : null;
+    return found ? nextHigher : null;
 }

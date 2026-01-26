@@ -136,7 +136,7 @@ add import/export tables for outer datapack/sound only sections
     svtrb_psp
     svtrb_ps2
     pmwr_gc
-    pmwr_pc
+    pmwr_pc [f]
     pmwr_ps2_demo
     pmwr_ps2
     pmwr_psp
@@ -157,8 +157,7 @@ add import/export tables for all sections
     svtrb_psp
     svtrb_ps2
     pmwr_gc
-    pmwr_pc
-        connect exporter to save function
+    pmwr_pc [f]
     pmwr_ps2_demo
     pmwr_ps2
     pmwr_psp
@@ -173,6 +172,8 @@ add import/export tables for all sections
         does the D3DX9 section exist here?
     bcc_pc
     bcc_wii
+
+    have a better way to handle padding sections for byte accurate file exports
 
 have some way to save settings
 --------------------------------

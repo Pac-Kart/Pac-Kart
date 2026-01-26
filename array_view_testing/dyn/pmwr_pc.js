@@ -1819,7 +1819,7 @@ function im_pmwr_pc_file_header(o, i, x) {
         sec_id: "gjbf",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
-        u32_8: u32(o + 8),
+        version: u32(o + 8),
         directory: [],
     });
 
@@ -1838,7 +1838,7 @@ function im_pmwr_pc_file_header(o, i, x) {
 
 }
 
-function im_pmwr_pc_directory(o, i, x, global) {
+function im_pmwr_pc_directory(o, i, x, directory_offset) {
     let next_offset = o + 24
 
     g = {
@@ -1860,6 +1860,8 @@ function im_pmwr_pc_directory(o, i, x, global) {
         animation_patch_ref: 0,
         sound_patch_ref: 0,
         model_patch_ref: 0,
+        temp_pmwr_pc_world_offset_holder: [],
+        temp_pmwr_pc_world_offset_holder_5: [],
         pmwr_pc_models_array: [],
         pmwr_pc_car_array: [],
         pmwr_pc_link_array: [],
@@ -1932,15 +1934,16 @@ function im_pmwr_pc_directory(o, i, x, global) {
     x.push({
         id: gen_id(),
         sec_id: "]7Zf",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        u32_8: u32(o + 8),
-        u32_12: u32(o + 12),
-        u32_16: u32(o + 16),
-        section_datapack: [],
+            version: u32(o),
+            type: g.file_dir_type,
+            index: u32(o + 8),
+            unknown_12: [],
+            datapack: [],
     });
 
-    im_pmwr_pc_datapack(u32(o + 20) + global, x[i].section_datapack)
+    im_pmwr_pc_datapack(u32(o + 20) + directory_offset, x[i].datapack)
+
+    // im_pmwr_pc_datapack(u32(o + 20) + global, x[i].section_datapack)
 
     return x[i].id
     // 24 bytes;
@@ -2114,7 +2117,7 @@ function im_ordered(o, x) {
         im_pmwr_pc_basic(o, x[0].file_specific)
         break
     case "share":
-        get_share(o, x[0].file_specific, gsharedonly)
+        im_pmwr_pc_share(o, x[0].file_specific, gsharedonly)
         break
     case "world":
         im_pmwr_pc_world(o, 0, x[0].file_specific)
@@ -3443,8 +3446,9 @@ function im_pmwr_pc_texture(o, x) {
         //     end_block = get_pmwr_pc_texture(g.m + u32(offset + 24) + (ti * 64), x[x_index].pmwr_pc_textures, i)
         // }
 
-        let pmwr_pc_texture_name = get_string(pmwr_pc_texture_settings_offset + 12, 0, false)
-        pmwr_pc_texture_name = pmwr_pc_texture_name.string.substr(0, 51)
+        let pmwr_pc_texture_name = im_string(pmwr_pc_texture_settings_offset + 12 -g.m, 0, false)
+
+        pmwr_pc_texture_name.string = pmwr_pc_texture_name.string.substr(0, 51)
         x.push({
             sec_id: "txtr",
             id: gen_id(),
@@ -3454,7 +3458,7 @@ function im_pmwr_pc_texture(o, x) {
             y: u8(pmwr_pc_texture_settings_offset + 3),
             alpha: [],
             pmwr_pc_texture: [],
-            name: [pmwr_pc_texture_name],
+            name: pmwr_pc_texture_name,
             start: u32(pmwr_pc_texture_settings_offset + 8) + g.m,
             padding: e
         })
@@ -3549,10 +3553,6 @@ function im_pmwr_pc_texture(o, x) {
 
                 // let temp_pmwr_pc_texture_array = new ArrayBuffer(temp_2)
 
-                // let ii = 0;
-                // for (; ii < temp_pmwr_pc_texture_array.byteLength; ii++) {
-                //     new DataView(temp_pmwr_pc_texture_array).setUint8(ii, u8(ii + pmwr_pc_texture_offset))
-                // }
 
                 x[ti].pmwr_pc_texture.push(temp_pmwr_pc_texture_array)
                 mipmap_start += temp_2
@@ -3723,7 +3723,7 @@ function im_pmwr_pc_audio(o, x, a) {
 
 }
 
-function get_share(o, x, gshareoffset) {
+function im_pmwr_pc_share(o, x, gshareoffset) {
     for (let i = 0, ii = 0; i < u32(o) && u32(o + i) !== 0; i += 4,
     ii++) {
         im_pmwr_pc_models(u32(o + i) + o, ii)
@@ -3893,7 +3893,6 @@ function im_pmwr_pc_models(offset, index) {
 
             g.ordered_ref.pmwr_pc_models[index].second_names.push(temp_string)
             if (temp_string.string.toLowerCase().includes('.tga')) {} else {
-                console.log(temp_string)
             }
 
             end_offset += temp_string.length
@@ -4397,9 +4396,9 @@ function im_pmwr_pc_model_animation_1(o, i, x) {
 
     }
     function im_pmwr_pc_model_animation_1_52t35(o, x) {
-        if (o === 12556940) {
-            console.log('?')
-        }
+        // if (o === 12556940) {
+        //     console.log('?')
+        // }
         temp_obj._sub_00_amount = u32(o + 0)
         temp_obj._sub_04_amount = u32(o + 4)
         temp_obj._sub_08_amount = u32(o + 8)
@@ -8333,15 +8332,15 @@ function im_pmwr_pc_link_00_04_00_04(o, x) {
 }
 
 function im_pmwr_pc_link_intro(o, i, x) {
-    let str = [null]
-    if (u8(o + 0) === 0) {
-        str = im_string(u32(o + 4), 0, false)
-    }
+    // let str = [""]
+    // if (u8(o + 0) === 0) {
+    //     str = im_string(u32(o + 4), 0, false)
+    // }
     x.push({
         sec_id: "0ihg",
         id: gen_id(),
         u8_00: u8(o + 0),
-        section_04: str,
+        section_04: im_string(u32(o + 4), 0, false),
         section_08: [],
         section_12: [],
     });
@@ -10457,7 +10456,6 @@ function im_pmwr_pc_unknown_00_04_04t5(o, i, x) {
     });
 
     u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t5_04(u32(o + 4) + g.m, x[i].section_04) : 0;
-    // offset? 
     u32(o + 12) ? im_pmwr_pc_unknown_00_04_04t5_12(u32(o + 12) + g.m, x[i].section_12) : 0;
     u32(o + 20) ? im_pmwr_pc_unknown_00_04_04t5_20(u32(o + 20) + g.m, x[i].section_20) : 0;
     u32(o + 28) ? im_pmwr_pc_unknown_00_04_04t5_28(u32(o + 28) + g.m, x[i].section_28) : 0;
@@ -12386,62 +12384,155 @@ function info_pmwr_pc_directory() {
 }
 
 function ex_pmwr_pc_x(o, x) {
+    let binary_size = (x.directory.length * 24) + 16
 
-    g = {
-        divisibility: 16,
-        divisible_prev_value: [],
-        type_string: g.type_string,
-        debug: pk_debug,
-        endian: g.endian,
-        file_dir_type: 0,
-        ordered_ref: 0,
-        unordered_ref: 0,
-        m: 0,
-        oa: [],
-        pmwr_pc_texture_patch_array: [],
-        animation_patch_array: [],
-        sound_patch_array: [],
-        model_patch_array: [],
-        tex_anims: 0,
-        /*
-        need to get arrays here
-        */
-    }
+    globalThis.directory_buffer = new ArrayBuffer(binary_size)
 
-    globalThis.directory_buffer = new ArrayBuffer(268435455)
-
-    buffer_array.push(directory_buffer)
     dynamic_buffer = directory_buffer
-
-    let time_array = []
-    let a = Date.now()
+    buffer_array.push(directory_buffer)
 
     ex_pmwr_pc_file_header(o, x)
 
-    time_array.push(Date.now() - a)
+    let array_reorder = [buffer_array[0]]
 
-    console.pk_log("saved in " + time_array)
+    for (let i = 1; i < buffer_array.length; i += 4) {
+        // datapack
+        array_reorder.push(buffer_array[i])
+        // index patch list
+        array_reorder.push(buffer_array[i + 2])
+        // ordered
+        array_reorder.push(buffer_array[i + 1])
+        // offset patch list
+        array_reorder.push(buffer_array[i + 3])
+    }
+
+    buffer_array = array_reorder
+
+    globalThis.end_buffer = new ArrayBuffer(128)
+    dynamic_buffer = end_buffer
+
+    let i = 0
+    for (; i < end_buffer.byteLength; i++) {
+        su8(i, 32)
+    }
+
+    buffer_array.push(end_buffer)
+
 
 }
 
 function ex_pmwr_pc_file_header(o, x) {
-    let e = o + 16
-    su32(0, x.u32_0)
-    su32(4, x.u32_4)
-    su32(8, x.u32_8)
-    su32(12, x[0].directory.length)
+    let e = 16
+    g = {
+        divisibility: 16,
+        divisible_prev_value: [],
+        debug: pk_debug,
+        type_string: g.type_string,
+        game: g.game,
+        endian: g.endian,
+        console: g.console,
+        file_version: g.version,
+        file_dir_type: 0,
+        file_name: g.name,
+        datapack_offset: 0,
+        datapack_ref: 0,
+        ordered_ref: 0,
+        unordered_ref: 0,
+        m: 0,
+        mmm: 0,
+        link_array: [],
+        idk_array: [],
+        interface_array: [],
+        car_array: [],
+        frame_sparkler_array: [],
+        frame_font_array: [],
+        frame_multi_font_array: [],
+        frame_text_array: [],
+        sound_controls_array: [],
+        sound_section_array: [],
+        model_link_array: [],
+        model_sub_link_array: [],
+        unknown_00_array: [],
+        unknown_00_04_04t1_array: [],
+        unknown_00_04_04t5_array: [],
+        unknown_00_04_04t5_28_04_00_array: [],
+        activator_array: [],
+        activator_248_04_04t0_04_array: [],
+        flag_array: [],
+        var_array: [],
+        gate_array: [],
+        strange_array: [],
+        object_array: [],
+        um_array: [],
+        wtf_array: [],
+        mysterious_04t9_array: [],
+        // nothing_array: [],
+        world_settings_array: [],
+        world_settings_array: [],
+        world_20_12t0_array: [],
+        world_20_12t1_array: [],
+        world_20_12t2_array: [],
+        world_20_12t3_array: [],
+        world_20_12t4_array: [],
+        world_20_12t5_array: [],
+        world_20_12t8_array: [],
+        world_20_12t10_array: [],
+        world_20_12t11_array: [],
+        world_20_12t13_array: [],
+        world_20_12t14_array: [],
+        world_20_12t15_array: [],
+        car_00_180_04_84_array: [],
+        car_00_180_array: [],
+        car_00_192_16_array: [],
+        car_00_184_array: [],
+        world_20_12t8_76t8_04_array: [],
+        world_20_12t8_76t8_08_array: [],
+        world_20_12t8_76t8_04_array: [],
+        world_20_12t8_76t8_08_array: [],
+        unknown_00_04_04t2_array: [],
+        texture_patch_ref: 0,
+        animation_patch_ref: 0,
+        sound_patch_ref: 0,
+        model_patch_ref: 0,
+        oa: [],
+        texture_patch_array: [],
+        animation_patch_array: [],
+        sound_patch_array: [],
+        model_patch_array: [],
+        model_animation_1_array: [],
+        model_animation_2_array: [],
+        models_array: [],
+        tex_anims: 0,
+        activator_248_32_72_08t18_08_04t0_array: [],
+        object_32t15_array: [],
+        temp_pmwr_pc_world_offset_holder: [],
+        temp_pmwr_pc_world_offset_holder_5: [],
+    }
 
-    let global = ((x[0].directory.length) * 24) + 16
-    e = e + (x[0].directory.length * 24)
+    // g = null
+    //global pmwr_pc_object
+    su32(0, 33620128)
+    su32(4, 67174575)
+    su32(8, x.version)
+    su32(12, x.directory.length)
+
+    let temp_offset = e
+    let global = ((x.directory.length) * 24) + 16
+    e = e + (x.directory.length * 24)
 
     let time_array = []
-    for (let i = 0; i < x[0].directory.length; i++) {
+    for (let i = 0; i < x.directory.length; i++) {
         let a = Date.now()
 
-        e = ex_pmwr_pc_directory(16 + (i * 24), e, x[0].directory[i], global)
+        e = ex_pmwr_pc_directory(temp_offset + (i * 24), e, x.directory[i], global)
         time_array.push(Date.now() - a)
 
     }
+    delete g.oa
+    delete g.model_patch_array
+    delete g.sound_patch_array
+    delete g.pmwr_pc_texture_patch_array
+    delete g.animation_patch_array
 
     console.pk_log("saved in " + time_array)
 
@@ -12450,152 +12541,6 @@ function ex_pmwr_pc_file_header(o, x) {
 }
 
 function ex_pmwr_pc_directory(o, e, x, global) {
-    g.oa = []
-    g.pmwr_pc_texture_patch_array = []
-    g.animation_patch_array = []
-    g.sound_patch_array = []
-    g.model_patch_array = []
-    // add other arrays heres later
-
-    let ce = e
-    g.file_dir_type = return_directory_type(x.u32_4)
-
-    su32(o + 0, x.u32_0)
-    su32(o + 4, x.u32_4)
-    su32(o + 8, x.u32_8)
-    su32(o + 12, x.u32_12)
-    su32(o + 20, e - global)
-
-    e = ex_pmwr_pc_datapack(16 + (i * 24), e, x[0].section_datapack[i], global)
-
-    dynamic_buffer = directory_buffer
-    su32(o + 16, datapack_buffer.byteLength + index_patch_buffer.byteLength + ordered_buffer.byteLength + offset_patch_buffer.byteLength)
-
-    g.debug ? ex_debug(o, x.sec_id) : 0;
-    return e
-}
-
-function ex_x() {
-    let e = 16
-    // g = null
-    //global pmwr_pc_object
-
-    g = {
-        divisibility: 16,
-        divisible_prev_value: [],
-        debug: false,
-        game: x[0].game,
-        endian: g.endian,
-        console: x[0].console,
-        file_version: x[0].version,
-        file_dir_type: 0,
-        file_name: x[0].name,
-        datapack_offset: 0,
-        datapack_ref: 0,
-        ordered_ref: 0,
-        unordered_ref: 0,
-        m: 0,
-        mmm: 0,
-        pmwr_pc_link_array: [],
-        pmwr_pc_idk_array: [],
-        pmwr_pc_interface_array: [],
-        pmwr_pc_car_array: [],
-        pmwr_pc_frame_sparkler_array: [],
-        pmwr_pc_frame_font_array: [],
-        pmwr_pc_frame_multi_font_array: [],
-        pmwr_pc_frame_text_array: [],
-        pmwr_pc_sound_controls_array: [],
-        pmwr_pc_sound_section_array: [],
-        pmwr_pc_model_link_array: [],
-        pmwr_pc_model_sub_link_array: [],
-        pmwr_pc_unknown_00_array: [],
-        pmwr_pc_unknown_00_04_04t1_array: [],
-        pmwr_pc_unknown_00_04_04t5_array: [],
-        pmwr_pc_unknown_00_04_04t5_28_04_00_array: [],
-        pmwr_pc_activator_array: [],
-        pmwr_pc_activator_248_04_04t0_04_array: [],
-        pmwr_pc_flag_array: [],
-        pmwr_pc_var_array: [],
-        pmwr_pc_gate_array: [],
-        pmwr_pc_strange_array: [],
-        pmwr_pc_object_array: [],
-        pmwr_pc_um_array: [],
-        pmwr_pc_wtf_array: [],
-        pmwr_pc_mysterious_04t9_array: [],
-        // nothing_array: [],
-        pmwr_pc_world_settings_array: [],
-        pmwr_pc_world_settings_array: [],
-        pmwr_pc_world_20_12t0_array: [],
-        pmwr_pc_world_20_12t1_array: [],
-        pmwr_pc_world_20_12t2_array: [],
-        pmwr_pc_world_20_12t3_array: [],
-        pmwr_pc_world_20_12t4_array: [],
-        pmwr_pc_world_20_12t5_array: [],
-        pmwr_pc_world_20_12t8_array: [],
-        pmwr_pc_world_20_12t10_array: [],
-        pmwr_pc_world_20_12t11_array: [],
-        pmwr_pc_world_20_12t13_array: [],
-        pmwr_pc_world_20_12t14_array: [],
-        pmwr_pc_world_20_12t15_array: [],
-        pmwr_pc_car_00_180_04_84_array: [],
-        pmwr_pc_car_00_180_array: [],
-        pmwr_pc_car_00_192_16_array: [],
-        pmwr_pc_car_00_184_array: [],
-        pmwr_pc_world_20_12t8_76t8_04_array: [],
-        pmwr_pc_world_20_12t8_76t8_08_array: [],
-        pmwr_pc_world_20_12t8_76t8_04_array: [],
-        pmwr_pc_world_20_12t8_76t8_08_array: [],
-        pmwr_pc_unknown_00_04_04t2_array: [],
-        temp_pmwr_pc_world_offset_holder: [],
-        temp_pmwr_pc_world_offset_holder_5: [],
-        pmwr_pc_texture_patch_ref: 0,
-        animation_patch_ref: 0,
-        sound_patch_ref: 0,
-        model_patch_ref: 0,
-        oa: [],
-        pmwr_pc_texture_patch_array: [],
-        animation_patch_array: [],
-        sound_patch_array: [],
-        model_patch_array: [],
-        pmwr_pc_model_animation_1_array: [],
-        pmwr_pc_model_animation_2_array: [],
-        pmwr_pc_models_array: [],
-        tex_anims: 0,
-        pmwr_pc_activator_248_32_72_08t18_08_04t0_array: [],
-        pmwr_pc_object_32t15_array: [],
-    }
-
-    su32(0, 33620128)
-    su32(4, 67174575)
-    su32(8, x[0].version)
-    su32(12, x[0].directory.length)
-
-    let temp_offset = e
-    let global = ((x[0].directory.length) * 24) + 16
-    e = e + (x[0].directory.length * 24)
-
-    let time_array = []
-    for (let i = 0; i < x[0].directory.length; i++) {
-        let a = Date.now()
-
-        e = ex_directory(temp_offset + (i * 24), e, x[0].directory[i], global)
-        time_array.push(Date.now() - a)
-
-    }
-
-    delete g.oa
-    delete g.model_patch_array
-    delete g.sound_patch_array
-    delete g.pmwr_pc_texture_patch_array
-    delete g.animation_patch_array
-
-    console.log('saved in', time_array)
-
-    return e
-
-}
-
-function ex_directory(o, e, x, global) {
 
     g.pmwr_pc_wtf_array = []
     g.pmwr_pc_mysterious_04t9_array = []
@@ -12660,10 +12605,36 @@ function ex_directory(o, e, x, global) {
     g.pmwr_pc_activator_248_32_72_08t18_08_04t0_array = []
     g.pmwr_pc_object_32t15_array = []
 
+    // let ce = e
+    // g.file_dir_type = x.type
+    // su32(o + 0, x.version)
+    // su32(o + 4, ['car', 'interface', 'item', 'link', 'world', 'colliders', 'world_texture', 'geometry', 'share', 'audio', 'music'].indexOf(x.type))
+    // su32(o + 8, x.index)
+
+    // if (g.console === 'ps2') {
+    //     e = divisible(e, 2048)
+    //     ce = e
+    // }
+
+    // su32(o + 20, e - global)
+    // e = ex_pmwr_pc_datapack(e, x.datapack[0])
+
+    // dynamic_buffer = directory_buffer
+
+    // // g.file_dir_type = type
+    // // im_datapack(u32(o + 20) + directory_offset, x[i].datapack)
+
+    // // su32(o + 16, e - ce)
+
+    // if (g.console === 'ps2') {
+    //     e = divisible(e, 2048)
+    // }
+
+    // return e
     let ce = e
     g.file_dir_type = x.type
     su32(o + 0, x.version)
-    su32(o + 4, ['pmwr_pc_car', 'pmwr_pc_interface', 'item', 'pmwr_pc_link', 'pmwr_pc_world', 'colliders', 'pmwr_pc_world pmwr_pc_texture', 'geometry', 'share', 'pmwr_pc_audio', 'music'].indexOf(x.type))
+    su32(o + 4, ['car', 'interface', 'item', 'link', 'world', 'colliders', 'world texture', 'geometry', 'share', 'audio', 'music'].indexOf(x.type))
     su32(o + 8, x.index)
 
     if (g.console === 'ps2') {
@@ -12672,7 +12643,7 @@ function ex_directory(o, e, x, global) {
     }
 
     su32(o + 20, e - global)
-    e = ex_datapack(e, x.datapack[0])
+    e = ex_pmwr_pc_datapack(e, x.datapack[0])
 
     dynamic_buffer = directory_buffer
 
@@ -12682,16 +12653,16 @@ function ex_directory(o, e, x, global) {
 
     // su32(o + 16, e - ce)
     su32(o + 16, datapack_buffer.byteLength + index_patch_buffer.byteLength + ordered_buffer.byteLength + offset_patch_buffer.byteLength)
-    // datapack_buffer.byteLength + index_patch_buffer.byteLength + ordered_buffer.byteLength + offset_patch_buffer.byteLength
 
     if (g.console === 'ps2') {
         e = divisible(e, 2048)
     }
 
     return e
+
 }
 
-function ex_datapack(o, x) {
+function ex_pmwr_pc_datapack(o, x) {
     globalThis.datapack_buffer = new ArrayBuffer(268435455)
 
     buffer_array.push(datapack_buffer)
@@ -12866,7 +12837,7 @@ function ex_ordered(o, x) {
         e = ex_pmwr_pc_basic(o, x.file_specific[0])
         break
     case "share":
-        e = ex_share(o, x)
+        e = ex_pmwr_pc_share(o, x)
         break
     case "world":
         e = ex_pmwr_pc_world(o, x.file_specific[0])
@@ -13731,9 +13702,10 @@ function ex_pmwr_pc_world_20_12t2_100(o, e, x) {
     return e
 }
 function ex_pmwr_pc_world_20_12t2_56(o, x) {
-    let e = o + x.buffer.byteLength
+    let buffer = convert_base64_arraybuffer(x.buffer)
+    let e = o + buffer.byteLength
 
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.buffer), o)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
@@ -13958,9 +13930,10 @@ function ex_pmwr_pc_world_20_12t8(o, e, x) {
     return e
 }
 function ex_pmwr_pc_world_20_12t8_72(o, x) {
-    let e = o + x.buffer.byteLength
+    let buffer = convert_base64_arraybuffer(x.buffer)
+    let e = o + buffer.byteLength
 
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.buffer), o)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
     return e
@@ -14581,8 +14554,10 @@ function ex_pmwr_pc_textures(o, e, x) {
     let iii = 0
     for (let ii = 0; ii < x.pmwr_pc_texture.length; ii++) {
         let iii = 0
-        new Uint8Array(dynamic_buffer).set(new Uint8Array(x.pmwr_pc_texture[ii]), e + iii)
-        iii += x.pmwr_pc_texture[ii].byteLength
+         let buffer = convert_base64_arraybuffer(x.pmwr_pc_texture[ii])
+
+        new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), e + iii)
+        iii += buffer.byteLength
 
         if (ii + 1 === x.pmwr_pc_texture.length) {
             iii += x.padding
@@ -14599,12 +14574,13 @@ function ex_pmwr_pc_textures(o, e, x) {
     e = ex_byte_alignment_testing(e)
 
     if (x.alpha.length) {
-        su32(o + 4, e)
+         let buffer = convert_base64_arraybuffer(x.alpha[0])
+       su32(o + 4, e)
         g.oa.push(o + 4)
 
-        new Uint8Array(dynamic_buffer).set(new Uint8Array(x.alpha[0]), e)
+        new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), e)
 
-        e += x.alpha[0].byteLength
+        e += buffer.byteLength
 
     }
 
@@ -14630,27 +14606,29 @@ function ex_sound(o, XFA, m) {
 
     function dyn_sound_00(offset, XFA, e) {
         e = e + XFA.padding
+        let buffer = convert_base64_arraybuffer(XFA.sound_data[0])
+
         su32(offset, e - base_offset)
-        su32(offset + 4, XFA.sound_data[0].byteLength)
+        su32(offset + 4, buffer.byteLength)
         su32(offset + 8, XFA.pmwr_pc_unknown1)
         su32(offset + 12, XFA.soundsamplerate)
         su32(offset + 16, XFA.pmwr_pc_unknown2)
         su32(offset + 20, XFA.pmwr_pc_unknown3)
 
-        e = dyn_sound_00_00(e, XFA.sound_data[0])
+        e = dyn_sound_00_00(e, buffer)
 
         return e
     }
 
-    function dyn_sound_00_00(offset, XFA) {
-        new Uint8Array(dynamic_buffer).set(new Uint8Array(XFA), offset)
+    function dyn_sound_00_00(offset, buffer) {
+      new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), offset)
 
-        return offset + XFA.byteLength
+        return offset + buffer.byteLength
     }
 
 }
 
-function ex_share(o, x) {
+function ex_pmwr_pc_share(o, x) {
     // calculate how many pmwr_pc_models
     // first offset is always 0?
 
@@ -14883,22 +14861,21 @@ function ex_pmwr_pc_model_animation_1(o, x) {
     }
 
     if (x.section_32.length) {
-        su32(o + 40, x.section_32[0].temp_buffer.byteLength / 4)
+    let buffer = convert_base64_arraybuffer(x.section_32[0].temp_buffer)
+
+        su32(o + 40, buffer.byteLength / 4)
         e = ex_s_offset(o + 32, e, ex_pmwr_pc_model_animation_1_32, x.section_32, 'down');
     }
     replacement_divisibility(e, e + x.section_32_padding, e, 205)
     e += x.section_32_padding
 
-    // if (x.section_32_padding.length && x.section_52.length) {
-    //     e += divisible(x.section_32[0].temp_buffer.byteLength, 16) - x.section_32[0].temp_buffer.byteLength
-    // }
-
     switch (x.u32_00) {
     case 1:
     case 4:
         if (x.section_32.length) {
-            // console.log(x.section_44[0].temp_buffer.byteLength, (x.u32_04))
-            e += divisible(x.section_32[0].temp_buffer.byteLength, g.divisibility) - x.section_32[0].temp_buffer.byteLength
+            let buffer = convert_base64_arraybuffer(x.section_32[0].temp_buffer)
+
+            e += divisible(buffer.byteLength, g.divisibility) - buffer.byteLength
         }
         e = ex_s_offset(o + 44, e, ex_pmwr_pc_model_animation_1_44, x.section_44, 'down');
         break;
@@ -15047,38 +15024,37 @@ function ex_pmwr_pc_model_animation_1_24t3(o, x) {
     return e
 }
 function ex_pmwr_pc_model_animation_1_32(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
 
-    return x.temp_buffer.byteLength + o
+    return buffer.byteLength + o
 }
 function ex_pmwr_pc_model_animation_1_44(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
 
-    return x.temp_buffer.byteLength + o
+    return buffer.byteLength + o
 }
 function ex_pmwr_pc_model_animation_1_36(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
+
     g.debug ? ex_debug(o, x.sec_id) : 0;
 
-    return x.temp_buffer.byteLength + o
+    return buffer.byteLength + o
 
 }
 function ex_pmwr_pc_model_animation_1_36t3(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
-
-    // for (let i = 0; i < x.temp_buffer.byteLength; i++) {
-    //     su8(o + i, new DataView(x.temp_buffer).getUint8(i))
-    // }
-    return x.temp_buffer.byteLength + o
-    // let e = o + [40] * [48] * 4
-    // sf32(o + 0, x.f32_00)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
-    return e
+
+    return buffer.byteLength + o
 }
 function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     let e = o + 36
@@ -15096,17 +15072,12 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     e += x.padding
 
     if (x.section_12.length) {
-        let temp_offset = e
+        let buffer = convert_base64_arraybuffer(x.section_12[0].temp_buffer)
+      let temp_offset = e
 
-        su32(o + 0, x.section_12[0].temp_buffer.byteLength / 2)
+        su32(o + 0, buffer.byteLength / 2)
         e = ex_s_offset(o + 12, e, ex_pmwr_pc_model_animation_1_52t35_12, x.section_12, 'down');
 
-        // let temp_block = x.section_12[0].temp_buffer.byteLength + temp_offset
-        // e += replacement_divisibility(x.section_12[0].temp_buffer.byteLength, 4, temp_block, 205)
-
-        // let temp_block = x.section_12[0].temp_buffer.byteLength + o
-        // replacement_divisibility(x.section_12[0].temp_buffer.byteLength, 4 ,e, 205)
-        // e += divisible(x.section_12[0].temp_buffer.byteLength, 4)
 
     } else {
         su32(o + 12, x.section_12)
@@ -15121,7 +15092,6 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
 
     e = ex_byte_alignment_testing(e);
     if (x.section_24.length) {
-        // su32(o + 0, x.section_24[0].temp_buffer.byteLength / 4)
         e = ex_s_offset(o + 24, e, ex_pmwr_pc_model_animation_1_52t35_24, x.section_24, 'down');
     } else {
         su32(o + 24, x.section_24)
@@ -15131,13 +15101,12 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     e += x.padding_24
 
     if (x.section_20.length) {
-        let temp_offset = e
+          let buffer = convert_base64_arraybuffer(x.section_20[0].temp_buffer)
+      let temp_offset = e
 
-        su32(o + 4, x.section_20[0].temp_buffer.byteLength / 2)
+        su32(o + 4, buffer.byteLength / 2)
         e = ex_s_offset(o + 20, e, ex_pmwr_pc_model_animation_1_52t35_20, x.section_20, 'down');
 
-        // let temp_block = x.section_20[0].temp_buffer.byteLength + temp_offset
-        // e += replacement_divisibility(x.section_20[0].temp_buffer.byteLength, 4, temp_block, 205)
     } else {
         su32(o + 20, x.section_20)
     }
@@ -15148,7 +15117,6 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     e = ex_byte_alignment_testing(e)
 
     if (x.section_28.length) {
-        // su32(o + 4, x.section_28[0].temp_buffer.byteLength / 4)
         e = ex_s_offset(o + 28, e, ex_pmwr_pc_model_animation_1_52t35_28, x.section_28, 'down');
     } else {
         su32(o + 28, x.section_28)
@@ -15159,7 +15127,8 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     e += x.padding_28
 
     if (x.section_16.length) {
-        su32(o + 8, x.section_16[0].temp_buffer.byteLength / 2)
+        let buffer = convert_base64_arraybuffer(x.section_16[0].temp_buffer)
+         su32(o + 8, buffer.byteLength / 2)
         e = ex_s_offset(o + 16, e, ex_pmwr_pc_model_animation_1_52t35_16, x.section_16, 'down');
     } else {
         su32(o + 16, x.section_16)
@@ -15171,14 +15140,14 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     e += x.padding_16
 
     if (x.section_32.length) {
-        let temp_offset = e
+    let buffer = convert_base64_arraybuffer(x.section_32[0].temp_buffer)
+       let temp_offset = e
 
-        // su32(o + 8, x.section_32[0].temp_buffer.byteLength)
         ex_s_offset(o + 32, e, ex_pmwr_pc_model_animation_1_52t35_32, x.section_32, 'down');
 
-        let end = e + x.section_32[0].temp_buffer.byteLength - exmodeltemp_divisible
+        let end = e + buffer.byteLength - exmodeltemp_divisible
 
-        e = e + x.section_32[0].temp_buffer.byteLength
+        e = e + buffer.byteLength
     } else {
         su32(o + 32, x.section_32)
     }
@@ -15187,86 +15156,53 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     return e
 }
 function ex_pmwr_pc_model_animation_1_52t35_12(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
-
-    // for (let i = 0; i < x.temp_buffer.byteLength; i++) {
-    //     su8(o + i, new DataView(x.temp_buffer).getUint8(i))
-    // }
-
-    return x.temp_buffer.byteLength + o
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
-    return e
+    return buffer.byteLength + o
+
 }
 function ex_pmwr_pc_model_animation_1_52t35_24(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+   new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    // for (let i = 0; i < x.temp_buffer.byteLength; i++) {
-    //     su8(o + i, new DataView(x.temp_buffer).getUint8(i))
-    // }
+     g.debug ? ex_debug(o, x.sec_id) : 0;
+   return buffer.byteLength + o
 
-    return x.temp_buffer.byteLength + o
-
-    sf32(o + 0, x.f32_00)
-
-    g.debug ? ex_debug(o, x.sec_id) : 0;
-    return e
 }
 function ex_pmwr_pc_model_animation_1_52t35_20(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
-
-    // for (let i = 0; i < x.temp_buffer.byteLength; i++) {
-    //     su8(o + i, new DataView(x.temp_buffer).getUint8(i))
-    // }
-
-    return x.temp_buffer.byteLength + o
-
-    su16(o + 0, x.u16_00)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
-    return e
+
+    return buffer.byteLength + o
+
 }
 function ex_pmwr_pc_model_animation_1_52t35_28(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
-
-    // for (let i = 0; i < x.temp_buffer.byteLength; i++) {
-    //     su8(o + i, new DataView(x.temp_buffer).getUint8(i))
-    // }
-
-    return x.temp_buffer.byteLength + o
-
-    sf32(o + 0, x.f32_00)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
-    return e
+
+    return buffer.byteLength + o
 }
 function ex_pmwr_pc_model_animation_1_52t35_16(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
-
-    // for (let i = 0; i < x.temp_buffer.byteLength; i++) {
-    //     su8(o + i, new DataView(x.temp_buffer).getUint8(i))
-    // }
-
-    return x.temp_buffer.byteLength + o
-
-    su16(o + 0, x.u16_00)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
-    return e
+
+    return buffer.byteLength + o
 }
 function ex_pmwr_pc_model_animation_1_52t35_32(o, x) {
-    new Uint8Array(dynamic_buffer).set(new Uint8Array(x.temp_buffer), o)
-
-    // for (let i = 0; i < x.temp_buffer.byteLength; i++) {
-    //     su8(o + i, new DataView(x.temp_buffer).getUint8(i))
-    // }
-
-    return x.temp_buffer.byteLength + o
-
-    // pmwr_pc_unknown(o +00, x.// pmwr_pc_unknown_00)
+    let buffer = convert_base64_arraybuffer(x.temp_buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
     g.debug ? ex_debug(o, x.sec_id) : 0;
-    return e
+
+    return buffer.byteLength + o
 }
 function ex_pmwr_pc_model_animation_1_52t163(o, x) {
     let e = o + 16
@@ -15465,48 +15401,57 @@ function dyn_model(offset, XFA) {
                 g.animation_patch_array.push([offset + 24, XFA.pmwr_pc_unknown_24_animation[0][1], XFA.pmwr_pc_unknown_24_animation[0][2]])
             }
 
-            if (XFA.v_array.length !== 0) {
+            let v_buffer = convert_base64_arraybuffer(XFA.v_array)
+
+            if (v_buffer.length !== 0) {
                 let temp_offset = end_block
                 g.oa.push(offset + 68)
                 su32(offset + 68, end_block - mid)
-                end_block += divisible((XFA.v_array.byteLength), 16)
+                end_block += divisible((v_buffer.byteLength), 16)
 
-                new Uint8Array(dynamic_buffer).set(new Uint8Array(XFA.v_array), temp_offset)
+                new Uint8Array(dynamic_buffer).set(new Uint8Array(v_buffer), temp_offset)
 
             }
 
-            if (XFA.c_array.length !== 0) {
+            let c_buffer = convert_base64_arraybuffer(XFA.c_array)
+
+            if (c_buffer.length !== 0) {
                 let temp_offset = end_block
                 g.oa.push(offset + 72)
                 su32(offset + 72, end_block - mid)
-                end_block += divisible((XFA.c_array.byteLength), 16)
-                new Uint8Array(dynamic_buffer).set(new Uint8Array(XFA.c_array), temp_offset)
+                end_block += divisible((c_buffer.byteLength), 16)
+                new Uint8Array(dynamic_buffer).set(new Uint8Array(c_buffer), temp_offset)
 
             }
 
-            if (XFA.n_array.length !== 0) {
+            let n_buffer = convert_base64_arraybuffer(XFA.n_array)
+
+            if (n_buffer.length !== 0) {
                 let temp_offset = end_block
                 g.oa.push(offset + 76)
                 su32(offset + 76, end_block - mid)
-                end_block += divisible((XFA.n_array.byteLength), 16)
-                new Uint8Array(dynamic_buffer).set(new Uint8Array(XFA.n_array), temp_offset)
+                end_block += divisible((n_buffer.byteLength), 16)
+                new Uint8Array(dynamic_buffer).set(new Uint8Array(n_buffer), temp_offset)
 
             }
+            let u_buffer = convert_base64_arraybuffer(XFA.u_array)
 
-            if (XFA.u_array.length !== 0) {
+            if (u_buffer.length !== 0) {
                 let temp_offset = end_block
                 g.oa.push(offset + 80)
                 su32(offset + 80, end_block - mid)
-                end_block += divisible((XFA.u_array.byteLength), 16)
-                new Uint8Array(dynamic_buffer).set(new Uint8Array(XFA.u_array), temp_offset)
+                end_block += divisible((u_buffer.byteLength), 16)
+                new Uint8Array(dynamic_buffer).set(new Uint8Array(u_buffer), temp_offset)
 
             }
-            if (XFA.s_array.length !== 0) {
+            let s_buffer = convert_base64_arraybuffer(XFA.s_array)
+
+            if (s_buffer.length !== 0) {
                 let temp_offset = end_block
                 g.oa.push(offset + 84)
                 su32(offset + 84, end_block - mid)
-                end_block += divisible((XFA.s_array.byteLength), 16)
-                new Uint8Array(dynamic_buffer).set(new Uint8Array(XFA.s_array), temp_offset)
+                end_block += divisible((s_buffer.byteLength), 16)
+                new Uint8Array(dynamic_buffer).set(new Uint8Array(s_buffer), temp_offset)
 
             }
 
