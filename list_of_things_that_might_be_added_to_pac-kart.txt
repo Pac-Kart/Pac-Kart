@@ -150,6 +150,13 @@ add import/export tables for outer datapack/sound only sections
 add import/export tables for all sections
     mmcvl
     hwvx_proto
+        how to handel these sections:
+        hwvx_proto_triggers_and_actions
+        hwvx_proto_model_8_8_12_modeldata
+        hwvx_proto_model_anims_1_24
+        hwvx_proto_model_anims_1_28
+        hwvx_proto_model_anims_1_32
+        fix = import ordered fix arrays wrong name listed
     hwvx_gc
     hwvx_pc
     hwvx_ps2
@@ -209,7 +216,7 @@ hwvx
     reorder some unordered sections
 
 hwvx_proto
-    move sections
+    some linked to by: sections missing entries
     maybe show psuedo code here
 
 mmvcl
@@ -256,7 +263,6 @@ hwvx
     some linked to by: sections missing entries
 
 hwvx_proto
-    research how world list is layed out
     reorder functions based on docs
 
 mmvcl

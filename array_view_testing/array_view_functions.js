@@ -854,6 +854,8 @@ function add_events() {
     const fileEditor = document.getElementById('file_editor');
     const fileview = document.getElementById('file_viewer');
     var key = 'none'
+    var string_pre_hover = ''
+    var is_pre_hover = true
     // var focus = 0;
 
     fileEditor.addEventListener('change', function(event) {
@@ -883,7 +885,7 @@ function add_events() {
         if (classname.includes("array_button")) {
             let key_i = target.parentElement.id
 
-            // let str_array = array_path_local[key_i]
+            is_pre_hover = true;
 
             PK_path.array_path.push(key_i)
 
@@ -899,6 +901,9 @@ function add_events() {
                 return
             }
             PK_path.array_path.push(str_key)
+
+            is_pre_hover = true;
+
 
             if (key !== "none") {
                 PK_path.obj = get_full_path(PK_path.array_path)
@@ -968,6 +973,7 @@ function add_events() {
         const target = event.target;
         let classname = target.className
 
+
         // if (fileEditor.contains(document.target)) {
         //         console.pk_log('file editor contains true')
         // }else{
@@ -975,12 +981,18 @@ function add_events() {
         // }
 
         if (classname.includes("obj_to_array")) {
+        if (is_pre_hover) {
+        string_pre_hover = target.value
+        is_pre_hover = false;
+        }
+
             if (key === "Control") {
                 target.value = "-> jump to first array"
             } else if (key === "Shift") {
                 target.value = "-> jump to last array"
             } else if (key === "Alt") {
                 target.value = "-> jump to random array"
+            }else{
             }
 
         }
@@ -992,7 +1004,9 @@ function add_events() {
         let classname = target.className
 
         if (classname.includes("obj_to_array")) {
-            target.value = "Array"
+            target.value = string_pre_hover
+            is_pre_hover = true;
+
         }
     })
 
