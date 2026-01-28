@@ -152,11 +152,9 @@ add import/export tables for all sections
     hwvx_proto
         how to handel these sections:
         hwvx_proto_triggers_and_actions
-        hwvx_proto_model_8_8_12_modeldata
-        hwvx_proto_model_anims_1_24
-        hwvx_proto_model_anims_1_28
-        hwvx_proto_model_anims_1_32
-        fix = import ordered fix arrays wrong name listed
+        hwvx_proto_share_end
+        hwvx_proto_world_settings 156
+        textures mipmap last buffer = 0 ?
     hwvx_gc
     hwvx_pc
     hwvx_ps2

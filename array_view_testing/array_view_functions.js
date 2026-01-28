@@ -1357,7 +1357,12 @@ function get_input_type(value, i=-1, key="null") {
     if (key === "id" || key === "sec_id") {
         input_type = `<input class="top_settings" data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
     } else if (Array.isArray(value)) {
-        input_type = `<input data-key_id="${i}" class="obj_to_array" style='width:100%;' type='button' value="Array ${value.length}">`
+        let array_amount = value.length
+        let temp_class = ''
+        if (array_amount === 0) {
+            temp_class = `empty_array`
+        }
+        input_type = `<input data-key_id="${i}" class="obj_to_array ${temp_class}" style='width:100%;' type='button' value="Array ${value.length}">`
     } else if (value === true || value === false) {
         input_type = `<input data-key_id="${i}" style='width:100%;' type='checkbox' value="${value}">`
     } else if (value === null) {
