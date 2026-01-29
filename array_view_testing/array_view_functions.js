@@ -45,7 +45,7 @@ async function import_new_file(event) {
                     const dataView = new DataView(buffer);
 
                     inner_file_viewer.textContent = ''
-                    file_editor.textContent = ''
+                    inner_file_editor.textContent = ''
 
                     get_type_from_file()
 
@@ -842,7 +842,7 @@ function array_view_array(array_path) {
    </div>
 </div>`
 
-    file_editor.innerHTML = html
+    inner_file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
 
     // document.getElementById('game').value = TXFA.game
@@ -872,8 +872,8 @@ function add_events() {
                 console.pk_log(`array_inner_keys is ${array_inner_keys}`)
             }
 
-        }else{
-        PK_path.obj[key_id] = target.value
+        } else {
+            PK_path.obj[key_id] = target.value
         }
         console.pk_log(`changed ${key_id} to ${target.value}`)
     });
@@ -903,7 +903,6 @@ function add_events() {
             PK_path.array_path.push(str_key)
 
             is_pre_hover = true;
-
 
             if (key !== "none") {
                 PK_path.obj = get_full_path(PK_path.array_path)
@@ -973,7 +972,6 @@ function add_events() {
         const target = event.target;
         let classname = target.className
 
-
         // if (fileEditor.contains(document.target)) {
         //         console.pk_log('file editor contains true')
         // }else{
@@ -981,10 +979,10 @@ function add_events() {
         // }
 
         if (classname.includes("obj_to_array")) {
-        if (is_pre_hover) {
-        string_pre_hover = target.value
-        is_pre_hover = false;
-        }
+            if (is_pre_hover) {
+                string_pre_hover = target.value
+                is_pre_hover = false;
+            }
 
             if (key === "Control") {
                 target.value = "-> jump to first array"
@@ -992,8 +990,7 @@ function add_events() {
                 target.value = "-> jump to last array"
             } else if (key === "Alt") {
                 target.value = "-> jump to random array"
-            }else{
-            }
+            } else {}
 
         }
 
@@ -1131,7 +1128,7 @@ function array_view_string() {
    </div>
 </div>`
 
-    file_editor.innerHTML = html
+    inner_file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
 
     // document.getElementById('game').value = TXFA.game
@@ -1186,7 +1183,7 @@ function array_view_object() {
    </div>
 </div>`
 
-    file_editor.innerHTML = html
+    inner_file_editor.innerHTML = html
     document.getElementById("_2nd_data_bar").innerHTML = ''
 
     check_section(sec_name)
@@ -1363,6 +1360,9 @@ function get_input_type(value, i=-1, key="null") {
             temp_class = `empty_array`
         }
         input_type = `<input data-key_id="${i}" class="obj_to_array ${temp_class}" style='width:100%;' type='button' value="Array ${value.length}">`
+    } else if (key === "unordered_pmwr_pc_link") {
+        input_type = generate_linkbox_special(value, key)
+        // input_type = `<input data-key_id="${i}" style='width:100%;' type='checkbox' value="${value}">`
     } else if (value === true || value === false) {
         input_type = `<input data-key_id="${i}" style='width:100%;' type='checkbox' value="${value}">`
     } else if (value === null) {
@@ -1393,6 +1393,156 @@ function get_input_type(value, i=-1, key="null") {
 
 function display_path(str_path) {
     return `<a id="path">PATH: ${str_path.toString().replaceAll(',', ' -> ')}</a>`
+}
+
+function get_linked_sections() {
+
+    let linked_object = {
+        x_file:null,
+        directory:null,
+        datapack:null,
+        ordered:null,
+        unordered:null,
+    }
+
+    switch(g.type_string){
+        case "pmwr_pc":
+        break
+    }
+    if (PK_path.array_path.length <= 7) {
+        return null
+    }
+    let file_path_array = []
+    let file_directory_array = []
+    let file_datapack_array = []
+    let file_ordered_array = []
+    let file_unordered_array = []
+    let new_path = []
+
+    for (let i = 0; i - 1 < 2; i++) {
+        file_path_array.push(PK_path.array_path[i])
+    }
+    linked_object.x_file = file_path_array
+    for (let i = 0; i - 1 < 6; i++) {
+        file_directory_array.push(PK_path.array_path[i])
+    }
+    linked_object.directory = file_directory_array
+    for (let i = 0; i - 1 < 8; i++) {
+        file_datapack_array.push(PK_path.array_path[i])
+    }
+    linked_object.datapack = file_datapack_array
+    file_ordered_array = file_datapack_array
+    file_ordered_array.push("ordered","0")
+    linked_object.ordered = file_ordered_array
+
+    file_unordered_array = file_ordered_array
+    file_unordered_array.push("unordered","0")
+    linked_object.unordered = file_unordered_array
+
+    return linked_object
+
+}
+
+function generate_linkbox_special(value, key) {
+    let disabled_input = `<select disabled style="width:100%" title="disabled" Selector"></select>`
+    let sections_object = get_linked_sections()
+
+    if (sections_object === null) {
+        return disabled_input
+    }
+
+    // let file_type = PK_path.array_path[2]
+    // let directory_file_type = PK_path.array_path[6]
+
+    let html = ''
+
+    // let directory = path.slice(0, 16).replace('[0].directory[', '').replace(']', '')
+    // let typepath = ''
+    // let type
+    // switch (id[0][3]) {
+    // case "s":
+    //     typepath = '.audio[0].sound'
+    //     type = 'Sound'
+    //     break
+    // case "t":
+    //     typepath = '.ordered[0].textures'
+    //     type = 'Texture'
+    //     break
+    // case "a":
+    //     typepath = '.ordered[0].texture_animation'
+    //     type = "Animation"
+    //     break
+    // case "m":
+    //     typepath = '.ordered[0].models'
+    //     type = 'Model'
+    //     break
+    // }
+
+    // let optionhtml = ''
+
+    // let share_input = 'disabled'
+    // let share = {
+    //     _1: {
+    //         set: '',
+    //         disabled: ''
+    //     },
+    //     _2: {
+    //         set: '',
+    //         disabled: ''
+    //     }
+    // }
+    // let linkedfiles = Object.byString(x, `[0].directory[${directory}].datapack[0].linked_files`);
+
+    // if (id[0][2] !== 0) {
+    //     share_input = `value="${id[0][1]}"`
+    //     if (id[0][2] === linkedfiles.u32_92) {
+    //         //first file
+    //         share._1.set = `selected="selected"`
+    //     } else if (id[0][2] === linkedfiles.u32_112) {
+    //         //2nd
+    //         share._2.set = `selected="selected"`
+    //     }
+
+    // }
+    // let share_set2 = ''
+    // if (linkedfiles.u32_92 === 0) {
+    //     share._1.disabled = 'disabled'
+    // }
+    // if (linkedfiles.u32_112 === 0) {
+    //     share._2.disabled = 'disabled'
+    // }
+
+    // optionhtml += `<option ${share._1.disabled} ${share._1.set} value="Share_1">→ Share 1 (${linkedfiles.string_1[0]})</option>
+    //                 <option ${share._2.disabled} ${share._2.set} value="Share_2">→ Share 2 (${linkedfiles.string_2[0]})</option>`
+
+    // let typelist = Object.byString(x, `[0].directory[${directory}].datapack[0]` + typepath);
+    // let set
+    // let htmltype = type
+
+    // for (let i = 0; i < typelist.length; i++) {
+    //     if (type === "Texture") {
+    //         htmltype = typelist[i].name
+    //     } else {
+    //         htmltype = type + ' ' + (i + 1)
+    //     }
+    //     set = ''
+    //     if (id[0][1] === i && id[0][2] === 0) {
+    //         set = `selected="selected"`
+    //     }
+    //     optionhtml += `<option ${set} value="${typelist[i].id}"> ${htmltype}</option>`
+
+    // }
+
+    // let html = `
+    // <span>
+    //     <select data-type="special" style="width:70%" title="${type}" data-outer_xfa="${path}" data-inner_xfa="${0}" Selector>
+    //     ${optionhtml}
+    //     </select>
+    //     <input ${share_input} style='width:25%' title='Share Index' data-outer_xfa="${path}[0]" data-inner_xfa="${1}" data-type='u16'>
+    // </span>`
+
+    return html
+
 }
 
 function array_view_path(str_path) {
