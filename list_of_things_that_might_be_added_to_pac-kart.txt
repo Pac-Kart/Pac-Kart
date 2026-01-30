@@ -151,10 +151,13 @@ add import/export tables for all sections
     mmcvl
     hwvx_proto
         how to handel these sections:
-        hwvx_proto_triggers_and_actions
         hwvx_proto_share_end
         hwvx_proto_world_settings 156
         textures mipmap last buffer = 0 ?
+        need to fix geo datapack
+        broken:
+        hwvx_proto_triggers_and_actions_20_4t3
+        models not importing ?
     hwvx_gc
     hwvx_pc
     hwvx_ps2
