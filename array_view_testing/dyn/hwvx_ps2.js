@@ -99,10 +99,10 @@ function im_hwvx_ps2_directory(o, i, x, global) {
     case 8:
     case 9:
     case 10:
-        // u32(o + 16) ? im_hwvx_ps2_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack) : 0;
+        // u32(o + 16) && im_hwvx_ps2_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
         break;
     case 7:
-        // u32(o + 16) ? im_hwvx_ps2_geo_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack) : 0;
+        // u32(o + 16) && im_hwvx_ps2_geo_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
         break;
     }
 
@@ -240,7 +240,7 @@ function ex_hwvx_ps2_file_header(o, x) {
 
     console.pk_log("saved in " + time_array)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -280,6 +280,6 @@ function ex_hwvx_ps2_directory(o, e, x, global) {
     dynamic_buffer = directory_buffer
     su32(o + 16, datapack_buffer.byteLength + patch_buffer.byteLength + ordered_buffer.byteLength)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }

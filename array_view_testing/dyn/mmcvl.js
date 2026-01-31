@@ -90,13 +90,13 @@ function im_mm_datapack(o, i, x) {
     //     offset_patch_list: buffer.slice(o, endoffset)
     // });
 
-    // u32(o + 16) ? im_mm_Texture(u32(o + 16) + g.m, x[i].section_16) : 0;
+    // u32(o + 16) && im_mm_Texture(u32(o + 16) + g.m, x[i].section_16);
     // offset? 
-    // u32(o + 28) ? im_mm_sound_list(u32(o + 28) + g.m, x[i].section_28) : 0;
+    // u32(o + 28) && im_mm_sound_list(u32(o + 28) + g.m, x[i].section_28);
     // offset? 
-    // u32(o + 36) ? im_mm_color_table(u32(o + 36) + g.m, x[i].section_36) : 0;
+    // u32(o + 36) && im_mm_color_table(u32(o + 36) + g.m, x[i].section_36);
     // offset? 
-    // u32(o + 44) ? im_mm_model_texture_anims_list(u32(o + 44) + g.m, x[i].section_44) : 0;
+    // u32(o + 44) && im_mm_model_texture_anims_list(u32(o + 44) + g.m, x[i].section_44);
     // offset?
     return x[i].id
     // 48 bytes;
@@ -219,7 +219,7 @@ function ex_mm_x(o, x) {
     let time_array = []
     let a = Date.now()
 
-    ex_mm_file_header(o,x)
+    ex_mm_file_header(o, x)
 
     time_array.push(Date.now() - a)
 
@@ -233,24 +233,24 @@ function ex_mm_file_header(o, x) {
     su32(o + 8, x.u32_8)
     ex_mm_datapack(e, x.section_datapack[0])
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
 function ex_mm_datapack(o, x) {
     let e = o + 48
     su32(o + 0, x.u32_0)
-    su32(o +4, x.u32_4)
-    su32(o +8, x.u32_8)
-    su32(o +12, x.u32_12)
-    su32(o +16, x.u32_16)
-    su32(o +20, x.u32_20)
+    su32(o + 4, x.u32_4)
+    su32(o + 8, x.u32_8)
+    su32(o + 12, x.u32_12)
+    su32(o + 16, x.u32_16)
+    su32(o + 20, x.u32_20)
     su32(o + 24, x.u32_24)
     su32(o + 28, x.u32_28)
-    su32(o +36, x.u32_36)
-    su32(o +32, x.u32_32)
-    su32(o +40, x.u32_40)
-    su32(o +44, x.u32_44)
+    su32(o + 36, x.u32_36)
+    su32(o + 32, x.u32_32)
+    su32(o + 40, x.u32_40)
+    su32(o + 44, x.u32_44)
 
     let ordered_length = x.u32_0
     let patch_offset = 60
@@ -272,13 +272,12 @@ function ex_mm_datapack(o, x) {
     new Uint8Array(dynamic_buffer).set(new Uint8Array(ordered_list_buffer), 0)
     ordered_buffer = ordered_buffer.slice(0, e)
 
-
     // e = ex_s_offset(o + 16, e, ex_mm_Texture, x.section_16, 'down');
     // e = ex_s_offset(o + 28, e, ex_mm_sound_list, x.section_28, 'down');
     // e = ex_s_offset(o + 36, e, ex_mm_color_table, x.section_36, 'down');
     // e = ex_s_offset(o + 44, e, ex_mm_model_texture_anims_list, x.section_44, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 

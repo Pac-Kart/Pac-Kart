@@ -1934,11 +1934,11 @@ function im_pmwr_pc_directory(o, i, x, directory_offset) {
     x.push({
         id: gen_id(),
         sec_id: "]7Zf",
-            version: u32(o),
-            type: g.file_dir_type,
-            index: u32(o + 8),
-            unknown_12: [],
-            datapack: [],
+        version: u32(o),
+        type: g.file_dir_type,
+        index: u32(o + 8),
+        unknown_12: [],
+        datapack: [],
     });
 
     im_pmwr_pc_datapack(u32(o + 20) + directory_offset, x[i].datapack)
@@ -2251,8 +2251,8 @@ function im_pmwr_pc_world(o, i, x) {
         //award why
     }
 
-    u32(o + 4) ? im_pmwr_pc_collision(u32(o + 4) + g.m, x[i].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_world_12(u32(o + 12) + g.m, x[i].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_collision(u32(o + 4) + g.m, x[i].section_04);
+    u32(o + 12) && im_pmwr_pc_world_12(u32(o + 12) + g.m, x[i].section_12);
 
     for (let ii = 0; ii < u32(o + 16); ii++) {
         im_pmwr_pc_world_20(u32(o + 20) + (ii * 16) + g.m, ii, x[i].section_20);
@@ -2263,7 +2263,7 @@ function im_pmwr_pc_world(o, i, x) {
         x[i].unordered_pmwr_pc_world_settings_00 = in_ml(u32(o + 0), g.pmwr_pc_world_settings_array, im_pmwr_pc_world_settings, g.unordered_ref.pmwr_pc_world_settings);
     }
 
-    u32(o + 8) ? im_pmwr_pc_world_08(u32(o + 8) + g.m, x[i].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_world_08(u32(o + 8) + g.m, x[i].section_08);
 
     if (g.temp72arry.length) {
         for (let i = 0; i < g.temp72arry.length; i++) {
@@ -2271,7 +2271,7 @@ function im_pmwr_pc_world(o, i, x) {
         }
     }
 
-    u32(o + 24) ? im_pmwr_pc_world_24(u32(o + 24) + g.m, x[i].section_24) : 0;
+    u32(o + 24) && im_pmwr_pc_world_24(u32(o + 24) + g.m, x[i].section_24);
     for (let ii = 0; ii < u32(o + 28); ii++) {
         im_pmwr_pc_world_32(u32(o + 32) + (ii * 4) + g.m, ii, x[i].section_32);
     }
@@ -2313,10 +2313,10 @@ function im_pmwr_pc_collision(o, x) {
 
     // switch(u32(o + 88)){
     //    case 0:
-    //        u32(o + 32) ? im_pmwr_pc_collision_32t0(u32(o + 32) + g.m,x[0].section_32) : 0; 
+    //        u32(o + 32) && im_pmwr_pc_collision_32t0(u32(o + 32) + g.m,x[0].section_32); 
     //    break;
     //    case 1:
-    //        u32(o + 32) ? im_pmwr_pc_collision_32t1(u32(o + 32) + g.m,x[0].section_32) : 0; 
+    //        u32(o + 32) && im_pmwr_pc_collision_32t1(u32(o + 32) + g.m,x[0].section_32); 
     //    break;
 
     let typefunction
@@ -2360,7 +2360,7 @@ function im_pmwr_pc_collision_76(o, i, x) {
         u16_26: u16(o + 26),
     });
 
-    u32(o + 16) ? im_pmwr_pc_collision_76_16(u32(o + 16) + g.m, x[i].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_collision_76_16(u32(o + 16) + g.m, x[i].section_16);
 
 }
 function im_pmwr_pc_collision_76_16(o, x) {
@@ -2677,13 +2677,13 @@ function im_pmwr_pc_world_20_12t2(o, i, x) {
         //amount?
     });
 
-    u32(o + 56) ? im_pmwr_pc_world_20_12t2_56(u32(o + 56) + g.m, x[i].section_56, u32(o + 52)) : 0;
+    u32(o + 56) && im_pmwr_pc_world_20_12t2_56(u32(o + 56) + g.m, x[i].section_56, u32(o + 52));
 
     for (let ii = 0; ii < u32(o + 60); ii++) {
         im_pmwr_pc_world_20_12t2_64(u32(o + 64) + (ii * 4) + g.m, ii, x[i].section_64);
     }
-    u32(o + 72) ? im_pmwr_pc_world_20_12t2_72(u32(o + 72) + g.m, x[i].section_72, u32(o + 40)) : 0;
-    u32(o + 76) ? im_pmwr_pc_world_20_12t2_76(u32(o + 76) + g.m, x[i].section_76) : 0;
+    u32(o + 72) && im_pmwr_pc_world_20_12t2_72(u32(o + 72) + g.m, x[i].section_72, u32(o + 40));
+    u32(o + 76) && im_pmwr_pc_world_20_12t2_76(u32(o + 76) + g.m, x[i].section_76);
 
     for (let ii = 0; ii < u32(o + 104); ii++) {
         im_pmwr_pc_world_20_12t2_100(u32(o + 100) + (ii * 4) + g.m, ii, x[i].section_100);
@@ -2901,7 +2901,7 @@ function im_pmwr_pc_world_20_12t4(o, i, x) {
         x[i].section_128 = in_ml(u32(o + 128), g.pmwr_pc_world_20_12t4_array, im_pmwr_pc_world_20_12t4, g.unordered_ref.pmwr_pc_world_20_12t4);
         break;
     case 1:
-        u32(o + 128) ? im_pmwr_pc_world_20_12t4_128t1(u32(o + 128) + g.m, x[i].section_128) : 0;
+        u32(o + 128) && im_pmwr_pc_world_20_12t4_128t1(u32(o + 128) + g.m, x[i].section_128);
         break;
     }
 
@@ -2957,13 +2957,13 @@ function im_pmwr_pc_world_20_12t8(o, i, x) {
 
     switch (u32(o + 36)) {
     case 1:
-        u32(o + 76) ? im_pmwr_pc_world_20_12t8_76t1(u32(o + 76) + g.m, x[i].section_76) : 0;
+        u32(o + 76) && im_pmwr_pc_world_20_12t8_76t1(u32(o + 76) + g.m, x[i].section_76);
         break;
     case 7:
-        u32(o + 76) ? im_pmwr_pc_world_20_12t8_76t7(u32(o + 76) + g.m, x[i].section_76) : 0;
+        u32(o + 76) && im_pmwr_pc_world_20_12t8_76t7(u32(o + 76) + g.m, x[i].section_76);
         break;
     case 8:
-        u32(o + 76) ? im_pmwr_pc_world_20_12t8_76t8(u32(o + 76) + g.m, x[i].section_76) : 0;
+        u32(o + 76) && im_pmwr_pc_world_20_12t8_76t8(u32(o + 76) + g.m, x[i].section_76);
         break;
     }
 
@@ -3446,7 +3446,7 @@ function im_pmwr_pc_texture(o, x) {
         //     end_block = get_pmwr_pc_texture(g.m + u32(offset + 24) + (ti * 64), x[x_index].pmwr_pc_textures, i)
         // }
 
-        let pmwr_pc_texture_name = im_string(pmwr_pc_texture_settings_offset + 12 -g.m, 0, false)
+        let pmwr_pc_texture_name = im_string(pmwr_pc_texture_settings_offset + 12 - g.m, 0, false)
 
         pmwr_pc_texture_name.string = pmwr_pc_texture_name.string.substr(0, 51)
         x.push({
@@ -3552,7 +3552,6 @@ function im_pmwr_pc_texture(o, x) {
                 let temp_pmwr_pc_texture_array = convert_arraybuffer_base64(buffer.slice(mipmap_start, mipmap_end))
 
                 // let temp_pmwr_pc_texture_array = new ArrayBuffer(temp_2)
-
 
                 x[ti].pmwr_pc_texture.push(temp_pmwr_pc_texture_array)
                 mipmap_start += temp_2
@@ -3892,8 +3891,7 @@ function im_pmwr_pc_models(offset, index) {
         if (temp_string !== "") {
 
             g.ordered_ref.pmwr_pc_models[index].second_names.push(temp_string)
-            if (temp_string.string.toLowerCase().includes('.tga')) {} else {
-            }
+            if (temp_string.string.toLowerCase().includes('.tga')) {} else {}
 
             end_offset += temp_string.length
         }
@@ -3946,7 +3944,7 @@ function im_pmwr_pc_models(offset, index) {
             im_pmwr_pc_GC_pmwr_pc_models_04_04_00_80_00(u32(o + 0) + (i * 32) + g.m, i, x[0].section_00);
         }
 
-        u32(o + 4) ? im_pmwr_pc_GC_pmwr_pc_models_04_04_00_80_04(u32(o + 4) + g.m, x[0].section_04, u32(o + 0) + g.m) : 0;
+        u32(o + 4) && im_pmwr_pc_GC_pmwr_pc_models_04_04_00_80_04(u32(o + 4) + g.m, x[0].section_04, u32(o + 0) + g.m);
 
         return o + 16
         // 16 bytes;
@@ -4026,7 +4024,7 @@ function im_pmwr_pc_models(offset, index) {
         for (let ii = 0; ii < u8(o + 20); ii++) {
             im_pmwr_pc_GC_pmwr_pc_models_04_04_00_76_08(u32(o + 8) + (ii * 1) + g.m, ii, x[i].section_08);
         }
-        u32(o + 12) ? im_pmwr_pc_GC_pmwr_pc_models_04_04_00_76_12(u32(o + 12) + g.m, x[i].section_12, u32(o + 16)) : 0;
+        u32(o + 12) && im_pmwr_pc_GC_pmwr_pc_models_04_04_00_76_12(u32(o + 12) + g.m, x[i].section_12, u32(o + 16));
         u32(o + 16) ? e = im_pmwr_pc_GC_pmwr_pc_models_04_04_00_76_16(u32(o + 16) + g.m, x[i].section_16, u32(o + 4)) : 0;
 
         // for (let ii = 0; ii < u32(o + 4); ii++) {
@@ -4146,15 +4144,15 @@ function im_pmwr_pc_model_animation_1(o, i, x) {
     case 1:
     case 4:
         if (u32(o + 16) === 1) {
-            u32(o + 28) ? im_pmwr_pc_model_animation_1_28t1(u32(o + 28) + g.m, x[i].section_28) : 0;
+            u32(o + 28) && im_pmwr_pc_model_animation_1_28t1(u32(o + 28) + g.m, x[i].section_28);
         } else if (u32(o + 16) === 28) {
             console.log(u32(o + 4))
-            u32(o + 28) ? im_pmwr_pc_model_animation_1_28t28(u32(o + 28) + g.m, x[i].section_28) : 0;
+            u32(o + 28) && im_pmwr_pc_model_animation_1_28t28(u32(o + 28) + g.m, x[i].section_28);
         }
         break;
     case 3:
         if (u32(o + 16) === 1) {
-            u32(o + 28) ? im_pmwr_pc_model_animation_1_28t3(u32(o + 28) + g.m, x[i].section_28) : 0;
+            u32(o + 28) && im_pmwr_pc_model_animation_1_28t3(u32(o + 28) + g.m, x[i].section_28);
         }
         break
     case 5:
@@ -4166,13 +4164,13 @@ function im_pmwr_pc_model_animation_1(o, i, x) {
     case 1:
     case 4:
         if (u32(o + 16) === 1) {
-            u32(o + 24) ? im_pmwr_pc_model_animation_1_24t1(u32(o + 24) + g.m, x[i].section_24) : 0;
+            u32(o + 24) && im_pmwr_pc_model_animation_1_24t1(u32(o + 24) + g.m, x[i].section_24);
         } else if (u32(o + 16) === 28) {
-            u32(o + 24) ? im_pmwr_pc_model_animation_1_24t28(u32(o + 24) + g.m, x[i].section_24) : 0;
+            u32(o + 24) && im_pmwr_pc_model_animation_1_24t28(u32(o + 24) + g.m, x[i].section_24);
         }
         break;
     case 3:
-        u32(o + 24) ? im_pmwr_pc_model_animation_1_24t3(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_model_animation_1_24t3(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 5:
         x[i].section_24 = u32(o + 24)
@@ -4189,7 +4187,7 @@ function im_pmwr_pc_model_animation_1(o, i, x) {
     switch (u32(o + 0)) {
     case 1:
     case 4:
-        u32(o + 36) ? im_pmwr_pc_model_animation_1_36(u32(o + 36) + g.m, x[i].section_36, u32(o + 4)) : 0;
+        u32(o + 36) && im_pmwr_pc_model_animation_1_36(u32(o + 36) + g.m, x[i].section_36, u32(o + 4));
         break;
     case 3:
         if (u32(o + 32) && u32(o + 36)) {
@@ -4198,7 +4196,7 @@ function im_pmwr_pc_model_animation_1(o, i, x) {
             let begin = u32(o + 36) + g.m
             x[i].section_32_padding = begin - end
         }
-        u32(o + 36) ? im_pmwr_pc_model_animation_1_36t3(u32(o + 36) + g.m, x[i].section_36, u32(o + 48)) : 0;
+        u32(o + 36) && im_pmwr_pc_model_animation_1_36t3(u32(o + 36) + g.m, x[i].section_36, u32(o + 48));
         break
     case 5:
         x[i].section_36 = u32(o + 36)
@@ -4208,7 +4206,7 @@ function im_pmwr_pc_model_animation_1(o, i, x) {
     switch (u32(o + 0)) {
     case 1:
     case 4:
-        u32(o + 44) ? im_pmwr_pc_model_animation_1_44(u32(o + 44) + g.m, x[i].section_44) : 0;
+        u32(o + 44) && im_pmwr_pc_model_animation_1_44(u32(o + 44) + g.m, x[i].section_44);
         break;
     case 3:
     case 5:
@@ -4224,11 +4222,11 @@ function im_pmwr_pc_model_animation_1(o, i, x) {
             x[i].section_32_padding = begin - end
         }
     case 35:
-        u32(o + 52) ? im_pmwr_pc_model_animation_1_52t35(u32(o + 52) + g.m, x[i].section_52) : 0;
+        u32(o + 52) && im_pmwr_pc_model_animation_1_52t35(u32(o + 52) + g.m, x[i].section_52);
         break;
     case 163:
     case 419:
-        u32(o + 52) ? im_pmwr_pc_model_animation_1_52t163(u32(o + 52) + g.m, x[i].section_52) : 0;
+        u32(o + 52) && im_pmwr_pc_model_animation_1_52t163(u32(o + 52) + g.m, x[i].section_52);
         break;
     case 11:
     case 67:
@@ -5734,7 +5732,7 @@ function im_pmwr_pc_activator_248_04_04t0_04_04(o, i, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_activator_248_04_04t0_04_04_04(u32(o + 4) + g.m, x[i].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_activator_248_04_04t0_04_04_04(u32(o + 4) + g.m, x[i].section_04);
 
 }
 function im_pmwr_pc_activator_248_04_04t0_04_04_04(o, x) {
@@ -5744,7 +5742,7 @@ function im_pmwr_pc_activator_248_04_04t0_04_04_04(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_activator_248_04_04t0_04_04_04_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_activator_248_04_04t0_04_04_04_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -5769,7 +5767,7 @@ function im_pmwr_pc_car(o, i, x) {
         u8_04: u8(o + 4),
     });
 
-    u32(o + 0) ? im_pmwr_pc_car_00(u32(o + 0) + g.m, x[i].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_car_00(u32(o + 0) + g.m, x[i].section_00);
     return x[i].id
     // 16 bytes;
 
@@ -5844,10 +5842,10 @@ function im_pmwr_pc_car_00(o, x) {
 
     x[0].unordered_pmwr_pc_car_00_180_180 = in_ml(u32(o + 180), g.pmwr_pc_car_00_180_array, im_pmwr_pc_car_00_180, g.unordered_ref.pmwr_pc_car_00_180);
     x[0].unordered_pmwr_pc_car_00_184_184 = in_ml(u32(o + 184), g.pmwr_pc_car_00_184_array, im_pmwr_pc_car_00_184, g.unordered_ref.pmwr_pc_car_00_184);
-    u32(o + 188) ? im_pmwr_pc_car_00_188(u32(o + 188) + g.m, x[0].section_188) : 0;
-    u32(o + 192) ? im_pmwr_pc_car_00_192(u32(o + 192) + g.m, x[0].section_192) : 0;
-    u32(o + 196) ? im_pmwr_pc_car_00_196(u32(o + 196) + g.m, x[0].section_196) : 0;
-    u32(o + 200) ? im_pmwr_pc_car_00_200(u32(o + 200) + g.m, x[0].section_200) : 0;
+    u32(o + 188) && im_pmwr_pc_car_00_188(u32(o + 188) + g.m, x[0].section_188);
+    u32(o + 192) && im_pmwr_pc_car_00_192(u32(o + 192) + g.m, x[0].section_192);
+    u32(o + 196) && im_pmwr_pc_car_00_196(u32(o + 196) + g.m, x[0].section_196);
+    u32(o + 200) && im_pmwr_pc_car_00_200(u32(o + 200) + g.m, x[0].section_200);
 
     for (let i = 0; i < u32(o + 204); i++) {
         im_pmwr_pc_car_00_208(u32(o + 208) + (i * 8) + g.m, i, x[0].section_208);
@@ -5890,8 +5888,8 @@ function im_pmwr_pc_car_00_180(o, i, x) {
         section_44: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_car_00_180_00(u32(o + 0) + g.m, x[i].section_00) : 0;
-    u32(o + 4) ? im_pmwr_pc_car_00_180_04(u32(o + 4) + g.m, x[i].section_04) : 0;
+    u32(o + 0) && im_pmwr_pc_car_00_180_00(u32(o + 0) + g.m, x[i].section_00);
+    u32(o + 4) && im_pmwr_pc_car_00_180_04(u32(o + 4) + g.m, x[i].section_04);
     x[i].unordered_pmwr_pc_sound_section_08 = in_ml(u32(o + 8), g.pmwr_pc_sound_section_array, im_pmwr_pc_sound_section, g.unordered_ref.pmwr_pc_sound_section);
     x[i].unordered_pmwr_pc_sound_section_12 = in_ml(u32(o + 12), g.pmwr_pc_sound_section_array, im_pmwr_pc_sound_section, g.unordered_ref.pmwr_pc_sound_section);
 
@@ -5930,7 +5928,7 @@ function im_pmwr_pc_car_00_180_00(o, x) {
         unordered_pmwr_pc_unknown_00_36: 0,
     });
 
-    u32(o + 8) ? im_pmwr_pc_car_00_180_00_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_car_00_180_00_08(u32(o + 8) + g.m, x[0].section_08);
 
     for (let i = 0; i < u32(o + 12); i++) {
         im_pmwr_pc_car_00_180_00_16(u32(o + 16) + (i * 20) + g.m, i, x[0].section_16);
@@ -5966,9 +5964,9 @@ function im_pmwr_pc_car_00_180_00_16(o, i, x) {
         section_16: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_car_00_180_00_16_08(u32(o + 8) + g.m, x[i].section_08) : 0;
-    u32(o + 12) ? im_pmwr_pc_car_00_180_00_16_12(u32(o + 12) + g.m, x[i].section_12) : 0;
-    u32(o + 16) ? im_pmwr_pc_car_00_180_00_16_12(u32(o + 16) + g.m, x[i].section_16) : 0;
+    u32(o + 8) && im_pmwr_pc_car_00_180_00_16_08(u32(o + 8) + g.m, x[i].section_08);
+    u32(o + 12) && im_pmwr_pc_car_00_180_00_16_12(u32(o + 12) + g.m, x[i].section_12);
+    u32(o + 16) && im_pmwr_pc_car_00_180_00_16_12(u32(o + 16) + g.m, x[i].section_16);
 
 }
 function im_pmwr_pc_car_00_180_00_16_08(o, x) {
@@ -6034,15 +6032,15 @@ function im_pmwr_pc_car_00_180_04(o, x) {
         section_92: [],
     });
 
-    u32(o + 56) ? im_pmwr_pc_car_00_180_04_56(u32(o + 56) + g.m, x[0].section_56) : 0;
-    u32(o + 64) ? im_pmwr_pc_car_00_180_04_56(u32(o + 64) + g.m, x[0].section_64) : 0;
+    u32(o + 56) && im_pmwr_pc_car_00_180_04_56(u32(o + 56) + g.m, x[0].section_56);
+    u32(o + 64) && im_pmwr_pc_car_00_180_04_56(u32(o + 64) + g.m, x[0].section_64);
     x[0].unordered_pmwr_pc_unknown_00_68 = in_ml(u32(o + 68), g.pmwr_pc_unknown_00_array, im_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00);
-    u32(o + 80) ? im_pmwr_pc_car_00_180_04_80(u32(o + 80) + g.m, x[0].section_80) : 0;
+    u32(o + 80) && im_pmwr_pc_car_00_180_04_80(u32(o + 80) + g.m, x[0].section_80);
 
     x[0].unordered_pmwr_pc_car_00_180_04_84_84 = in_ml(u32(o + 84), g.pmwr_pc_car_00_180_04_84_array, im_pmwr_pc_car_00_180_04_84, g.unordered_ref.pmwr_pc_car_00_180_04_84);
     x[0].unordered_pmwr_pc_car_00_180_04_84_88 = in_ml(u32(o + 88), g.pmwr_pc_car_00_180_04_84_array, im_pmwr_pc_car_00_180_04_84, g.unordered_ref.pmwr_pc_car_00_180_04_84);
 
-    u32(o + 92) ? im_pmwr_pc_car_00_180_04_92(u32(o + 92) + g.m, x[0].section_92) : 0;
+    u32(o + 92) && im_pmwr_pc_car_00_180_04_92(u32(o + 92) + g.m, x[0].section_92);
 
     // 96 bytes;
 
@@ -6105,10 +6103,10 @@ function im_pmwr_pc_car_00_180_20(o, i, x) {
 
     switch (u8(o + 0)) {
     case 1:
-        u32(o + 4) ? im_pmwr_pc_car_00_180_20_04t1(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_car_00_180_20_04t1(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 3:
-        u32(o + 4) ? im_pmwr_pc_car_00_180_20_04t3(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_car_00_180_20_04t3(u32(o + 4) + g.m, x[i].section_04);
         break;
     }
 }
@@ -6150,7 +6148,7 @@ function im_pmwr_pc_car_00_184(o, i, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_car_00_184_04(u32(o + 4) + g.m, x[i].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_car_00_184_04(u32(o + 4) + g.m, x[i].section_04);
     return x[i].id
     // 16 bytes;
 
@@ -6173,9 +6171,9 @@ function im_pmwr_pc_car_00_184_04(o, x) {
         f32_48: f32(o + 48),
     });
 
-    u32(o + 0) ? im_pmwr_pc_car_00_184_04_00(u32(o + 0) + g.m, x[0].section_00) : 0;
-    u32(o + 4) ? im_pmwr_pc_car_00_184_04_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 8) ? im_pmwr_pc_car_00_184_04_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 0) && im_pmwr_pc_car_00_184_04_00(u32(o + 0) + g.m, x[0].section_00);
+    u32(o + 4) && im_pmwr_pc_car_00_184_04_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 8) && im_pmwr_pc_car_00_184_04_08(u32(o + 8) + g.m, x[0].section_08);
 
     // 64 bytes;
 
@@ -6193,7 +6191,7 @@ function im_pmwr_pc_car_00_184_04_00(o, x) {
         f32_56: f32(o + 56),
     });
 
-    u32(o + 16) ? im_pmwr_pc_car_00_184_04_00_16(u32(o + 16) + g.m, x[0].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_car_00_184_04_00_16(u32(o + 16) + g.m, x[0].section_16);
     x[0].unordered_pmwr_pc_gate_44 = in_ml(u32(o + 44), g.pmwr_pc_gate_array, im_pmwr_pc_gate, g.unordered_ref.pmwr_pc_gate);
 
     // 80 bytes;
@@ -6325,7 +6323,7 @@ function im_pmwr_pc_car_00_188_52(o, i, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_car_00_188_52_04(u32(o + 4) + g.m, x[i].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_car_00_188_52_04(u32(o + 4) + g.m, x[i].section_04);
 
 }
 function im_pmwr_pc_car_00_188_52_04(o, x) {
@@ -6528,13 +6526,13 @@ function im_pmwr_pc_flag(o, i, x) {
 
     switch (u8(o + 8)) {
     case 2:
-        u32(o + 12) ? im_pmwr_pc_flag_12t2(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_flag_12t2(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 3:
-        u32(o + 12) ? im_pmwr_pc_flag_12t3(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_flag_12t3(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 4:
-        u32(o + 12) ? im_pmwr_pc_flag_12t4(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_flag_12t4(u32(o + 12) + g.m, x[i].section_12);
         break;
     }
     return x[i].id
@@ -6559,7 +6557,7 @@ function im_pmwr_pc_flag_12t3(o, x) {
         section_12: [],
     });
 
-    u32(o + 12) ? im_pmwr_pc_flag_12t3_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 12) && im_pmwr_pc_flag_12t3_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -6600,7 +6598,7 @@ function im_pmwr_pc_frame_font(o, i, x) {
         section_36: [],
     });
 
-    u32(o + 28) ? im_pmwr_pc_frame_font_28(u32(o + 28) + g.m, x[i].section_28) : 0;
+    u32(o + 28) && im_pmwr_pc_frame_font_28(u32(o + 28) + g.m, x[i].section_28);
 
     for (let ii = 0; ii < u32(o + 32); ii++) {
         im_pmwr_pc_frame_font_36(u32(o + 36) + (ii * 12) + g.m, ii, x[i].section_36);
@@ -6639,7 +6637,7 @@ function im_pmwr_pc_frame_multi_font(o, i, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_frame_multi_font_04(u32(o + 4) + g.m, x[i].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_frame_multi_font_04(u32(o + 4) + g.m, x[i].section_04);
     return x[i].id
     // 16 bytes;
 
@@ -6675,7 +6673,7 @@ function im_pmwr_pc_frame_sparkler(o, i, x) {
         section_16: [],
     });
 
-    u32(o + 16) ? im_pmwr_pc_frame_sparkler_16(u32(o + 16) + g.m, x[i].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_frame_sparkler_16(u32(o + 16) + g.m, x[i].section_16);
     return x[i].id
     // 32 bytes;
 
@@ -6777,7 +6775,7 @@ function im_pmwr_pc_gate(o, i, x) {
         u8_107: u8(o + 107),
     });
 
-    u32(o + 24) ? im_pmwr_pc_gate_24(u32(o + 24) + g.m, x[i].section_24) : 0;
+    u32(o + 24) && im_pmwr_pc_gate_24(u32(o + 24) + g.m, x[i].section_24);
     x[i].unordered_pmwr_pc_unknown_00_28 = in_ml(u32(o + 28), g.pmwr_pc_unknown_00_array, im_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00);
     x[i].unordered_pmwr_pc_unknown_00_36 = in_ml(u32(o + 36), g.pmwr_pc_unknown_00_array, im_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00);
 
@@ -6786,7 +6784,7 @@ function im_pmwr_pc_gate(o, i, x) {
     }
     x[i].unordered_pmwr_pc_sound_section_76 = in_ml(u32(o + 76), g.pmwr_pc_sound_section_array, im_pmwr_pc_sound_section, g.unordered_ref.pmwr_pc_sound_section);
     x[i].unordered_pmwr_pc_sound_controls_80 = in_ml(u32(o + 80), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
-    u32(o + 84) ? im_pmwr_pc_gate_84(u32(o + 84) + g.m, x[i].section_84) : 0;
+    u32(o + 84) && im_pmwr_pc_gate_84(u32(o + 84) + g.m, x[i].section_84);
     return x[i].id
     // 128 bytes;
 
@@ -6809,7 +6807,7 @@ function im_pmwr_pc_gate_84(o, x) {
         u32_08: u32(o + 8),
     });
 
-    u32(o + 4) ? im_pmwr_pc_gate_84_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_gate_84_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -6858,7 +6856,7 @@ function im_pmwr_pc_idk(o, i, x) {
         break;
     }
     x[i].ordered_pmwr_pc_model_animation_2_08 = in_ml(u32(o + 8), g.pmwr_pc_model_animation_2_array, im_pmwr_pc_model_animation_2, g.ordered_ref.pmwr_pc_model_animation_2);
-    u32(o + 12) ? im_pmwr_pc_idk_12(u32(o + 12) + g.m, x[i].section_12) : 0;
+    u32(o + 12) && im_pmwr_pc_idk_12(u32(o + 12) + g.m, x[i].section_12);
 
     for (let ii = 0; ii < u32(o + 16); ii++) {
         im_pmwr_pc_idk_20(u32(o + 20) + (ii * 32) + g.m, ii, x[i].section_20);
@@ -6894,7 +6892,7 @@ function im_pmwr_pc_idk_12(o, x) {
         section_68: [],
     });
 
-    u32(o + 16) ? im_pmwr_pc_idk_12_16(u32(o + 16) + g.m, x[0].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_idk_12_16(u32(o + 16) + g.m, x[0].section_16);
     x[0].ordered_pmwr_pc_models_20 = in_ml(u32(o + 20), g.pmwr_pc_models_array, im_pmwr_pc_models, g.ordered_ref.pmwr_pc_models);
     x[0].unordered_pmwr_pc_wtf_28 = in_ml(u32(o + 28), g.pmwr_pc_wtf_array, im_pmwr_pc_wtf, g.unordered_ref.pmwr_pc_wtf);
     x[0].unordered_pmwr_pc_gate_44 = in_ml(u32(o + 44), g.pmwr_pc_gate_array, im_pmwr_pc_gate, g.unordered_ref.pmwr_pc_gate);
@@ -7007,9 +7005,9 @@ function im_pmwr_pc_interface(o, i, x) {
     x[i].unordered_pmwr_pc_sound_controls_28 = in_ml(u32(o + 28), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
     x[i].unordered_pmwr_pc_sound_controls_36 = in_ml(u32(o + 36), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
     x[i].unordered_pmwr_pc_sound_controls_40 = in_ml(u32(o + 40), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
-    u32(o + 48) ? im_pmwr_pc_interface_48(u32(o + 48) + g.m, x[i].section_48) : 0;
+    u32(o + 48) && im_pmwr_pc_interface_48(u32(o + 48) + g.m, x[i].section_48);
     x[i].unordered_pmwr_pc_sound_controls_52 = in_ml(u32(o + 52), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
-    u32(o + 56) ? im_pmwr_pc_interface_56(u32(o + 56) + g.m, x[i].section_56) : 0;
+    u32(o + 56) && im_pmwr_pc_interface_56(u32(o + 56) + g.m, x[i].section_56);
 
     for (let ii = 0; ii < u32(o + 68); ii++) {
         im_pmwr_pc_interface_72(u32(o + 72) + (ii * 100) + g.m, ii, x[i].section_72);
@@ -7054,19 +7052,19 @@ function im_pmwr_pc_interface_04_04(o, i, x) {
 
     switch (u8(o + 4)) {
     case 1:
-        u32(o + 12) ? im_pmwr_pc_interface_04_04_12t1(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_interface_04_04_12t1(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 5:
-        u32(o + 12) ? im_pmwr_pc_interface_04_04_12t5(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_interface_04_04_12t5(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 7:
-        u32(o + 12) ? im_pmwr_pc_interface_04_04_12t7(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_interface_04_04_12t7(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 8:
-        u32(o + 12) ? im_pmwr_pc_interface_04_04_12t8(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_interface_04_04_12t8(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 9:
-        u32(o + 12) ? im_pmwr_pc_interface_04_04_12t9(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_interface_04_04_12t9(u32(o + 12) + g.m, x[i].section_12);
         break;
     }
 }
@@ -7077,7 +7075,7 @@ function im_pmwr_pc_interface_04_04_12t1(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_interface_04_04_12t1_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_interface_04_04_12t1_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -7168,10 +7166,10 @@ function im_pmwr_pc_interface_12(o, i, x) {
 
     switch (u32(o + 0)) {
     case 1026:
-        u32(o + 4) ? im_pmwr_pc_interface_12_04t1026(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_interface_12_04t1026(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 1027:
-        u32(o + 4) ? im_pmwr_pc_interface_12_04t1027(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_interface_12_04t1027(u32(o + 4) + g.m, x[i].section_04);
         break;
     }
     for (let ii = 0; ii < u32(o + 12); ii++) {
@@ -7194,7 +7192,7 @@ function im_pmwr_pc_interface_12_04t1026(o, x) {
         u32_12: u32(o + 12),
     });
 
-    u32(o + 8) ? im_pmwr_pc_interface_12_04t1026_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_interface_12_04t1026_08(u32(o + 8) + g.m, x[0].section_08);
     // offset? 
     // 32 bytes;
 
@@ -7206,7 +7204,7 @@ function im_pmwr_pc_interface_12_04t1026_08(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_interface_12_04t1026_08_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_interface_12_04t1026_08_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -7238,7 +7236,7 @@ function im_pmwr_pc_interface_12_16(o, i, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_interface_12_04t1026(u32(o + 4) + g.m, x[i].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_interface_12_04t1026(u32(o + 4) + g.m, x[i].section_04);
 
 }
 function im_pmwr_pc_interface_12_24(o, i, x) {
@@ -7262,10 +7260,10 @@ function im_pmwr_pc_interface_12_24(o, i, x) {
         x[i].section_04 = in_ml(u32(o + 4), g.pmwr_pc_interface_array, im_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface);
         break;
     case 11:
-        u32(o + 4) ? im_pmwr_pc_interface_12_24_04t11(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_interface_12_24_04t11(u32(o + 4) + g.m, x[i].section_04);
         break;
     }
-    u32(o + 8) ? im_pmwr_pc_interface_12_24_08(u32(o + 8) + g.m, x[i].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_interface_12_24_08(u32(o + 8) + g.m, x[i].section_08);
     // offset? 
     x[i].unordered_pmwr_pc_sound_controls_24 = in_ml(u32(o + 24), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
 
@@ -7294,13 +7292,13 @@ function im_pmwr_pc_interface_12_24_04t11_04(o, i, x) {
         section_08: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_interface_12_24_04t11_04_00(u32(o + 0) + g.m, x[i].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_interface_12_24_04t11_04_00(u32(o + 0) + g.m, x[i].section_00);
     switch (u16(o + 4)) {
     case 0:
-        u32(o + 8) ? im_pmwr_pc_interface_12_24_04t11_04_08t0(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_interface_12_24_04t11_04_08t0(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 1:
-        u32(o + 8) ? im_pmwr_pc_interface_12_24_04t11_04_08t1(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_interface_12_24_04t11_04_08t1(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 3:
         x[i].section_08 = in_ml(u32(o + 8), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
@@ -7340,8 +7338,8 @@ function im_pmwr_pc_interface_12_24_04t11_04_08t1(o, x) {
         section_04: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_interface_12_24_04t11_04_08t1_00(u32(o + 0) + g.m, x[0].section_00) : 0;
-    u32(o + 4) ? im_pmwr_pc_interface_12_24_04t11_04_08t1_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 0) && im_pmwr_pc_interface_12_24_04t11_04_08t1_00(u32(o + 0) + g.m, x[0].section_00);
+    u32(o + 4) && im_pmwr_pc_interface_12_24_04t11_04_08t1_00_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -7352,7 +7350,7 @@ function im_pmwr_pc_interface_12_24_04t11_04_08t1_00(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_interface_12_24_04t11_04_08t1_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_interface_12_24_04t11_04_08t1_00_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -7372,8 +7370,8 @@ function im_pmwr_pc_interface_12_24_08(o, x) {
         section_04: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_interface_12_24_08_00(u32(o + 0) + g.m, x[0].section_00) : 0;
-    u32(o + 4) ? im_pmwr_pc_interface_12_24_08_00(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 0) && im_pmwr_pc_interface_12_24_08_00(u32(o + 0) + g.m, x[0].section_00);
+    u32(o + 4) && im_pmwr_pc_interface_12_24_08_00(u32(o + 4) + g.m, x[0].section_04);
     // offset? 
     // 16 bytes;
 
@@ -7434,56 +7432,56 @@ function im_pmwr_pc_interface_72(o, i, x) {
         section_72: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_interface_72_08(u32(o + 8) + g.m, x[i].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_interface_72_08(u32(o + 8) + g.m, x[i].section_08);
     switch (u32(o + 12)) {
     case 4:
-        u32(o + 20) ? im_pmwr_pc_interface_72_20t4(u32(o + 20) + g.m, x[i].section_20) : 0;
+        u32(o + 20) && im_pmwr_pc_interface_72_20t4(u32(o + 20) + g.m, x[i].section_20);
         break;
     case 7:
-        u32(o + 20) ? im_pmwr_pc_interface_72_20t7(u32(o + 20) + g.m, x[i].section_20) : 0;
+        u32(o + 20) && im_pmwr_pc_interface_72_20t7(u32(o + 20) + g.m, x[i].section_20);
         break;
     case 38:
     case 106:
     case 107:
-        u32(o + 20) ? im_pmwr_pc_interface_72_20t38(u32(o + 20) + g.m, x[i].section_20) : 0;
+        u32(o + 20) && im_pmwr_pc_interface_72_20t38(u32(o + 20) + g.m, x[i].section_20);
         break;
     }
     switch (u8(o + 19)) {
     case 0:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t0(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t0(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 1:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t1(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t1(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 3:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t3(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t3(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 5:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t5(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t5(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 6:
     case 7:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t6(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t6(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 10:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t10(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t10(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 12:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t12(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t12(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 13:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t13(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t13(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 14:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t14(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t14(u32(o + 24) + g.m, x[i].section_24);
         break;
     case 15:
-        u32(o + 24) ? im_pmwr_pc_interface_72_24t15(u32(o + 24) + g.m, x[i].section_24) : 0;
+        u32(o + 24) && im_pmwr_pc_interface_72_24t15(u32(o + 24) + g.m, x[i].section_24);
         break;
     }
-    u32(o + 32) ? im_pmwr_pc_interface_72_32(u32(o + 32) + g.m, x[i].section_32) : 0;
-    u32(o + 44) ? im_pmwr_pc_interface_72_44(u32(o + 44) + g.m, x[i].section_44) : 0;
-    u32(o + 52) ? im_pmwr_pc_interface_72_52(u32(o + 52) + g.m, x[i].section_52) : 0;
+    u32(o + 32) && im_pmwr_pc_interface_72_32(u32(o + 32) + g.m, x[i].section_32);
+    u32(o + 44) && im_pmwr_pc_interface_72_44(u32(o + 44) + g.m, x[i].section_44);
+    u32(o + 52) && im_pmwr_pc_interface_72_52(u32(o + 52) + g.m, x[i].section_52);
 
     for (let ii = 0; ii < u32(o + 68); ii++) {
         im_pmwr_pc_interface_72_72(u32(o + 72) + (ii * 12) + g.m, ii, x[i].section_72);
@@ -7518,10 +7516,10 @@ function im_pmwr_pc_interface_72_08_08(o, i, x) {
 
     switch (u8(o + 0)) {
     case 2:
-        u32(o + 4) ? im_pmwr_pc_interface_72_08_08_04t2(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_interface_72_08_08_04t2(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 6:
-        u32(o + 4) ? im_pmwr_pc_interface_72_08_08_04t6(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_interface_72_08_08_04t6(u32(o + 4) + g.m, x[i].section_04);
         break;
     }
 }
@@ -7532,7 +7530,7 @@ function im_pmwr_pc_interface_72_08_08_04t2(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_interface_72_08_08_04t2_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_interface_72_08_08_04t2_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -7604,7 +7602,7 @@ function im_pmwr_pc_interface_72_24t0(o, x) {
         x[0].section_04 = in_ml(u32(o + 4), g.pmwr_pc_models_array, im_pmwr_pc_models, g.ordered_ref.pmwr_pc_models);
         break;
     case 3:
-        u32(o + 8) ? im_pmwr_pc_interface_72_24t0_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_interface_72_24t0_08(u32(o + 8) + g.m, x[0].section_08);
         break;
     }
     // 16 bytes;
@@ -7664,10 +7662,10 @@ function im_pmwr_pc_interface_72_24t1(o, x) {
     }
     switch (u8(o + 0)) {
     case 1:
-        u32(o + 8) ? im_pmwr_pc_interface_72_24t1_08t1(u32(o + 8) + g.m, x[0].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_interface_72_24t1_08t1(u32(o + 8) + g.m, x[0].section_08);
         break;
     case 3:
-        u32(o + 8) ? im_pmwr_pc_interface_72_24t1_08t3(u32(o + 8) + g.m, x[0].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_interface_72_24t1_08t3(u32(o + 8) + g.m, x[0].section_08);
         break;
     }
     switch (u8(o + 2)) {
@@ -7729,7 +7727,7 @@ function im_pmwr_pc_interface_72_24t3(o, x) {
     for (let i = 0; i < u32(o + 0); i++) {
         im_pmwr_pc_interface_72_24t3_04(u32(o + 4) + (i * 8) + g.m, i, x[0].section_04);
     }
-    u32(o + 16) ? im_pmwr_pc_interface_72_24t3_16(u32(o + 16) + g.m, x[0].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_interface_72_24t3_16(u32(o + 16) + g.m, x[0].section_16);
     // 32 bytes;
 
 }
@@ -7751,7 +7749,7 @@ function im_pmwr_pc_interface_72_24t3_16(o, x) {
         section_08: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_interface_72_24t3_16_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_interface_72_24t3_16_08(u32(o + 8) + g.m, x[0].section_08);
     // 16 bytes;
 
 }
@@ -7834,8 +7832,8 @@ function im_pmwr_pc_interface_72_24t13(o, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_interface_72_24t13_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_interface_72_24t13_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_interface_72_24t13_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 12) && im_pmwr_pc_interface_72_24t13_12(u32(o + 12) + g.m, x[0].section_12);
     // 16 bytes;
 
 }
@@ -7865,7 +7863,7 @@ function im_pmwr_pc_interface_72_24t14(o, x) {
         section_276: [],
     });
 
-    u32(o + 276) ? im_pmwr_pc_interface_72_24t14_276(u32(o + 276) + g.m, x[0].section_276) : 0;
+    u32(o + 276) && im_pmwr_pc_interface_72_24t14_276(u32(o + 276) + g.m, x[0].section_276);
 
     // 288 bytes;
 
@@ -7957,10 +7955,10 @@ function im_pmwr_pc_interface_72_32_20(o, i, x) {
 
     switch (u16(o + 4)) {
     case 0:
-        u32(o + 8) ? im_pmwr_pc_interface_72_32_20_08t0(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_interface_72_32_20_08t0(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 1:
-        u32(o + 8) ? im_pmwr_pc_interface_72_32_20_08t1(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_interface_72_32_20_08t1(u32(o + 8) + g.m, x[i].section_08);
         break;
     }
 }
@@ -7981,8 +7979,8 @@ function im_pmwr_pc_interface_72_32_20_08t1(o, x) {
         section_04: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_interface_72_32_20_08t1_00(u32(o + 0) + g.m, x[0].section_00) : 0;
-    u32(o + 4) ? im_pmwr_pc_interface_72_32_20_08t1_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 0) && im_pmwr_pc_interface_72_32_20_08t1_00(u32(o + 0) + g.m, x[0].section_00);
+    u32(o + 4) && im_pmwr_pc_interface_72_32_20_08t1_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -7993,7 +7991,7 @@ function im_pmwr_pc_interface_72_32_20_08t1_00(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_interface_72_32_20_08t1_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_interface_72_32_20_08t1_00_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -8113,7 +8111,7 @@ function im_pmwr_pc_interface_72_72(o, i, x) {
         u32_08: u32(o + 8),
     });
 
-    u32(o + 4) ? im_pmwr_pc_interface_72_72_04(u32(o + 4) + g.m, x[i].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_interface_72_72_04(u32(o + 4) + g.m, x[i].section_04);
 
 }
 function im_pmwr_pc_interface_72_72_04(o, x) {
@@ -8159,7 +8157,7 @@ function im_pmwr_pc_interface_72_72_04(o, x) {
     for (let i = 0; i < u32(o + 32); i++) {
         im_pmwr_pc_interface_72_72_04_36(u32(o + 36) + (i * 12) + g.m, i, x[0].section_36);
     }
-    u32(o + 44) ? im_pmwr_pc_interface_72_72_04_44(u32(o + 44) + g.m, x[0].section_44) : 0;
+    u32(o + 44) && im_pmwr_pc_interface_72_72_04_44(u32(o + 44) + g.m, x[0].section_44);
     x[0].unordered_pmwr_pc_sound_controls_48 = in_ml(u32(o + 48), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
     // 64 bytes;
 
@@ -8191,7 +8189,7 @@ function im_pmwr_pc_interface_72_72_04_04_16(o, i, x) {
 
     switch (u32(o + 4)) {
     case 0:
-        u32(o + 8) ? im_pmwr_pc_interface_72_72_04_04_16_08t0(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_interface_72_72_04_04_16_08t0(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 3:
         x[i].section_08 = in_ml(u32(o + 8), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
@@ -8276,7 +8274,7 @@ function im_pmwr_pc_link(o, i, x) {
         section_72: im_string(u32(o + 72), 0, false),
     });
 
-    u32(o + 0) ? im_pmwr_pc_link_00(u32(o + 0) + g.m, x[i].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_link_00(u32(o + 0) + g.m, x[i].section_00);
 
     for (let ii = 0; ii < u32(o + 4); ii++) {
         im_pmwr_pc_link_intro(u32(o + 8) + (ii * 16) + g.m, ii, x[i].section_08);
@@ -8285,7 +8283,7 @@ function im_pmwr_pc_link(o, i, x) {
     for (let ii = 0; ii < u32(o + 28); ii++) {
         im_pmwr_pc_link_32(u32(o + 32) + (ii * 8) + g.m, ii, x[i].section_32);
     }
-    u32(o + 48) ? im_pmwr_pc_link_demo(u32(o + 48) + g.m, x[i].section_48) : 0;
+    u32(o + 48) && im_pmwr_pc_link_demo(u32(o + 48) + g.m, x[i].section_48);
     x[i].unordered_pmwr_pc_frame_font_60 = in_ml(u32(o + 60), g.pmwr_pc_frame_font_array, im_pmwr_pc_frame_font, g.unordered_ref.pmwr_pc_frame_font);
     return x[i].id
 }
@@ -8297,7 +8295,7 @@ function im_pmwr_pc_link_00(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_link_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_link_00_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -8307,7 +8305,7 @@ function im_pmwr_pc_link_00_04(o, x) {
         section_00: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_link_00_04_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_link_00_04_00(u32(o + 0) + g.m, x[0].section_00);
     // 16 bytes;
 
 }
@@ -8318,7 +8316,7 @@ function im_pmwr_pc_link_00_04_00(o, x) {
         u8_08: u8(o + 8),
     });
 
-    u32(o + 4) ? im_pmwr_pc_link_00_04_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_link_00_04_00_04(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -8345,8 +8343,8 @@ function im_pmwr_pc_link_intro(o, i, x) {
         section_12: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_link_intro_08(u32(o + 8) + g.m, x[i].section_08) : 0;
-    u32(o + 12) ? im_pmwr_pc_link_offset_index(u32(o + 12) + g.m, x[i].section_12) : 0;
+    u32(o + 8) && im_pmwr_pc_link_intro_08(u32(o + 8) + g.m, x[i].section_08);
+    u32(o + 12) && im_pmwr_pc_link_offset_index(u32(o + 12) + g.m, x[i].section_12);
 
 }
 function im_pmwr_pc_link_intro_08(o, x) {
@@ -8375,7 +8373,7 @@ function im_pmwr_pc_link_32(o, i, x) {
         section_00: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_link_32_00(u32(o + 0) + g.m, x[i].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_link_32_00(u32(o + 0) + g.m, x[i].section_00);
 
 }
 function im_pmwr_pc_link_32_00(o, x) {
@@ -8409,8 +8407,8 @@ function im_pmwr_pc_link_32_00_04(o, i, x) {
         section_28: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_link_32_00_04_04(u32(o + 4) + g.m, x[i].section_04) : 0;
-    u32(o + 8) ? im_pmwr_pc_link_offset_index(u32(o + 8) + g.m, x[i].section_08) : 0;
+    u32(o + 4) && im_pmwr_pc_link_32_00_04_04(u32(o + 4) + g.m, x[i].section_04);
+    u32(o + 8) && im_pmwr_pc_link_offset_index(u32(o + 8) + g.m, x[i].section_08);
 
     for (let ii = 0; ii < u32(o + 16); ii++) {
         im_pmwr_pc_link_32_00_04_20(u32(o + 20) + (ii * 12) + g.m, ii, x[i].section_20);
@@ -8428,7 +8426,7 @@ function im_pmwr_pc_link_32_00_04_04(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_link_offset_index(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_link_offset_index(u32(o + 4) + g.m, x[0].section_04);
     // 16 bytes;
 
 }
@@ -8455,7 +8453,7 @@ function im_pmwr_pc_link_32_00_04_20_04(o, i, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_link_offset_index(u32(o + 4) + g.m, x[i].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_link_offset_index(u32(o + 4) + g.m, x[i].section_04);
 
 }
 function im_pmwr_pc_link_demo(o, x) {
@@ -8466,7 +8464,7 @@ function im_pmwr_pc_link_demo(o, x) {
         section_08: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_link_32_00(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_link_32_00(u32(o + 8) + g.m, x[0].section_08);
     // 16 bytes;
 
 }
@@ -8513,9 +8511,9 @@ function im_pmwr_pc_model_link(o, i, x) {
     for (let ii = 0; ii < u32(o + 40); ii++) {
         im_pmwr_pc_mysterious(u32(o + 44) + (ii * 64) + g.m, ii, x[i].section_44);
     }
-    u32(o + 52) ? im_pmwr_pc_model_link_52(u32(o + 52) + g.m, x[i].section_52) : 0;
-    u32(o + 56) ? im_pmwr_pc_model_link_56(u32(o + 56) + g.m, x[i].section_56) : 0;
-    u32(o + 64) ? im_pmwr_pc_model_link_64(u32(o + 64) + g.m, x[i].section_64) : 0;
+    u32(o + 52) && im_pmwr_pc_model_link_52(u32(o + 52) + g.m, x[i].section_52);
+    u32(o + 56) && im_pmwr_pc_model_link_56(u32(o + 56) + g.m, x[i].section_56);
+    u32(o + 64) && im_pmwr_pc_model_link_64(u32(o + 64) + g.m, x[i].section_64);
     return x[i].id
     // 80 bytes;
 
@@ -8630,10 +8628,10 @@ function im_pmwr_pc_mysterious(o, i, x) {
         break;
     case 5:
     case 6:
-        u32(o + 4) ? im_pmwr_pc_mysterious_04t5(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_mysterious_04t5(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 7:
-        u32(o + 4) ? im_pmwr_pc_mysterious_04t7(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_mysterious_04t7(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 8:
         x[i].section_04 = in_ml(u32(o + 4), g.pmwr_pc_model_link_array, im_pmwr_pc_model_link, g.unordered_ref.pmwr_pc_model_link);
@@ -8642,7 +8640,7 @@ function im_pmwr_pc_mysterious(o, i, x) {
         x[i].section_04 = in_ml(u32(o + 4), g.pmwr_pc_mysterious_04t9_array, im_pmwr_pc_mysterious_04t9, g.unordered_ref.pmwr_pc_mysterious_04t9);
         break;
     case 10:
-        u32(o + 4) ? im_pmwr_pc_mysterious_04t10(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_mysterious_04t10(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 11:
         x[i].section_04 = in_ml(u32(o + 4), g.pmwr_pc_activator_array, im_pmwr_pc_activator, g.unordered_ref.pmwr_pc_activator);
@@ -8651,15 +8649,15 @@ function im_pmwr_pc_mysterious(o, i, x) {
         x[i].section_04 = in_ml(u32(o + 4), g.pmwr_pc_object_array, im_pmwr_pc_object, g.unordered_ref.pmwr_pc_object);
         break;
     case 16:
-        u32(o + 4) ? im_pmwr_pc_mysterious_04t16(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_mysterious_04t16(u32(o + 4) + g.m, x[i].section_04);
         break;
     }
     switch (u8(o + 0)) {
     case 8:
-        u32(o + 8) ? im_pmwr_pc_mysterious_08t8(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_mysterious_08t8(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 13:
-        u32(o + 8) ? im_pmwr_pc_mysterious_08t8t13(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_mysterious_08t8t13(u32(o + 8) + g.m, x[i].section_08);
         break;
     }
     return x[i].id
@@ -8712,7 +8710,7 @@ function im_pmwr_pc_mysterious_04t5(o, x) {
         temp_function(u32(o + 16) + (i * 4) + g.m, i, x[0].section_16);
     }
 
-    u32(o + 28) ? im_pmwr_pc_mysterious_04t5_28(u32(o + 28) + g.m, x[0].section_28) : 0;
+    u32(o + 28) && im_pmwr_pc_mysterious_04t5_28(u32(o + 28) + g.m, x[0].section_28);
 
     for (let i = 0; i < u32(o + 32); i++) {
         im_pmwr_pc_mysterious_04t5_36(u32(o + 36) + (i * 32) + g.m, i, x[0].section_36);
@@ -8724,7 +8722,7 @@ function im_pmwr_pc_mysterious_04t5(o, x) {
     for (let i = 0; i < u32(o + 48); i++) {
         im_pmwr_pc_mysterious_04t5_52(u32(o + 52) + (i * 12) + g.m, i, x[0].section_52);
     }
-    u32(o + 56) ? im_pmwr_pc_mysterious_04t5_56(u32(o + 56) + g.m, x[0].section_56) : 0;
+    u32(o + 56) && im_pmwr_pc_mysterious_04t5_56(u32(o + 56) + g.m, x[0].section_56);
 
     // 64 bytes;
 
@@ -8849,7 +8847,7 @@ function im_pmwr_pc_mysterious_04t7(o, x) {
         f32_52: f32(o + 52),
     });
 
-    u32(o + 12) ? im_pmwr_pc_mysterious_04t7_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 12) && im_pmwr_pc_mysterious_04t7_12(u32(o + 12) + g.m, x[0].section_12);
 
     for (let i = 0; i < u32(o + 32); i++) {
         im_pmwr_pc_mysterious_04t7_36(u32(o + 36) + (i * 12) + g.m, i, x[0].section_36);
@@ -8910,9 +8908,9 @@ function im_pmwr_pc_mysterious_04t16(o, x) {
         section_36: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_mysterious_04t16_08(u32(o + 8) + g.m, x[0].section_08) : 0;
-    u32(o + 12) ? im_pmwr_pc_mysterious_04t16_12(u32(o + 12) + g.m, x[0].section_12) : 0;
-    u32(o + 36) ? im_pmwr_pc_mysterious_04t16_36(u32(o + 36) + g.m, x[0].section_36) : 0;
+    u32(o + 8) && im_pmwr_pc_mysterious_04t16_08(u32(o + 8) + g.m, x[0].section_08);
+    u32(o + 12) && im_pmwr_pc_mysterious_04t16_12(u32(o + 12) + g.m, x[0].section_12);
+    u32(o + 36) && im_pmwr_pc_mysterious_04t16_36(u32(o + 36) + g.m, x[0].section_36);
 
     // 48 bytes;
 
@@ -8948,7 +8946,7 @@ function im_pmwr_pc_mysterious_04t16_36(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_mysterious_04t16_36_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_mysterious_04t16_36_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -8963,7 +8961,7 @@ function im_pmwr_pc_mysterious_04t16_36_04(o, x) {
         u8_29: u8(o + 29),
     });
 
-    u32(o + 4) ? im_pmwr_pc_mysterious_04t16_36_04_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_mysterious_04t16_36_04_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 48 bytes;
 
@@ -8975,7 +8973,7 @@ function im_pmwr_pc_mysterious_04t16_36_04_04(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_mysterious_04t16_36_04_04_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_mysterious_04t16_36_04_04_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -8990,8 +8988,8 @@ function im_pmwr_pc_mysterious_04t16_36_04_04_04(o, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_mysterious_04t16_36_04_04_04_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_mysterious_04t16_36_04_04_04_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_mysterious_04t16_36_04_04_04_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 12) && im_pmwr_pc_mysterious_04t16_36_04_04_04_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -9044,8 +9042,8 @@ function im_pmwr_pc_mysterious_04t9(o, i, x) {
         section_12: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_mysterious_04t9_08(u32(o + 8) + g.m, x[i].section_08) : 0;
-    u32(o + 12) ? im_pmwr_pc_mysterious_04t9_12(u32(o + 12) + g.m, x[i].section_12) : 0;
+    u32(o + 8) && im_pmwr_pc_mysterious_04t9_08(u32(o + 8) + g.m, x[i].section_08);
+    u32(o + 12) && im_pmwr_pc_mysterious_04t9_12(u32(o + 12) + g.m, x[i].section_12);
     return x[i].id
     // 16 bytes;
 
@@ -9063,7 +9061,7 @@ function im_pmwr_pc_mysterious_04t9_08(o, x) {
         f32_16: f32(o + 16),
     });
 
-    u32(o + 8) ? im_pmwr_pc_mysterious_04t9_08_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_mysterious_04t9_08_08(u32(o + 8) + g.m, x[0].section_08);
 
     // 32 bytes;
 
@@ -9093,7 +9091,7 @@ function im_pmwr_pc_mysterious_04t9_12(o, x) {
     for (let i = 0; i < u32(o + 0); i++) {
         im_pmwr_pc_mysterious_04t9_12_04(u32(o + 4) + (i * 56) + g.m, i, x[0].section_04);
     }
-    u32(o + 12) ? im_pmwr_pc_mysterious_04t9_12_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 12) && im_pmwr_pc_mysterious_04t9_12_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 32 bytes;
 
@@ -9119,8 +9117,8 @@ function im_pmwr_pc_mysterious_04t9_12_04(o, i, x) {
         section_44: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_mysterious_04t9_12_04_08(u32(o + 8) + g.m, x[i].section_08) : 0;
-    u32(o + 44) ? im_pmwr_pc_mysterious_04t9_12_04_44(u32(o + 44) + g.m, x[i].section_44) : 0;
+    u32(o + 8) && im_pmwr_pc_mysterious_04t9_12_04_08(u32(o + 8) + g.m, x[i].section_08);
+    u32(o + 44) && im_pmwr_pc_mysterious_04t9_12_04_44(u32(o + 44) + g.m, x[i].section_44);
 
 }
 function im_pmwr_pc_mysterious_04t9_12_04_08(o, x) {
@@ -9147,8 +9145,8 @@ function im_pmwr_pc_mysterious_04t9_12_04_44(o, x) {
         u32_28: u32(o + 28),
     });
 
-    u32(o + 8) ? im_pmwr_pc_mysterious_04t9_12_04_44_08(u32(o + 8) + g.m, x[0].section_08) : 0;
-    u32(o + 12) ? im_pmwr_pc_mysterious_04t9_12_04_44_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 8) && im_pmwr_pc_mysterious_04t9_12_04_44_08(u32(o + 8) + g.m, x[0].section_08);
+    u32(o + 12) && im_pmwr_pc_mysterious_04t9_12_04_44_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 32 bytes;
 
@@ -9224,20 +9222,20 @@ function im_pmwr_pc_object(o, i, x) {
         u8_111: u8(o + 111),
     });
 
-    u32(o + 12) ? im_pmwr_pc_object_12(u32(o + 12) + g.m, x[i].section_12) : 0;
+    u32(o + 12) && im_pmwr_pc_object_12(u32(o + 12) + g.m, x[i].section_12);
     x[i].ordered_pmwr_pc_model_animation_2_16 = in_ml(u32(o + 16), g.pmwr_pc_model_animation_2_array, im_pmwr_pc_model_animation_2, g.ordered_ref.pmwr_pc_model_animation_2);
     switch (u8(o + 11)) {
     case 15:
         x[i].section_32 = in_ml(u32(o + 32), g.pmwr_pc_object_32t15_array, im_pmwr_pc_object_32t15, g.unordered_ref.pmwr_pc_object_32t15);
         break;
     case 16:
-        u32(o + 32) ? im_pmwr_pc_object_32t16(u32(o + 32) + g.m, x[i].section_32) : 0;
+        u32(o + 32) && im_pmwr_pc_object_32t16(u32(o + 32) + g.m, x[i].section_32);
         break;
     case 17:
-        u32(o + 32) ? im_pmwr_pc_object_32t17(u32(o + 32) + g.m, x[i].section_32) : 0;
+        u32(o + 32) && im_pmwr_pc_object_32t17(u32(o + 32) + g.m, x[i].section_32);
         break;
     case 18:
-        u32(o + 32) ? im_pmwr_pc_object_32t18(u32(o + 32) + g.m, x[i].section_32) : 0;
+        u32(o + 32) && im_pmwr_pc_object_32t18(u32(o + 32) + g.m, x[i].section_32);
         break;
     }
     x[i].unordered_pmwr_pc_unknown_00_48 = in_ml(u32(o + 48), g.pmwr_pc_unknown_00_array, im_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00);
@@ -9261,7 +9259,7 @@ function im_pmwr_pc_object_12(o, x) {
         section_16: [],
     });
 
-    u32(o + 16) ? im_pmwr_pc_object_12_16(u32(o + 16) + g.m, x[0].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_object_12_16(u32(o + 16) + g.m, x[0].section_16);
 
     // 32 bytes;
 
@@ -9366,7 +9364,7 @@ function im_pmwr_pc_object_32t18(o, x) {
         section_00: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_object_32t18_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_object_32t18_00(u32(o + 0) + g.m, x[0].section_00);
 
     // 16 bytes;
 
@@ -9453,7 +9451,7 @@ function im_pmwr_pc_sound_section(o, i, x) {
         //check this
     });
 
-    u32(o + 8) ? im_pmwr_pc_sound_section_08(u32(o + 8) + g.m, x[i].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_sound_section_08(u32(o + 8) + g.m, x[i].section_08);
     return x[i].id
     // 32 bytes;
 
@@ -9582,7 +9580,7 @@ function im_pmwr_pc_unknown_00_04(o, i, x) {
         x[i].section_04 = in_ml(u32(o + 4), g.pmwr_pc_sound_controls_array, im_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls);
         break;
     case 29:
-        u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t29(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_unknown_00_04_04t29(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 31:
         x[i].section_04 = in_ml(u32(o + 4), g.pmwr_pc_activator_array, im_pmwr_pc_activator, g.unordered_ref.pmwr_pc_activator);
@@ -9590,37 +9588,37 @@ function im_pmwr_pc_unknown_00_04(o, i, x) {
     }
     switch (u32(o + 0)) {
     case 1:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t1(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t1(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 2:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t2(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t2(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 3:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t3(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t3(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 4:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t4(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t4(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 5:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t5(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t5(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 6:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t6(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t6(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 26:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t26(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t26(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 29:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t29(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t29(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 31:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t31(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t31(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 32:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t32(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t32(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 34:
-        u32(o + 8) ? im_pmwr_pc_unknown_00_04_08t34(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_unknown_00_04_08t34(u32(o + 8) + g.m, x[i].section_08);
         break;
     }
 }
@@ -9659,7 +9657,7 @@ function im_pmwr_pc_unknown_00_04_04t2(o, i, x) {
     x[i].unordered_pmwr_pc_unknown_00_56 = in_ml(u32(o + 56), g.pmwr_pc_unknown_00_array, im_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00);
     x[i].unordered_pmwr_pc_unknown_00_68 = in_ml(u32(o + 68), g.pmwr_pc_unknown_00_array, im_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00);
     x[i].unordered_pmwr_pc_unknown_00_76 = in_ml(u32(o + 76), g.pmwr_pc_unknown_00_array, im_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00);
-    u32(o + 80) ? im_pmwr_pc_unknown_00_04_04t2_80(u32(o + 80) + g.m, x[i].section_80) : 0;
+    u32(o + 80) && im_pmwr_pc_unknown_00_04_04t2_80(u32(o + 80) + g.m, x[i].section_80);
 
     for (let ii = 0; ii < u32(o + 96); ii++) {
         im_pmwr_pc_mysterious(u32(o + 100) + (ii * 64) + g.m, ii, x[i].section_100);
@@ -9735,14 +9733,14 @@ function im_pmwr_pc_unknown_00_04_08t1(o, x) {
         section_52: [],
     });
 
-    u32(o + 48) ? im_pmwr_pc_unknown_00_04_08t1_48(u32(o + 48) + g.m, x[0].section_48) : 0;
+    u32(o + 48) && im_pmwr_pc_unknown_00_04_08t1_48(u32(o + 48) + g.m, x[0].section_48);
     // offset? 
     switch (u8(o + 42)) {
     case 1:
-        u32(o + 52) ? im_pmwr_pc_unknown_00_04_08t1_52t1(u32(o + 52) + g.m, x[0].section_52) : 0;
+        u32(o + 52) && im_pmwr_pc_unknown_00_04_08t1_52t1(u32(o + 52) + g.m, x[0].section_52);
         break;
     case 2:
-        u32(o + 52) ? im_pmwr_pc_unknown_00_04_08t1_52t2(u32(o + 52) + g.m, x[0].section_52) : 0;
+        u32(o + 52) && im_pmwr_pc_unknown_00_04_08t1_52t2(u32(o + 52) + g.m, x[0].section_52);
         break;
     }
     // 64 bytes;
@@ -9787,13 +9785,13 @@ function im_pmwr_pc_unknown_00_04_08t1_52t2(o, x) {
 
     switch (u8(o + 8)) {
     case 0:
-        u32(o + 12) ? im_pmwr_pc_unknown_00_04_08t1_52t2_12t0(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_unknown_00_04_08t1_52t2_12t0(u32(o + 12) + g.m, x[0].section_12);
         break;
     case 1:
-        u32(o + 12) ? im_pmwr_pc_unknown_00_04_08t1_52t2_12t1(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_unknown_00_04_08t1_52t2_12t1(u32(o + 12) + g.m, x[0].section_12);
         break;
     case 2:
-        u32(o + 12) ? im_pmwr_pc_unknown_00_04_08t1_52t2_12t2(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_unknown_00_04_08t1_52t2_12t2(u32(o + 12) + g.m, x[0].section_12);
         break;
     }
     // 16 bytes;
@@ -9850,13 +9848,13 @@ function im_pmwr_pc_unknown_00_04_08t2(o, x) {
         section_52: [],
     });
 
-    u32(o + 48) ? im_pmwr_pc_unknown_00_04_08t2_48(u32(o + 48) + g.m, x[0].section_48) : 0;
+    u32(o + 48) && im_pmwr_pc_unknown_00_04_08t2_48(u32(o + 48) + g.m, x[0].section_48);
     switch (u8(o + 42)) {
     case 1:
-        u32(o + 52) ? im_pmwr_pc_unknown_00_04_08t2_52t1(u32(o + 52) + g.m, x[0].section_52) : 0;
+        u32(o + 52) && im_pmwr_pc_unknown_00_04_08t2_52t1(u32(o + 52) + g.m, x[0].section_52);
         break;
     case 2:
-        u32(o + 52) ? im_pmwr_pc_unknown_00_04_08t2_52t2(u32(o + 52) + g.m, x[0].section_52) : 0;
+        u32(o + 52) && im_pmwr_pc_unknown_00_04_08t2_52t2(u32(o + 52) + g.m, x[0].section_52);
         break;
     }
     // 64 bytes;
@@ -9894,7 +9892,7 @@ function im_pmwr_pc_unknown_00_04_08t2_52t2(o, x) {
         section_12: [],
     });
 
-    u32(o + 12) ? im_pmwr_pc_unknown_00_04_08t2_52t2_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 12) && im_pmwr_pc_unknown_00_04_08t2_52t2_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -9923,10 +9921,10 @@ function im_pmwr_pc_unknown_00_04_08t3(o, x) {
 
     switch (u8(o + 40)) {
     case 2:
-        u32(o + 48) ? im_pmwr_pc_unknown_00_04_08t3_48(u32(o + 48) + g.m, x[0].section_48) : 0;
+        u32(o + 48) && im_pmwr_pc_unknown_00_04_08t3_48(u32(o + 48) + g.m, x[0].section_48);
         break;
     }
-    u32(o + 52) ? im_pmwr_pc_unknown_00_04_08t3_52(u32(o + 52) + g.m, x[0].section_52) : 0;
+    u32(o + 52) && im_pmwr_pc_unknown_00_04_08t3_52(u32(o + 52) + g.m, x[0].section_52);
 
     // 64 bytes;
 
@@ -9971,7 +9969,7 @@ function im_pmwr_pc_unknown_00_04_08t5(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_unknown_00_04_08t5_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_unknown_00_04_08t5_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -10015,7 +10013,7 @@ function im_pmwr_pc_unknown_00_04_08t29(o, x) {
         section_52: [],
     });
 
-    u32(o + 52) ? im_pmwr_pc_unknown_00_04_08t29_52(u32(o + 52) + g.m, x[0].section_52) : 0;
+    u32(o + 52) && im_pmwr_pc_unknown_00_04_08t29_52(u32(o + 52) + g.m, x[0].section_52);
 
     // 64 bytes;
 
@@ -10040,7 +10038,7 @@ function im_pmwr_pc_unknown_00_04_08t31(o, x) {
         section_52: [],
     });
 
-    u32(o + 52) ? im_pmwr_pc_unknown_00_04_08t31_52(u32(o + 52) + g.m, x[0].section_52) : 0;
+    u32(o + 52) && im_pmwr_pc_unknown_00_04_08t31_52(u32(o + 52) + g.m, x[0].section_52);
 
     // 64 bytes;
 
@@ -10085,7 +10083,7 @@ function im_pmwr_pc_unknown_00_04_08t34(o, x) {
     x[0].unordered_pmwr_pc_interface_04 = in_ml(u32(o + 4), g.pmwr_pc_interface_array, im_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface);
     x[0].unordered_pmwr_pc_interface_08 = in_ml(u32(o + 8), g.pmwr_pc_interface_array, im_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface);
     x[0].unordered_pmwr_pc_interface_12 = in_ml(u32(o + 12), g.pmwr_pc_interface_array, im_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface);
-    u32(o + 16) ? im_pmwr_pc_unknown_00_04_08t34_16(u32(o + 16) + g.m, x[0].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_unknown_00_04_08t34_16(u32(o + 16) + g.m, x[0].section_16);
 
     // 32 bytes;
 
@@ -10119,13 +10117,13 @@ function im_pmwr_pc_unknown_00_04_04t1(o, i, x) {
 
     switch (u8(o + 0)) {
     case 0:
-        u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t1_04t0(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_unknown_00_04_04t1_04t0(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 1:
-        u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t1_04t1(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_unknown_00_04_04t1_04t1(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 2:
-        u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t1_04t2(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_unknown_00_04_04t1_04t2(u32(o + 4) + g.m, x[i].section_04);
         break;
     }
     for (let ii = 0; ii < u32(o + 20); ii++) {
@@ -10178,7 +10176,7 @@ function im_pmwr_pc_unknown_00_04_04t1_04t0(o, x) {
         im_pmwr_pc_unknown_00_04_04t1_04t0_48(u32(o + 48) + (i * 16) + g.m, i, x[0].section_48);
     }
 
-    u32(o + 56) ? im_pmwr_pc_unknown_00_04_04t1_04t0_56(u32(o + 56) + g.m, x[0].section_56) : 0;
+    u32(o + 56) && im_pmwr_pc_unknown_00_04_04t1_04t0_56(u32(o + 56) + g.m, x[0].section_56);
 
     for (let i = 0; i < u32(o + 60); i++) {
         im_pmwr_pc_unknown_00_04_04t1_04t0_64(u32(o + 64) + (i * 8) + g.m, i, x[0].section_64);
@@ -10293,7 +10291,7 @@ function im_pmwr_pc_unknown_00_04_04t1_04t1(o, x) {
     for (let i = 0; i < u32(o + 48); i++) {
         im_pmwr_pc_unknown_00_04_04t1_04t1_44(u32(o + 52) + (i * 12) + g.m, i, x[0].section_52);
     }
-    u32(o + 56) ? im_pmwr_pc_unknown_00_04_04t1_04t1_56(u32(o + 56) + g.m, x[0].section_56) : 0;
+    u32(o + 56) && im_pmwr_pc_unknown_00_04_04t1_04t1_56(u32(o + 56) + g.m, x[0].section_56);
 
     for (let i = 0; i < u32(o + 60); i++) {
         im_pmwr_pc_unknown_00_04_04t1_04t1_64(u32(o + 64) + (i * 8) + g.m, i, x[0].section_64);
@@ -10455,11 +10453,11 @@ function im_pmwr_pc_unknown_00_04_04t5(o, i, x) {
         u8_40: u8(o + 40),
     });
 
-    u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t5_04(u32(o + 4) + g.m, x[i].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_unknown_00_04_04t5_12(u32(o + 12) + g.m, x[i].section_12) : 0;
-    u32(o + 20) ? im_pmwr_pc_unknown_00_04_04t5_20(u32(o + 20) + g.m, x[i].section_20) : 0;
-    u32(o + 28) ? im_pmwr_pc_unknown_00_04_04t5_28(u32(o + 28) + g.m, x[i].section_28) : 0;
-    u32(o + 36) ? im_pmwr_pc_unknown_00_04_04t5_36(u32(o + 36) + g.m, x[i].section_36) : 0;
+    u32(o + 4) && im_pmwr_pc_unknown_00_04_04t5_04(u32(o + 4) + g.m, x[i].section_04);
+    u32(o + 12) && im_pmwr_pc_unknown_00_04_04t5_12(u32(o + 12) + g.m, x[i].section_12);
+    u32(o + 20) && im_pmwr_pc_unknown_00_04_04t5_20(u32(o + 20) + g.m, x[i].section_20);
+    u32(o + 28) && im_pmwr_pc_unknown_00_04_04t5_28(u32(o + 28) + g.m, x[i].section_28);
+    u32(o + 36) && im_pmwr_pc_unknown_00_04_04t5_36(u32(o + 36) + g.m, x[i].section_36);
     return x[i].id
     // 48 bytes;
 
@@ -10483,10 +10481,10 @@ function im_pmwr_pc_unknown_00_04_04t5_04(o, x) {
 
     switch (u8(o + 8)) {
     case 103:
-        u32(o + 12) ? im_pmwr_pc_unknown_00_04_04t5_04_12t103(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_unknown_00_04_04t5_04_12t103(u32(o + 12) + g.m, x[0].section_12);
         break;
     case 105:
-        u32(o + 12) ? im_pmwr_pc_unknown_00_04_04t5_04_12t105(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_unknown_00_04_04t5_04_12t105(u32(o + 12) + g.m, x[0].section_12);
         break;
     }
     for (let i = 0; i < u32(o + 16); i++) {
@@ -10595,7 +10593,7 @@ function im_pmwr_pc_unknown_00_04_04t5_28(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t5_28_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_unknown_00_04_04t5_28_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -10621,10 +10619,10 @@ function im_pmwr_pc_unknown_00_04_04t5_28_04(o, x) {
 
 //     switch (u8(o + 0)) {
 //     case 1:
-//         u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t5_28_04_00_04t1(u32(o + 4) + g.m, x[0].section_04) : 0;
+//         u32(o + 4) && im_pmwr_pc_unknown_00_04_04t5_28_04_00_04t1(u32(o + 4) + g.m, x[0].section_04);
 //         break;
 //     case 2:
-//         u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t5_28_04_00_04t2(u32(o + 4) + g.m, x[0].section_04) : 0;
+//         u32(o + 4) && im_pmwr_pc_unknown_00_04_04t5_28_04_00_04t2(u32(o + 4) + g.m, x[0].section_04);
 //         break;
 //     }
 //     // 16 bytes;
@@ -10671,10 +10669,10 @@ function im_pmwr_pc_unknown_00_04_04t5_28_04_00(o, i, x) {
 
     switch (u8(o + 0)) {
     case 1:
-        u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t5_28_04_00_04t1(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_unknown_00_04_04t5_28_04_00_04t1(u32(o + 4) + g.m, x[i].section_04);
         break;
     case 2:
-        u32(o + 4) ? im_pmwr_pc_unknown_00_04_04t5_28_04_00_04t2(u32(o + 4) + g.m, x[i].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_unknown_00_04_04t5_28_04_00_04t2(u32(o + 4) + g.m, x[i].section_04);
         break;
     }
     return x[i].id
@@ -10717,9 +10715,9 @@ function im_pmwr_pc_var(o, i, x) {
         section_168: [],
     });
 
-    u32(o + 148) ? im_pmwr_pc_var_148(u32(o + 148) + g.m, x[i].section_148) : 0;
-    u32(o + 164) ? im_pmwr_pc_var_164(u32(o + 164) + g.m, x[i].section_164) : 0;
-    u32(o + 168) ? im_pmwr_pc_var_168(u32(o + 168) + g.m, x[i].section_168) : 0;
+    u32(o + 148) && im_pmwr_pc_var_148(u32(o + 148) + g.m, x[i].section_148);
+    u32(o + 164) && im_pmwr_pc_var_164(u32(o + 164) + g.m, x[i].section_164);
+    u32(o + 168) && im_pmwr_pc_var_168(u32(o + 168) + g.m, x[i].section_168);
     return x[i].id
     // 176 bytes;
 
@@ -10772,34 +10770,34 @@ function im_pmwr_pc_var_164_12(o, i, x) {
 
     switch (u32(o + 4)) {
     case 1:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t1(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t1(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 2:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t2(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t2(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 5:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t5(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t5(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 6:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t6(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t6(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 7:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t7(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t7(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 8:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t8(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t8(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 14:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t14(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t14(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 15:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t15(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t15(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 16:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t16(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t16(u32(o + 12) + g.m, x[i].section_12);
         break;
     case 24:
-        u32(o + 12) ? im_pmwr_pc_var_164_12_12t24(u32(o + 12) + g.m, x[i].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_12_12t24(u32(o + 12) + g.m, x[i].section_12);
         break;
     }
 }
@@ -10810,7 +10808,7 @@ function im_pmwr_pc_var_164_12_12t1(o, x) {
         u8_04: u8(o + 4),
     });
 
-    u32(o + 0) ? im_pmwr_pc_var_164_12_12t1_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_var_164_12_12t1_00(u32(o + 0) + g.m, x[0].section_00);
 
     // 16 bytes;
 
@@ -10823,7 +10821,7 @@ function im_pmwr_pc_var_164_12_12t1_00(o, x) {
         u8_06: u8(o + 6),
     });
 
-    u32(o + 0) ? im_pmwr_pc_var_164_12_12t1_00_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_var_164_12_12t1_00_00(u32(o + 0) + g.m, x[0].section_00);
 
     // 32 bytes;
 
@@ -10847,7 +10845,7 @@ function im_pmwr_pc_var_164_12_12t2(o, x) {
 
     switch (u32(o + 0)) {
     case 1:
-        u32(o + 4) ? im_pmwr_pc_var_164_12_12t2_04t1(u32(o + 4) + g.m, x[0].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_var_164_12_12t2_04t1(u32(o + 4) + g.m, x[0].section_04);
         break;
     case 4:
     case 5:
@@ -10855,16 +10853,16 @@ function im_pmwr_pc_var_164_12_12t2(o, x) {
     case 9:
     case 11:
     case 19:
-        u32(o + 4) ? im_pmwr_pc_var_164_12_12t2_04t4(u32(o + 4) + g.m, x[0].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_var_164_12_12t2_04t4(u32(o + 4) + g.m, x[0].section_04);
         break;
     case 7:
-        u32(o + 4) ? im_pmwr_pc_var_164_12_12t2_04t7(u32(o + 4) + g.m, x[0].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_var_164_12_12t2_04t7(u32(o + 4) + g.m, x[0].section_04);
         break;
     case 8:
-        u32(o + 4) ? im_pmwr_pc_var_164_12_12t2_04t8(u32(o + 4) + g.m, x[0].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_var_164_12_12t2_04t8(u32(o + 4) + g.m, x[0].section_04);
         break;
     case 16:
-        u32(o + 4) ? im_pmwr_pc_var_164_12_12t2_04t16(u32(o + 4) + g.m, x[0].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_var_164_12_12t2_04t16(u32(o + 4) + g.m, x[0].section_04);
         break;
     }
     // 16 bytes;
@@ -10883,9 +10881,9 @@ function im_pmwr_pc_var_164_12_12t2_04t1(o, x) {
         f32_28: f32(o + 28),
     });
 
-    u32(o + 12) ? im_pmwr_pc_var_164_12_12t2_04t1_12(u32(o + 12) + g.m, x[0].section_12) : 0;
-    u32(o + 16) ? im_pmwr_pc_var_164_12_12t2_04t1_16(u32(o + 16) + g.m, x[0].section_16) : 0;
-    u32(o + 20) ? im_pmwr_pc_var_164_12_12t2_04t1_16(u32(o + 20) + g.m, x[0].section_20) : 0;
+    u32(o + 12) && im_pmwr_pc_var_164_12_12t2_04t1_12(u32(o + 12) + g.m, x[0].section_12);
+    u32(o + 16) && im_pmwr_pc_var_164_12_12t2_04t1_16(u32(o + 16) + g.m, x[0].section_16);
+    u32(o + 20) && im_pmwr_pc_var_164_12_12t2_04t1_16(u32(o + 20) + g.m, x[0].section_20);
 
     // 32 bytes;
 
@@ -10934,7 +10932,7 @@ function im_pmwr_pc_var_164_12_12t2_04t4(o, x) {
         section_16: [],
     });
 
-    u32(o + 16) ? im_pmwr_pc_var_164_12_12t2_04t4_16(u32(o + 16) + g.m, x[0].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_var_164_12_12t2_04t4_16(u32(o + 16) + g.m, x[0].section_16);
 
     // 32 bytes;
 
@@ -10994,7 +10992,7 @@ function im_pmwr_pc_var_164_12_12t2_04t8(o, x) {
         section_16: [],
     });
 
-    u32(o + 16) ? im_pmwr_pc_var_164_12_12t2_04t8_16(u32(o + 16) + g.m, x[0].section_16) : 0;
+    u32(o + 16) && im_pmwr_pc_var_164_12_12t2_04t8_16(u32(o + 16) + g.m, x[0].section_16);
 
     // 32 bytes;
 
@@ -11029,7 +11027,7 @@ function im_pmwr_pc_var_164_12_12t5(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_var_164_12_12t5_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_var_164_12_12t5_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -11041,7 +11039,7 @@ function im_pmwr_pc_var_164_12_12t5_04(o, x) {
         section_08: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_var_164_12_12t5_04_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_var_164_12_12t5_04_08(u32(o + 8) + g.m, x[0].section_08);
 
     // 16 bytes;
 
@@ -11064,10 +11062,10 @@ function im_pmwr_pc_var_164_12_12t6(o, x) {
 
     switch (u8(o + 4)) {
     case 1:
-        u32(o + 0) ? im_pmwr_pc_var_164_12_12t6_00t1(u32(o + 0) + g.m, x[0].section_00) : 0;
+        u32(o + 0) && im_pmwr_pc_var_164_12_12t6_00t1(u32(o + 0) + g.m, x[0].section_00);
         break;
     case 2:
-        u32(o + 0) ? im_pmwr_pc_var_164_12_12t6_00t2(u32(o + 0) + g.m, x[0].section_00) : 0;
+        u32(o + 0) && im_pmwr_pc_var_164_12_12t6_00t2(u32(o + 0) + g.m, x[0].section_00);
         break;
     }
     // 16 bytes;
@@ -11082,7 +11080,7 @@ function im_pmwr_pc_var_164_12_12t6_00t1(o, x) {
     });
 
     x[0].unordered_pmwr_pc_interface_00 = in_ml(u32(o + 0), g.pmwr_pc_interface_array, im_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface);
-    u32(o + 8) ? im_pmwr_pc_var_164_12_12t6_00t1_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_var_164_12_12t6_00t1_08(u32(o + 8) + g.m, x[0].section_08);
 
     // 16 bytes;
 
@@ -11117,7 +11115,7 @@ function im_pmwr_pc_var_164_12_12t7(o, x) {
         u8_10: u8(o + 10),
     });
 
-    u32(o + 0) ? im_pmwr_pc_var_164_12_12t7_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_var_164_12_12t7_00(u32(o + 0) + g.m, x[0].section_00);
     x[0].unordered_pmwr_pc_object_04 = in_ml(u32(o + 4), g.pmwr_pc_object_array, im_pmwr_pc_object, g.unordered_ref.pmwr_pc_object);
 
     // 16 bytes;
@@ -11148,7 +11146,7 @@ function im_pmwr_pc_var_164_12_12t8(o, x) {
         x[0].section_00 = in_ml(u32(o + 0), g.pmwr_pc_flag_array, im_pmwr_pc_flag, g.unordered_ref.pmwr_pc_flag);
         break;
     case 2:
-        u32(o + 0) ? im_pmwr_pc_var_164_12_12t8_00t2(u32(o + 0) + g.m, x[0].section_00) : 0;
+        u32(o + 0) && im_pmwr_pc_var_164_12_12t8_00t2(u32(o + 0) + g.m, x[0].section_00);
         break;
     }
 
@@ -11160,7 +11158,7 @@ function im_pmwr_pc_var_164_12_12t8(o, x) {
         x[0].section_04 = in_ml(u32(o + 4), g.pmwr_pc_flag_array, im_pmwr_pc_flag, g.unordered_ref.pmwr_pc_flag);
         break;
     case 3:
-        u32(o + 4) ? im_pmwr_pc_var_164_12_12t8_04t3(u32(o + 4) + g.m, x[0].section_04) : 0;
+        u32(o + 4) && im_pmwr_pc_var_164_12_12t8_04t3(u32(o + 4) + g.m, x[0].section_04);
         break;
     }
 
@@ -11176,8 +11174,8 @@ function im_pmwr_pc_var_164_12_12t8_00t2(o, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_var_164_12_12t8_00t2_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_var_164_12_12t8_00t2_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_var_164_12_12t8_00t2_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 12) && im_pmwr_pc_var_164_12_12t8_00t2_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -11209,7 +11207,7 @@ function im_pmwr_pc_var_164_12_12t8_04t3(o, x) {
         section_12: [],
     });
 
-    u32(o + 12) ? im_pmwr_pc_var_164_12_12t8_04t3_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 12) && im_pmwr_pc_var_164_12_12t8_04t3_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -11230,7 +11228,7 @@ function im_pmwr_pc_var_164_12_12t14(o, x) {
         unordered_pmwr_pc_world_20_12t4_08: 0,
     });
 
-    u32(o + 0) ? im_pmwr_pc_var_164_12_12t14_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_var_164_12_12t14_00(u32(o + 0) + g.m, x[0].section_00);
     x[0].unordered_pmwr_pc_world_20_12t4_08 = in_ml(u32(o + 8), g.pmwr_pc_world_20_12t4_array, im_pmwr_pc_world_20_12t4, g.unordered_ref.pmwr_pc_world_20_12t4);
 
     // 16 bytes;
@@ -11284,7 +11282,7 @@ function im_pmwr_pc_var_164_12_12t24(o, x) {
     });
 
     x[0].unordered_pmwr_pc_unknown_00_00 = in_ml(u32(o + 0), g.pmwr_pc_unknown_00_array, im_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00);
-    u32(o + 4) ? im_pmwr_pc_var_164_12_12t24_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_var_164_12_12t24_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -11306,7 +11304,7 @@ function im_pmwr_pc_var_164_20(o, i, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_var_164_20_04(u32(o + 4) + g.m, x[i].section_04, u32(o + 0)) : 0;
+    u32(o + 4) && im_pmwr_pc_var_164_20_04(u32(o + 4) + g.m, x[i].section_04, u32(o + 0));
 
 }
 function im_pmwr_pc_var_164_20_04(o, x, t) {
@@ -11324,19 +11322,19 @@ function im_pmwr_pc_var_164_20_04(o, x, t) {
 
     switch (t) {
     case 1604:
-        u32(o + 12) ? im_pmwr_pc_var_164_20_04_12t1604(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_20_04_12t1604(u32(o + 12) + g.m, x[0].section_12);
         break;
     case 1608:
-        u32(o + 12) ? im_pmwr_pc_var_164_20_04_12t1608(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_20_04_12t1608(u32(o + 12) + g.m, x[0].section_12);
         break;
     case 1618:
-        u32(o + 12) ? im_pmwr_pc_var_164_20_04_12t1618(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_20_04_12t1618(u32(o + 12) + g.m, x[0].section_12);
         break;
     case 1620:
-        u32(o + 12) ? im_pmwr_pc_var_164_20_04_12t1620(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_20_04_12t1620(u32(o + 12) + g.m, x[0].section_12);
         break;
     case 1636:
-        u32(o + 12) ? im_pmwr_pc_var_164_20_04_12t1636(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_var_164_20_04_12t1636(u32(o + 12) + g.m, x[0].section_12);
         break;
     }
     for (let i = 0; i < u32(o + 16); i++) {
@@ -11387,7 +11385,7 @@ function im_pmwr_pc_var_164_20_04_12t1618(o, x) {
         x[0].section_00 = in_ml(u32(o + 0), g.pmwr_pc_flag_array, im_pmwr_pc_flag, g.unordered_ref.pmwr_pc_flag);
         break;
     case 1:
-        u32(o + 0) ? im_pmwr_pc_var_164_20_04_12t1618_00t1(u32(o + 0) + g.m, x[0].section_00) : 0;
+        u32(o + 0) && im_pmwr_pc_var_164_20_04_12t1618_00t1(u32(o + 0) + g.m, x[0].section_00);
         break;
     }
 
@@ -11399,7 +11397,7 @@ function im_pmwr_pc_var_164_20_04_12t1618(o, x) {
         x[0].section_04 = in_ml(u32(o + 4), g.pmwr_pc_flag_array, im_pmwr_pc_flag, g.unordered_ref.pmwr_pc_flag);
         break;
     case 3:
-        // u32(o + 4) ? im_pmwr_pc_var_164_12_12t8_04t3(u32(o + 4) + g.m, x[0].section_04) : 0;
+        // u32(o + 4) && im_pmwr_pc_var_164_12_12t8_04t3(u32(o + 4) + g.m, x[0].section_04);
         break;
     }
 
@@ -11413,7 +11411,7 @@ function im_pmwr_pc_var_164_20_04_12t1618_00t1(o, x) {
         section_12: [],
     });
 
-    u32(o + 12) ? im_pmwr_pc_var_164_20_04_12t1618_00t1_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 12) && im_pmwr_pc_var_164_20_04_12t1618_00t1_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -11437,7 +11435,7 @@ function im_pmwr_pc_var_164_20_04_12t1620(o, x) {
         unordered_pmwr_pc_world_20_12t8_08: 0,
     });
 
-    u32(o + 0) ? im_pmwr_pc_var_164_20_04_12t1620_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_var_164_20_04_12t1620_00(u32(o + 0) + g.m, x[0].section_00);
     x[0].unordered_pmwr_pc_world_20_12t8_08 = in_ml(u32(o + 8), g.pmwr_pc_world_20_12t8_array, im_pmwr_pc_world_20_12t8, g.unordered_ref.pmwr_pc_world_20_12t8);
 
     // 16 bytes;
@@ -11462,7 +11460,7 @@ function im_pmwr_pc_var_164_20_04_12t1636(o, x) {
         u8_06: u8(o + 6),
     });
 
-    u32(o + 0) ? im_pmwr_pc_var_164_20_04_12t1636_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_var_164_20_04_12t1636_00(u32(o + 0) + g.m, x[0].section_00);
 
     // 16 bytes;
 
@@ -11489,10 +11487,10 @@ function im_pmwr_pc_var_164_20_04_20(o, i, x) {
 
     switch (u32(o + 0)) {
     case 5:
-        u32(o + 8) ? im_pmwr_pc_var_164_20_04_20_08t5(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_var_164_20_04_20_08t5(u32(o + 8) + g.m, x[i].section_08);
         break;
     case 6:
-        u32(o + 8) ? im_pmwr_pc_var_164_20_04_20_08t6(u32(o + 8) + g.m, x[i].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_var_164_20_04_20_08t6(u32(o + 8) + g.m, x[i].section_08);
         break;
     }
 }
@@ -11511,7 +11509,7 @@ function im_pmwr_pc_var_164_20_04_20_08t5(o, x) {
         x[0].section_00 = in_ml(u32(o + 0), g.pmwr_pc_flag_array, im_pmwr_pc_flag, g.unordered_ref.pmwr_pc_flag);
         break;
     case 1:
-        u32(o + 0) ? im_pmwr_pc_var_164_20_04_20_08t5_00t1(u32(o + 0) + g.m, x[0].section_00) : 0;
+        u32(o + 0) && im_pmwr_pc_var_164_20_04_20_08t5_00t1(u32(o + 0) + g.m, x[0].section_00);
         break;
     }
 
@@ -11523,7 +11521,7 @@ function im_pmwr_pc_var_164_20_04_20_08t5(o, x) {
         x[0].section_04 = in_ml(u32(o + 4), g.pmwr_pc_flag_array, im_pmwr_pc_flag, g.unordered_ref.pmwr_pc_flag);
         break;
     case 3:
-        // u32(o + 4) ? im_pmwr_pc_var_164_12_12t8_04t3(u32(o + 4) + g.m, x[0].section_04) : 0;
+        // u32(o + 4) && im_pmwr_pc_var_164_12_12t8_04t3(u32(o + 4) + g.m, x[0].section_04);
         break;
     }
 
@@ -11539,8 +11537,8 @@ function im_pmwr_pc_var_164_20_04_20_08t5_00t1(o, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_var_164_20_04_20_08t5_00t1_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_var_164_20_04_20_08t5_00t1_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_var_164_20_04_20_08t5_00t1_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 12) && im_pmwr_pc_var_164_20_04_20_08t5_00t1_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -11574,7 +11572,7 @@ function im_pmwr_pc_var_164_20_04_20_08t6(o, x) {
         unordered_pmwr_pc_world_20_12t8_08: 0,
     });
 
-    u32(o + 0) ? im_pmwr_pc_var_164_20_04_20_08t6_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_var_164_20_04_20_08t6_00(u32(o + 0) + g.m, x[0].section_00);
     x[0].unordered_pmwr_pc_world_20_12t8_08 = in_ml(u32(o + 8), g.pmwr_pc_world_20_12t8_array, im_pmwr_pc_world_20_12t8, g.unordered_ref.pmwr_pc_world_20_12t8);
 
     // 16 bytes;
@@ -11658,18 +11656,18 @@ function im_pmwr_pc_world_settings(o, i, x) {
     for (let ii = 0; ii < u32(o + 0); ii++) {
         im_pmwr_pc_world_settings_04(u32(o + 4) + (ii * 64) + g.m, ii, x[i].section_04);
     }
-    u32(o + 12) ? im_pmwr_pc_world_settings_12(u32(o + 12) + g.m, x[i].section_12) : 0;
-    u32(o + 36) ? im_pmwr_pc_world_settings_36(u32(o + 36) + g.m, x[i].section_36) : 0;
-    u32(o + 48) ? im_pmwr_pc_world_settings_48(u32(o + 48) + g.m, x[i].section_48) : 0;
-    u32(o + 52) ? im_pmwr_pc_world_settings_52(u32(o + 52) + g.m, x[i].section_52) : 0;
-    u32(o + 56) ? im_pmwr_pc_world_settings_56(u32(o + 56) + g.m, x[i].section_56) : 0;
-    u32(o + 60) ? im_pmwr_pc_world_settings_60(u32(o + 60) + g.m, x[i].section_60) : 0;
-    u32(o + 64) ? im_pmwr_pc_world_settings_64(u32(o + 64) + g.m, x[i].section_64) : 0;
-    u32(o + 68) ? im_pmwr_pc_world_settings_68(u32(o + 68) + g.m, x[i].section_68) : 0;
-    u32(o + 72) ? im_pmwr_pc_world_settings_72(u32(o + 72) + g.m, x[i].section_72) : 0;
+    u32(o + 12) && im_pmwr_pc_world_settings_12(u32(o + 12) + g.m, x[i].section_12);
+    u32(o + 36) && im_pmwr_pc_world_settings_36(u32(o + 36) + g.m, x[i].section_36);
+    u32(o + 48) && im_pmwr_pc_world_settings_48(u32(o + 48) + g.m, x[i].section_48);
+    u32(o + 52) && im_pmwr_pc_world_settings_52(u32(o + 52) + g.m, x[i].section_52);
+    u32(o + 56) && im_pmwr_pc_world_settings_56(u32(o + 56) + g.m, x[i].section_56);
+    u32(o + 60) && im_pmwr_pc_world_settings_60(u32(o + 60) + g.m, x[i].section_60);
+    u32(o + 64) && im_pmwr_pc_world_settings_64(u32(o + 64) + g.m, x[i].section_64);
+    u32(o + 68) && im_pmwr_pc_world_settings_68(u32(o + 68) + g.m, x[i].section_68);
+    u32(o + 72) && im_pmwr_pc_world_settings_72(u32(o + 72) + g.m, x[i].section_72);
     x[i].unordered_pmwr_pc_frame_font_88 = in_ml(u32(o + 88), g.pmwr_pc_frame_font_array, im_pmwr_pc_frame_font, g.unordered_ref.pmwr_pc_frame_font);
-    u32(o + 192) ? im_pmwr_pc_world_settings_192(u32(o + 192) + g.m, x[i].section_192) : 0;
-    u32(o + 196) ? im_pmwr_pc_world_settings_196(u32(o + 196) + g.m, x[i].section_196) : 0;
+    u32(o + 192) && im_pmwr_pc_world_settings_192(u32(o + 192) + g.m, x[i].section_192);
+    u32(o + 196) && im_pmwr_pc_world_settings_196(u32(o + 196) + g.m, x[i].section_196);
     return x[i].id
     // 208 bytes;
 
@@ -11725,7 +11723,7 @@ function im_pmwr_pc_world_settings_48(o, x) {
         f32_08: f32(o + 8),
     });
 
-    u32(o + 0) ? im_pmwr_pc_world_settings_48_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_world_settings_48_00(u32(o + 0) + g.m, x[0].section_00);
 
     // 16 bytes;
 
@@ -11857,10 +11855,10 @@ function im_pmwr_pc_world_settings_196(o, x) {
         section_16: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_world_settings_196_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 8) ? im_pmwr_pc_world_settings_196_04(u32(o + 8) + g.m, x[0].section_08) : 0;
-    u32(o + 12) ? im_pmwr_pc_world_settings_196_04(u32(o + 12) + g.m, x[0].section_12) : 0;
-    u32(o + 16) ? im_pmwr_pc_world_settings_196_04(u32(o + 16) + g.m, x[0].section_16) : 0;
+    u32(o + 4) && im_pmwr_pc_world_settings_196_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 8) && im_pmwr_pc_world_settings_196_04(u32(o + 8) + g.m, x[0].section_08);
+    u32(o + 12) && im_pmwr_pc_world_settings_196_04(u32(o + 12) + g.m, x[0].section_12);
+    u32(o + 16) && im_pmwr_pc_world_settings_196_04(u32(o + 16) + g.m, x[0].section_16);
 
     // 32 bytes;
 
@@ -11909,9 +11907,9 @@ function im_pmwr_pc_wtf(o, i, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_wtf_04(u32(o + 4) + g.m, x[i].section_04) : 0;
-    u32(o + 8) ? im_pmwr_pc_wtf_08(u32(o + 8) + g.m, x[i].section_08) : 0;
-    u32(o + 12) ? im_pmwr_pc_wtf_12(u32(o + 12) + g.m, x[i].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_wtf_04(u32(o + 4) + g.m, x[i].section_04);
+    u32(o + 8) && im_pmwr_pc_wtf_08(u32(o + 8) + g.m, x[i].section_08);
+    u32(o + 12) && im_pmwr_pc_wtf_12(u32(o + 12) + g.m, x[i].section_12);
     return x[i].id
     // 16 bytes;
 
@@ -11934,13 +11932,13 @@ function im_pmwr_pc_wtf_08(o, x) {
         section_08: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_wtf_08_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_wtf_08_00(u32(o + 0) + g.m, x[0].section_00);
     switch (u32(o + 4)) {
     case 1:
-        u32(o + 8) ? im_pmwr_pc_wtf_08_08t1(u32(o + 8) + g.m, x[0].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_wtf_08_08t1(u32(o + 8) + g.m, x[0].section_08);
         break;
     case 3:
-        u32(o + 8) ? im_pmwr_pc_wtf_08_08t3(u32(o + 8) + g.m, x[0].section_08) : 0;
+        u32(o + 8) && im_pmwr_pc_wtf_08_08t3(u32(o + 8) + g.m, x[0].section_08);
         break;
     }
     // 16 bytes;
@@ -11955,8 +11953,8 @@ function im_pmwr_pc_wtf_08_00(o, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_wtf_08_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_wtf_08_00_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_wtf_08_00_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 12) && im_pmwr_pc_wtf_08_00_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -11989,8 +11987,8 @@ function im_pmwr_pc_wtf_08_08t1(o, x) {
         section_08: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_wtf_08_08t1_00(u32(o + 0) + g.m, x[0].section_00) : 0;
-    u32(o + 8) ? im_pmwr_pc_wtf_08_08t1_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 0) && im_pmwr_pc_wtf_08_08t1_00(u32(o + 0) + g.m, x[0].section_00);
+    u32(o + 8) && im_pmwr_pc_wtf_08_08t1_08(u32(o + 8) + g.m, x[0].section_08);
 
     // 16 bytes;
 
@@ -12004,8 +12002,8 @@ function im_pmwr_pc_wtf_08_08t1_00(o, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_wtf_08_08t1_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_wtf_08_08t1_00_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_wtf_08_08t1_00_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 12) && im_pmwr_pc_wtf_08_08t1_00_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -12039,12 +12037,12 @@ function im_pmwr_pc_wtf_08_08t1_08(o, x) {
         section_20: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_wtf_08_08t1_08_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_wtf_08_08t1_08_08(u32(o + 8) + g.m, x[0].section_08);
     x[0].unordered_pmwr_pc_gate_12 = in_ml(u32(o + 12), g.pmwr_pc_gate_array, im_pmwr_pc_gate, g.unordered_ref.pmwr_pc_gate);
 
     switch (u8(o + 1)) {
     case 0:
-        u32(o + 20) ? im_pmwr_pc_wtf_08_08t1_08_20t0(u32(o + 20) + g.m, x[0].section_20) : 0;
+        u32(o + 20) && im_pmwr_pc_wtf_08_08t1_08_20t0(u32(o + 20) + g.m, x[0].section_20);
         break;
     case 2:
         x[0].section_20 = f32(o + 20)
@@ -12093,12 +12091,12 @@ function im_pmwr_pc_wtf_08_08t3(o, x) {
         section_32: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_wtf_08_08t3_00(u32(o + 0) + g.m, x[0].section_00) : 0;
-    u32(o + 8) ? im_pmwr_pc_wtf_08_08t3_08(u32(o + 8) + g.m, x[0].section_08) : 0;
-    u32(o + 12) ? im_pmwr_pc_wtf_08_08t3_12(u32(o + 12) + g.m, x[0].section_12) : 0;
-    u32(o + 20) ? im_pmwr_pc_wtf_08_08t3_20(u32(o + 20) + g.m, x[0].section_20) : 0;
-    u32(o + 24) ? im_pmwr_pc_wtf_08_08t3_24(u32(o + 24) + g.m, x[0].section_24) : 0;
-    u32(o + 32) ? im_pmwr_pc_wtf_08_08t3_32(u32(o + 32) + g.m, x[0].section_32) : 0;
+    u32(o + 0) && im_pmwr_pc_wtf_08_08t3_00(u32(o + 0) + g.m, x[0].section_00);
+    u32(o + 8) && im_pmwr_pc_wtf_08_08t3_08(u32(o + 8) + g.m, x[0].section_08);
+    u32(o + 12) && im_pmwr_pc_wtf_08_08t3_12(u32(o + 12) + g.m, x[0].section_12);
+    u32(o + 20) && im_pmwr_pc_wtf_08_08t3_20(u32(o + 20) + g.m, x[0].section_20);
+    u32(o + 24) && im_pmwr_pc_wtf_08_08t3_24(u32(o + 24) + g.m, x[0].section_24);
+    u32(o + 32) && im_pmwr_pc_wtf_08_08t3_32(u32(o + 32) + g.m, x[0].section_32);
 
     // 48 bytes;
 
@@ -12113,8 +12111,8 @@ function im_pmwr_pc_wtf_08_08t3_00(o, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_wtf_08_08t3_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
-    u32(o + 12) ? im_pmwr_pc_wtf_08_08t3_00_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+    u32(o + 4) && im_pmwr_pc_wtf_08_08t3_00_04(u32(o + 4) + g.m, x[0].section_04);
+    u32(o + 12) && im_pmwr_pc_wtf_08_08t3_00_12(u32(o + 12) + g.m, x[0].section_12);
 
     // 16 bytes;
 
@@ -12148,8 +12146,8 @@ function im_pmwr_pc_wtf_08_08t3_08(o, x) {
         section_20: [],
     });
 
-    u32(o + 8) ? im_pmwr_pc_wtf_08_08t3_08_08(u32(o + 8) + g.m, x[0].section_08) : 0;
-    u32(o + 20) ? im_pmwr_pc_wtf_08_08t3_08_20(u32(o + 20) + g.m, x[0].section_20) : 0;
+    u32(o + 8) && im_pmwr_pc_wtf_08_08t3_08_08(u32(o + 8) + g.m, x[0].section_08);
+    u32(o + 20) && im_pmwr_pc_wtf_08_08t3_08_20(u32(o + 20) + g.m, x[0].section_20);
 
     // 32 bytes;
 
@@ -12185,7 +12183,7 @@ function im_pmwr_pc_wtf_08_08t3_12(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_wtf_08_08t3_12_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_wtf_08_08t3_12_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -12210,7 +12208,7 @@ function im_pmwr_pc_wtf_08_08t3_20(o, x) {
         f32_20: f32(o + 20),
     });
 
-    u32(o + 8) ? im_pmwr_pc_wtf_08_08t3_20_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_wtf_08_08t3_20_08(u32(o + 8) + g.m, x[0].section_08);
 
     // 32 bytes;
 
@@ -12233,10 +12231,10 @@ function im_pmwr_pc_wtf_08_08t3_24(o, x) {
         section_12: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_wtf_08_08t3_24_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_wtf_08_08t3_24_04(u32(o + 4) + g.m, x[0].section_04);
     switch (u32(o + 8)) {
     case 3:
-        u32(o + 12) ? im_pmwr_pc_wtf_08_08t3_24_12(u32(o + 12) + g.m, x[0].section_12) : 0;
+        u32(o + 12) && im_pmwr_pc_wtf_08_08t3_24_12(u32(o + 12) + g.m, x[0].section_12);
         break;
     }
     // 16 bytes;
@@ -12271,7 +12269,7 @@ function im_pmwr_pc_wtf_08_08t3_32(o, x) {
         f32_20: f32(o + 20),
     });
 
-    u32(o + 8) ? im_pmwr_pc_wtf_08_08t3_32_08(u32(o + 8) + g.m, x[0].section_08) : 0;
+    u32(o + 8) && im_pmwr_pc_wtf_08_08t3_32_08(u32(o + 8) + g.m, x[0].section_08);
 
     // 32 bytes;
 
@@ -12291,7 +12289,7 @@ function im_pmwr_pc_wtf_12(o, x) {
         section_00: [],
     });
 
-    u32(o + 0) ? im_pmwr_pc_wtf_12_00(u32(o + 0) + g.m, x[0].section_00) : 0;
+    u32(o + 0) && im_pmwr_pc_wtf_12_00(u32(o + 0) + g.m, x[0].section_00);
 
     // 16 bytes;
 
@@ -12303,7 +12301,7 @@ function im_pmwr_pc_wtf_12_00(o, x) {
         section_04: [],
     });
 
-    u32(o + 4) ? im_pmwr_pc_wtf_12_00_04(u32(o + 4) + g.m, x[0].section_04) : 0;
+    u32(o + 4) && im_pmwr_pc_wtf_12_00_04(u32(o + 4) + g.m, x[0].section_04);
 
     // 16 bytes;
 
@@ -12417,7 +12415,6 @@ function ex_pmwr_pc_x(o, x) {
     }
 
     buffer_array.push(end_buffer)
-
 
 }
 
@@ -12536,7 +12533,7 @@ function ex_pmwr_pc_file_header(o, x) {
 
     console.pk_log("saved in " + time_array)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -13118,7 +13115,7 @@ function ex_pmwr_pc_world(o, x) {
         }
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision(o, x) {
@@ -13199,7 +13196,7 @@ function ex_pmwr_pc_collision(o, x) {
         ;
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_76(o, e, x) {
@@ -13213,7 +13210,7 @@ function ex_pmwr_pc_collision_76(o, e, x) {
 
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_collision_76_16, x.section_16, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_76_16(o, x) {
@@ -13230,7 +13227,7 @@ function ex_pmwr_pc_collision_76_16(o, x) {
     sf32(o + 36, x.f32_36)
     sf32(o + 40, x.f32_40)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_84(o, e, x) {
@@ -13251,13 +13248,13 @@ function ex_pmwr_pc_collision_84(o, e, x) {
     sf32(o + 56, x.f32_56)
     sf32(o + 60, x.f32_60)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_64(o, e, x) {
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_32t0(o, e, x, islast) {
@@ -13286,13 +13283,13 @@ function ex_pmwr_pc_collision_32t0(o, e, x, islast) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_32t0_40(o, e, x) {
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_32t1(o, e, x) {
@@ -13342,7 +13339,7 @@ function ex_pmwr_pc_collision_32t1(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_32t1_40(o, e, x) {
@@ -13362,7 +13359,7 @@ function ex_pmwr_pc_collision_32t1_40(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_32t1_40_00(o, e, x) {
@@ -13376,13 +13373,13 @@ function ex_pmwr_pc_collision_32t1_40_00(o, e, x) {
     su32(o + 24, x.u32_24)
     su32(o + 28, x.u32_28)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_collision_32t1_36(o, e, x) {
     su16(o + 0, x.u16_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20(o, x) {
@@ -13583,7 +13580,7 @@ function ex_pmwr_pc_world_20(o, x) {
 
     // e = ex_s_offset(o + 0, e, ex_pmwr_pc_world_20_12t0, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_type_entry_header(o, x) {
@@ -13595,7 +13592,7 @@ function ex_type_entry_header(o, x) {
     su16(o + 16, x.u16_16)
     su16(o + 18, x.u16_18)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 }
 function ex_pmwr_pc_world_20_12t0(o, x) {
     let e = o + divisible(128, g.divisibility)
@@ -13620,7 +13617,7 @@ function ex_pmwr_pc_world_20_12t0(o, x) {
     su8(o + 121, x.u8_121)
     //?
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t1(o, x) {
@@ -13653,7 +13650,7 @@ function ex_pmwr_pc_world_20_12t1(o, x) {
     // e = ex_ml(x.ordered_pmwr_pc_model_animation_1_64, g.pmwr_pc_model_animation_1_array, ex_pmwr_pc_model_animation_1, g.ordered_ref.pmwr_pc_model_animation_1, o + 64, e, 'down');
     // e = ex_ml(x.unordered_pmwr_pc_idk_72, g.pmwr_pc_idk_array, ex_pmwr_pc_idk, g.unordered_ref.pmwr_pc_idk, o + 72, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t2(o, e, x) {
@@ -13692,13 +13689,13 @@ function ex_pmwr_pc_world_20_12t2(o, e, x) {
     e = ex_s_offset(o + 76, e, ex_pmwr_pc_world_20_12t2_76, x.section_76, 'up');
     ;e = ex_s_offset(o + 72, e, ex_pmwr_pc_world_20_12t2_72, x.section_72, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t2_100(o, e, x) {
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t2_56(o, x) {
@@ -13707,13 +13704,13 @@ function ex_pmwr_pc_world_20_12t2_56(o, x) {
 
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t2_64(o, e, x) {
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t2_76(o, x) {
@@ -13732,7 +13729,7 @@ function ex_pmwr_pc_world_20_12t2_76(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t2_76_12(o, e, x) {
@@ -13769,7 +13766,7 @@ function ex_pmwr_pc_world_20_12t2_76_12(o, e, x) {
     // e = ex_ml(x.section_00t14, g.pmwr_pc_world_20_12t14_array, ex_pmwr_pc_world_20_12t14, g.unordered_ref.pmwr_pc_world_20_12t14, o + 0, e, 'down', true);
     // e = ex_ml(x.section_00, g.pmwr_pc_world_20_12t15_array, ex_pmwr_pc_world_20_12t15, g.unordered_ref.pmwr_pc_world_20_12t15, o + 0, e, 'down', true);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t2_72(o, x) {
@@ -13786,7 +13783,7 @@ function ex_pmwr_pc_world_20_12t2_72(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t2_72_00(o, e, x) {
@@ -13804,7 +13801,7 @@ function ex_pmwr_pc_world_20_12t2_72_00(o, e, x) {
     //     }
     //     ;
     // }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t3(o, x) {
@@ -13823,7 +13820,7 @@ function ex_pmwr_pc_world_20_12t3(o, x) {
 
     g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_sound_controls_48, g.pmwr_pc_sound_controls_array, ex_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls, o + 48, e, 'none']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t4(o, e, x) {
@@ -13869,14 +13866,14 @@ function ex_pmwr_pc_world_20_12t4(o, e, x) {
         e = ex_s_offset(o + 128, e, ex_pmwr_pc_world_20_12t4_128t1, x.section_128, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t4_128t1(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t5(o, x) {
@@ -13892,7 +13889,7 @@ function ex_pmwr_pc_world_20_12t5(o, x) {
 
     g.temp_pmwr_pc_world_offset_holder_5.push([x.ordered_pmwr_pc_models_100, g.pmwr_pc_models_array, ex_pmwr_pc_models, g.ordered_ref.pmwr_pc_models, o + 100, e, 'none', true, "model"]);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t8(o, e, x) {
@@ -13926,7 +13923,7 @@ function ex_pmwr_pc_world_20_12t8(o, e, x) {
         e = ex_s_offset(o + 76, e, ex_pmwr_pc_world_20_12t8_76t8, x.section_76, 'up');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t8_72(o, x) {
@@ -13935,7 +13932,7 @@ function ex_pmwr_pc_world_20_12t8_72(o, x) {
 
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t8_76t1(o, x) {
@@ -13944,7 +13941,7 @@ function ex_pmwr_pc_world_20_12t8_76t1(o, x) {
     su32(o + 12, x.u32_12)
     //?
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t8_76t7(o, x) {
@@ -13952,7 +13949,7 @@ function ex_pmwr_pc_world_20_12t8_76t7(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t8_76t8(o, x) {
@@ -13974,7 +13971,7 @@ function ex_pmwr_pc_world_20_12t8_76t8(o, x) {
     // g.temp_pmwr_pc_world_offset_holder.push([o + 4, e, ex_pmwr_pc_world_20_12t8_76t8_04, x.section_04, 'down']);
     // g.temp_pmwr_pc_world_offset_holder.push([o + 8, e, ex_pmwr_pc_world_20_12t8_76t8_08, x.section_08, 'down']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t8_76t8_04(o, x) {
@@ -13985,7 +13982,7 @@ function ex_pmwr_pc_world_20_12t8_76t8_04(o, x) {
     su32(o + 20, x.u32_20)
     su32(o + 28, x.u32_28)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t8_76t8_08(o, x) {
@@ -14001,7 +13998,7 @@ function ex_pmwr_pc_world_20_12t8_76t8_08(o, x) {
     // g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_unknown_00_16, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 16, e, 'down']);
     // g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_unknown_00_20, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 20, e, 'down']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t10(o, x) {
@@ -14037,7 +14034,7 @@ function ex_pmwr_pc_world_20_12t10(o, x) {
 
     g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_activator_64, g.pmwr_pc_activator_array, ex_pmwr_pc_activator, g.unordered_ref.pmwr_pc_activator, o + 64, e, 'none']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t11(o, x) {
@@ -14067,7 +14064,7 @@ function ex_pmwr_pc_world_20_12t11(o, x) {
 
     // e = ex_s_offset(o + 68, e, ex_pmwr_pc_world_20_12t0, x.section_68, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t13(o, x) {
@@ -14101,7 +14098,7 @@ function ex_pmwr_pc_world_20_12t13(o, x) {
 
     g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_idk_64, g.pmwr_pc_idk_array, ex_pmwr_pc_idk, g.unordered_ref.pmwr_pc_idk, o + 64, e, 'none']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t14(o, x) {
@@ -14133,7 +14130,7 @@ function ex_pmwr_pc_world_20_12t14(o, x) {
     }
     g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_strange_64, g.pmwr_pc_strange_array, ex_pmwr_pc_strange, g.unordered_ref.pmwr_pc_strange, o + 64, e, 'none']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_20_12t15(o, x) {
@@ -14162,7 +14159,7 @@ function ex_pmwr_pc_world_20_12t15(o, x) {
 
     g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_object_56, g.pmwr_pc_object_array, ex_pmwr_pc_object, g.unordered_ref.pmwr_pc_object, o + 56, e, 'none']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_08(o, x) {
@@ -14204,13 +14201,13 @@ function ex_pmwr_pc_world_08(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_08_20(o, e, x) {
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_08_16(o, e, x) {
@@ -14251,7 +14248,7 @@ function ex_pmwr_pc_world_08_16(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_08_16_12(o, e, x) {
@@ -14259,7 +14256,7 @@ function ex_pmwr_pc_world_08_16_12(o, e, x) {
     ex_ml(x.section_00, g.pmwr_pc_world_20_12t8_array, ex_pmwr_pc_world_20_12t8, g.unordered_ref.pmwr_pc_world_20_12t8, o + 0, e, 'down', true)
     // e = ex_ml();
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_12(o, x) {
@@ -14284,7 +14281,7 @@ function ex_pmwr_pc_world_12(o, x) {
         e = ex_pmwr_pc_world_12_00_temp(i, e)
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 
     function ex_pmwr_pc_world_12_00(o, e, x) {
@@ -14319,7 +14316,7 @@ function ex_pmwr_pc_world_12(o, x) {
         tempsectionsection.push([o, x]);
         if (x.section_52.length) {}
         ;if (x.section_56.length) {}
-        g.debug ? ex_debug(o, x.sec_id) : 0;
+        g.debug && ex_debug(o, x.sec_id);
         return e
     }
 
@@ -14360,21 +14357,21 @@ function ex_pmwr_pc_world_12_00_64(o, e, x) {
     su32(o + 0, x.u32_00)
     //?
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_12_00_52(o, e, x) {
     sf32(o + 0, x.f32_00)
     //?
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_12_00_56(o, e, x) {
     su32(o + 0, x.u32_00)
     //?
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_32(o, e, x) {
@@ -14385,7 +14382,7 @@ function ex_pmwr_pc_world_32(o, e, x) {
 
     g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_gate_00, g.pmwr_pc_gate_array, ex_pmwr_pc_gate, g.unordered_ref.pmwr_pc_gate, o + 0, e, 'none']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_24(o, x) {
@@ -14415,7 +14412,7 @@ function ex_pmwr_pc_world_24(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_24_04(o, e, x) {
@@ -14426,7 +14423,7 @@ function ex_pmwr_pc_world_24_04(o, e, x) {
 
     g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_flag_00, g.pmwr_pc_flag_array, ex_pmwr_pc_flag, g.unordered_ref.pmwr_pc_flag, o + 0, e, 'none']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_24_12(o, e, x) {
@@ -14437,14 +14434,14 @@ function ex_pmwr_pc_world_24_12(o, e, x) {
 
     g.temp_pmwr_pc_world_offset_holder.push([x.unordered_pmwr_pc_var_00, g.pmwr_pc_var_array, ex_pmwr_pc_var, g.unordered_ref.pmwr_pc_var, o + 0, e, 'none']);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
 function ex_pmwr_pc_texture_animation_section(o, e, x) {
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_pmwr_pc_texture_anim_1, x.section_00, 'none');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -14477,7 +14474,7 @@ function ex_pmwr_pc_pmwr_pc_texture_anim_1(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_pmwr_pc_texture_anim_1_1(o, x) {
@@ -14498,13 +14495,13 @@ function ex_pmwr_pc_pmwr_pc_texture_anim_1_1(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_pmwr_pc_texture_anim_1_1_1(o, e, x) {
     ex_patch(o + 0, g.pmwr_pc_texture_patch_array, x.pmwr_pc_texture_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_pmwr_pc_texture_anim_1_2(o, e, x) {
@@ -14518,7 +14515,7 @@ function ex_pmwr_pc_pmwr_pc_texture_anim_1_2(o, e, x) {
     su8(o + 7, x.u8_07)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_pmwr_pc_texture_anim_1_3(o, e, x) {
@@ -14528,7 +14525,7 @@ function ex_pmwr_pc_pmwr_pc_texture_anim_1_3(o, e, x) {
     su8(o + 9, x.u8_09)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -14554,7 +14551,7 @@ function ex_pmwr_pc_textures(o, e, x) {
     let iii = 0
     for (let ii = 0; ii < x.pmwr_pc_texture.length; ii++) {
         let iii = 0
-         let buffer = convert_base64_arraybuffer(x.pmwr_pc_texture[ii])
+        let buffer = convert_base64_arraybuffer(x.pmwr_pc_texture[ii])
 
         new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), e + iii)
         iii += buffer.byteLength
@@ -14574,8 +14571,8 @@ function ex_pmwr_pc_textures(o, e, x) {
     e = ex_byte_alignment_testing(e)
 
     if (x.alpha.length) {
-         let buffer = convert_base64_arraybuffer(x.alpha[0])
-       su32(o + 4, e)
+        let buffer = convert_base64_arraybuffer(x.alpha[0])
+        su32(o + 4, e)
         g.oa.push(o + 4)
 
         new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), e)
@@ -14621,7 +14618,7 @@ function ex_sound(o, XFA, m) {
     }
 
     function dyn_sound_00_00(offset, buffer) {
-      new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), offset)
+        new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), offset)
 
         return offset + buffer.byteLength
     }
@@ -14861,7 +14858,7 @@ function ex_pmwr_pc_model_animation_1(o, x) {
     }
 
     if (x.section_32.length) {
-    let buffer = convert_base64_arraybuffer(x.section_32[0].temp_buffer)
+        let buffer = convert_base64_arraybuffer(x.section_32[0].temp_buffer)
 
         su32(o + 40, buffer.byteLength / 4)
         e = ex_s_offset(o + 32, e, ex_pmwr_pc_model_animation_1_32, x.section_32, 'down');
@@ -14917,14 +14914,14 @@ function ex_pmwr_pc_model_animation_1(o, x) {
 
     // e += x.padding
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_animation_1_24t1(o, x) {
     let e = o + 4
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_animation_1_24t28(o, x) {
@@ -14937,7 +14934,7 @@ function ex_pmwr_pc_model_animation_1_24t28(o, x) {
     su32(o + 20, x.u32_20)
     su32(o + 24, x.u32_24)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -14955,7 +14952,7 @@ function ex_pmwr_pc_model_animation_1_28t1(o, x) {
     su8(o + 10, x.u8_10)
     su8(o + 11, x.u8_11)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_animation_1_28t3(o, x) {
@@ -14975,7 +14972,7 @@ function ex_pmwr_pc_model_animation_1_28t3(o, x) {
     // su8(o + 10, x.u8_10)
     // su8(o + 11, x.u8_11)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -15013,21 +15010,21 @@ function ex_pmwr_pc_model_animation_1_28t28(o, x) {
     su32(o + 60, x.u16_60)
     su32(o + 64, x.u16_64)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_animation_1_24t3(o, x) {
     let e = o + 4
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_animation_1_32(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return buffer.byteLength + o
 }
@@ -15035,7 +15032,7 @@ function ex_pmwr_pc_model_animation_1_44(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return buffer.byteLength + o
 }
@@ -15043,7 +15040,7 @@ function ex_pmwr_pc_model_animation_1_36(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return buffer.byteLength + o
 
@@ -15052,7 +15049,7 @@ function ex_pmwr_pc_model_animation_1_36t3(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return buffer.byteLength + o
 }
@@ -15073,11 +15070,10 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
 
     if (x.section_12.length) {
         let buffer = convert_base64_arraybuffer(x.section_12[0].temp_buffer)
-      let temp_offset = e
+        let temp_offset = e
 
         su32(o + 0, buffer.byteLength / 2)
         e = ex_s_offset(o + 12, e, ex_pmwr_pc_model_animation_1_52t35_12, x.section_12, 'down');
-
 
     } else {
         su32(o + 12, x.section_12)
@@ -15101,8 +15097,8 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     e += x.padding_24
 
     if (x.section_20.length) {
-          let buffer = convert_base64_arraybuffer(x.section_20[0].temp_buffer)
-      let temp_offset = e
+        let buffer = convert_base64_arraybuffer(x.section_20[0].temp_buffer)
+        let temp_offset = e
 
         su32(o + 4, buffer.byteLength / 2)
         e = ex_s_offset(o + 20, e, ex_pmwr_pc_model_animation_1_52t35_20, x.section_20, 'down');
@@ -15128,7 +15124,7 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
 
     if (x.section_16.length) {
         let buffer = convert_base64_arraybuffer(x.section_16[0].temp_buffer)
-         su32(o + 8, buffer.byteLength / 2)
+        su32(o + 8, buffer.byteLength / 2)
         e = ex_s_offset(o + 16, e, ex_pmwr_pc_model_animation_1_52t35_16, x.section_16, 'down');
     } else {
         su32(o + 16, x.section_16)
@@ -15140,8 +15136,8 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
     e += x.padding_16
 
     if (x.section_32.length) {
-    let buffer = convert_base64_arraybuffer(x.section_32[0].temp_buffer)
-       let temp_offset = e
+        let buffer = convert_base64_arraybuffer(x.section_32[0].temp_buffer)
+        let temp_offset = e
 
         ex_s_offset(o + 32, e, ex_pmwr_pc_model_animation_1_52t35_32, x.section_32, 'down');
 
@@ -15152,30 +15148,30 @@ function ex_pmwr_pc_model_animation_1_52t35(o, x) {
         su32(o + 32, x.section_32)
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_animation_1_52t35_12(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return buffer.byteLength + o
 
 }
 function ex_pmwr_pc_model_animation_1_52t35_24(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
-   new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-     g.debug ? ex_debug(o, x.sec_id) : 0;
-   return buffer.byteLength + o
+    g.debug && ex_debug(o, x.sec_id);
+    return buffer.byteLength + o
 
 }
 function ex_pmwr_pc_model_animation_1_52t35_20(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return buffer.byteLength + o
 
@@ -15184,7 +15180,7 @@ function ex_pmwr_pc_model_animation_1_52t35_28(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return buffer.byteLength + o
 }
@@ -15192,7 +15188,7 @@ function ex_pmwr_pc_model_animation_1_52t35_16(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return buffer.byteLength + o
 }
@@ -15200,7 +15196,7 @@ function ex_pmwr_pc_model_animation_1_52t35_32(o, x) {
     let buffer = convert_base64_arraybuffer(x.temp_buffer)
     new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return buffer.byteLength + o
 }
@@ -15240,19 +15236,19 @@ function ex_pmwr_pc_model_animation_1_52t163(o, x) {
     }
     // ;e = ex_s_offset(o + 12, e, ex_pmwr_pc_model_animation_1_52t163_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_animation_1_52t163_08(o, e, x) {
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_animation_1_52t163_12(o, e, x) {
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -15461,7 +15457,7 @@ function dyn_model(offset, XFA) {
                 end_block = dyn_model_04_04_00_92(end_block, XFA.section_92[0])
             }
 
-            g.debug ? ex_debug(offset, "MODL") : 0;
+            g.debug && ex_debug(offset, "MODL");
 
             return end_block
         }
@@ -15491,7 +15487,7 @@ function dyn_model(offset, XFA) {
 
             e = ex_ml(x.unordered_pmwr_pc_pmwr_pc_texture_anim_1_00, g.pmwr_pc_pmwr_pc_texture_anim_1_array, ex_pmwr_pc_pmwr_pc_texture_anim_1, g.unordered_ref.pmwr_pc_pmwr_pc_texture_anim_1, o + 0, e, 'down');
 
-            g.debug ? ex_debug(o, x.sec_id) : 0;
+            g.debug && ex_debug(o, x.sec_id);
             return e
         }
 
@@ -15538,7 +15534,7 @@ function ex_pmwr_pc_models(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 
     function ex_pmwr_pc_models_04(o, e, x, i) {
@@ -15561,7 +15557,7 @@ function ex_pmwr_pc_models(o, x) {
             }
             ;
         }
-        g.debug ? ex_debug(o, x.sec_id) : 0;
+        g.debug && ex_debug(o, x.sec_id);
         return e
     }
 }
@@ -15569,14 +15565,14 @@ function ex_pmwr_pc_models(o, x) {
 function ex_pmwr_pc_models_12(o, e, x) {
     sf32(o + 0, x.f32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04(o, e, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_models_04_04_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04_00(o, x) {
@@ -15662,7 +15658,7 @@ function ex_pmwr_pc_models_04_04_00(o, x) {
     }
     ;e = ex_s_offset(o + 92, e, ex_pmwr_pc_models_04_04_00_92, x.section_92, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04_00_68(o, e, x) {
@@ -15676,7 +15672,7 @@ function ex_pmwr_pc_models_04_04_00_68(o, e, x) {
     sf32(o + 28, x.f32_28)
     sf32(o + 32, x.f32_32)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04_00_72(o, e, x) {
@@ -15685,7 +15681,7 @@ function ex_pmwr_pc_models_04_04_00_72(o, e, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04_00_76(o, e, x) {
@@ -15693,20 +15689,20 @@ function ex_pmwr_pc_models_04_04_00_76(o, e, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04_00_80(o, e, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04_00_84(o, e, x) {
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04_00_92(o, x) {
@@ -15725,13 +15721,13 @@ function ex_pmwr_pc_models_04_04_00_92(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_models_04_04_00_92_12(o, e, x) {
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -16627,7 +16623,7 @@ function ex_pmwr_pc_activator(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_24(o, e, x) {
@@ -16644,7 +16640,7 @@ function ex_pmwr_pc_activator_24(o, e, x) {
         e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_24_04t6, x.section_04, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_24_04t4(o, x) {
@@ -16653,7 +16649,7 @@ function ex_pmwr_pc_activator_24_04t4(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_24_04t4_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_24_04t4_04(o, x) {
@@ -16663,7 +16659,7 @@ function ex_pmwr_pc_activator_24_04t4_04(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_24_04t6(o, x) {
@@ -16673,7 +16669,7 @@ function ex_pmwr_pc_activator_24_04t6(o, x) {
 
     e = ex_string(o + 8, e, x.section_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_32(o, e, x) {
@@ -16692,7 +16688,7 @@ function ex_pmwr_pc_activator_32(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_32_04(o, x) {
@@ -16702,7 +16698,7 @@ function ex_pmwr_pc_activator_32_04(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_32_20(o, e, x) {
@@ -16711,7 +16707,7 @@ function ex_pmwr_pc_activator_32_20(o, e, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_activator_32_20_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_32_20_08(o, x) {
@@ -16719,7 +16715,7 @@ function ex_pmwr_pc_activator_32_20_08(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_108(o, x) {
@@ -16735,14 +16731,14 @@ function ex_pmwr_pc_activator_108(o, x) {
         e = ex_s_offset(o + 8, e, ex_pmwr_pc_activator_108_08t2, x.section_08, 'up');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_108_08t1(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_108_08t2(o, x) {
@@ -16752,7 +16748,7 @@ function ex_pmwr_pc_activator_108_08t2(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_activator_108_08t2_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_108_08t2_08(o, x) {
@@ -16760,14 +16756,14 @@ function ex_pmwr_pc_activator_108_08t2_08(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_116(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_124(o, x) {
@@ -16776,14 +16772,14 @@ function ex_pmwr_pc_activator_124(o, x) {
     sf32(o + 16, x.f32_16)
     sf32(o + 24, x.f32_24)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_144(o, x) {
     let e = o + divisible(48, g.divisibility)
     sf32(o + 0, x.f32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_176(o, e, x) {
@@ -16813,7 +16809,7 @@ function ex_pmwr_pc_activator_176(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_176_08(o, e, x) {
@@ -16831,7 +16827,7 @@ function ex_pmwr_pc_activator_176_08(o, e, x) {
         e = ex_s_offset(o + 8, e, ex_pmwr_pc_activator_176_08t19, x.section_08, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_176_08t0(o, x) {
@@ -16839,21 +16835,21 @@ function ex_pmwr_pc_activator_176_08t0(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_176_08t13(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_176_08t19(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_184(o, e, x) {
@@ -16870,7 +16866,7 @@ function ex_pmwr_pc_activator_184(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248(o, e, x) {
@@ -16906,7 +16902,7 @@ function ex_pmwr_pc_activator_248(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -16953,7 +16949,7 @@ function ex_pmwr_pc_activator_248_04(o, e, x) {
         e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_248_04_04t15, x.section_04, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t0(o, x) {
@@ -16962,7 +16958,7 @@ function ex_pmwr_pc_activator_248_04_04t0(o, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_activator_248_04_04t0_04_04, g.pmwr_pc_activator_248_04_04t0_04_array, ex_pmwr_pc_activator_248_04_04t0_04, g.unordered_ref.pmwr_pc_activator_248_04_04t0_04, o + 4, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -16971,7 +16967,7 @@ function ex_pmwr_pc_activator_248_04_04t1(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t2(o, x) {
@@ -16979,7 +16975,7 @@ function ex_pmwr_pc_activator_248_04_04t2(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t3(o, x) {
@@ -16987,7 +16983,7 @@ function ex_pmwr_pc_activator_248_04_04t3(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t4(o, x) {
@@ -16995,7 +16991,7 @@ function ex_pmwr_pc_activator_248_04_04t4(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t5(o, x) {
@@ -17003,14 +16999,14 @@ function ex_pmwr_pc_activator_248_04_04t5(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t6(o, x) {
     let e = o + divisible(16, g.divisibility)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t9(o, x) {
@@ -17022,20 +17018,20 @@ function ex_pmwr_pc_activator_248_04_04t9(o, x) {
     su8(o + 20, x.u8_20)
     su8(o + 22, x.u8_22)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t11(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t12(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t13(o, x) {
@@ -17045,7 +17041,7 @@ function ex_pmwr_pc_activator_248_04_04t13(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_activator_248_04_04t13_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t13_00(o, x) {
@@ -17054,7 +17050,7 @@ function ex_pmwr_pc_activator_248_04_04t13_00(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_248_04_04t13_00_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t13_00_04(o, x) {
@@ -17062,14 +17058,14 @@ function ex_pmwr_pc_activator_248_04_04t13_00_04(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t15(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32(o, e, x) {
@@ -17119,21 +17115,21 @@ function ex_pmwr_pc_activator_248_32(o, e, x) {
     }
     ;e = ex_s_offset(o + 76, e, ex_pmwr_pc_activator_248_32_76, x.section_76, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_08(o, e, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_model_link_00, g.pmwr_pc_model_link_array, ex_pmwr_pc_model_link, g.unordered_ref.pmwr_pc_model_link, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_16(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_32(o, x) {
@@ -17141,7 +17137,7 @@ function ex_pmwr_pc_activator_248_32_32(o, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_36(o, x) {
@@ -17149,7 +17145,7 @@ function ex_pmwr_pc_activator_248_32_36(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_52(o, x) {
@@ -17157,7 +17153,7 @@ function ex_pmwr_pc_activator_248_32_52(o, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72(o, e, x) {
@@ -17220,7 +17216,7 @@ function ex_pmwr_pc_activator_248_32_72(o, e, x) {
         e = ex_s_offset(o + 8, e, ex_pmwr_pc_activator_248_32_72_08t32, x.section_08, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t0(o, x) {
@@ -17228,7 +17224,7 @@ function ex_pmwr_pc_activator_248_32_72_08t0(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t2(o, x) {
@@ -17236,7 +17232,7 @@ function ex_pmwr_pc_activator_248_32_72_08t2(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t08(o, x) {
@@ -17254,14 +17250,14 @@ function ex_pmwr_pc_activator_248_32_72_08t08(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t10(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t12(o, x) {
@@ -17269,14 +17265,14 @@ function ex_pmwr_pc_activator_248_32_72_08t12(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t13(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t14(o, x) {
@@ -17287,7 +17283,7 @@ function ex_pmwr_pc_activator_248_32_72_08t14(o, x) {
     sf32(o + 24, x.f32_24)
     su32(o + 28, x.u32_28)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t15(o, x) {
@@ -17295,14 +17291,14 @@ function ex_pmwr_pc_activator_248_32_72_08t15(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t16(o, x) {
     let e = o + divisible(16, g.divisibility)
     su16(o + 0, x.u16_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t17(o, x) {
@@ -17322,7 +17318,7 @@ function ex_pmwr_pc_activator_248_32_72_08t17(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t18(o, x) {
@@ -17332,7 +17328,7 @@ function ex_pmwr_pc_activator_248_32_72_08t18(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_activator_248_32_72_08t18_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t18_08(o, x) {
@@ -17349,7 +17345,7 @@ function ex_pmwr_pc_activator_248_32_72_08t18_08(o, x) {
         e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_248_32_72_08t18_08_04t6, x.section_04, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t18_08_04t0(o, x) {
@@ -17360,7 +17356,7 @@ function ex_pmwr_pc_activator_248_32_72_08t18_08_04t0(o, x) {
     su32(o + 28, x.u32_28)
     su8(o + 32, x.u8_32)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t18_08_04t6(o, x) {
@@ -17370,14 +17366,14 @@ function ex_pmwr_pc_activator_248_32_72_08t18_08_04t6(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_activator_248_32_72_08t18_08_04t6_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t18_08_04t6_08(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t20(o, x) {
@@ -17394,7 +17390,7 @@ function ex_pmwr_pc_activator_248_32_72_08t20(o, x) {
         break;
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -17404,7 +17400,7 @@ function ex_pmwr_pc_activator_248_32_72_08t20_00t1(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -17415,7 +17411,7 @@ function ex_pmwr_pc_activator_248_32_72_08t22(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_activator_248_32_72_08t22_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t22_00(o, x) {
@@ -17424,7 +17420,7 @@ function ex_pmwr_pc_activator_248_32_72_08t22_00(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_248_32_72_08t22_00_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t22_00_04(o, x) {
@@ -17434,7 +17430,7 @@ function ex_pmwr_pc_activator_248_32_72_08t22_00_04(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t23(o, x) {
@@ -17452,7 +17448,7 @@ function ex_pmwr_pc_activator_248_32_72_08t23(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t25(o, x) {
@@ -17461,7 +17457,7 @@ function ex_pmwr_pc_activator_248_32_72_08t25(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_248_32_72_08t25_04, x.section_04, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t25_04(o, x) {
@@ -17470,7 +17466,7 @@ function ex_pmwr_pc_activator_248_32_72_08t25_04(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_activator_248_32_72_08t25_04_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t25_04_08(o, x) {
@@ -17478,7 +17474,7 @@ function ex_pmwr_pc_activator_248_32_72_08t25_04_08(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_72_08t32(o, x) {
@@ -17486,7 +17482,7 @@ function ex_pmwr_pc_activator_248_32_72_08t32(o, x) {
     su32(o + 0, x.u32_00)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_32_76(o, x) {
@@ -17494,7 +17490,7 @@ function ex_pmwr_pc_activator_248_32_76(o, x) {
     su32(o + 0, x.u32_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -17526,7 +17522,7 @@ function ex_pmwr_pc_activator_248_04_04t0_04(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t0_04_04(o, e, x) {
@@ -17534,7 +17530,7 @@ function ex_pmwr_pc_activator_248_04_04t0_04_04(o, e, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_248_04_04t0_04_04_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t0_04_04_04(o, x) {
@@ -17543,7 +17539,7 @@ function ex_pmwr_pc_activator_248_04_04t0_04_04_04(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_activator_248_04_04t0_04_04_04_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_activator_248_04_04t0_04_04_04_04(o, x) {
@@ -17552,7 +17548,7 @@ function ex_pmwr_pc_activator_248_04_04t0_04_04_04_04(o, x) {
     su8(o + 1, x.u8_01)
     su8(o + 2, x.u8_02)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -17562,7 +17558,7 @@ function ex_pmwr_pc_car(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_car_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00(o, x) {
@@ -17668,7 +17664,7 @@ function ex_pmwr_pc_car_00(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180(o, x) {
@@ -17726,7 +17722,7 @@ function ex_pmwr_pc_car_00_180(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_00(o, x) {
@@ -17753,7 +17749,7 @@ function ex_pmwr_pc_car_00_180_00(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_unknown_00_32, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 32, e, 'down');
     e = ex_ml(x.unordered_pmwr_pc_unknown_00_36, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 36, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_00_08(o, x) {
@@ -17763,7 +17759,7 @@ function ex_pmwr_pc_car_00_180_00_08(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_00_16(o, e, x) {
@@ -17774,7 +17770,7 @@ function ex_pmwr_pc_car_00_180_00_16(o, e, x) {
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_car_00_180_00_16_12, x.section_12, 'down');
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_car_00_180_00_16_12, x.section_16, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_00_16_08(o, x) {
@@ -17784,7 +17780,7 @@ function ex_pmwr_pc_car_00_180_00_16_08(o, x) {
     su32(o + 20, x.u32_20)
     su32(o + 28, x.u32_28)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_00_16_12(o, x) {
@@ -17802,7 +17798,7 @@ function ex_pmwr_pc_car_00_180_00_16_12(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_04(o, x) {
@@ -17844,7 +17840,7 @@ function ex_pmwr_pc_car_00_180_04(o, x) {
     // e = ex_s_offset(o + 88, e, ex_pmwr_pc_car_00_180_04_88, x.section_88, 'down');
     e = ex_s_offset(o + 92, e, ex_pmwr_pc_car_00_180_04_92, x.section_92, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_04_56(o, x) {
@@ -17854,7 +17850,7 @@ function ex_pmwr_pc_car_00_180_04_56(o, x) {
     su32(o + 20, x.u32_20)
     su32(o + 28, x.u32_28)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_04_80(o, x) {
@@ -17864,14 +17860,14 @@ function ex_pmwr_pc_car_00_180_04_80(o, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_unknown_00_16, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 16, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_04_84(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_04_92(o, x) {
@@ -17880,7 +17876,7 @@ function ex_pmwr_pc_car_00_180_04_92(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_20(o, e, x) {
@@ -17894,7 +17890,7 @@ function ex_pmwr_pc_car_00_180_20(o, e, x) {
         e = ex_s_offset(o + 4, e, ex_pmwr_pc_car_00_180_20_04t3, x.section_04, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_20_04t1(o, x) {
@@ -17910,7 +17906,7 @@ function ex_pmwr_pc_car_00_180_20_04t1(o, x) {
     su8(o + 32, x.u8_32)
     sf32(o + 36, x.f32_36)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_180_20_04t3(o, x) {
@@ -17920,7 +17916,7 @@ function ex_pmwr_pc_car_00_180_20_04t3(o, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_184(o, x) {
@@ -17929,7 +17925,7 @@ function ex_pmwr_pc_car_00_184(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_car_00_184_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_184_04(o, x) {
@@ -17949,7 +17945,7 @@ function ex_pmwr_pc_car_00_184_04(o, x) {
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_car_00_184_04_04, x.section_04, 'down');
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_car_00_184_04_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_184_04_00(o, x) {
@@ -17964,7 +17960,7 @@ function ex_pmwr_pc_car_00_184_04_00(o, x) {
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_car_00_184_04_00_16, x.section_16, 'down');
     e = ex_ml(x.unordered_pmwr_pc_gate_44, g.pmwr_pc_gate_array, ex_pmwr_pc_gate, g.unordered_ref.pmwr_pc_gate, o + 44, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_184_04_00_16(o, x) {
@@ -17977,7 +17973,7 @@ function ex_pmwr_pc_car_00_184_04_00_16(o, x) {
     sf32(o + 24, x.f32_24)
     sf32(o + 32, x.f32_32)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_184_04_04(o, x) {
@@ -17987,7 +17983,7 @@ function ex_pmwr_pc_car_00_184_04_04(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_184_04_08(o, x) {
@@ -18011,7 +18007,7 @@ function ex_pmwr_pc_car_00_184_04_08(o, x) {
     sf32(o + 80, x.f32_80)
     sf32(o + 84, x.f32_84)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_188(o, x) {
@@ -18093,7 +18089,7 @@ function ex_pmwr_pc_car_00_188(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_188_52(o, e, x) {
@@ -18101,7 +18097,7 @@ function ex_pmwr_pc_car_00_188_52(o, e, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_car_00_188_52_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_188_52_04(o, x) {
@@ -18120,14 +18116,14 @@ function ex_pmwr_pc_car_00_188_52_04(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_188_52_04_04(o, e, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_model_link_00, g.pmwr_pc_model_link_array, ex_pmwr_pc_model_link, g.unordered_ref.pmwr_pc_model_link, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_188_60(o, e, x) {
@@ -18139,7 +18135,7 @@ function ex_pmwr_pc_car_00_188_60(o, e, x) {
     sf32(o + 12, x.f32_12)
     su8(o + 16, x.u8_16)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_188_68(o, e, x) {
@@ -18148,7 +18144,7 @@ function ex_pmwr_pc_car_00_188_68(o, e, x) {
     sf32(o + 20, x.f32_20)
     sf32(o + 24, x.f32_24)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_192(o, x) {
@@ -18176,7 +18172,7 @@ function ex_pmwr_pc_car_00_192(o, x) {
     }
     ;e = ex_ml(x.unordered_pmwr_pc_wtf_32, g.pmwr_pc_wtf_array, ex_pmwr_pc_wtf, g.unordered_ref.pmwr_pc_wtf, o + 32, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_192_16(o, x) {
@@ -18186,7 +18182,7 @@ function ex_pmwr_pc_car_00_192_16(o, x) {
     su32(o + 20, x.u32_20)
     su32(o + 28, x.u32_28)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_192_24(o, e, x) {
@@ -18194,7 +18190,7 @@ function ex_pmwr_pc_car_00_192_24(o, e, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_196(o, x) {
@@ -18211,7 +18207,7 @@ function ex_pmwr_pc_car_00_196(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_sound_section_00, g.pmwr_pc_sound_section_array, ex_pmwr_pc_sound_section, g.unordered_ref.pmwr_pc_sound_section, o + 0, e, 'down');
     e = ex_ml(x.unordered_pmwr_pc_sound_section_08, g.pmwr_pc_sound_section_array, ex_pmwr_pc_sound_section, g.unordered_ref.pmwr_pc_sound_section, o + 8, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_200(o, x) {
@@ -18224,7 +18220,7 @@ function ex_pmwr_pc_car_00_200(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_interface_16, g.pmwr_pc_interface_array, ex_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface, o + 16, e, 'down');
     e = ex_ml(x.unordered_pmwr_pc_interface_20, g.pmwr_pc_interface_array, ex_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface, o + 20, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_208(o, e, x) {
@@ -18241,7 +18237,7 @@ function ex_pmwr_pc_car_00_208(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_208_04(o, e, x) {
@@ -18249,7 +18245,7 @@ function ex_pmwr_pc_car_00_208_04(o, e, x) {
     sf32(o + 20, x.f32_20)
     sf32(o + 24, x.f32_24)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_car_00_216(o, e, x) {
@@ -18266,7 +18262,7 @@ function ex_pmwr_pc_car_00_216(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -18293,7 +18289,7 @@ function ex_pmwr_pc_flag(o, x) {
         e = ex_s_offset(o + 12, e, ex_pmwr_pc_flag_12t4, x.section_12, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_flag_12t2(o, x) {
@@ -18302,7 +18298,7 @@ function ex_pmwr_pc_flag_12t2(o, x) {
     su8(o + 2, x.u8_02)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_flag_12t3(o, x) {
@@ -18311,20 +18307,20 @@ function ex_pmwr_pc_flag_12t3(o, x) {
 
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_flag_12t3_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_flag_12t3_12(o, x) {
     let e = o + divisible(32, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_flag_12t4(o, x) {
     let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -18350,7 +18346,7 @@ function ex_pmwr_pc_frame_font(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -18360,7 +18356,7 @@ function ex_pmwr_pc_frame_font_28(o, x) {
     let e = o + divisible(32, g.divisibility)
     sf32(o + 0, x.f32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -18371,7 +18367,7 @@ function ex_pmwr_pc_frame_font_36(o, e, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -18382,7 +18378,7 @@ function ex_pmwr_pc_frame_multi_font(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_frame_multi_font_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_frame_multi_font_04(o, x) {
@@ -18397,7 +18393,7 @@ function ex_pmwr_pc_frame_multi_font_04(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_frame_font_28, g.pmwr_pc_frame_font_array, ex_pmwr_pc_frame_font, g.unordered_ref.pmwr_pc_frame_font, o + 28, e, 'down');
     e = ex_ml(x.unordered_pmwr_pc_frame_font_32, g.pmwr_pc_frame_font_array, ex_pmwr_pc_frame_font, g.unordered_ref.pmwr_pc_frame_font, o + 32, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -18409,7 +18405,7 @@ function ex_pmwr_pc_frame_sparkler(o, x) {
 
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_frame_sparkler_16, x.section_16, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_frame_sparkler_16(o, x) {
@@ -18448,7 +18444,7 @@ function ex_pmwr_pc_frame_sparkler_16(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_frame_sparkler_16_48(o, e, x) {
@@ -18458,7 +18454,7 @@ function ex_pmwr_pc_frame_sparkler_16_48(o, e, x) {
     su8(o + 3, x.u8_03)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_frame_sparkler_16_56(o, e, x) {
@@ -18467,7 +18463,7 @@ function ex_pmwr_pc_frame_sparkler_16_56(o, e, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -18476,7 +18472,7 @@ function ex_pmwr_pc_frame_text(o, x) {
 
     e = ex_string(o + 0, e, x.section_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -18518,7 +18514,7 @@ function ex_pmwr_pc_gate(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_sound_controls_80, g.pmwr_pc_sound_controls_array, ex_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls, o + 80, e, 'down');
     e = ex_s_offset(o + 84, e, ex_pmwr_pc_gate_84, x.section_84, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_gate_24(o, x) {
@@ -18526,7 +18522,7 @@ function ex_pmwr_pc_gate_24(o, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_gate_84(o, x) {
@@ -18536,7 +18532,7 @@ function ex_pmwr_pc_gate_84(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_gate_84_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_gate_84_04(o, x) {
@@ -18545,7 +18541,7 @@ function ex_pmwr_pc_gate_84_04(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -18594,7 +18590,7 @@ function ex_pmwr_pc_idk(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_idk_12(o, x) {
@@ -18628,7 +18624,7 @@ function ex_pmwr_pc_idk_12(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_idk_12_16(o, x) {
@@ -18641,7 +18637,7 @@ function ex_pmwr_pc_idk_12_16(o, x) {
     sf32(o + 24, x.f32_24)
     sf32(o + 32, x.f32_32)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_idk_20(o, e, x) {
@@ -18683,7 +18679,7 @@ function ex_pmwr_pc_idk_20(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_idk_20_08(o, e, x) {
@@ -18693,7 +18689,7 @@ function ex_pmwr_pc_idk_20_08(o, e, x) {
     su8(o + 17, x.u8_17)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_idk_20_16(o, e, x) {
@@ -18703,7 +18699,7 @@ function ex_pmwr_pc_idk_20_16(o, e, x) {
     su8(o + 17, x.u8_17)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -18749,7 +18745,7 @@ function ex_pmwr_pc_interface(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -18768,7 +18764,7 @@ function ex_pmwr_pc_interface_04(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_04_04(o, e, x) {
@@ -18804,7 +18800,7 @@ function ex_pmwr_pc_interface_04_04(o, e, x) {
         e = ex_s_offset(o + 12, e, ex_pmwr_pc_interface_04_04_12t9, x.section_12, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_04_04_12t1(o, x) {
@@ -18813,7 +18809,7 @@ function ex_pmwr_pc_interface_04_04_12t1(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_04_04_12t1_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_04_04_12t1_04(o, x) {
@@ -18823,7 +18819,7 @@ function ex_pmwr_pc_interface_04_04_12t1_04(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_04_04_12t5(o, x) {
@@ -18831,7 +18827,7 @@ function ex_pmwr_pc_interface_04_04_12t5(o, x) {
     su32(o + 0, x.u32_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_04_04_12t7(o, x) {
@@ -18839,7 +18835,7 @@ function ex_pmwr_pc_interface_04_04_12t7(o, x) {
     su8(o + 0, x.u8_00)
     su8(o + 1, x.u8_01)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_04_04_12t8(o, x) {
@@ -18857,7 +18853,7 @@ function ex_pmwr_pc_interface_04_04_12t8(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_04_04_12t8_04(o, e, x) {
@@ -18867,7 +18863,7 @@ function ex_pmwr_pc_interface_04_04_12t8_04(o, e, x) {
 
     e = ex_string(o + 8, e, x.section_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_04_04_12t9(o, x) {
@@ -18880,7 +18876,7 @@ function ex_pmwr_pc_interface_04_04_12t9(o, x) {
     e = ex_string(o + 4, e, x.section_04)
     e = ex_string(o + 8, e, x.section_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12(o, e, x) {
@@ -18920,7 +18916,7 @@ function ex_pmwr_pc_interface_12(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_04t1026(o, x) {
@@ -18933,7 +18929,7 @@ function ex_pmwr_pc_interface_12_04t1026(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_interface_12_04t1026_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_04t1026_08(o, x) {
@@ -18942,7 +18938,7 @@ function ex_pmwr_pc_interface_12_04t1026_08(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_12_04t1026_08_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_04t1026_08_04(o, x) {
@@ -18951,7 +18947,7 @@ function ex_pmwr_pc_interface_12_04t1026_08_04(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_04t1027(o, x) {
@@ -18960,7 +18956,7 @@ function ex_pmwr_pc_interface_12_04t1027(o, x) {
     su8(o + 1, x.u8_01)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_16(o, e, x) {
@@ -18968,7 +18964,7 @@ function ex_pmwr_pc_interface_12_16(o, e, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_12_04t1026, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_24(o, e, x) {
@@ -18991,7 +18987,7 @@ function ex_pmwr_pc_interface_12_24(o, e, x) {
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_interface_12_24_08, x.section_08, 'down');
     e = ex_ml(x.unordered_pmwr_pc_sound_controls_24, g.pmwr_pc_sound_controls_array, ex_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls, o + 24, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_24_04t11(o, x) {
@@ -19009,7 +19005,7 @@ function ex_pmwr_pc_interface_12_24_04t11(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_24_04t11_04(o, e, x) {
@@ -19035,14 +19031,14 @@ function ex_pmwr_pc_interface_12_24_04t11_04(o, e, x) {
     }
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_interface_12_24_04t11_04_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
 function ex_pmwr_pc_interface_12_24_04t11_04_00(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -19053,7 +19049,7 @@ function ex_pmwr_pc_interface_12_24_04t11_04_08t0(o, x) {
     su8(o + 5, x.u8_05)
     su16(o + 6, x.u16_06)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_24_04t11_04_08t1(o, x) {
@@ -19062,7 +19058,7 @@ function ex_pmwr_pc_interface_12_24_04t11_04_08t1(o, x) {
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_interface_12_24_04t11_04_08t1_00, x.section_00, 'down');
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_12_24_04t11_04_08t1_00_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_24_04t11_04_08t1_00(o, x) {
@@ -19071,7 +19067,7 @@ function ex_pmwr_pc_interface_12_24_04t11_04_08t1_00(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_12_24_04t11_04_08t1_00_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_24_04t11_04_08t1_00_04(o, x) {
@@ -19079,7 +19075,7 @@ function ex_pmwr_pc_interface_12_24_04t11_04_08t1_00_04(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_24_08(o, x) {
@@ -19088,7 +19084,7 @@ function ex_pmwr_pc_interface_12_24_08(o, x) {
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_interface_12_24_08_00, x.section_00, 'down');
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_12_24_08_00, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_12_24_08_00(o, x) {
@@ -19096,21 +19092,21 @@ function ex_pmwr_pc_interface_12_24_08_00(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_48(o, x) {
     let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_56(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -19201,7 +19197,7 @@ function ex_pmwr_pc_interface_72(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -19222,7 +19218,7 @@ function ex_pmwr_pc_interface_72_08(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_08_08(o, e, x) {
@@ -19238,7 +19234,7 @@ function ex_pmwr_pc_interface_72_08_08(o, e, x) {
         e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_72_08_08_04t6, x.section_04, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -19248,7 +19244,7 @@ function ex_pmwr_pc_interface_72_08_08_04t2(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_72_08_08_04t2_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_08_08_04t2_04(o, x) {
@@ -19257,7 +19253,7 @@ function ex_pmwr_pc_interface_72_08_08_04t2_04(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_08_08_04t6(o, x) {
@@ -19267,7 +19263,7 @@ function ex_pmwr_pc_interface_72_08_08_04t6(o, x) {
     su8(o + 2, x.u8_02)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_20t4(o, x) {
@@ -19277,7 +19273,7 @@ function ex_pmwr_pc_interface_72_20t4(o, x) {
     sf32(o + 20, x.f32_20)
     sf32(o + 24, x.f32_24)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_20t7(o, x) {
@@ -19285,14 +19281,14 @@ function ex_pmwr_pc_interface_72_20t7(o, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_20t38(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t0(o, x) {
@@ -19314,7 +19310,7 @@ function ex_pmwr_pc_interface_72_24t0(o, x) {
         break;
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t0_08(o, x) {
@@ -19338,13 +19334,13 @@ function ex_pmwr_pc_interface_72_24t0_08(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t0_08_04(o, e, x) {
     ex_patch(o + 0, g.pmwr_pc_texture_patch_array, x.pmwr_pc_texture_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t1(o, x) {
@@ -19384,7 +19380,7 @@ function ex_pmwr_pc_interface_72_24t1(o, x) {
         e = ex_ml(x.section_12, g.pmwr_pc_frame_multi_font_array, ex_pmwr_pc_frame_multi_font, g.unordered_ref.pmwr_pc_frame_multi_font, o + 12, e, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t1_08t1(o, x) {
@@ -19404,14 +19400,14 @@ function ex_pmwr_pc_interface_72_24t1_08t1(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t1_08t1_04(o, e, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_frame_text_00, g.pmwr_pc_frame_text_array, ex_pmwr_pc_frame_text, g.unordered_ref.pmwr_pc_frame_text, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -19419,7 +19415,7 @@ function ex_pmwr_pc_interface_72_24t1_08t3(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t3(o, x) {
@@ -19441,7 +19437,7 @@ function ex_pmwr_pc_interface_72_24t3(o, x) {
     }
     ;e = ex_s_offset(o + 16, e, ex_pmwr_pc_interface_72_24t3_16, x.section_16, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t3_04(o, e, x) {
@@ -19449,7 +19445,7 @@ function ex_pmwr_pc_interface_72_24t3_04(o, e, x) {
     e = ex_ml(x.unordered_pmwr_pc_model_link_00, g.pmwr_pc_model_link_array, ex_pmwr_pc_model_link, g.unordered_ref.pmwr_pc_model_link, o + 0, e, 'down');
     e = ex_ml(x.unordered_pmwr_pc_sound_controls_04, g.pmwr_pc_sound_controls_array, ex_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls, o + 4, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t3_16(o, x) {
@@ -19457,7 +19453,7 @@ function ex_pmwr_pc_interface_72_24t3_16(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_interface_72_24t3_16_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t3_16_08(o, x) {
@@ -19466,7 +19462,7 @@ function ex_pmwr_pc_interface_72_24t3_16_08(o, x) {
     su8(o + 4, x.u8_04)
     su16(o + 6, x.u16_06)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t5(o, x) {
@@ -19477,7 +19473,7 @@ function ex_pmwr_pc_interface_72_24t5(o, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t6(o, x) {
@@ -19497,7 +19493,7 @@ function ex_pmwr_pc_interface_72_24t6(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t6_12(o, e, x) {
@@ -19505,7 +19501,7 @@ function ex_pmwr_pc_interface_72_24t6_12(o, e, x) {
     su8(o + 4, x.u8_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t10(o, x) {
@@ -19515,7 +19511,7 @@ function ex_pmwr_pc_interface_72_24t10(o, x) {
     su32(o + 8, x.u32_08)
     su32(o + 12, x.u32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t12(o, x) {
@@ -19523,7 +19519,7 @@ function ex_pmwr_pc_interface_72_24t12(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t13(o, x) {
@@ -19534,7 +19530,7 @@ function ex_pmwr_pc_interface_72_24t13(o, x) {
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_72_24t13_04, x.section_04, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_interface_72_24t13_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t13_04(o, x) {
@@ -19543,14 +19539,14 @@ function ex_pmwr_pc_interface_72_24t13_04(o, x) {
     sf32(o + 4, x.f32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t13_12(o, x) {
     let e = o + divisible(16, g.divisibility)
     ex_patch(o + 0, g.pmwr_pc_texture_patch_array, x.pmwr_pc_texture_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t14(o, x) {
@@ -19560,7 +19556,7 @@ function ex_pmwr_pc_interface_72_24t14(o, x) {
 
     e = ex_s_offset(o + 276, e, ex_pmwr_pc_interface_72_24t14_276, x.section_276, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t14_276(o, x) {
@@ -19570,7 +19566,7 @@ function ex_pmwr_pc_interface_72_24t14_276(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_24t15(o, x) {
@@ -19578,7 +19574,7 @@ function ex_pmwr_pc_interface_72_24t15(o, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_frame_sparkler_00, g.pmwr_pc_frame_sparkler_array, ex_pmwr_pc_frame_sparkler, g.unordered_ref.pmwr_pc_frame_sparkler, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_32(o, x) {
@@ -19637,7 +19633,7 @@ function ex_pmwr_pc_interface_72_32(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_32_12(o, e, x) {
@@ -19651,7 +19647,7 @@ function ex_pmwr_pc_interface_72_32_12(o, e, x) {
     su32(o + 16, x.u32_16)
     su32(o + 20, x.u32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_32_20(o, e, x) {
@@ -19665,7 +19661,7 @@ function ex_pmwr_pc_interface_72_32_20(o, e, x) {
         e = ex_s_offset(o + 8, e, ex_pmwr_pc_interface_72_32_20_08t1, x.section_08, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_32_20_08t0(o, x) {
@@ -19674,7 +19670,7 @@ function ex_pmwr_pc_interface_72_32_20_08t0(o, x) {
     su8(o + 4, x.u8_04)
     su16(o + 6, x.u16_06)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_32_20_08t1(o, x) {
@@ -19683,7 +19679,7 @@ function ex_pmwr_pc_interface_72_32_20_08t1(o, x) {
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_interface_72_32_20_08t1_00, x.section_00, 'down');
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_72_32_20_08t1_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_32_20_08t1_00(o, x) {
@@ -19692,14 +19688,14 @@ function ex_pmwr_pc_interface_72_32_20_08t1_00(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_72_32_20_08t1_00_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_32_20_08t1_00_04(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_32_20_08t1_04(o, x) {
@@ -19707,13 +19703,13 @@ function ex_pmwr_pc_interface_72_32_20_08t1_04(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_44(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_52(o, x) {
@@ -19779,7 +19775,7 @@ function ex_pmwr_pc_interface_72_52(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_52_04(o, e, x) {
@@ -19790,7 +19786,7 @@ function ex_pmwr_pc_interface_72_52_04(o, e, x) {
     su8(o + 17, x.u8_17)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_52_28(o, e, x) {
@@ -19802,7 +19798,7 @@ function ex_pmwr_pc_interface_72_52_28(o, e, x) {
     su8(o + 5, x.u8_05)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_52_36(o, e, x) {
@@ -19814,7 +19810,7 @@ function ex_pmwr_pc_interface_72_52_36(o, e, x) {
     su8(o + 17, x.u8_17)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_72(o, e, x) {
@@ -19823,7 +19819,7 @@ function ex_pmwr_pc_interface_72_72(o, e, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_interface_72_72_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_72_04(o, x) {
@@ -19893,7 +19889,7 @@ function ex_pmwr_pc_interface_72_72_04(o, x) {
     ;e = ex_s_offset(o + 44, e, ex_pmwr_pc_interface_72_72_04_44, x.section_44, 'down');
     e = ex_ml(x.unordered_pmwr_pc_sound_controls_48, g.pmwr_pc_sound_controls_array, ex_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls, o + 48, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_72_04_04(o, e, x) {
@@ -19913,7 +19909,7 @@ function ex_pmwr_pc_interface_72_72_04_04(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_72_04_04_16(o, e, x) {
@@ -19927,7 +19923,7 @@ function ex_pmwr_pc_interface_72_72_04_04_16(o, e, x) {
         e = ex_ml(x.section_08, g.pmwr_pc_sound_controls_array, ex_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls, o + 8, e, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_72_04_04_16_08t0(o, x) {
@@ -19938,7 +19934,7 @@ function ex_pmwr_pc_interface_72_72_04_04_16_08t0(o, x) {
     su16(o + 6, x.u16_06)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_72_04_12(o, e, x) {
@@ -19949,7 +19945,7 @@ function ex_pmwr_pc_interface_72_72_04_12(o, e, x) {
     su8(o + 17, x.u8_17)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_72_04_36(o, e, x) {
@@ -19961,7 +19957,7 @@ function ex_pmwr_pc_interface_72_72_04_36(o, e, x) {
     su8(o + 5, x.u8_05)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_interface_72_72_04_44(o, x) {
@@ -19971,7 +19967,7 @@ function ex_pmwr_pc_interface_72_72_04_44(o, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -20024,7 +20020,7 @@ function ex_pmwr_pc_link(o, x) {
     e = ex_string(o + 68, e, x.section_68)
     e = ex_string(o + 72, e, x.section_72)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20036,7 +20032,7 @@ function ex_pmwr_pc_link_00(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_link_00_04, x.section_04, 'up')
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20046,7 +20042,7 @@ function ex_pmwr_pc_link_00_04(o, x) {
     let e = o + divisible(16, g.divisibility)
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_link_00_04_00, x.section_00, 'down')
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20059,7 +20055,7 @@ function ex_pmwr_pc_link_00_04_00(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_link_00_04_00_04, x.section_04, 'up')
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20070,7 +20066,7 @@ function ex_pmwr_pc_link_00_04_00_04(o, x) {
 
     su32(o + 20, x.u32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20083,7 +20079,7 @@ function ex_pmwr_pc_link_intro(o, e, x) {
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_link_intro_08, x.section_08, 'up')
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_link_offset_index, x.section_12, 'down')
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20095,7 +20091,7 @@ function ex_pmwr_pc_link_intro_08(o, x) {
     su8(o + 0, x.u8_00)
     su8(o + 1, x.u8_01)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20107,7 +20103,7 @@ function ex_pmwr_pc_link_offset_index(o, x) {
     su32(o + 4, x.u32_04)
     e = ex_string(o + 0, e, x.section_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20117,7 +20113,7 @@ function ex_pmwr_pc_link_32(o, e, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_link_32_00, x.section_00, 'down')
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20137,7 +20133,7 @@ function ex_pmwr_pc_link_32_00(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20173,7 +20169,7 @@ function ex_pmwr_pc_link_32_00_04(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20186,7 +20182,7 @@ function ex_pmwr_pc_link_32_00_04_04(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_link_offset_index, x.section_04, 'down')
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20206,7 +20202,7 @@ function ex_pmwr_pc_link_32_00_04_20(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20217,7 +20213,7 @@ function ex_pmwr_pc_link_32_00_04_20_04(o, e, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_link_offset_index, x.section_04, 'down')
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
 
     return e
 
@@ -20231,7 +20227,7 @@ function ex_pmwr_pc_link_demo(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_link_32_00, x.section_08, 'down')
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 
 }
@@ -20288,14 +20284,14 @@ function ex_pmwr_pc_model_link(o, x) {
     e = ex_s_offset(o + 56, e, ex_pmwr_pc_model_link_56, x.section_56, 'down');
     e = ex_s_offset(o + 64, e, ex_pmwr_pc_model_link_64, x.section_64, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_link_24(o, e, x, temp_offset) {
 
     e = ex_ml(x.ordered_pmwr_pc_models_00, g.pmwr_pc_models_array, ex_pmwr_pc_models, g.ordered_ref.pmwr_pc_models, o + 0, e, 'none', true, "model", temp_offset);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_link_32(o, e, x, temp_offset) {
@@ -20303,7 +20299,7 @@ function ex_pmwr_pc_model_link_32(o, e, x, temp_offset) {
 
     e = ex_ml(x.ordered_pmwr_pc_models_00, g.pmwr_pc_models_array, ex_pmwr_pc_models, g.ordered_ref.pmwr_pc_models, o + 0, e, 'none', true, "model", temp_offset);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_link_52(o, x) {
@@ -20311,7 +20307,7 @@ function ex_pmwr_pc_model_link_52(o, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_link_56(o, x) {
@@ -20319,7 +20315,7 @@ function ex_pmwr_pc_model_link_56(o, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_model_link_64(o, x) {
@@ -20332,7 +20328,7 @@ function ex_pmwr_pc_model_link_64(o, x) {
     sf32(o + 24, x.f32_24)
     sf32(o + 32, x.f32_32)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -20364,7 +20360,7 @@ function ex_pmwr_pc_model_sub_link(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -20425,7 +20421,7 @@ function ex_pmwr_pc_mysterious(o, e, x) {
         e = ex_s_offset(o + 8, e, ex_pmwr_pc_mysterious_08t8t13, x.section_08, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5(o, x) {
@@ -20511,7 +20507,7 @@ function ex_pmwr_pc_mysterious_04t5(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_56(o, x) {
@@ -20522,32 +20518,32 @@ function ex_pmwr_pc_mysterious_04t5_56(o, x) {
     sf32(o + 16, x.f32_16)
     su32(o + 20, x.u32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_16t0(o, e, x, temp_offset) {
 
     e = ex_ml(x.ordered_pmwr_pc_models_00, g.pmwr_pc_models_array, ex_pmwr_pc_models, g.ordered_ref.pmwr_pc_models, o + 0, e, 'none', true, "model", temp_offset);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_16t2(o, e, x) {
     ex_patch(o + 0, g.pmwr_pc_texture_patch_array, x.pmwr_pc_texture_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_16t3(o, e, x) {
     ex_patch(o + 0, g.pmwr_pc_texture_patch_array, x.pmwr_pc_texture_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_16t5(o, e, x) {
     ex_patch(o + 0, g.pmwr_pc_texture_patch_array, x.pmwr_pc_texture_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_28(o, x) {
@@ -20555,7 +20551,7 @@ function ex_pmwr_pc_mysterious_04t5_28(o, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 16, x.f32_16)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_36(o, e, x) {
@@ -20566,7 +20562,7 @@ function ex_pmwr_pc_mysterious_04t5_36(o, e, x) {
     su8(o + 17, x.u8_17)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_44(o, e, x) {
@@ -20577,7 +20573,7 @@ function ex_pmwr_pc_mysterious_04t5_44(o, e, x) {
     su8(o + 17, x.u8_17)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t5_52(o, e, x) {
@@ -20589,7 +20585,7 @@ function ex_pmwr_pc_mysterious_04t5_52(o, e, x) {
     su8(o + 5, x.u8_05)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t7(o, x) {
@@ -20629,14 +20625,14 @@ function ex_pmwr_pc_mysterious_04t7(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t7_12(o, x) {
     let e = o + divisible(16, g.divisibility)
     ex_patch(o + 0, g.pmwr_pc_texture_patch_array, x.pmwr_pc_texture_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t7_36(o, e, x) {
@@ -20646,7 +20642,7 @@ function ex_pmwr_pc_mysterious_04t7_36(o, e, x) {
     su8(o + 3, x.u8_03)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -20665,7 +20661,7 @@ function ex_pmwr_pc_mysterious_04t10(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16(o, x) {
@@ -20679,7 +20675,7 @@ function ex_pmwr_pc_mysterious_04t16(o, x) {
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_mysterious_04t16_12, x.section_12, 'down');
     e = ex_s_offset(o + 36, e, ex_pmwr_pc_mysterious_04t16_36, x.section_36, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16_08(o, x) {
@@ -20689,7 +20685,7 @@ function ex_pmwr_pc_mysterious_04t16_08(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16_12(o, x) {
@@ -20699,7 +20695,7 @@ function ex_pmwr_pc_mysterious_04t16_12(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16_36(o, x) {
@@ -20708,7 +20704,7 @@ function ex_pmwr_pc_mysterious_04t16_36(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_mysterious_04t16_36_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16_36_04(o, x) {
@@ -20720,7 +20716,7 @@ function ex_pmwr_pc_mysterious_04t16_36_04(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_mysterious_04t16_36_04_04, x.section_04, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16_36_04_04(o, x) {
@@ -20729,7 +20725,7 @@ function ex_pmwr_pc_mysterious_04t16_36_04_04(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_mysterious_04t16_36_04_04_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16_36_04_04_04(o, x) {
@@ -20740,7 +20736,7 @@ function ex_pmwr_pc_mysterious_04t16_36_04_04_04(o, x) {
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_mysterious_04t16_36_04_04_04_04, x.section_04, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_mysterious_04t16_36_04_04_04_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16_36_04_04_04_04(o, x) {
@@ -20748,13 +20744,13 @@ function ex_pmwr_pc_mysterious_04t16_36_04_04_04_04(o, x) {
     su8(o + 0, x.u8_00)
     su8(o + 1, x.u8_01)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t16_36_04_04_04_12(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_08t8(o, x) {
@@ -20762,14 +20758,14 @@ function ex_pmwr_pc_mysterious_08t8(o, x) {
     su8(o + 0, x.u8_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_08t8t13(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -20781,7 +20777,7 @@ function ex_pmwr_pc_mysterious_04t9(o, x) {
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_mysterious_04t9_08, x.section_08, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_mysterious_04t9_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_08(o, x) {
@@ -20796,7 +20792,7 @@ function ex_pmwr_pc_mysterious_04t9_08(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_mysterious_04t9_08_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_08_08(o, x) {
@@ -20806,7 +20802,7 @@ function ex_pmwr_pc_mysterious_04t9_08_08(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_12(o, x) {
@@ -20827,7 +20823,7 @@ function ex_pmwr_pc_mysterious_04t9_12(o, x) {
     }
     ;e = ex_s_offset(o + 12, e, ex_pmwr_pc_mysterious_04t9_12_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_12_04(o, e, x) {
@@ -20848,7 +20844,7 @@ function ex_pmwr_pc_mysterious_04t9_12_04(o, e, x) {
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_mysterious_04t9_12_04_08, x.section_08, 'down');
     e = ex_s_offset(o + 44, e, ex_pmwr_pc_mysterious_04t9_12_04_44, x.section_44, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_12_04_08(o, x) {
@@ -20858,7 +20854,7 @@ function ex_pmwr_pc_mysterious_04t9_12_04_08(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_12_04_44(o, x) {
@@ -20872,7 +20868,7 @@ function ex_pmwr_pc_mysterious_04t9_12_04_44(o, x) {
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_mysterious_04t9_12_04_44_08, x.section_08, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_mysterious_04t9_12_04_44_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_12_04_44_08(o, x) {
@@ -20880,7 +20876,7 @@ function ex_pmwr_pc_mysterious_04t9_12_04_44_08(o, x) {
     su8(o + 0, x.u8_00)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_12_04_44_12(o, x) {
@@ -20888,7 +20884,7 @@ function ex_pmwr_pc_mysterious_04t9_12_04_44_12(o, x) {
     su8(o + 1, x.u8_01)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_mysterious_04t9_12_12(o, x) {
@@ -20906,7 +20902,7 @@ function ex_pmwr_pc_mysterious_04t9_12_12(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -20967,7 +20963,7 @@ function ex_pmwr_pc_object(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_12(o, x) {
@@ -20978,7 +20974,7 @@ function ex_pmwr_pc_object_12(o, x) {
 
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_object_12_16, x.section_16, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_12_16(o, x) {
@@ -20988,7 +20984,7 @@ function ex_pmwr_pc_object_12_16(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_32t15(o, x) {
@@ -21009,7 +21005,7 @@ function ex_pmwr_pc_object_32t15(o, x) {
     ;e = ex_ml(x.unordered_pmwr_pc_unknown_00_08, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 8, e, 'down');
     e = ex_ml(x.unordered_pmwr_pc_unknown_00_12, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 12, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_32t15_04(o, e, x) {
@@ -21051,7 +21047,7 @@ function ex_pmwr_pc_object_32t15_04(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_32t15_04_04(o, e, x) {
@@ -21061,7 +21057,7 @@ function ex_pmwr_pc_object_32t15_04_04(o, e, x) {
     e = ex_ml(x.unordered_pmwr_pc_um_00, g.pmwr_pc_um_array, ex_pmwr_pc_um, g.unordered_ref.pmwr_pc_um, o + 0, e, 'down');
     e = ex_ml(x.unordered_pmwr_pc_um_04, g.pmwr_pc_um_array, ex_pmwr_pc_um, g.unordered_ref.pmwr_pc_um, o + 4, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_32t16(o, x) {
@@ -21069,14 +21065,14 @@ function ex_pmwr_pc_object_32t16(o, x) {
     su32(o + 0, x.u32_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_32t17(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_32t18(o, x) {
@@ -21084,7 +21080,7 @@ function ex_pmwr_pc_object_32t18(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_object_32t18_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_object_32t18_00(o, x) {
@@ -21103,7 +21099,7 @@ function ex_pmwr_pc_object_32t18_00(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21128,7 +21124,7 @@ function ex_pmwr_pc_sound_controls(o, x) {
     }
     // ;e = ex_s_offset(o + 16, e, ex_pmwr_pc_sound_controls_16, x.section_16, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_sound_controls_16(o, e, x) {
@@ -21148,14 +21144,14 @@ function ex_pmwr_pc_sound_controls_16(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_sound_controls_16_04(o, e, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_sound_section_00, g.pmwr_pc_sound_section_array, ex_pmwr_pc_sound_section, g.unordered_ref.pmwr_pc_sound_section, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21178,7 +21174,7 @@ function ex_pmwr_pc_sound_section(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_sound_section_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_sound_section_08(o, x) {
@@ -21189,7 +21185,7 @@ function ex_pmwr_pc_sound_section_08(o, x) {
     su8(o + 9, x.u8_09)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21218,7 +21214,7 @@ function ex_pmwr_pc_strange(o, x) {
     }
     ;e = ex_ml(x.unordered_pmwr_pc_sound_controls_28, g.pmwr_pc_sound_controls_array, ex_pmwr_pc_sound_controls, g.unordered_ref.pmwr_pc_sound_controls, o + 28, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21240,7 +21236,7 @@ function ex_pmwr_pc_um(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21248,7 +21244,7 @@ function ex_pmwr_pc_unknown(o, e, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_unknown_00_00, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21267,7 +21263,7 @@ function ex_pmwr_pc_unknown_00(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04(o, e, x) {
@@ -21340,7 +21336,7 @@ function ex_pmwr_pc_unknown_00_04(o, e, x) {
         e = ex_s_offset(o + 8, e, ex_pmwr_pc_unknown_00_04_08t34, x.section_08, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21379,7 +21375,7 @@ function ex_pmwr_pc_unknown_00_04_04t2(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t2_80(o, x) {
@@ -21387,7 +21383,7 @@ function ex_pmwr_pc_unknown_00_04_04t2_80(o, x) {
     su32(o + 0, x.u32_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21412,7 +21408,7 @@ function ex_pmwr_pc_unknown_00_04_04t29(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t29_04(o, e, x, temp_offset) {
@@ -21425,7 +21421,7 @@ function ex_pmwr_pc_unknown_00_04_04t29_04(o, e, x, temp_offset) {
 
     e = ex_ml(x.ordered_pmwr_pc_models_00, g.pmwr_pc_models_array, ex_pmwr_pc_models, g.ordered_ref.pmwr_pc_models, o + 0, e, 'none', true, "model", temp_offset);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t1(o, x) {
@@ -21453,7 +21449,7 @@ function ex_pmwr_pc_unknown_00_04_08t1(o, x) {
         e = ex_s_offset(o + 52, e, ex_pmwr_pc_unknown_00_04_08t1_52t2, x.section_52, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t1_48(o, x) {
@@ -21465,7 +21461,7 @@ function ex_pmwr_pc_unknown_00_04_08t1_48(o, x) {
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t1_52t1(o, x) {
@@ -21477,7 +21473,7 @@ function ex_pmwr_pc_unknown_00_04_08t1_52t1(o, x) {
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t1_52t2(o, x) {
@@ -21497,7 +21493,7 @@ function ex_pmwr_pc_unknown_00_04_08t1_52t2(o, x) {
         e = ex_s_offset(o + 12, e, ex_pmwr_pc_unknown_00_04_08t1_52t2_12t2, x.section_12, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t1_52t2_12t0(o, x) {
@@ -21506,7 +21502,7 @@ function ex_pmwr_pc_unknown_00_04_08t1_52t2_12t0(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t1_52t2_12t1(o, x) {
@@ -21514,7 +21510,7 @@ function ex_pmwr_pc_unknown_00_04_08t1_52t2_12t1(o, x) {
     su8(o + 0, x.u8_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t1_52t2_12t2(o, x) {
@@ -21523,7 +21519,7 @@ function ex_pmwr_pc_unknown_00_04_08t1_52t2_12t2(o, x) {
     sf32(o + 4, x.f32_04)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t2(o, x) {
@@ -21550,7 +21546,7 @@ function ex_pmwr_pc_unknown_00_04_08t2(o, x) {
         e = ex_s_offset(o + 52, e, ex_pmwr_pc_unknown_00_04_08t2_52t2, x.section_52, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t2_48(o, x) {
@@ -21559,7 +21555,7 @@ function ex_pmwr_pc_unknown_00_04_08t2_48(o, x) {
     su32(o + 8, x.u32_08)
     su32(o + 12, x.u32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t2_52t1(o, x) {
@@ -21570,7 +21566,7 @@ function ex_pmwr_pc_unknown_00_04_08t2_52t1(o, x) {
     su32(o + 16, x.u32_16)
     su32(o + 20, x.u32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t2_52t2(o, x) {
@@ -21580,7 +21576,7 @@ function ex_pmwr_pc_unknown_00_04_08t2_52t2(o, x) {
 
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_unknown_00_04_08t2_52t2_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t2_52t2_12(o, x) {
@@ -21590,7 +21586,7 @@ function ex_pmwr_pc_unknown_00_04_08t2_52t2_12(o, x) {
     su8(o + 9, x.u8_09)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t3(o, x) {
@@ -21606,7 +21602,7 @@ function ex_pmwr_pc_unknown_00_04_08t3(o, x) {
     }
     e = ex_s_offset(o + 52, e, ex_pmwr_pc_unknown_00_04_08t3_52, x.section_52, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t3_48(o, x) {
@@ -21615,7 +21611,7 @@ function ex_pmwr_pc_unknown_00_04_08t3_48(o, x) {
     su32(o + 16, x.u32_16)
     su32(o + 20, x.u32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t3_52(o, x) {
@@ -21626,14 +21622,14 @@ function ex_pmwr_pc_unknown_00_04_08t3_52(o, x) {
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t4(o, x) {
     let e = o + divisible(64, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t5(o, x) {
@@ -21642,25 +21638,25 @@ function ex_pmwr_pc_unknown_00_04_08t5(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_unknown_00_04_08t5_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t5_04(o, x) {
     let e = o + divisible(32, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t6(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t26(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t29(o, x) {
@@ -21677,7 +21673,7 @@ function ex_pmwr_pc_unknown_00_04_08t29(o, x) {
 
     e = ex_s_offset(o + 52, e, ex_pmwr_pc_unknown_00_04_08t29_52, x.section_52, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t29_52(o, x) {
@@ -21685,7 +21681,7 @@ function ex_pmwr_pc_unknown_00_04_08t29_52(o, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 16, x.f32_16)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t31(o, x) {
@@ -21697,7 +21693,7 @@ function ex_pmwr_pc_unknown_00_04_08t31(o, x) {
 
     e = ex_s_offset(o + 52, e, ex_pmwr_pc_unknown_00_04_08t31_52, x.section_52, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t31_52(o, x) {
@@ -21705,7 +21701,7 @@ function ex_pmwr_pc_unknown_00_04_08t31_52(o, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 16, x.f32_16)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t32(o, x) {
@@ -21721,7 +21717,7 @@ function ex_pmwr_pc_unknown_00_04_08t32(o, x) {
 
     e = ex_string(o + 8, e, x.section_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t34(o, x) {
@@ -21733,13 +21729,13 @@ function ex_pmwr_pc_unknown_00_04_08t34(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_interface_12, g.pmwr_pc_interface_array, ex_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface, o + 12, e, 'down');
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_unknown_00_04_08t34_16, x.section_16, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_08t34_16(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21786,7 +21782,7 @@ function ex_pmwr_pc_unknown_00_04_04t1(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -21853,14 +21849,14 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t0(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t0_04(o, e, x, temp_offset) {
 
     e = ex_ml(x.ordered_pmwr_pc_models_00, g.pmwr_pc_models_array, ex_pmwr_pc_models, g.ordered_ref.pmwr_pc_models, o + 0, e, 'none', true, "model", temp_offset);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t0_40(o, e, x) {
@@ -21871,7 +21867,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t0_40(o, e, x) {
     su8(o + 17, x.u8_17)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t0_48(o, e, x) {
@@ -21880,7 +21876,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t0_48(o, e, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t0_56(o, x) {
@@ -21889,7 +21885,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t0_56(o, x) {
     sf32(o + 4, x.f32_04)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t0_64(o, e, x) {
@@ -21906,12 +21902,12 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t0_64(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t0_64_04(o, e, x) {
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t1(o, x) {
@@ -21977,13 +21973,13 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t1(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t1_04(o, e, x) {
     ex_patch(o + 0, g.pmwr_pc_texture_patch_array, x.pmwr_pc_texture_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t1_44(o, e, x) {
@@ -21992,7 +21988,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t1_44(o, e, x) {
     su8(o + 5, x.u8_05)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t1_56(o, x) {
@@ -22007,7 +22003,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t1_56(o, x) {
     sf32(o + 16, x.f32_16)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t1_64(o, e, x) {
@@ -22024,7 +22020,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t1_64(o, e, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t1_64_04(o, e, x) {
@@ -22032,7 +22028,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t1_64_04(o, e, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t2(o, x) {
@@ -22066,7 +22062,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t2(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t2_04(o, e, x) {
@@ -22076,7 +22072,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t2_04(o, e, x) {
     su8(o + 3, x.u8_03)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_04t2_20(o, e, x) {
@@ -22084,7 +22080,7 @@ function ex_pmwr_pc_unknown_00_04_04t1_04t2_20(o, e, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_24(o, e, x) {
@@ -22096,13 +22092,13 @@ function ex_pmwr_pc_unknown_00_04_04t1_24(o, e, x) {
     su8(o + 5, x.u8_05)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t1_32(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -22124,7 +22120,7 @@ function ex_pmwr_pc_unknown_00_04_04t5(o, x) {
     e = ex_s_offset(o + 28, e, ex_pmwr_pc_unknown_00_04_04t5_28, x.section_28, 'down');
     e = ex_s_offset(o + 36, e, ex_pmwr_pc_unknown_00_04_04t5_36, x.section_36, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_04(o, x) {
@@ -22167,7 +22163,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_04(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_04_12t103(o, x) {
@@ -22176,7 +22172,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_04_12t103(o, x) {
     su32(o + 12, x.u32_12)
     su32(o + 28, x.u32_28)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_04_12t105(o, x) {
@@ -22195,13 +22191,13 @@ function ex_pmwr_pc_unknown_00_04_04t5_04_12t105(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_04_20(o, e, x) {
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_12(o, x) {
@@ -22220,7 +22216,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_12(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_12_04(o, e, x) {
@@ -22231,7 +22227,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_12_04(o, e, x) {
     su8(o + 4, x.u8_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_20(o, x) {
@@ -22249,14 +22245,14 @@ function ex_pmwr_pc_unknown_00_04_04t5_20(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_20_04(o, e, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_28(o, x) {
@@ -22265,7 +22261,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_28(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_unknown_00_04_04t5_28_04, x.section_04, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_28_04(o, x) {
@@ -22273,7 +22269,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_28_04(o, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_unknown_00_04_04t5_28_04_00_00, g.pmwr_pc_unknown_00_04_04t5_28_04_00_array, ex_pmwr_pc_unknown_00_04_04t5_28_04_00, g.unordered_ref.pmwr_pc_unknown_00_04_04t5_28_04_00, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -22282,7 +22278,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_36(o, x) {
     sf32(o + 0, x.f32_00)
     sf32(o + 4, x.f32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -22299,7 +22295,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_28_04_00(o, x) {
         e = ex_s_offset(o + 4, e, ex_pmwr_pc_unknown_00_04_04t5_28_04_00_04t2, x.section_04, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_28_04_00_04t1(o, x) {
@@ -22308,7 +22304,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_28_04_00_04t1(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_unknown_00_04_04t5_28_04_00_04t2(o, x) {
@@ -22316,7 +22312,7 @@ function ex_pmwr_pc_unknown_00_04_04t5_28_04_00_04t2(o, x) {
     su32(o + 0, x.u32_00)
     su8(o + 4, x.u8_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -22333,7 +22329,7 @@ function ex_pmwr_pc_var(o, x) {
     e = ex_s_offset(o + 164, e, ex_pmwr_pc_var_164, x.section_164, 'down');
     e = ex_s_offset(o + 168, e, ex_pmwr_pc_var_168, x.section_168, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_148(o, x) {
@@ -22341,7 +22337,7 @@ function ex_pmwr_pc_var_148(o, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_var_00, g.pmwr_pc_var_array, ex_pmwr_pc_var, g.unordered_ref.pmwr_pc_var, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164(o, x) {
@@ -22371,7 +22367,7 @@ function ex_pmwr_pc_var_164(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12(o, e, x) {
@@ -22415,7 +22411,7 @@ function ex_pmwr_pc_var_164_12(o, e, x) {
         e = ex_s_offset(o + 12, e, ex_pmwr_pc_var_164_12_12t24, x.section_12, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t1(o, x) {
@@ -22424,7 +22420,7 @@ function ex_pmwr_pc_var_164_12_12t1(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_var_164_12_12t1_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t1_00(o, x) {
@@ -22434,7 +22430,7 @@ function ex_pmwr_pc_var_164_12_12t1_00(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_var_164_12_12t1_00_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t1_00_00(o, x) {
@@ -22442,7 +22438,7 @@ function ex_pmwr_pc_var_164_12_12t1_00_00(o, x) {
     su32(o + 4, x.u32_04)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2(o, x) {
@@ -22471,7 +22467,7 @@ function ex_pmwr_pc_var_164_12_12t2(o, x) {
         e = ex_s_offset(o + 4, e, ex_pmwr_pc_var_164_12_12t2_04t16, x.section_04, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t1(o, x) {
@@ -22486,7 +22482,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t1(o, x) {
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_var_164_12_12t2_04t1_16, x.section_16, 'down');
     e = ex_s_offset(o + 20, e, ex_pmwr_pc_var_164_12_12t2_04t1_16, x.section_20, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t1_12(o, x) {
@@ -22495,7 +22491,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t1_12(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t1_16(o, x) {
@@ -22515,7 +22511,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t1_16(o, x) {
         e = ex_ml(x.section_00, g.pmwr_pc_world_20_12t11_array, ex_pmwr_pc_world_20_12t11, g.unordered_ref.pmwr_pc_world_20_12t11, o + 0, e, 'down', true);
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t4(o, x) {
@@ -22527,7 +22523,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t4(o, x) {
 
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_var_164_12_12t2_04t4_16, x.section_16, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t4_16(o, x) {
@@ -22563,7 +22559,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t4_16(o, x) {
         break
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t7(o, x) {
@@ -22571,7 +22567,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t7(o, x) {
     su8(o + 3, x.u8_03)
     su32(o + 12, x.u32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t8(o, x) {
@@ -22580,7 +22576,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t8(o, x) {
 
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_var_164_12_12t2_04t8_16, x.section_16, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t8_16(o, x) {
@@ -22588,7 +22584,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t8_16(o, x) {
     su32(o + 4, x.u32_04)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t2_04t16(o, x) {
@@ -22598,7 +22594,7 @@ function ex_pmwr_pc_var_164_12_12t2_04t16(o, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_flag_24, g.pmwr_pc_flag_array, ex_pmwr_pc_flag, g.unordered_ref.pmwr_pc_flag, o + 24, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t5(o, x) {
@@ -22607,7 +22603,7 @@ function ex_pmwr_pc_var_164_12_12t5(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_var_164_12_12t5_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t5_04(o, x) {
@@ -22616,14 +22612,14 @@ function ex_pmwr_pc_var_164_12_12t5_04(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_var_164_12_12t5_04_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t5_04_08(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t6(o, x) {
@@ -22638,7 +22634,7 @@ function ex_pmwr_pc_var_164_12_12t6(o, x) {
         e = ex_s_offset(o + 0, e, ex_pmwr_pc_var_164_12_12t6_00t2, x.section_00, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t6_00t1(o, x) {
@@ -22648,13 +22644,13 @@ function ex_pmwr_pc_var_164_12_12t6_00t1(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_interface_00, g.pmwr_pc_interface_array, ex_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface, o + 0, e, 'down');
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_var_164_12_12t6_00t1_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t6_00t1_08(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t6_00t2(o, x) {
@@ -22663,7 +22659,7 @@ function ex_pmwr_pc_var_164_12_12t6_00t2(o, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_interface_04, g.pmwr_pc_interface_array, ex_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface, o + 4, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t7(o, x) {
@@ -22675,7 +22671,7 @@ function ex_pmwr_pc_var_164_12_12t7(o, x) {
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_var_164_12_12t7_00, x.section_00, 'down');
     e = ex_ml(x.unordered_pmwr_pc_object_04, g.pmwr_pc_object_array, ex_pmwr_pc_object, g.unordered_ref.pmwr_pc_object, o + 4, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t7_00(o, x) {
@@ -22683,7 +22679,7 @@ function ex_pmwr_pc_var_164_12_12t7_00(o, x) {
     su32(o + 4, x.u32_04)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t8(o, x) {
@@ -22713,7 +22709,7 @@ function ex_pmwr_pc_var_164_12_12t8(o, x) {
         break;
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t8_00t2(o, x) {
@@ -22724,14 +22720,14 @@ function ex_pmwr_pc_var_164_12_12t8_00t2(o, x) {
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_var_164_12_12t8_00t2_04, x.section_04, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_var_164_12_12t8_00t2_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t8_00t2_04(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t8_00t2_12(o, x) {
@@ -22740,7 +22736,7 @@ function ex_pmwr_pc_var_164_12_12t8_00t2_12(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t8_04t3(o, x) {
@@ -22749,13 +22745,13 @@ function ex_pmwr_pc_var_164_12_12t8_04t3(o, x) {
 
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_var_164_12_12t8_04t3_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t8_04t3_12(o, x) {
     let e = o + divisible(32, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t14(o, x) {
@@ -22768,7 +22764,7 @@ function ex_pmwr_pc_var_164_12_12t14(o, x) {
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_var_164_12_12t14_00, x.section_00, 'down');
     e = ex_ml(x.unordered_pmwr_pc_world_20_12t4_08, g.pmwr_pc_world_20_12t4_array, ex_pmwr_pc_world_20_12t4, g.unordered_ref.pmwr_pc_world_20_12t4, o + 8, e, 'down', true);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t14_00(o, x) {
@@ -22783,7 +22779,7 @@ function ex_pmwr_pc_var_164_12_12t14_00(o, x) {
         su32(o + 0, x.section_00)
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t15(o, x) {
@@ -22791,7 +22787,7 @@ function ex_pmwr_pc_var_164_12_12t15(o, x) {
     su32(o + 0, x.u32_00)
     //?
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t16(o, x) {
@@ -22800,7 +22796,7 @@ function ex_pmwr_pc_var_164_12_12t16(o, x) {
 
     e = ex_ml(x.unordered_pmwr_pc_var_00, g.pmwr_pc_var_array, ex_pmwr_pc_var, g.unordered_ref.pmwr_pc_var, o + 0, e, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t24(o, x) {
@@ -22809,14 +22805,14 @@ function ex_pmwr_pc_var_164_12_12t24(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_unknown_00_00, g.pmwr_pc_unknown_00_array, ex_pmwr_pc_unknown_00, g.unordered_ref.pmwr_pc_unknown_00, o + 0, e, 'down');
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_var_164_12_12t24_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_12_12t24_04(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20(o, e, x) {
@@ -22830,7 +22826,7 @@ function ex_pmwr_pc_var_164_20(o, e, x) {
 
     // e = ex_s_offset(o + 4, e, ex_pmwr_pc_var_164_20_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04(o, x, v) {
@@ -22878,13 +22874,13 @@ function ex_pmwr_pc_var_164_20_04(o, x, v) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1604(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1608(o, x) {
@@ -22894,7 +22890,7 @@ function ex_pmwr_pc_var_164_20_04_12t1608(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_interface_04, g.pmwr_pc_interface_array, ex_pmwr_pc_interface, g.unordered_ref.pmwr_pc_interface, o + 4, e, 'down');
     e = ex_ml(x.unordered_pmwr_pc_world_20_12t1_08, g.pmwr_pc_world_20_12t1_array, ex_pmwr_pc_world_20_12t1, g.unordered_ref.pmwr_pc_world_20_12t1, o + 8, e, 'down', true);
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1618(o, x) {
@@ -22925,7 +22921,7 @@ function ex_pmwr_pc_var_164_20_04_12t1618(o, x) {
         break;
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1618_00t1(o, x) {
@@ -22934,7 +22930,7 @@ function ex_pmwr_pc_var_164_20_04_12t1618_00t1(o, x) {
 
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_var_164_20_04_12t1618_00t1_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1618_00t1_12(o, x) {
@@ -22942,7 +22938,7 @@ function ex_pmwr_pc_var_164_20_04_12t1618_00t1_12(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1620(o, x) {
@@ -22953,7 +22949,7 @@ function ex_pmwr_pc_var_164_20_04_12t1620(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_world_20_12t8_08, g.pmwr_pc_world_20_12t8_array, ex_pmwr_pc_world_20_12t8, g.unordered_ref.pmwr_pc_world_20_12t8, o + 8, e, 'down', true);
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_var_164_20_04_12t1620_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1620_00(o, x) {
@@ -22961,7 +22957,7 @@ function ex_pmwr_pc_var_164_20_04_12t1620_00(o, x) {
     su32(o + 4, x.u32_04)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1636(o, x) {
@@ -22972,7 +22968,7 @@ function ex_pmwr_pc_var_164_20_04_12t1636(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_var_164_20_04_12t1636_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_12t1636_00(o, x) {
@@ -22981,7 +22977,7 @@ function ex_pmwr_pc_var_164_20_04_12t1636_00(o, x) {
     su32(o + 4, x.u32_04)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_20(o, e, x) {
@@ -22999,7 +22995,7 @@ function ex_pmwr_pc_var_164_20_04_20(o, e, x) {
         e = ex_s_offset(o + 8, e, ex_pmwr_pc_var_164_20_04_20_08t6, x.section_08, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_20_08t5(o, x) {
@@ -23030,7 +23026,7 @@ function ex_pmwr_pc_var_164_20_04_20_08t5(o, x) {
         break;
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_20_08t5_00t1(o, x) {
@@ -23041,7 +23037,7 @@ function ex_pmwr_pc_var_164_20_04_20_08t5_00t1(o, x) {
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_var_164_20_04_20_08t5_00t1_04, x.section_04, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_var_164_20_04_20_08t5_00t1_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_20_08t5_00t1_04(o, x) {
@@ -23049,7 +23045,7 @@ function ex_pmwr_pc_var_164_20_04_20_08t5_00t1_04(o, x) {
     su32(o + 4, x.u32_04)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_20_08t5_00t1_12(o, x) {
@@ -23058,7 +23054,7 @@ function ex_pmwr_pc_var_164_20_04_20_08t5_00t1_12(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_20_08t6(o, x) {
@@ -23068,14 +23064,14 @@ function ex_pmwr_pc_var_164_20_04_20_08t6(o, x) {
     e = ex_ml(x.unordered_pmwr_pc_world_20_12t8_08, g.pmwr_pc_world_20_12t8_array, ex_pmwr_pc_world_20_12t8, g.unordered_ref.pmwr_pc_world_20_12t8, o + 8, e, 'down', true);
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_var_164_20_04_20_08t6_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_164_20_04_20_08t6_00(o, x) {
     let e = o + divisible(16, g.divisibility)
     su8(o + 8, x.u8_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_var_168(o, x) {
@@ -23093,7 +23089,7 @@ function ex_pmwr_pc_var_168(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -23155,7 +23151,7 @@ function ex_pmwr_pc_world_settings(o, x) {
     e = ex_s_offset(o + 192, e, ex_pmwr_pc_world_settings_192, x.section_192, 'down');
     e = ex_s_offset(o + 196, e, ex_pmwr_pc_world_settings_196, x.section_196, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_04(o, e, x) {
@@ -23173,7 +23169,7 @@ function ex_pmwr_pc_world_settings_04(o, e, x) {
     sf32(o + 48, x.f32_48)
     sf32(o + 52, x.f32_52)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_12(o, x) {
@@ -23182,7 +23178,7 @@ function ex_pmwr_pc_world_settings_12(o, x) {
     sf32(o + 4, x.f32_04)
     su32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_36(o, x) {
@@ -23192,7 +23188,7 @@ function ex_pmwr_pc_world_settings_36(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_48(o, x) {
@@ -23202,7 +23198,7 @@ function ex_pmwr_pc_world_settings_48(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_world_settings_48_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_48_00(o, x) {
@@ -23211,7 +23207,7 @@ function ex_pmwr_pc_world_settings_48_00(o, x) {
     su8(o + 1, x.u8_01)
     su8(o + 2, x.u8_02)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_52(o, x) {
@@ -23220,7 +23216,7 @@ function ex_pmwr_pc_world_settings_52(o, x) {
     su8(o + 1, x.u8_01)
     su8(o + 2, x.u8_02)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_56(o, x) {
@@ -23230,7 +23226,7 @@ function ex_pmwr_pc_world_settings_56(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_60(o, x) {
@@ -23240,7 +23236,7 @@ function ex_pmwr_pc_world_settings_60(o, x) {
     su8(o + 2, x.u8_02)
     su8(o + 3, x.u8_03)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_64(o, x) {
@@ -23249,7 +23245,7 @@ function ex_pmwr_pc_world_settings_64(o, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_68(o, x) {
@@ -23259,14 +23255,14 @@ function ex_pmwr_pc_world_settings_68(o, x) {
     sf32(o + 8, x.f32_08)
     sf32(o + 12, x.f32_12)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_72(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_192(o, x) {
@@ -23295,7 +23291,7 @@ function ex_pmwr_pc_world_settings_192(o, x) {
         ;
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_192_40(o, e, x) {
@@ -23303,7 +23299,7 @@ function ex_pmwr_pc_world_settings_192_40(o, e, x) {
 
     e = ex_string(o + 0, e, x.section_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_196(o, x) {
@@ -23315,7 +23311,7 @@ function ex_pmwr_pc_world_settings_196(o, x) {
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_world_settings_196_04, x.section_12, 'down');
     e = ex_s_offset(o + 16, e, ex_pmwr_pc_world_settings_196_04, x.section_16, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_196_04(o, x) {
@@ -23346,7 +23342,7 @@ function ex_pmwr_pc_world_settings_196_04(o, x) {
         }
         ;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_world_settings_196_04_04(o, e, x) {
@@ -23354,7 +23350,7 @@ function ex_pmwr_pc_world_settings_196_04_04(o, e, x) {
     sf32(o + 4, x.f32_04)
     sf32(o + 8, x.f32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -23366,7 +23362,7 @@ function ex_pmwr_pc_wtf(o, x) {
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_wtf_08, x.section_08, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_wtf_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_04(o, x) {
@@ -23374,7 +23370,7 @@ function ex_pmwr_pc_wtf_04(o, x) {
     sf32(o + 20, x.f32_20)
     sf32(o + 24, x.f32_24)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08(o, x) {
@@ -23390,7 +23386,7 @@ function ex_pmwr_pc_wtf_08(o, x) {
         e = ex_s_offset(o + 8, e, ex_pmwr_pc_wtf_08_08t3, x.section_08, 'up');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_00(o, x) {
@@ -23401,7 +23397,7 @@ function ex_pmwr_pc_wtf_08_00(o, x) {
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_wtf_08_00_04, x.section_04, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_wtf_08_00_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_00_04(o, x) {
@@ -23409,14 +23405,14 @@ function ex_pmwr_pc_wtf_08_00_04(o, x) {
     su32(o + 0, x.u32_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_00_12(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t1(o, x) {
@@ -23426,7 +23422,7 @@ function ex_pmwr_pc_wtf_08_08t1(o, x) {
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_wtf_08_08t1_00, x.section_00, 'down');
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_wtf_08_08t1_08, x.section_08, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t1_00(o, x) {
@@ -23437,7 +23433,7 @@ function ex_pmwr_pc_wtf_08_08t1_00(o, x) {
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_wtf_08_08t1_00_04, x.section_04, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_wtf_08_08t1_00_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t1_00_04(o, x) {
@@ -23445,14 +23441,14 @@ function ex_pmwr_pc_wtf_08_08t1_00_04(o, x) {
     su32(o + 0, x.u32_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t1_00_12(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t1_08(o, x) {
@@ -23473,14 +23469,14 @@ function ex_pmwr_pc_wtf_08_08t1_08(o, x) {
         break
     }
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t1_08_08(o, x) {
     let e = o + divisible(32, g.divisibility)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t1_08_20t0(o, x) {
@@ -23493,7 +23489,7 @@ function ex_pmwr_pc_wtf_08_08t1_08_20t0(o, x) {
     sf32(o + 24, x.f32_24)
     sf32(o + 32, x.f32_32)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3(o, x) {
@@ -23509,7 +23505,7 @@ function ex_pmwr_pc_wtf_08_08t3(o, x) {
     e = ex_s_offset(o + 24, e, ex_pmwr_pc_wtf_08_08t3_24, x.section_24, 'down');
     e = ex_s_offset(o + 32, e, ex_pmwr_pc_wtf_08_08t3_32, x.section_32, 'up');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_00(o, x) {
@@ -23521,7 +23517,7 @@ function ex_pmwr_pc_wtf_08_08t3_00(o, x) {
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_wtf_08_08t3_00_04, x.section_04, 'down');
     e = ex_s_offset(o + 12, e, ex_pmwr_pc_wtf_08_08t3_00_12, x.section_12, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_00_04(o, x) {
@@ -23530,7 +23526,7 @@ function ex_pmwr_pc_wtf_08_08t3_00_04(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_00_12(o, x) {
@@ -23538,7 +23534,7 @@ function ex_pmwr_pc_wtf_08_08t3_00_12(o, x) {
     su32(o + 0, x.u32_00)
     su32(o + 4, x.u32_04)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_08(o, x) {
@@ -23548,14 +23544,14 @@ function ex_pmwr_pc_wtf_08_08t3_08(o, x) {
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_wtf_08_08t3_08_08, x.section_08, 'down');
     e = ex_s_offset(o + 20, e, ex_pmwr_pc_wtf_08_08t3_08_20, x.section_20, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_08_08(o, x) {
     let e = o + divisible(32, g.divisibility)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_08_20(o, x) {
@@ -23568,7 +23564,7 @@ function ex_pmwr_pc_wtf_08_08t3_08_20(o, x) {
     sf32(o + 24, x.f32_24)
     sf32(o + 32, x.f32_32)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_12(o, x) {
@@ -23577,14 +23573,14 @@ function ex_pmwr_pc_wtf_08_08t3_12(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_wtf_08_08t3_12_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_12_04(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_20(o, x) {
@@ -23597,14 +23593,14 @@ function ex_pmwr_pc_wtf_08_08t3_20(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_wtf_08_08t3_20_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_20_08(o, x) {
     let e = o + divisible(32, g.divisibility)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_24(o, x) {
@@ -23618,14 +23614,14 @@ function ex_pmwr_pc_wtf_08_08t3_24(o, x) {
         e = ex_s_offset(o + 12, e, ex_pmwr_pc_wtf_08_08t3_24_12, x.section_12, 'down');
         break;
     }
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_24_04(o, x) {
     let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_00)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_24_12(o, x) {
@@ -23634,7 +23630,7 @@ function ex_pmwr_pc_wtf_08_08t3_24_12(o, x) {
     su32(o + 4, x.u32_04)
     su32(o + 8, x.u32_08)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_32(o, x) {
@@ -23645,14 +23641,14 @@ function ex_pmwr_pc_wtf_08_08t3_32(o, x) {
 
     e = ex_s_offset(o + 8, e, ex_pmwr_pc_wtf_08_08t3_32_08, x.section_08, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_08_08t3_32_08(o, x) {
     let e = o + divisible(32, g.divisibility)
     sf32(o + 20, x.f32_20)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_12(o, x) {
@@ -23660,7 +23656,7 @@ function ex_pmwr_pc_wtf_12(o, x) {
 
     e = ex_s_offset(o + 0, e, ex_pmwr_pc_wtf_12_00, x.section_00, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_12_00(o, x) {
@@ -23669,12 +23665,12 @@ function ex_pmwr_pc_wtf_12_00(o, x) {
 
     e = ex_s_offset(o + 4, e, ex_pmwr_pc_wtf_12_00_04, x.section_04, 'down');
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_pmwr_pc_wtf_12_00_04(o, x) {
     let e = o + divisible(16, g.divisibility)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }

@@ -158,6 +158,7 @@ add import/export tables for all sections
         broken:
         hwvx_proto_triggers_and_actions_20_4t3
         models not importing ?
+        im_hwvx_proto_triggers_and_actions_20_4t15 [0]t1
     hwvx_gc
     hwvx_pc
     hwvx_ps2
@@ -268,3 +269,4 @@ hwvx_proto
 
 mmvcl
     find lost offsets
+    research section order

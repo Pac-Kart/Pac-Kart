@@ -89,7 +89,7 @@ function im_pmwr_xbox_directory(o, i, x, global) {
         section_datapack: [],
     });
 
-    u32(o + 16) ? im_pmwr_xbox_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack) : 0;
+    u32(o + 16) && im_pmwr_xbox_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
 
     return x[i].id
     // 24 bytes;
@@ -222,7 +222,7 @@ function ex_pmwr_xbox_file_header(o, x) {
 
     console.pk_log("saved in " + time_array)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
@@ -248,6 +248,6 @@ function ex_pmwr_xbox_directory(o, e, x, global) {
     dynamic_buffer = directory_buffer
     su32(o + 16, datapack_buffer.byteLength + index_patch_buffer.byteLength + ordered_buffer.byteLength + offset_patch_buffer.byteLength)
 
-    g.debug ? ex_debug(o, x.sec_id) : 0;
+    g.debug && ex_debug(o, x.sec_id);
     return e
 }

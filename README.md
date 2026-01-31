@@ -65,3 +65,4 @@ Current Progress
 ============
 ### Working on making these formats Traversable
 * Hot Wheels Velocity X (Proto)
+* Hot Wheels Velocity X (PC)
