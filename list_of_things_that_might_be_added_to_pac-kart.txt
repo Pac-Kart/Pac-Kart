@@ -207,10 +207,11 @@ bmg
     also what is patch list 3
 
 pmwr
+    non pmwr pc formats not fully documented
     sections dont have pmwr listed
 
-pmwr_ps2demo
-    pmwr_ps2demo or pmwr_ps2_demo or pmwr_demo ?
+pmwr_demo
+    should be pmwr_demo
     probably need to rename some sections
 
 hwvx
@@ -231,9 +232,6 @@ ideas for pac-kart filetesting:
 
 reserch other save files?
 
-have way to format full doc for the import tables
-    so dont have to slice table
-
 bcc
     does bcc_world actually have a sound at offset 0 or is patch list misaligned
         think its probably misaligned
@@ -241,16 +239,12 @@ bcc
     research audio missing sections
 
 bmg
-    research audio missing sections
     find model length sections calculated
-    find how mcp.xdx9 actualy calculates its datapack offset
 
 pmwr_ps2demo
-    research how world list is layed out
     reorder functions based on docs
 
 pmwr_xdx
-    research how world list is layed out
     research music section
     reorder functions based on docs
 
@@ -258,7 +252,6 @@ pmwr
     current version is just copied from xbox mostly so wrong format
 
 svtrb
-    research how world list is layed out
     reorder functions based on docs
 
 hwvx
