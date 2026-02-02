@@ -38,7 +38,6 @@ Array View
 --------
 ### Formats Not Yet Traversable in Array View:
 * Motor Mayhem: Vehicular Combat League
-* Hot Wheels Velocity X (Proto)
 * Hot Wheels Velocity X (GC)
 * Hot Wheels Velocity X (PS2)
 * Hot Wheels Velocity X (PC)
@@ -54,6 +53,7 @@ Array View
 * Bigfoot: Collision Course (Wii)
 
 ### Formats Traversable in Array View:
+* Hot Wheels Velocity X (Proto)
 * Bee Movie Game (PC)
 * Bee Movie Game (Wii)
 * Bee Movie Game (Demo)
@@ -64,5 +64,4 @@ Array View
 Current Progress
 ============
 ### Working on making these formats Traversable
-* Hot Wheels Velocity X (Proto)
 * Hot Wheels Velocity X (PC)

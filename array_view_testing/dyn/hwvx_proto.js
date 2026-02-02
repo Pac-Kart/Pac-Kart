@@ -15,11 +15,26 @@ function get_hwvx_proto_sec_id(string) {
     case 'PcI:':
         return "hwvx_proto_geo_datapack"
         break
-    case 'Fgpx':
-        return "hwvx_proto_sound_offset_list"
+    case 'ipll':
+        return "patch_list"
         break
-    case '4IJg':
-        return "hwvx_proto_audio_list"
+    case 'audi':
+        return "hwvx_proto_audio"
+        break
+    case 'ad00':
+        return "hwvx_proto_audio_00"
+        break
+    case 'imps':
+        return "hwvx_proto_impulse_tracker"
+        break
+    case 'ad2o':
+        return "hwvx_proto_audio_data_2"
+        break
+    case 'ordr':
+        return "hwvx_proto_ordered"
+        break
+    case '4unr':
+        return "hwvx_proto_unordered"
         break
     case 'uZNx':
         return "hwvx_proto_basic"
@@ -271,7 +286,7 @@ function get_hwvx_proto_sec_id(string) {
         return "hwvx_proto_triggers_and_actions_24_4"
         break
     case 'NSr;':
-        return "hwvx_proto_model"
+        return "hwvx_proto_models"
         break
     case 'U>9;':
         return "hwvx_proto_model_8"
@@ -1217,6 +1232,7 @@ function im_hwvx_proto_directory(o, i, x) {
         hwvx_proto_sound_controls_array: [],
         hwvx_proto_sound_section_array: [],
         hwvx_proto_texture_anims_0_array: [],
+        hwvx_proto_models_array: [],
     }
 
     globalThis.log_array = {
@@ -1270,19 +1286,20 @@ function im_hwvx_proto_datapack(o, i, x) {
         end_datapack += (u32(o + 8) * 4 + u32(o + 4))
     }
 
-    // if (u32(o + 8)) {
-    //     let offset_audio_list = o + 120
-    //     let offset_after_audio = offset_audio_list + (u32(o + 8) * 4)
-    //     for (let ii = 0; ii < u32(o + 8); ii++) {
-    //         im_hwvx_proto_sound_offset_list(offset_audio_list + (ii *4), ii, x[i].section_audio, offset_after_audio)
-    //     }
-    // }
-
     let offset_after_datapack = o + 120
     let offset_start_hwvx_proto_audio_list = offset_after_datapack + (u32(o + 8) * 4)
     let offset_start_impulse_tracker = offset_start_hwvx_proto_audio_list + u32(o + 72)
-    let offset_start_hwvx_proto_audio_data_2 = offset_start_impulse_tracker + u32(o + 76)
+    let offset_start_hwvx_proto_audio_data_2 = offset_start_hwvx_proto_audio_list + u32(o + 76)
+
     let offset_index_patch = offset_start_hwvx_proto_audio_list + u32(o + 4)
+
+    let offset_end_impulse_tracker;
+    let offset_end_hwvx_proto_audio_data_2 = offset_index_patch
+    if (u32(o + 76)) {
+        offset_end_impulse_tracker = offset_start_hwvx_proto_audio_list + u32(o + 76)
+    }else{
+        offset_end_impulse_tracker = offset_index_patch
+    }
 
     let patchlistoffset = end_datapack
     g.m = patchlistoffset + (u32(o + 12) * 4) + ((u32(o + 16) + u32(o + 28) + u32(o + 52) + u32(o + 56)) * 8);
@@ -1290,8 +1307,6 @@ function im_hwvx_proto_datapack(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "E@3Z",
-        section_0: [],
-        section_4: [],
         u32_8: u32(o + 8),
         //amount?
         u32_12: u32(o + 12),
@@ -1327,12 +1342,12 @@ function im_hwvx_proto_datapack(o, i, x) {
         ordered: [],
         patch_list: [],
         section_audio: [],
-        hwvx_proto_audio_index_patch_padding: [],
+        hwvx_proto_audio_index_patch_padding: 0,
     });
 
     let padding_test = im_hwvx_proto_audio(offset_after_datapack, x[i].section_audio, u32(o + 8))
 
-    x[i].hwvx_proto_audio_index_patch_padding = offset_index_patch - padding_test
+    // x[i].hwvx_proto_audio_index_patch_padding = offset_index_patch - padding_test
 
     g.datapack_offset = o
     g.datapack_ref = x
@@ -1341,34 +1356,11 @@ function im_hwvx_proto_datapack(o, i, x) {
 
     im_hwvx_proto_ordered(g.m, x[i].ordered)
 
-    // let end_datapack = o + 120
+    u32(o + 72) && im_hwvx_proto_impulse_tracker(offset_start_impulse_tracker, offset_end_impulse_tracker, x[i].section_72);
+    u32(o + 76) && im_hwvx_proto_audio_data_2(offset_start_hwvx_proto_audio_data_2,offset_end_hwvx_proto_audio_data_2, x[i].section_76);
 
-    // if (u32(o + 8) || u32(o + 4)) {
-    //     end_datapack += (u32(o + 8) * 4 + u32(o + 4))
-    // }
-
-    // if (u32(o + 8)) {
-    //     let offset_audio_list = o + 120
-    //     let offset_after_audio = offset_audio_list + (u32(o + 8) * 4)
-    //     for (let i = 0; i < u32(o + 8); i++) {
-    //         im_hwvx_proto_sound_offset_list(u32(offset_audio_list + (i * 4)) + offset_after_audio, (i+1) == u32(o + 8),offset_after_audio,end_datapack,o)
-    //     }
-    // }
-
-    // let patchlistoffset = end_datapack
-    // g.m = patchlistoffset + (u32(o + 12) * 4) + ((u32(o + 16) + u32(o + 28) + u32(o + 52) + u32(o + 56)) * 8);
-
-    // x[i].patch_list = convert_arraybuffer_base64(buffer.slice(patchlistoffset, g.m))
-    // x[i].ordered = convert_arraybuffer_base64(buffer.slice(g.m, g.m + u32(o + 0)))
-
-    // u32(o + 68) && im_hwvx_proto_datapack_68(u32(o + 68) + g.m, x[i].section_68);
-    // offset? 
-    // u32(o + 72) && im_impulse_tracker(u32(o + 72) + g.m, x[i].section_72);
-    // offset? 
-    // u32(o + 76) && im_hwvx_proto_audio_data_2(u32(o + 76) + g.m, x[i].section_76);
-    // offset?
     for (let ii = 0; ii < u32(o + 20); ii++) {
-        im_hwvx_proto_texture(+u32(o + 24) + (ii * 16) + g.m, ii, x[i].section_24)
+        im_hwvx_proto_texture(u32(o + 24) + (ii * 16) + g.m, ii, x[i].section_24)
     }
 
     for (let ii = 0; ii < u32(o + 40); ii++) {
@@ -1390,6 +1382,8 @@ function im_hwvx_proto_datapack(o, i, x) {
 }
 
 function im_hwvx_proto_geo_datapack(o, i, x) {
+    let end_datapack = o + 84
+    let patchlistoffset = end_datapack
     x.push({
         id: gen_id(),
         sec_id: "PcI:",
@@ -1404,41 +1398,67 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
         //amount?
         u32_40: u32(o + 40),
         //amount?
-        section_44: im_string(u32(o + 55), 0, false),
-        section_56: im_string(u32(o + 56), 0, false),
+        section_44: im_string(o + 44 - g.m, o + 55 - g.m),
+         u32_56: u32(o + 56),
+       patch_list: [],
+        ordered: [],
+        models: [],
     });
+
+    let list1 = u32(o + 8) * 8
+    let list2 = u32(o + 40) * 8
+    let list3 = u32(o + 28) * 8
+    let list4 = u32(o + 4) * 4
+    let padding = u32(o + 36)
+
+    let indexpatchlistlength = list1 + list2 + list3 + list4 + padding
+
+    if (g.console === 'gamecube') {
+        indexpatchlistlength = divisible(indexpatchlistlength, 16)
+    }
+    g.m = indexpatchlistlength + end_datapack
+
+    g.datapack_offset = o
+    g.datapack_ref = x[0]
+
+    // get_hwvx_proto_get_combined_geo_patch_list(o)
+    // globalThis.old_log_array = structuredClone(log_array)
+
+    im_hwvx_proto_geo_patch_list(o, patchlistoffset, x[i].patch_list)
+
+    im_hwvx_proto_geo_basic(g.m, x[i].ordered, u32(o + 40))
 
     return x[i].id
     // 84 bytes;
 
 }
 
-function im_hwvx_proto_sound_offset_list(o, i, x, e) {
-    x.push({
-        id: gen_id(),
-        sec_id: "Fgpx",
-        section_0: [],
-    });
+// function im_hwvx_proto_sound_offset_list(o, i, x, e) {
+//     x.push({
+//         id: gen_id(),
+//         sec_id: "Fgpx",
+//         section_0: [],
+//     });
 
-    u32(o + 0) && im_hwvx_proto_audio_list(u32(o + 0) + g.m, 0, x[i].section_0);
-    // offset?
-    return x[i].id
-    // 4 bytes;
+//     u32(o + 0) && im_hwvx_proto_audio_list(u32(o + 0) + g.m, 0, x[i].section_0);
+//     // offset?
+//     return x[i].id
+//     // 4 bytes;
 
-}
-function im_hwvx_proto_audio_list(o, i, x) {
-    x.push({
-        id: gen_id(),
-        sec_id: "4IJg",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        u32_8: u32(o + 8),
-        u32_12: u32(o + 12),
-        u16_16: u16(o + 16),
-        u16_18: u16(o + 18),
-    });
+// }
+// function im_hwvx_proto_audio_list(o, i, x) {
+//     x.push({
+//         id: gen_id(),
+//         sec_id: "4IJg",
+//         u32_0: u32(o + 0),
+//         u32_4: u32(o + 4),
+//         u32_8: u32(o + 8),
+//         u32_12: u32(o + 12),
+//         u16_16: u16(o + 16),
+//         u16_18: u16(o + 18),
+//     });
 
-}
+// }
 
 function im_hwvx_proto_audio(o, x, a) {
 
@@ -1475,6 +1495,24 @@ function im_hwvx_proto_audio(o, x, a) {
         return start_offset + u32(o + 4)
 
     }
+
+}
+
+function im_hwvx_proto_impulse_tracker(o,e,x) {
+    x.push({
+        id: gen_id(),
+        sec_id: "imps",
+        buffer: convert_arraybuffer_base64(buffer.slice(o, e)),
+    });
+
+}
+
+function im_hwvx_proto_audio_data_2(o,e,x) {
+    x.push({
+        id: gen_id(),
+        sec_id: "ad2o",
+        buffer: convert_arraybuffer_base64(buffer.slice(o, e)),
+    });
 
 }
 
@@ -1515,23 +1553,52 @@ function im_hwvx_proto_get_combined_patch_list(o, patch_offset, x) {
         return a - b;
     });
 }
+
+function im_hwvx_proto_geo_patch_list(o, patch_offset, x) {
+    let texture_offset = patch_offset
+
+    patch_offset += u32(g.datapack_offset + 8) * 8
+    let texture_animation_offset = patch_offset
+
+    patch_offset += u32(g.datapack_offset + 28) * 8
+    let model_offset = patch_offset
+
+    patch_offset += u32(g.datapack_offset + 40) * 8
+    let general_offset = patch_offset
+
+    patch_offset += u32(g.datapack_offset + 4) * 4
+    let padding = patch_offset
+
+    x.push({
+        sec_id: "ipll",
+        texture: im_patch_list(texture_offset, u32(g.datapack_offset + 8), 't'),
+        texture_animation: im_patch_list(texture_animation_offset, u32(g.datapack_offset + 28), 'a'),
+        model: im_patch_list(model_offset, u32(g.datapack_offset + 40), 'm'),
+    })
+
+    g.texture_patch_ref = x[0].texture
+    g.animation_patch_ref = x[0].texture_animation
+    g.sound_patch_ref = x[0].sound
+    g.model_ref = x[0].model
+
+    log_array.p_offset.offset = general_offset
+    for (let i = 0; i < u32(g.datapack_offset + 4); i++) {
+        log_array.p_offset.array.push(u32(general_offset + (i * 4)))
+    }
+
+    log_array.p_offset.array.sort(function(a, b) {
+        return a - b;
+    });
+}
 function im_hwvx_proto_ordered(o, x) {
 
     x.push({
         sec_id: "ordr",
         id: gen_id(),
         hwvx_proto_file_specific_section: [],
-        hwvx_proto_model: [],
-        hwvx_proto_texture_anims: [],
-        hwvx_proto_model_anims_1: [],
-        hwvx_proto_model_anims_2: [],
-        hwvx_proto_texture: [],
-        hwvx_proto_texture_data: [],
-        hwvx_proto_color_table: [],
-        hwvx_proto_share_end: [],
+        hwvx_proto_models: [],
         hwvx_proto_unordered_list: [],
-        hwvx_proto_texture_anims_0: [],
-
+        hwvx_proto_share_end_section: [],
     })
 
     im_hwvx_proto_unordered(o, x[0].hwvx_proto_unordered_list)
@@ -1539,17 +1606,11 @@ function im_hwvx_proto_ordered(o, x) {
 
     switch (g.file_dir_type) {
     case "car":
-        im_hwvx_proto_basic(o, 0, x[0].hwvx_proto_file_specific_section)
-        break
-
     case "interface":
-        im_hwvx_proto_basic(o, 0, x[0].hwvx_proto_file_specific_section)
-        break
-
     case "item":
-        im_hwvx_proto_basic(o, 0, x[0].hwvx_proto_file_specific_section)
-        break
     case "link":
+    case "audio":
+    case "music":
         im_hwvx_proto_basic(o, 0, x[0].hwvx_proto_file_specific_section)
         break
     case "world":
@@ -1558,22 +1619,16 @@ function im_hwvx_proto_ordered(o, x) {
     case "colliders":
         im_hwvx_proto_collision(o, x[0].hwvx_proto_file_specific_section)
         break
-        // case "geometry":
-        //     im_hwvx_proto_geo_basic(o, x[0].hwvx_proto_file_specific_section)
-        //     break
     case "share":
         for (let i = 0; i < u32(g.datapack_offset + 56); i++) {
-            im_hwvx_proto_share(o + +(i * 4), i, x[0].hwvx_proto_file_specific_section)
+            im_hwvx_proto_share(o + (i * 4), i, x[0].hwvx_proto_file_specific_section)
+        }
+        let get_end = (u32(g.datapack_offset + 40) * 1024) + u32(g.datapack_offset + 44)
+        if (u32(g.datapack_offset + 60) || u32(g.datapack_offset) === get_end) {// no shared section
+        } else {
+            im_hwvx_proto_share_end(get_end + g.m, x[0].hwvx_proto_share_end_section)
         }
         break
-    case "audio":
-        im_hwvx_proto_basic(o, 0, x[0].hwvx_proto_file_specific_section)
-        break
-
-    case "music":
-        im_hwvx_proto_basic(o, 0, x[0].hwvx_proto_file_specific_section)
-        break
-
     default:
         console.pk_log('file type is not set')
     }
@@ -1597,12 +1652,9 @@ function im_hwvx_proto_unordered(o, x) {
         hwvx_proto_world_120_0: [],
         hwvx_proto_collision_32_48: [],
         hwvx_proto_collision_link: [],
-        hwvx_proto_triggers_and_actions: [],
-        hwvx_proto_texture_anims: [],
         hwvx_proto_model_anims_1: [],
         hwvx_proto_model_anims_2: [],
         hwvx_proto_texture: [],
-        hwvx_proto_world_color_section: [],
         hwvx_proto_world_text_link: [],
         hwvx_proto_world_settings: [],
         hwvx_proto_world_small_section: [],
@@ -1631,8 +1683,6 @@ function im_hwvx_proto_unordered(o, x) {
         hwvx_proto_link: [],
         hwvx_proto_sound_controls: [],
         hwvx_proto_sound_section: [],
-        hwvx_proto_texture_anims_0: [],
-
     })
     g.unordered_ref = x[0]
 
@@ -1690,13 +1740,14 @@ function im_hwvx_proto_geo_basic(o, x, geo_model_amt) {
     x.push({
         sec_id: "rwx_",
         section_0: [],
-        unordered_hwvx_proto_geo_list_4: 0,
+        section_4: [],
     });
 
-    for (let i = 0; i < u32(o + geo_model_amt); i++) {
-        im_hwvx_proto_geo_basic_0(u32(o + 0) + (i * 12) + g.m, i, x[0].section_0);
+    for (let i = 0; i < geo_model_amt; i++) {
+        im_hwvx_proto_geo_basic_0(u32(o + 0) + (i * 12) + g.m, i, x[0].section_0, u32(o + 0) + g.m);
     }
-    x[0].unordered_hwvx_proto_geo_list_4 = in_ml(u32(o + 4), g.hwvx_proto_geo_list_array, im_hwvx_proto_geo_list, g.unordered_ref.hwvx_proto_geo_list);
+
+    u32(o + 4) && im_hwvx_proto_geo_list(u32(o + 4) + g.m, x[0].section_4);
 
     // 8 bytes;
 
@@ -1706,17 +1757,20 @@ function im_hwvx_proto_geo_basic_0(o, i, x) {
         id: gen_id(),
         sec_id: "nMcM",
         u32_0: u32(o + 0),
-        model_8: im_patch(g.model_ref, o + 8),
+        model_8: [],
     });
+
+    x[i].model_8 = in_models(o + 8, g.hwvx_proto_models_array, im_hwvx_proto_models, g.datapack_ref.models);
 
 }
 function im_hwvx_proto_share(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "FNM8",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: [],
     });
-
+    x[i].model_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
+    
 }
 function im_hwvx_proto_world(o, x) {
     x.push({
@@ -1810,6 +1864,7 @@ function im_hwvx_proto_world(o, x) {
     }
     u32(o + 120) && im_hwvx_proto_world_120(u32(o + 120) + g.m, x[0].section_120);
     // x[0].unordered_hwvx_proto_world_120_120 = in_ml(u32(o + ), g.hwvx_proto_world_120_array, , g.unordered_ref.hwvx_proto_world_120);
+
     x[0].unordered_hwvx_proto_world_settings_156 = in_ml(u32(o + 156), g.hwvx_proto_world_settings_array, im_hwvx_proto_world_settings, g.unordered_ref.hwvx_proto_world_settings);
 
     // 160 bytes;
@@ -1878,13 +1933,13 @@ function im_hwvx_proto_world_20(o, i, x) {
 function im_hwvx_proto_world_20_12(o, x) {
     x.push({
         sec_id: "taFF",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: [],
         u8_5: u8(o + 5),
         u8_7: u8(o + 7),
         f32_8: f32(o + 8),
         unordered_hwvx_proto_car_link_16: 0,
     });
-
+    x[0].model_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
     x[0].unordered_hwvx_proto_car_link_16 = in_ml(u32(o + 16), g.hwvx_proto_car_link_array, im_hwvx_proto_car_link, g.unordered_ref.hwvx_proto_car_link);
 
     // 32 bytes;
@@ -2915,7 +2970,7 @@ function im_hwvx_proto_collision_link(o, i, x) {
 
     x[0].unordered_hwvx_proto_collision_settings_0 = in_ml(u32(o + 0), g.hwvx_proto_collision_settings_array, im_hwvx_proto_collision_settings, g.unordered_ref.hwvx_proto_collision_settings);
     x[0].unordered_hwvx_proto_collision_settings_4 = in_ml(u32(o + 4), g.hwvx_proto_collision_settings_array, im_hwvx_proto_collision_settings, g.unordered_ref.hwvx_proto_collision_settings);
-    // offset? 
+    // offset?
     return x[i].id
     // 16 bytes;
 
@@ -3596,16 +3651,16 @@ function im_hwvx_proto_triggers_and_actions_20_4t3(o, x) {
         section_2: [],
     });
 
-    if (o === 6200256) {
+    if (o === 14381608) {
         console.log('this')
     }
 
     let amt = u32(o + 4)
     let new_o = o + 8
 
-    // for (let i = 0; i < amt; i++) {
-    //     x[0].section_2 = in_ml(u32(new_o + (i * 4)), g.hwvx_proto_world_36_48_8_array, im_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8);
-    // }
+    for (let i = 0; i < amt; i++) {
+        x[0].section_2 = in_ml(u32(new_o + (i * 4)), g.hwvx_proto_world_36_48_16_array, im_hwvx_proto_world_36_48_16, g.unordered_ref.hwvx_proto_world_36_48_16);
+    }
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t4(o, x) {
@@ -3738,22 +3793,32 @@ function im_hwvx_proto_triggers_and_actions_20_4t15(o, i, x) {
         u32_0: u32(o + 0),
         //check this
         section_4: [],
+        section_4_type: [],
     });
 
-    switch (u32(o + 0)) {
-    case 1:
-        // x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_12_array, im_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12);
-        break;
-    case 2:
-        x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_36_48_8_array, im_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8);
-        break;
-    case 3:
-        x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_36_48_24_array, im_hwvx_proto_world_36_48_24, g.unordered_ref.hwvx_proto_world_36_48_24);
-        break;
-    case 6:
-        x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_120_0_array, im_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0);
-        break;
-    }
+    let type_object = hwvx_proto_return_if_value_in_multilink(u32(o + 4) + g.m)
+    x[i].section_4 = type_object.section
+    x[i].section_4_type = type_object.type
+
+    // if (o === 14368084) {
+    //     console.log("?")
+    // }
+
+    // switch (u32(o + 0)) {
+    // case 1:
+    //     // x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_12_array, im_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12);
+    //     x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_76_array, im_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76);
+    //     break;
+    // case 2:
+    //     x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_36_48_8_array, im_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8);
+    //     break;
+    // case 3:
+    //     x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_36_48_24_array, im_hwvx_proto_world_36_48_24, g.unordered_ref.hwvx_proto_world_36_48_24);
+    //     break;
+    // case 6:
+    //     x[i].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_120_0_array, im_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0);
+    //     break;
+    // }
     // [8] *4 bytes;
 
 }
@@ -3933,8 +3998,9 @@ function im_hwvx_proto_triggers_and_actions_24_4(o, x) {
 
     // 48 bytes;
 }
-function im_hwvx_proto_model(o, x) {
+function im_hwvx_proto_models(o, i, x) {
     x.push({
+        id: gen_id(),
         sec_id: "NSr;",
         u16_0: u16(o + 0),
         u16_2: u16(o + 2),
@@ -3956,14 +4022,15 @@ function im_hwvx_proto_model(o, x) {
 
     globalThis.model_type = u32(o + 4)
 
-    for (let i = 0; i < u16(o + 2); i++) {
-        im_hwvx_proto_model_8(u32(o + 8) + (i * 24) + g.m, i, x[0].section_8);
+    for (let ii = 0; ii < u16(o + 2); ii++) {
+        im_hwvx_proto_model_8(u32(o + 8) + (ii * 24) + g.m, ii, x[i].section_8);
     }
 
-    for (let i = 0; i < u16(o + 2); i++) {
-        im_hwvx_proto_model_12(u32(o + 12) + (i * 4) + g.m, i, x[0].section_12);
+    for (let ii = 0; ii < u16(o + 2); ii++) {
+        im_hwvx_proto_model_12(u32(o + 12) + (ii * 4) + g.m, ii, x[i].section_12);
     }
 
+    return x[i].id
     // 64 bytes;
 
 }
@@ -3981,13 +4048,17 @@ function im_hwvx_proto_model_8(o, i, x) {
         u8_17: u8(o + 17),
         u8_18: u8(o + 18),
         u8_19: u8(o + 19),
-        unordered_hwvx_proto_model_string_20: 0,
+        section_20: im_string(u32(o + 20), 0, false),
     });
+
+    // if (x[i].section_20.string.includes('blood')) {
+    //     console.log("?")
+    // }
+
 
     for (let ii = 0; ii < u16(o + 2); ii++) {
         im_hwvx_proto_model_8_8(u32(o + 8) + (ii * 32) + g.m, ii, x[i].section_8);
     }
-    x[i].unordered_hwvx_proto_model_string_20 = in_ml(u32(o + 20), g.hwvx_proto_model_string_array, im_hwvx_proto_model_string, g.unordered_ref.hwvx_proto_model_string);
 
 }
 function im_hwvx_proto_model_12(o, i, x) {
@@ -4014,7 +4085,7 @@ function im_hwvx_proto_model_8_8(o, i, x) {
         u32_28: u32(o + 28),
     });
 
-    switch (modeltypeval) {
+    switch (model_type) {
     case 0:
         u32(o + 12) && im_hwvx_proto_model_8_8_12t0(u32(o + 12) + g.m, x[i].section_12);
         break;
@@ -4327,7 +4398,7 @@ function im_hwvx_proto_texture(o, i, x) {
     default:
         console.pk_log(`unknown texture type ${u8(o + 4)}`)
     }
-    let start_08_texture = u32(o + 8)
+    let start_08_texture = u32(o + 8) + g.m
     let end_08_texture = start_08_texture + total_length
     // 20 and 16 has mips
     // 12 no mips
@@ -4341,7 +4412,7 @@ function im_hwvx_proto_texture(o, i, x) {
     } else {
         let mipmap_offset = total_length
 
-        for (let ii = 0; ii < u16(o + 6) + 1; ii++) {
+        for (let ii = 0; ii < u16(o + 6) -1; ii++) {
 
             if (u32(o + 8)) {
                 x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
@@ -4487,6 +4558,7 @@ function im_hwvx_proto_world_settings(o, i, x) {
         texture_148: im_patch(g.texture_patch_ref, o + 148),
         texture_152: im_patch(g.texture_patch_ref, o + 152),
         section_156: [],
+        section_156_type: [],
         section_160: im_string(u32(o + 160), 0, false),
         section_164: im_string(u32(o + 164), 0, false),
         section_192: [],
@@ -4509,7 +4581,10 @@ function im_hwvx_proto_world_settings(o, i, x) {
         section_260: [],
     });
 
-    // u32(o + 156) && im_hwvx_proto_world(u32(o + 156) + g.m,x[i].section_156); // offset? 
+    let type_object = hwvx_proto_return_if_value_in_multilink(u32(o + 156) + g.m)
+    x[i].section_156 = type_object.section
+    x[i].section_156_type = type_object.type
+
     u32(o + 192) && im_hwvx_proto_world_settings_192(u32(o + 192) + g.m, x[i].section_192);
     u32(o + 196) && im_hwvx_proto_world_settings_196(u32(o + 196) + g.m, x[i].section_196);
     x[i].unordered_hwvx_proto_font_200 = in_ml(u32(o + 200), g.hwvx_proto_font_array, im_hwvx_proto_font, g.unordered_ref.hwvx_proto_font);
@@ -4834,7 +4909,7 @@ function im_hwvx_proto_some_world_thing_88(o, x) {
     // 32 bytes;
 
 }
-function im_hwvx_proto_geo_list(o, i, x) {
+function im_hwvx_proto_geo_list(o, x) {
     x.push({
         id: gen_id(),
         sec_id: "^UG0",
@@ -4844,9 +4919,9 @@ function im_hwvx_proto_geo_list(o, i, x) {
     });
 
     for (let ii = 0; ii < u32(o + 0); ii++) {
-        im_hwvx_proto_geo_list_4(u32(o + 4) + (ii * 20) + g.m, ii, x[i].section_4);
+        im_hwvx_proto_geo_list_4(u32(o + 4) + (ii * 20) + g.m, ii, x[0].section_4);
     }
-    return x[i].id
+    return x[0].id
     // 16 bytes;
 
 }
@@ -4862,7 +4937,7 @@ function im_hwvx_proto_geo_list_4(o, i, x) {
         u8_13: u8(o + 13),
         u8_14: u8(o + 14),
         u8_15: u8(o + 15),
-        unordered_hwvx_proto_model_8_8_12_16: 0,
+        u32_16: u32(o + 16),
     });
 
     u32(o + 4) && im_hwvx_proto_geo_list_4_4(u32(o + 4) + g.m, x[i].section_4);
@@ -4870,7 +4945,6 @@ function im_hwvx_proto_geo_list_4(o, i, x) {
     for (let ii = 0; ii < u32(o + 0); ii++) {
         im_hwvx_proto_geo_list_4_8(u32(o + 8) + (ii * 4) + g.m, ii, x[i].section_8);
     }
-    x[i].unordered_hwvx_proto_model_8_8_12_16 = in_ml(u32(o + 16), g.hwvx_proto_model_8_8_12_array, im_hwvx_proto_model_8_8_12, g.unordered_ref.hwvx_proto_model_8_8_12);
 
 }
 function im_hwvx_proto_geo_list_4_4(o, x) {
@@ -4966,7 +5040,7 @@ function im_hwvx_proto_car(o, i, x) {
         unordered_hwvx_proto_model_anims_1_72: 0,
         unordered_hwvx_proto_model_anims_2_76: 0,
         texture_80: im_patch(g.texture_patch_ref, o + 80),
-        model_84: im_patch(g.model_ref, o + 84),
+        model_84: [],
         unordered_hwvx_proto_sound_section_92: 0,
         unordered_hwvx_proto_sound_section_96: 0,
         section_108: [],
@@ -5010,6 +5084,9 @@ function im_hwvx_proto_car(o, i, x) {
 
     x[i].unordered_hwvx_proto_model_anims_1_72 = in_ml(u32(o + 72), g.hwvx_proto_model_anims_1_array, im_hwvx_proto_model_anims_1, g.unordered_ref.hwvx_proto_model_anims_1);
     x[i].unordered_hwvx_proto_model_anims_2_76 = in_ml(u32(o + 76), g.hwvx_proto_model_anims_2_array, im_hwvx_proto_model_anims_2, g.unordered_ref.hwvx_proto_model_anims_2);
+
+    x[i].model_84 = in_models(o + 84, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
+
     x[i].unordered_hwvx_proto_sound_section_92 = in_ml(u32(o + 92), g.hwvx_proto_sound_section_array, im_hwvx_proto_sound_section, g.unordered_ref.hwvx_proto_sound_section);
     x[i].unordered_hwvx_proto_sound_section_96 = in_ml(u32(o + 96), g.hwvx_proto_sound_section_array, im_hwvx_proto_sound_section, g.unordered_ref.hwvx_proto_sound_section);
     u32(o + 108) && im_hwvx_proto_car_108(u32(o + 108) + g.m, x[i].section_108);
@@ -5694,7 +5771,7 @@ function im_hwvx_proto_mysterious(o, i, x) {
 function im_hwvx_proto_mysterious_24t5(o, x) {
     x.push({
         sec_id: "jpuw",
-        model_8: im_patch(g.model_ref, o + 8),
+        model_8: [],
         u32_20: u32(o + 20),
         //amount?
         section_24: [],
@@ -5703,6 +5780,8 @@ function im_hwvx_proto_mysterious_24t5(o, x) {
         section_32: [],
         section_44: [],
     });
+
+    x[0].model_8 = in_models(o + 8, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
 
     for (let i = 0; i < u32(o + 20); i++) {
         im_hwvx_proto_mysterious_24t5_24(u32(o + 24) + (i * 32) + g.m, i, x[0].section_24);
@@ -6017,8 +6096,9 @@ function im_hwvx_proto_model_link(o, i, x) {
 function im_hwvx_proto_model_link_4(o, x) {
     x.push({
         sec_id: "t5Jp",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: [],
     });
+    x[0].model_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
 
     // 16 bytes;
 
@@ -6026,9 +6106,11 @@ function im_hwvx_proto_model_link_4(o, x) {
 function im_hwvx_proto_model_link_12(o, x) {
     x.push({
         sec_id: "u66W",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: [],
         u32_4: u32(o + 4),
     });
+
+    x[0].model_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
 
     // 8 bytes;
 
@@ -6092,11 +6174,12 @@ function im_hwvx_proto_model_link_56_4(o, i, x) {
         u8_1: u8(o + 1),
         u8_2: u8(o + 2),
         u32_4: u32(o + 4),
-        model_8: im_patch(g.model_ref, o + 8),
+        model_8: [],
         section_12: [],
         section_16: [],
     });
 
+    x[i].model_8 = in_models(o + 8, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
     u32(o + 12) && im_hwvx_proto_model_link_56_4_12(u32(o + 12) + g.m, x[i].section_12);
     u32(o + 16) && im_hwvx_proto_model_link_56_4_16(u32(o + 16) + g.m, x[i].section_16);
 
@@ -7588,10 +7671,11 @@ function im_hwvx_proto_unknown_4_4t29_12(o, i, x) {
         f32_16: f32(o + 16),
         f32_20: f32(o + 20),
         f32_24: f32(o + 24),
-        model_28: im_patch(g.model_ref, o + 28),
+        model_28: [],
         unordered_hwvx_proto_unknown_link_section_32: 0,
     });
 
+    x[i].model_28 = in_models(o + 28, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
     x[i].unordered_hwvx_proto_unknown_link_section_32 = in_ml(u32(o + 32), g.hwvx_proto_unknown_link_section_array, im_hwvx_proto_unknown_link_section, g.unordered_ref.hwvx_proto_unknown_link_section);
 
 }
@@ -7757,7 +7841,7 @@ function im_hwvx_proto_grand_section(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "caGR",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: [],
         u32_4: u32(o + 4),
         f32_8: f32(o + 8),
         unordered_hwvx_proto_car_link_16: 0,
@@ -7765,10 +7849,12 @@ function im_hwvx_proto_grand_section(o, i, x) {
         section_28: [],
     });
 
-    x[0].unordered_hwvx_proto_car_link_16 = in_ml(u32(o + 16), g.hwvx_proto_car_link_array, im_hwvx_proto_car_link, g.unordered_ref.hwvx_proto_car_link);
+    x[i].model_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
+
+    x[i].unordered_hwvx_proto_car_link_16 = in_ml(u32(o + 16), g.hwvx_proto_car_link_array, im_hwvx_proto_car_link, g.unordered_ref.hwvx_proto_car_link);
 
     for (let i = 0; i < u32(o + 24); i++) {
-        im_hwvx_proto_mysterious(u32(o + 28) + (i * 32) + g.m, i, x[0].section_28);
+        im_hwvx_proto_mysterious(u32(o + 28) + (i * 32) + g.m, i, x[i].section_28);
     }
     return x[i].id
     // 32 bytes;
@@ -7843,8 +7929,10 @@ function im_hwvx_proto_unknown_thing_4t0_36(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "2SLk",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: [],
     });
+
+    x[i].model_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
 
 }
 function im_hwvx_proto_unknown_thing_4t0_44(o, i, x) {
@@ -7988,7 +8076,7 @@ function im_hwvx_proto_asdf(o, i, x) {
         u8_6: u8(o + 6),
         u8_7: u8(o + 7),
         section_12: [],
-        model_16: im_patch(g.model_ref, o + 16),
+        model_16: [],
         u32_20: u32(o + 20),
         u32_24: u32(o + 24),
         u32_28: u32(o + 28),
@@ -8030,6 +8118,8 @@ function im_hwvx_proto_asdf(o, i, x) {
         u32(o + 12) && im_hwvx_proto_asdf_12t2(u32(o + 12) + g.m, x[i].section_12);
         break;
     }
+    x[i].model_16 = in_models(o + 16, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
+
     x[i].unordered_hwvx_proto_unknown_112 = in_ml(u32(o + 112), g.hwvx_proto_unknown_array, im_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown);
     x[i].unordered_hwvx_proto_unknown_116 = in_ml(u32(o + 116), g.hwvx_proto_unknown_array, im_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown);
     x[i].unordered_hwvx_proto_unknown_120 = in_ml(u32(o + 120), g.hwvx_proto_unknown_array, im_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown);
@@ -8252,9 +8342,10 @@ function im_hwvx_proto_item_48_0_12(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "rCXf",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: [],
         u32_4: u32(o + 4),
     });
+    x[i].model_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
 
 }
 function im_hwvx_proto_item_48_0_32(o, x) {
@@ -10170,7 +10261,7 @@ function add_hwvx_proto_triggers_and_actions_24_4() {
     };
 
 }
-function add_hwvx_proto_model() {
+function add_hwvx_proto_models() {
     return {
         sec_id: "NSr;",
         u16_0: 0,
@@ -10811,7 +10902,6 @@ function add_hwvx_proto_geo_list_4() {
         u8_13: 0,
         u8_14: 0,
         u8_15: 0,
-        unordered_hwvx_proto_model_8_8_12_16: 0,
     };
 
 }
@@ -15053,7 +15143,7 @@ function info_hwvx_proto_triggers_and_actions_24_4() {
     };
 
 }
-function info_hwvx_proto_model() {
+function info_hwvx_proto_models() {
     return {
         sec_id: "NSr;",
         u16_0: 0,
@@ -15705,7 +15795,6 @@ function info_hwvx_proto_geo_list_4() {
         u8_13: 0,
         u8_14: 0,
         u8_15: 0,
-        unordered_hwvx_proto_model_8_8_12_16: 0,
     };
 
 }
@@ -20556,7 +20645,7 @@ function ex_hwvx_proto_triggers_and_actions_24_4(o, x) {
     return e
 }
 
-function ex_hwvx_proto_model(o, x) {
+function ex_hwvx_proto_models(o, x) {
     let e = o + 64
     su16(o + 0, x.u16_0)
     //amount?   su16(o +2, x.u16_2)
@@ -21357,6 +21446,7 @@ function ex_hwvx_proto_geo_list_4(o, e, x) {
     su8(o + 13, x.u8_13)
     su8(o + 14, x.u8_14)
     su8(o + 15, x.u8_15)
+    s32(o + 16, x.u32_16)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_geo_list_4_4, x.section_4, 'down');
     if (x.section_8.length) {
@@ -21370,7 +21460,6 @@ function ex_hwvx_proto_geo_list_4(o, e, x) {
         }
         ;
     }
-    ;e = ex_ml(x.unordered_hwvx_proto_model_8_8_12_16, g.hwvx_proto_model_8_8_12_array, ex_hwvx_proto_model_8_8_12, g.unordered_ref.hwvx_proto_model_8_8_12, o + 16, e, 'down');
 
     g.debug && ex_debug(o, x.sec_id);
     return e

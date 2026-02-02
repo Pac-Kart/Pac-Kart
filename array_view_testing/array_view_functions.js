@@ -1351,8 +1351,11 @@ function update_pk_tree_list() {
 
 function get_input_type(value, i=-1, key="null") {
     let input_type = ''
+
     if (key === "id" || key === "sec_id") {
         input_type = `<input class="top_settings" data-key_id="${i}" style='width:100%;' type='text' value="${value}">`
+    } else if (typeof value === "undefined") {
+        input_type = `value is undefined`
     } else if (Array.isArray(value)) {
         let array_amount = value.length
         let temp_class = ''
@@ -1398,15 +1401,15 @@ function display_path(str_path) {
 function get_linked_sections() {
 
     let linked_object = {
-        x_file:null,
-        directory:null,
-        datapack:null,
-        ordered:null,
-        unordered:null,
+        x_file: null,
+        directory: null,
+        datapack: null,
+        ordered: null,
+        unordered: null,
     }
 
-    switch(g.type_string){
-        case "pmwr_pc":
+    switch (g.type_string) {
+    case "pmwr_pc":
         break
     }
     if (PK_path.array_path.length <= 7) {
@@ -1432,11 +1435,11 @@ function get_linked_sections() {
     }
     linked_object.datapack = file_datapack_array
     file_ordered_array = file_datapack_array
-    file_ordered_array.push("ordered","0")
+    file_ordered_array.push("ordered", "0")
     linked_object.ordered = file_ordered_array
 
     file_unordered_array = file_ordered_array
-    file_unordered_array.push("unordered","0")
+    file_unordered_array.push("unordered", "0")
     linked_object.unordered = file_unordered_array
 
     return linked_object
@@ -2196,7 +2199,7 @@ function im_string(startIndex, endIndex, isNoEnd=undefined) {
     }
     const chars = [];
 
-    while (!isNoEnd && u8(startIndex + g.m) !== 0) {
+    while (!isNoEnd && u8(startIndex + g.m) !== 0 && (endIndex + 1) !== startIndex) {
         chars.push(String.fromCharCode(u8(startIndex + g.m)));
         startIndex++;
     }
@@ -2231,6 +2234,28 @@ function im_patch_list(o, a, t) {
         return [u32(o + baseOffset + offsets[0]), u16(o + baseOffset + offsets[1]), u16(o + baseOffset + offsets[2]), t];
     }
     );
+}
+
+function in_models(o, array, tfunction, x) {
+    let model_array = g.model_ref
+    let value = -1
+    let index = -1
+    for (let i = 0; i < model_array.length; i++) {
+        if (model_array[i][0] === (o - g.m)) {
+            index = i;
+        }
+    }
+
+    if (index !== -1) {
+        if (model_array[index][2] !== 0) {
+            value = model_array[index]
+        }else{
+        value = in_ml(u32(o), array, tfunction, x)
+        }
+    }else{
+        alert("?")
+    }
+    return value
 }
 
 function in_ml(o, array, tfunction, x, offset_check, model_n) {

@@ -151,14 +151,7 @@ add import/export tables for all sections
     mmcvl
     hwvx_proto
         how to handel these sections:
-        hwvx_proto_share_end
-        hwvx_proto_world_settings 156
-        textures mipmap last buffer = 0 ?
-        need to fix geo datapack
-        broken:
-        hwvx_proto_triggers_and_actions_20_4t3
-        models not importing ?
-        im_hwvx_proto_triggers_and_actions_20_4t15 [0]t1
+        music
     hwvx_gc
     hwvx_pc
     hwvx_ps2
@@ -221,12 +214,16 @@ hwvx
 hwvx_proto
     some linked to by: sections missing entries
     maybe show psuedo code here
+    hwvx_proto_world_settings [156] ???, offset appears even if amount is 0
+    have some way to match the textures with the tga names listed in the models
+    maybe create a sha list of texture data ???
+    also fx_sprite_bloodStain_b&w.tga is probably texture 29 in HW_Share
 
 mmvcl
     some sections dont have mm listed
     add patch list  list of links
     should this be mm or mmvcl?
-        should be mm prob
+        should be mm
 --------------------------------
 ideas for pac-kart filetesting:
 
