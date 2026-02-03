@@ -149,11 +149,14 @@ add import/export tables for outer datapack/sound only sections
 
 add import/export tables for all sections
     mmcvl
-    hwvx_proto
-        how to handel these sections:
-        music
+    hwvx_proto [traversable, no exports]
     hwvx_gc
     hwvx_pc
+        fix:
+        im_hwvx_model_pc_8_12
+        im_hwvx_triggers_and_actions
+        check model patch, may not be imported correctly
+        im_hwvx_proto_share_end
     hwvx_ps2
     svtrb_pc
     svtrb_psp

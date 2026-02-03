@@ -2253,7 +2253,8 @@ function in_models(o, array, tfunction, x) {
         value = in_ml(u32(o), array, tfunction, x)
         }
     }else{
-        alert("?")
+        console.pk_log(`value ${value} not listed ? for models`)
+        // alert("?")
     }
     return value
 }
