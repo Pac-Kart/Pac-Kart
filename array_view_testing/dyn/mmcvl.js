@@ -190,6 +190,10 @@ function info_mm_datapack() {
 /////////////////////
 /* start export list */
 function ex_mm_x(o, x) {
+    console.pk_log("save not finished")
+
+    return null
+
     g = {
         divisibility: 16,
         divisible_prev_value: [],

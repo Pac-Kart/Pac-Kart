@@ -181,6 +181,9 @@ function info_hwvx_ps2_directory() {
 }
 
 function ex_hwvx_ps2_x(o, x) {
+    console.pk_log("save not finished")
+
+    return null
 
     g = {
         divisibility: 16,

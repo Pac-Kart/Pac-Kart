@@ -163,6 +163,9 @@ function info_pmwr_ps2_directory() {
 }
 
 function ex_pmwr_ps2_x(o, x) {
+    console.pk_log("save not finished")
+
+    return null
 
     g = {
         divisibility: 16,

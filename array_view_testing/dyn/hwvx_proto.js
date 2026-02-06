@@ -18585,6 +18585,9 @@ function info_hwvx_proto_texture_anims_0_16() {
 /////////////////////
 /* start export list */
 function ex_hwvx_proto_x(o, x) {
+    console.pk_log("save not finished")
+
+    return null
 
     g = {
         divisibility: 16,

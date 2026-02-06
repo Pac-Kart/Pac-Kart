@@ -19004,6 +19004,9 @@ function info_hwvx_pc_texture_anims_0_20_4() {
 /////////////////////
 /* start export list */
 function ex_hwvx_pc_x(o, x) {
+    console.pk_log("save not finished")
+
+    return null
 
     g = {
         divisibility: 16,

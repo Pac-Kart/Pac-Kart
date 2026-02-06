@@ -163,6 +163,9 @@ function info_bcc_wii_directory() {
 }
 
 function ex_bcc_wii_x(o, x) {
+    console.pk_log("save not finished")
+
+    return null
 
     g = {
         divisibility: 16,
