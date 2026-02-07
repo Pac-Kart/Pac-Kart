@@ -868,11 +868,13 @@ function add_events() {
 
             if (array_inner_keys.length === 1) {
                 key_path[array_inner_keys[0]] = target.value
-            } else {
+            }else{
                 console.pk_log(`array_inner_keys is ${array_inner_keys}`)
             }
 
-        } else {
+        } else if (typeof PK_path.obj[key_id] === 'undefined') {
+            PK_path.obj = target.value
+        }else{
             PK_path.obj[key_id] = target.value
         }
         console.pk_log(`changed ${key_id} to ${target.value}`)
@@ -1094,8 +1096,10 @@ function array_view_get_type(array) {
         array_view_array(array)
     } else if (typeof PK_path.obj === "string") {
         array_view_string(array)
-    } else {
+    } else if (typeof PK_path.obj === "object"){
         array_view_object(array)
+    }else{
+        array_view_value(array)
     }
 
 }
@@ -1187,6 +1191,42 @@ function array_view_object() {
     document.getElementById("_2nd_data_bar").innerHTML = ''
 
     check_section(sec_name)
+    // document.getElementById('game').value = TXFA.game
+    // document.getElementById("name").addEventListener('change', edit_change_name);
+}
+
+function array_view_value() {
+    let html_list = ""
+    let section_id = ""
+    let html = `
+<div style="display:inline-block;width:95%;padding:5px;">
+
+   <div style='height:15%'>
+        <span style="display: flex;width: 100%;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;height: 20px;"><a>value</a><div style="display: flex;">
+        <button title="download json" id="json_download_button">⤓</button>
+        <button title="upload json" id="json_upload_button">⤒</button>
+        </div>
+        </span>
+      <div class='save_records_boarder'>
+         <table style='width:100%;' >
+            <tbody>
+               <tr id="0">
+                  <td class='no_border' data-x_id="" noselect'>value
+                  </td>
+                   <td class='no_border noselect arrow_buttons'>
+                    <input class="top_settings" data-key_id="0" style='width:100%;' type='text' value="${PK_path.obj}">
+                 </td>
+               </tr>
+            </tbody>
+        </table>
+      </div>
+   </div>
+</div>`
+
+    inner_file_editor.innerHTML = html
+    document.getElementById("_2nd_data_bar").innerHTML = ''
+
+    // check_section(sec_name)
     // document.getElementById('game').value = TXFA.game
     // document.getElementById("name").addEventListener('change', edit_change_name);
 }

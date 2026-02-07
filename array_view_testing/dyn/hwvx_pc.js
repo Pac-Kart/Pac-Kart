@@ -1664,6 +1664,7 @@ function im_hwvx_pc_ordered(o, x) {
         hwvx_texture_anims_0: [],
         hwvx_models: [],
         hwvx_share_end_section: [],
+        hwvx_share_end_section:[],
     })
 
     im_hwvx_pc_unordered(o, x[0].hwvx_unordered_list)
@@ -1688,10 +1689,18 @@ function im_hwvx_pc_ordered(o, x) {
         for (let i = 0; i < u32(g.datapack_offset + 56); i++) {
             im_hwvx_pc_share(o + (i * 4), i, x[0].hwvx_file_specific_section)
         }
+        if (g.file_name.includes("HW_share")) {
+            let get_end;
+            if (g.console === "pc") {
+                get_end = 939124
+            }
+            // let get_end = (u32(o + 40) * 1024) + u32(o + 44) + offset_mid
+            // console.log(get_end)
+            im_hwvx_pc_share_end(get_end, x[0].hwvx_share_end_section)
+        }
         // let get_end = (u32(g.datapack_offset + 40) * 1024) + u32(g.datapack_offset + 44)
         // if (u32(g.datapack_offset + 60) || u32(g.datapack_offset) === get_end) {// no shared section
         // } else {
-        //     im_hwvx_pc_share_end(get_end + g.m, x[0].hwvx_share_end_section)
         // }
         break
     case "world texture":
@@ -2736,6 +2745,361 @@ function im_hwvx_pc_world_routes_24(o, i, x) {
     });
 
 }
+
+function hwvx_return_if_value_in_multilink(o) {
+    let value_object = {
+        section: [],
+        type: "no link ?",
+    }
+    let check_val = o
+    if (g.models_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.models_array, im_models, g.unordered_ref.models);
+        value_object.type = "models"
+    } else if (g.hwvx_models_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_models_array, im_hwvx_pc_models, g.unordered_ref.hwvx_models);
+        value_object.type = "hwvx_models"
+    } else if (g.hwvx_world_12_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+        value_object.type = "hwvx_world_12"
+    } else if (g.hwvx_world_20_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
+        value_object.type = "hwvx_world_20"
+    } else if (g.hwvx_world_36_48_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_36_48_array, im_hwvx_pc_world_36_48, g.unordered_ref.hwvx_world_36_48);
+        value_object.type = "hwvx_world_36_48"
+    } else if (g.hwvx_Airbox_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
+        value_object.type = "hwvx_Airbox"
+    } else if (g.hwvx_world_36_36_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_36_36_array, im_hwvx_pc_world_36_36, g.unordered_ref.hwvx_world_36_36);
+        value_object.type = "hwvx_world_36_36"
+    } else if (g.hwvx_world_36_48_16_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_36_48_16_array, im_hwvx_pc_world_36_48_16, g.unordered_ref.hwvx_world_36_48_16);
+        value_object.type = "hwvx_world_36_48_16"
+    } else if (g.hwvx_world_36_48_24_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
+        value_object.type = "hwvx_world_36_48_24"
+    } else if (g.hwvx_world_76_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+        value_object.type = "hwvx_world_76"
+    } else if (g.hwvx_world_52_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_52_array, im_hwvx_pc_world_52, g.unordered_ref.hwvx_world_52);
+        value_object.type = "hwvx_world_52"
+    } else if (g.hwvx_world_108_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_108_array, im_hwvx_pc_world_108, g.unordered_ref.hwvx_world_108);
+        value_object.type = "hwvx_world_108"
+    } else if (g.hwvx_world_108_44t6_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_108_44t6_array, im_hwvx_pc_world_108_44t6, g.unordered_ref.hwvx_world_108_44t6);
+        value_object.type = "hwvx_world_108_44t6"
+    } else if (g.hwvx_world_routes_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
+        value_object.type = "hwvx_world_routes"
+    } else if (g.hwvx_triggers_and_actions_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_triggers_and_actions_array, im_hwvx_pc_triggers_and_actions, g.unordered_ref.hwvx_triggers_and_actions);
+        value_object.type = "hwvx_triggers_and_actions"
+    } else if (g.hwvx_collision_related_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_collision_related_array, im_hwvx_pc_collision_related, g.unordered_ref.hwvx_collision_related);
+        value_object.type = "hwvx_collision_related"
+    } else if (g.hwvx_collision_link_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_collision_link_array, im_hwvx_pc_collision_link, g.unordered_ref.hwvx_collision_link);
+        value_object.type = "hwvx_collision_link"
+    } else if (g.hwvx_model_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_model_array, im_hwvx_pc_model, g.unordered_ref.hwvx_model);
+        value_object.type = "hwvx_model"
+    } else if (g.hwvx_texture_anims_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_texture_anims_array, im_hwvx_pc_texture_anims, g.unordered_ref.hwvx_texture_anims);
+        value_object.type = "hwvx_texture_anims"
+    } else if (g.hwvx_model_anims_1_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_model_anims_1_array, im_hwvx_pc_model_anims_1, g.unordered_ref.hwvx_model_anims_1);
+        value_object.type = "hwvx_model_anims_1"
+    } else if (g.hwvx_model_anims_2_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_model_anims_2_array, im_hwvx_pc_model_anims_2, g.unordered_ref.hwvx_model_anims_2);
+        value_object.type = "hwvx_model_anims_2"
+    } else if (g.hwvx_world_text_link_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_text_link_array, im_hwvx_pc_world_text_link, g.unordered_ref.hwvx_world_text_link);
+        value_object.type = "hwvx_world_text_link"
+    } else if (g.hwvx_model_car_sound_link_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_model_car_sound_link_array, im_hwvx_pc_model_car_sound_link, g.unordered_ref.hwvx_model_car_sound_link);
+        value_object.type = "hwvx_model_car_sound_link"
+    } else if (g.hwvx_world_color_section_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_color_section_array, im_hwvx_pc_world_color_section, g.unordered_ref.hwvx_world_color_section);
+        value_object.type = "hwvx_world_color_section"
+    } else if (g.hwvx_world_idk_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_idk_array, im_hwvx_pc_world_idk, g.unordered_ref.hwvx_world_idk);
+        value_object.type = "hwvx_world_idk"
+    } else if (g.hwvx_some_world_thing_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_some_world_thing_array, im_hwvx_pc_some_world_thing, g.unordered_ref.hwvx_some_world_thing);
+        value_object.type = "hwvx_some_world_thing"
+    } else if (g.hwvx_world_small_section_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_small_section_array, im_hwvx_pc_world_small_section, g.unordered_ref.hwvx_world_small_section);
+        value_object.type = "hwvx_world_small_section"
+    } else if (g.hwvx_world_model_related_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_model_related_array, im_hwvx_pc_world_model_related, g.unordered_ref.hwvx_world_model_related);
+        value_object.type = "hwvx_world_model_related"
+    } else if (g.hwvx_geo_list_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_geo_list_array, im_hwvx_pc_geo_list, g.unordered_ref.hwvx_geo_list);
+        value_object.type = "hwvx_geo_list"
+    } else if (g.hwvx_collision_settings_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_collision_settings_array, im_hwvx_pc_collision_settings, g.unordered_ref.hwvx_collision_settings);
+        value_object.type = "hwvx_collision_settings"
+    } else if (g.hwvx_car_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_car_array, im_hwvx_pc_car, g.unordered_ref.hwvx_car);
+        value_object.type = "hwvx_car"
+    } else if (g.hwvx_car_related_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_car_related_array, im_hwvx_pc_car_related, g.unordered_ref.hwvx_car_related);
+        value_object.type = "hwvx_car_related"
+    } else if (g.hwvx_car_path_related_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_car_path_related_array, im_hwvx_pc_car_path_related, g.unordered_ref.hwvx_car_path_related);
+        value_object.type = "hwvx_car_path_related"
+    } else if (g.hwvx_car_link_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_car_link_array, im_hwvx_pc_car_link, g.unordered_ref.hwvx_car_link);
+        value_object.type = "hwvx_car_link"
+    } else if (g.hwvx_car_unknown_link_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_car_unknown_link_array, im_hwvx_pc_car_unknown_link, g.unordered_ref.hwvx_car_unknown_link);
+        value_object.type = "hwvx_car_unknown_link"
+    } else if (g.hwvx_model_link_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_model_link_array, im_hwvx_pc_model_link, g.unordered_ref.hwvx_model_link);
+        value_object.type = "hwvx_model_link"
+    } else if (g.hwvx_text_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_text_array, im_hwvx_pc_text, g.unordered_ref.hwvx_text);
+        value_object.type = "hwvx_text"
+    } else if (g.hwvx_font_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_font_array, im_hwvx_pc_font, g.unordered_ref.hwvx_font);
+        value_object.type = "hwvx_font"
+    } else if (g.hwvx_mysterious_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_mysterious_array, im_hwvx_pc_mysterious, g.unordered_ref.hwvx_mysterious);
+        value_object.type = "hwvx_mysterious"
+    } else if (g.hwvx_strange_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_strange_array, im_hwvx_pc_strange, g.unordered_ref.hwvx_strange);
+        value_object.type = "hwvx_strange"
+    } else if (g.hwvx_unknown_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_unknown_array, im_hwvx_pc_unknown, g.unordered_ref.hwvx_unknown);
+        value_object.type = "hwvx_unknown"
+    } else if (g.hwvx_unknown_thing_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_unknown_thing_array, im_hwvx_pc_unknown_thing, g.unordered_ref.hwvx_unknown_thing);
+        value_object.type = "hwvx_unknown_thing"
+    } else if (g.hwvx_asdf_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_asdf_array, im_hwvx_pc_asdf, g.unordered_ref.hwvx_asdf);
+        value_object.type = "hwvx_asdf"
+    } else if (g.hwvx_unknown_idk_sec_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_unknown_idk_sec_array, im_hwvx_pc_unknown_idk_sec, g.unordered_ref.hwvx_unknown_idk_sec);
+        value_object.type = "hwvx_unknown_idk_sec"
+    } else if (g.hwvx_grand_section_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_grand_section_array, im_hwvx_pc_grand_section, g.unordered_ref.hwvx_grand_section);
+        value_object.type = "hwvx_grand_section"
+    } else if (g.hwvx_unknown_whatever_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_unknown_whatever_array, im_hwvx_pc_unknown_whatever, g.unordered_ref.hwvx_unknown_whatever);
+        value_object.type = "hwvx_unknown_whatever"
+    } else if (g.hwvx_unknown_small_model_link_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_unknown_small_model_link_array, im_hwvx_pc_unknown_small_model_link, g.unordered_ref.hwvx_unknown_small_model_link);
+        value_object.type = "hwvx_unknown_small_model_link"
+    } else if (g.hwvx_unknown_link_section_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_unknown_link_section_array, im_hwvx_pc_unknown_link_section, g.unordered_ref.hwvx_unknown_link_section);
+        value_object.type = "hwvx_unknown_link_section"
+    } else if (g.hwvx_item_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_item_array, im_hwvx_pc_item, g.unordered_ref.hwvx_item);
+        value_object.type = "hwvx_item"
+    } else if (g.hwvx_sound_controls_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_sound_controls_array, im_hwvx_pc_sound_controls, g.unordered_ref.hwvx_sound_controls);
+        value_object.type = "hwvx_sound_controls"
+    } else if (g.hwvx_sound_section_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_sound_section_array, im_hwvx_pc_sound_section, g.unordered_ref.hwvx_sound_section);
+        value_object.type = "hwvx_sound_section"
+    } else if (g.hwvx_world_settings_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_world_settings_array, im_hwvx_pc_world_settings, g.unordered_ref.hwvx_world_settings);
+        value_object.type = "hwvx_world_settings"
+    } else if (g.hwvx_interface_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_interface_array, im_hwvx_pc_interface, g.unordered_ref.hwvx_interface);
+        value_object.type = "hwvx_interface"
+    } else if (g.hwvx_interface_unknown_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_interface_unknown_array, im_hwvx_pc_interface_unknown, g.unordered_ref.hwvx_interface_unknown);
+        value_object.type = "hwvx_interface_unknown"
+    } else if (g.hwvx_interface_text_related_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_interface_text_related_array, im_hwvx_pc_interface_text_related, g.unordered_ref.hwvx_interface_text_related);
+        value_object.type = "hwvx_interface_text_related"
+    } else if (g.hwvx_link_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_link_array, im_hwvx_pc_link, g.unordered_ref.hwvx_link);
+        value_object.type = "hwvx_link"
+    } else if (g.hwvx_texture_anims_0_array.includes(check_val)) {
+        value_object.section = in_ml(u32(o), g.hwvx_texture_anims_0_array, im_hwvx_pc_texture_anims_0, g.unordered_ref.hwvx_texture_anims_0);
+        value_object.type = "hwvx_texture_anims_0"
+    }
+
+    // if (g.models_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.models_array, im_models, g.unordered_ref.models);
+    //     value_object.type = "models"
+    // } else if (g.hwvx_models_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_models_array, im_hwvx_pc_models, g.unordered_ref.hwvx_models);
+    //     value_object.type = "hwvx_models"
+    // } else if (g.hwvx_world_12_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+    //     value_object.type = "hwvx_world_12"
+    // } else if (g.hwvx_world_20_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
+    //     value_object.type = "hwvx_world_20"
+    // } else if (g.hwvx_world_36_48_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_36_48_array, im_hwvx_pc_world_36_48, g.unordered_ref.hwvx_world_36_48);
+    //     value_object.type = "hwvx_world_36_48"
+    // } else if (g.hwvx_Airbox_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
+    //     value_object.type = "hwvx_Airbox"
+    // } else if (g.hwvx_world_36_36_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_36_36_array, im_hwvx_pc_world_36_36, g.unordered_ref.hwvx_world_36_36);
+    //     value_object.type = "hwvx_world_36_36"
+    // } else if (g.hwvx_world_36_48_16_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_36_48_16_array, im_hwvx_pc_world_36_48_16, g.unordered_ref.hwvx_world_36_48_16);
+    //     value_object.type = "hwvx_world_36_48_16"
+    // } else if (g.hwvx_world_36_48_24_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
+    //     value_object.type = "hwvx_world_36_48_24"
+    // } else if (g.hwvx_world_76_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+    //     value_object.type = "hwvx_world_76"
+    // } else if (g.hwvx_world_52_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_52_array, im_hwvx_pc_world_52, g.unordered_ref.hwvx_world_52);
+    //     value_object.type = "hwvx_world_52"
+    // } else if (g.hwvx_world_108_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_108_array, im_hwvx_pc_world_108, g.unordered_ref.hwvx_world_108);
+    //     value_object.type = "hwvx_world_108"
+    // } else if (g.hwvx_world_108_44t6_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_108_44t6_array, im_hwvx_pc_world_108_44t6, g.unordered_ref.hwvx_world_108_44t6);
+    //     value_object.type = "hwvx_world_108_44t6"
+    // } else if (g.hwvx_world_routes_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
+    //     value_object.type = "hwvx_world_routes"
+    // } else if (g.hwvx_triggers_and_actions_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_triggers_and_actions_array, im_hwvx_pc_triggers_and_actions, g.unordered_ref.hwvx_triggers_and_actions);
+    //     value_object.type = "hwvx_triggers_and_actions"
+    // } else if (g.hwvx_collision_related_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_collision_related_array, im_hwvx_pc_collision_related, g.unordered_ref.hwvx_collision_related);
+    //     value_object.type = "hwvx_collision_related"
+    // } else if (g.hwvx_collision_link_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_collision_link_array, im_hwvx_pc_collision_link, g.unordered_ref.hwvx_collision_link);
+    //     value_object.type = "hwvx_collision_link"
+    // } else if (g.hwvx_model_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_model_array, im_hwvx_pc_model, g.unordered_ref.hwvx_model);
+    //     value_object.type = "hwvx_model"
+    // } else if (g.hwvx_texture_anims_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_texture_anims_array, im_hwvx_pc_texture_anims, g.unordered_ref.hwvx_texture_anims);
+    //     value_object.type = "hwvx_texture_anims"
+    // } else if (g.hwvx_model_anims_1_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_model_anims_1_array, im_hwvx_pc_model_anims_1, g.unordered_ref.hwvx_model_anims_1);
+    //     value_object.type = "hwvx_model_anims_1"
+    // } else if (g.hwvx_model_anims_2_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_model_anims_2_array, im_hwvx_pc_model_anims_2, g.unordered_ref.hwvx_model_anims_2);
+    //     value_object.type = "hwvx_model_anims_2"
+    // } else if (g.hwvx_world_text_link_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_text_link_array, im_hwvx_pc_world_text_link, g.unordered_ref.hwvx_world_text_link);
+    //     value_object.type = "hwvx_world_text_link"
+    // } else if (g.hwvx_model_car_sound_link_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_model_car_sound_link_array, im_hwvx_pc_model_car_sound_link, g.unordered_ref.hwvx_model_car_sound_link);
+    //     value_object.type = "hwvx_model_car_sound_link"
+    // } else if (g.hwvx_world_color_section_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_color_section_array, im_hwvx_pc_world_color_section, g.unordered_ref.hwvx_world_color_section);
+    //     value_object.type = "hwvx_world_color_section"
+    // } else if (g.hwvx_world_idk_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_idk_array, im_hwvx_pc_world_idk, g.unordered_ref.hwvx_world_idk);
+    //     value_object.type = "hwvx_world_idk"
+    // } else if (g.hwvx_some_world_thing_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_some_world_thing_array, im_hwvx_pc_some_world_thing, g.unordered_ref.hwvx_some_world_thing);
+    //     value_object.type = "hwvx_some_world_thing"
+    // } else if (g.hwvx_world_small_section_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_small_section_array, im_hwvx_pc_world_small_section, g.unordered_ref.hwvx_world_small_section);
+    //     value_object.type = "hwvx_world_small_section"
+    // } else if (g.hwvx_world_model_related_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_model_related_array, im_hwvx_pc_world_model_related, g.unordered_ref.hwvx_world_model_related);
+    //     value_object.type = "hwvx_world_model_related"
+    // } else if (g.hwvx_geo_list_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_geo_list_array, im_hwvx_pc_geo_list, g.unordered_ref.hwvx_geo_list);
+    //     value_object.type = "hwvx_geo_list"
+    // } else if (g.hwvx_collision_settings_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_collision_settings_array, im_hwvx_pc_collision_settings, g.unordered_ref.hwvx_collision_settings);
+    //     value_object.type = "hwvx_collision_settings"
+    // } else if (g.hwvx_car_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_car_array, im_hwvx_pc_car, g.unordered_ref.hwvx_car);
+    //     value_object.type = "hwvx_car"
+    // } else if (g.hwvx_car_related_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_car_related_array, im_hwvx_pc_car_related, g.unordered_ref.hwvx_car_related);
+    //     value_object.type = "hwvx_car_related"
+    // } else if (g.hwvx_car_path_related_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_car_path_related_array, im_hwvx_pc_car_path_related, g.unordered_ref.hwvx_car_path_related);
+    //     value_object.type = "hwvx_car_path_related"
+    // } else if (g.hwvx_car_link_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_car_link_array, im_hwvx_pc_car_link, g.unordered_ref.hwvx_car_link);
+    //     value_object.type = "hwvx_car_link"
+    // } else if (g.hwvx_car_unknown_link_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_car_unknown_link_array, im_hwvx_pc_car_unknown_link, g.unordered_ref.hwvx_car_unknown_link);
+    //     value_object.type = "hwvx_car_unknown_link"
+    // } else if (g.hwvx_model_link_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_model_link_array, im_hwvx_pc_model_link, g.unordered_ref.hwvx_model_link);
+    //     value_object.type = "hwvx_model_link"
+    // } else if (g.hwvx_text_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_text_array, im_hwvx_pc_text, g.unordered_ref.hwvx_text);
+    //     value_object.type = "hwvx_text"
+    // } else if (g.hwvx_font_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_font_array, im_hwvx_pc_font, g.unordered_ref.hwvx_font);
+    //     value_object.type = "hwvx_font"
+    // } else if (g.hwvx_mysterious_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_mysterious_array, im_hwvx_pc_mysterious, g.unordered_ref.hwvx_mysterious);
+    //     value_object.type = "hwvx_mysterious"
+    // } else if (g.hwvx_strange_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_strange_array, im_hwvx_pc_strange, g.unordered_ref.hwvx_strange);
+    //     value_object.type = "hwvx_strange"
+    // } else if (g.hwvx_unknown_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_unknown_array, im_hwvx_pc_unknown, g.unordered_ref.hwvx_unknown);
+    //     value_object.type = "hwvx_unknown"
+    // } else if (g.hwvx_unknown_thing_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_unknown_thing_array, im_hwvx_pc_unknown_thing, g.unordered_ref.hwvx_unknown_thing);
+    //     value_object.type = "hwvx_unknown_thing"
+    // } else if (g.hwvx_asdf_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_asdf_array, im_hwvx_pc_asdf, g.unordered_ref.hwvx_asdf);
+    //     value_object.type = "hwvx_asdf"
+    // } else if (g.hwvx_unknown_idk_sec_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_unknown_idk_sec_array, im_hwvx_pc_unknown_idk_sec, g.unordered_ref.hwvx_unknown_idk_sec);
+    //     value_object.type = "hwvx_unknown_idk_sec"
+    // } else if (g.hwvx_grand_section_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_grand_section_array, im_hwvx_pc_grand_section, g.unordered_ref.hwvx_grand_section);
+    //     value_object.type = "hwvx_grand_section"
+    // } else if (g.hwvx_unknown_whatever_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_unknown_whatever_array, im_hwvx_pc_unknown_whatever, g.unordered_ref.hwvx_unknown_whatever);
+    //     value_object.type = "hwvx_unknown_whatever"
+    // } else if (g.hwvx_unknown_small_model_link_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_unknown_small_model_link_array, im_hwvx_pc_unknown_small_model_link, g.unordered_ref.hwvx_unknown_small_model_link);
+    //     value_object.type = "hwvx_unknown_small_model_link"
+    // } else if (g.hwvx_unknown_link_section_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_unknown_link_section_array, im_hwvx_pc_unknown_link_section, g.unordered_ref.hwvx_unknown_link_section);
+    //     value_object.type = "hwvx_unknown_link_section"
+    // } else if (g.hwvx_item_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_item_array, im_hwvx_pc_item, g.unordered_ref.hwvx_item);
+    //     value_object.type = "hwvx_item"
+    // } else if (g.hwvx_sound_controls_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_sound_controls_array, im_hwvx_pc_sound_controls, g.unordered_ref.hwvx_sound_controls);
+    //     value_object.type = "hwvx_sound_controls"
+    // } else if (g.hwvx_sound_section_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_sound_section_array, im_hwvx_pc_sound_section, g.unordered_ref.hwvx_sound_section);
+    //     value_object.type = "hwvx_sound_section"
+    // } else if (g.hwvx_world_settings_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_world_settings_array, im_hwvx_pc_world_settings, g.unordered_ref.hwvx_world_settings);
+    //     value_object.type = "hwvx_world_settings"
+    // } else if (g.hwvx_interface_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_interface_array, im_hwvx_pc_interface, g.unordered_ref.hwvx_interface);
+    //     value_object.type = "hwvx_interface"
+    // } else if (g.hwvx_interface_unknown_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_interface_unknown_array, im_hwvx_pc_interface_unknown, g.unordered_ref.hwvx_interface_unknown);
+    //     value_object.type = "hwvx_interface_unknown"
+    // } else if (g.hwvx_interface_text_related_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_interface_text_related_array, im_hwvx_pc_interface_text_related, g.unordered_ref.hwvx_interface_text_related);
+    //     value_object.type = "hwvx_interface_text_related"
+    // } else if (g.hwvx_link_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_link_array, im_hwvx_pc_link, g.unordered_ref.hwvx_link);
+    //     value_object.type = "hwvx_link"
+    // } else if (g.hwvx_texture_anims_0_array.includes(check_val)) {
+    //     value_object.section = in_ml(u32(o - g.m), g.hwvx_texture_anims_0_array, im_hwvx_pc_texture_anims_0, g.unordered_ref.hwvx_texture_anims_0);
+    //     value_object.type = "hwvx_texture_anims_0"
+    // }
+    return value_object
+}
+
 function im_hwvx_pc_triggers_and_actions(o, i, x) {
     x.push({
         id: gen_id(),
@@ -2753,25 +3117,29 @@ function im_hwvx_pc_triggers_and_actions(o, i, x) {
         u8_40: u8(o + 40),
     });
 
-    //  switch(u32(o + 8)){
-    //     case 1:
-    //         u32(o + 4) && im_hwvx_pc_triggers_and_actions_4t1(u32(o + 4) + g.m,x[i].section_4); 
-    //     break;
-    //     case 3:
-    //         u32(o + 4) && im_hwvx_pc_triggers_and_actions_4t3(u32(o + 4) + g.m,x[i].section_4); 
-    //     break;
-    //     case 5:
-    //         u32(o + 4) && im_hwvx_pc_triggers_and_actions_4t5(u32(o + 4) + g.m,x[i].section_4); 
-    //     break;
-    //     case 6:
-    //         u32(o + 4) && im_hwvx_pc_triggers_and_actions_4t6(u32(o + 4) + g.m,x[i].section_4); 
-    //     break;
-    //     default:
-    //         u32(o + 4) && im_hwvx_pc_triggers_and_actions_4trest(u32(o + 4) + g.m,x[i].section_4); 
-    //     break;
-    // }
-    // u32(o + 12) && im_hwvx_pc_triggers_and_actions_12(u32(o + 12) + g.m,x[i].section_12); 
-    // u32(o + 20) && im_hwvx_pc_actions(u32(o + 20) + g.m,x[i].section_20); 
+    switch (u32(o + 8)) {
+    case 1:
+        u32(o + 4) && im_hwvx_pc_triggers_and_actions_4t1(u32(o + 4) + g.m, x[i].section_4);
+        break;
+    case 3:
+        u32(o + 4) && im_hwvx_pc_triggers_and_actions_4t3(u32(o + 4) + g.m, x[i].section_4);
+        break;
+    case 5:
+        u32(o + 4) && im_hwvx_pc_triggers_and_actions_4t5(u32(o + 4) + g.m, x[i].section_4);
+        break;
+    case 6:
+        u32(o + 4) && im_hwvx_pc_triggers_and_actions_4t6(u32(o + 4) + g.m, x[i].section_4);
+        break;
+    default:
+        u32(o + 4) && im_hwvx_pc_triggers_and_actions_4trest(u32(o + 4) + g.m, x[i].section_4);
+        break;
+    }
+    for (let ii = 0; ii < u32(o + 16); ii++) {
+        im_hwvx_pc_triggers_and_actions_12(u32(o + 12) + (ii * 44) + g.m, ii, x[i].section_12);
+    }
+    for (let ii = 0; ii < u32(o + 28); ii++) {
+        im_hwvx_pc_actions(u32(o + 20) + (ii * 24) + g.m, ii, x[i].section_20);
+    }
     return x[i].id
     // 44 bytes;
 
@@ -2779,10 +3147,10 @@ function im_hwvx_pc_triggers_and_actions(o, i, x) {
 function im_hwvx_pc_triggers_and_actions_4t1(o, x) {
     x.push({
         sec_id: "ljKo",
-        unordered_hwvx_pc_triggers_and_actions_4t1_0_0: 0,
+        unordered_hwvx_interface_0: 0,
     });
 
-    x[0].unordered_hwvx_pc_triggers_and_actions_4t1_0_0 = in_ml(u32(o + 0), g.hwvx_triggers_and_actions_4t1_0_array, im_hwvx_pc_triggers_and_actions_4t1_0, g.unordered_ref.hwvx_triggers_and_actions_4t1_0);
+    x[0].unordered_hwvx_interface_0 = in_ml(u32(o + 0), g.hwvx_interface_array, im_hwvx_pc_interface, g.unordered_ref.hwvx_interface);
 
     // 16 bytes;
 
@@ -2805,29 +3173,48 @@ function im_hwvx_pc_triggers_and_actions_4t5(o, x) {
         sec_id: "y@YQ",
         u32_0: u32(o + 0),
         section_4: [],
+        section_4_type: [],
         u32_8: u32(o + 8),
         section_12: [],
         u32_16: u32(o + 16),
     });
+    let type_object = hwvx_return_if_value_in_multilink(o + 4)
+    x[0].section_4 = type_object.section
+    x[0].section_4_type = type_object.type
 
-    u32(o + 4) && im_hwvx_pc_world_108(u32(o + 4) + g.m, x[0].section_4);
-    // offset? 
     switch (u32(o + 16)) {
     case 0:
         x[0].section_12 = in_ml(u32(o + 12), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-        break;
+        break
+    case 21:
+    case 22:
+        x[0].section_12 = f32(o + 12);
+        break
     }
+
     // 32 bytes;
 
 }
 function im_hwvx_pc_triggers_and_actions_4t6(o, x) {
     x.push({
         sec_id: "spCK",
-        section_0: [],
+        u32_0: u32(o + 0),
+        section: [],
     });
 
-    u32(o + 0) && im_hwvx_pc_triggers_and_actions_4trest(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
+    switch (u32(o)) {
+    case 1:
+    case 2:
+        im_hwvx_pc_triggers_and_actions_4trest(o, x[0].section)
+        break
+    case 4:
+        im_hwvx_pc_triggers_and_actions_4t6t4(o + 4, x[0].section)
+        break
+    case 20:
+    case 21:
+        im_hwvx_pc_triggers_and_actions_4t6t20(o + 4, x[0].section)
+        break
+    }
 
     // 4 bytes;
 
@@ -2869,50 +3256,57 @@ function im_hwvx_pc_triggers_and_actions_4trest(o, x) {
     x.push({
         sec_id: "_qnL",
         u32_0: u32(o + 0),
+        section_2: [],
+        section_3: [],
+        section_4: [],
         //amount?
     });
 
-    // 4 bytes;
+    let _1st_amnt = u32(o)
+    let _1st_length = (_1st_amnt * 4) + 4 + o
 
+    for (let i = 0; i < _1st_amnt; i++) {
+        get_hwvx_triggers_and_actions_4trest_1st(u32(o + 4) + (i * 4) + g.m, i, x[0].section_2)
+    }
+
+    let _2nd_amnt = 0
+    let _2nd_length = 0
+    _2nd_amnt = u32(_1st_length)
+    _2nd_length = (_2nd_amnt * 4) + _1st_length + 4
+
+    o = _1st_length
+    for (let i = 0; i < _2nd_amnt; i++) {
+        get_hwvx_triggers_and_actions_4trest_2nd(u32(o + 4) + (i * 4) + g.m, i, x[0].section_4)
+    }
+    // 4 bytes;
 }
-function im_hwvx_pc_triggers_and_actions_12(o, x) {
+
+function get_hwvx_triggers_and_actions_4trest_1st(o, i, x) {
+    x.push({
+        sec_id: "a????",
+        section_0: [],
+        type: "?",
+        //amount?
+    });
+    let type_object = hwvx_return_if_value_in_multilink(o)
+    x[i].section_0 = type_object.section
+    x[i].type = type_object.type
+}
+function get_hwvx_triggers_and_actions_4trest_2nd(o, i, x) {
+    x.push({
+        sec_id: "b????",
+        section_0: [],
+        type: "?",
+        //amount?
+    });
+    let type_object = hwvx_return_if_value_in_multilink(o)
+    x[i].section_0 = type_object.section
+    x[i].type = type_object.type
+}
+
+function im_hwvx_pc_triggers_and_actions_12(o, i, x) {
     x.push({
         sec_id: "7jf[",
-        section_0: [],
-    });
-
-    u32(o + 0) && im_hwvx_pc_world_36_48(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
-
-    // ([0] *4) bytes;
-
-}
-function im_hwvx_pc_triggers_and_actions_12_4(o, x) {
-    x.push({
-        sec_id: "gIZv",
-        u32_0: u32(o + 0),
-        //amount?
-    });
-
-    // 4 bytes;
-
-}
-function im_hwvx_pc_actions(o, x) {
-    x.push({
-        sec_id: "06f=",
-        section_0: [],
-    });
-
-    u32(o + 0) && im_hwvx_pc_world_12(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
-
-    // ([0] *4) bytes;
-
-}
-function im_hwvx_pc_actions_4tAirboxChangeMode(o, i, x) {
-    x.push({
-        id: gen_id(),
-        sec_id: ":O[[",
         u32_0: u32(o + 0),
         section_4: [],
         u32_8: u32(o + 8),
@@ -2920,624 +3314,732 @@ function im_hwvx_pc_actions_4tAirboxChangeMode(o, i, x) {
     });
 
     u32(o + 4) && im_hwvx_pc_triggers_and_actions_12_4(u32(o + 4) + g.m, x[i].section_4);
+    return x[i].id
+    // ([0] *4) bytes;
 
 }
-function im_hwvx_pc_actions_4tCameraSetTargetst13(o, x) {
+function im_hwvx_pc_triggers_and_actions_12_4(o, x) {
     x.push({
-        sec_id: "LGOJ",
+        sec_id: "gIZv",
         u32_0: u32(o + 0),
         section_4: [],
+        section_4_type: [],
         u32_8: u32(o + 8),
         section_12: [],
+        section_12_type: [],
         section_16: [],
     });
 
+    let type_object = hwvx_return_if_value_in_multilink(o + 4)
+    x[0].section_4 = type_object.section
+    x[0].section_4_type = type_object.type
+
+    // 4 = type
+    type_object = hwvx_return_if_value_in_multilink(o + 12)
+    x[0].section_12 = type_object.section
+    x[0].section_12_type = type_object.type
+    // 12 = type
+
     switch (u32(o + 0)) {
     case 1:
-        x[0].section_4 = in_ml(u32(o + 4), g.hwvx_triggers_and_actions_12_4_4_array, im_hwvx_pc_triggers_and_actions_12_4_4, g.unordered_ref.hwvx_triggers_and_actions_12_4_4);
+        x[0].section_16 = u32(o + 16)
         break;
+    case 22:
+        x[0].section_16 = f32(o + 16)
+        break;
+    default:
+        x[0].section_16 = u32(o + 16)
     }
-    falsefalse
-    // 32 bytes;
+
+    // 4 bytes;
 
 }
-function im_hwvx_pc_actions_4tCameraSetTargetst14(o, i, x) {
+function im_hwvx_pc_actions(o, i, x) {
+    x.push({
+        sec_id: "06f=",
+    u32_0: u32(o + 0),//check this
+    section_4: [],
+    u32_8: u32(o + 8),
+    u32_12: u32(o + 12),
+    u8_16: u8(o + 16),
+    u8_17: u8(o + 17),
+    u8_18: u8(o + 18),
+    u8_19: u8(o + 19),
+    u32_20: u32(o + 20),
+    });
+
+    switch (u32(o)) {
+    case 0:
+        u32(o + 4) && im_hwvx_pc_actions_4tAirboxChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 1:
+        switch (u32(o + 8)) {
+        case 13:
+            u32(o + 4) && im_hwvx_pc_actions_4tCameraSetTargetst13(u32(o + 4) + g.m, x[i].section_4);
+            break
+        case 14:
+            u32(o + 4) && im_hwvx_pc_actions_4tCameraSetTargetst14(u32(o + 4) + g.m, x[i].section_4);
+            break
+        case 17:
+            u32(o + 4) && im_hwvx_pc_actions_4tCameraSetTargetst17(u32(o + 4) + g.m, x[i].section_4);
+            break
+        default:
+            console.log(o)
+        }
+        break
+    case 2:
+        u32(o + 4) && im_hwvx_pc_actions_4tDestructibleChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 3:
+        u32(o + 4) && im_hwvx_pc_actions_4tFXPointChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 4:
+        u32(o + 4) && im_hwvx_pc_actions_4tInterfacePlay(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 5:
+        u32(o + 4) && im_hwvx_pc_actions_4tItemChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 7:
+        u32(o + 4) && im_hwvx_pc_actions_4tTimerChangevalue(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 8:
+        u32(o + 4) && im_hwvx_pc_actions_4tTimerChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 9:
+        u32(o + 4) && im_hwvx_pc_actions_4tMoveableChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 10:
+        switch (u32(o + 8)) {
+        case 10:
+            u32(o + 4) && im_hwvx_pc_actions_4tMusicChanget10(u32(o + 4) + g.m, x[i].section_4);
+            break
+        case 20:
+            u32(o + 4) && im_hwvx_pc_actions_4tMusicChanget20(u32(o + 4) + g.m, x[i].section_4);
+            break
+        default:
+            console.log(o)
+        }
+        break
+    case 12:
+        u32(o + 4) && im_hwvx_pc_actions_4tNavPointChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 15:
+        switch (u32(o + 8)) {
+        case 1:
+            u32(o + 4) && im_hwvx_pc_actions_4tTargetArrowSetTargett1(u32(o + 4) + g.m, x[i].section_4);
+            break
+        case 5:
+            u32(o + 4) && im_hwvx_pc_actions_4tTargetArrowSetTargett5(u32(o + 4) + g.m, x[i].section_4);
+            break
+        }
+        break
+    case 16:
+        u32(o + 4) && im_hwvx_pc_actions_4tVariableChangeValue(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 17:
+        u32(o + 4) && im_hwvx_pc_actions_4tVehicleChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 20:
+        u32(o + 4) && im_hwvx_pc_actions_4tPrintDebugString(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 21:
+        u32(o + 4) && im_hwvx_pc_actions_4tVehicleTeleport(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 22:
+        u32(o + 4) && im_hwvx_pc_actions_4tVehicleChangeControl(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 24:
+        u32(o + 4) && im_hwvx_pc_actions_4tVehicleRemoveItem(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 26:
+        u32(o + 4) && im_hwvx_pc_actions_4tVariableChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 31:
+        u32(o + 4) && im_hwvx_pc_actions_4tEndInterface(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 32:
+        u32(o + 4) && im_hwvx_pc_actions_4tHUDChangeMode(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 34:
+        switch (u32(o + 8)) {
+        case 5:
+            u32(o + 4) && im_hwvx_pc_actions_4tCodeVariableModifyValuet5(u32(o + 4) + g.m, x[i].section_4);
+            break
+        case 6:
+            u32(o + 4) && im_hwvx_pc_actions_4tCodeVariableModifyValuet6(u32(o + 4) + g.m, x[i].section_4);
+            break
+        }
+        break
+    case 36:
+        u32(o + 4) && im_hwvx_pc_actions_4tPauseTACSystem(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 38:
+        u32(o + 4) && im_hwvx_pc_actions_4tResetGameRound(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 39:
+        u32(o + 4) && im_hwvx_pc_actions_4tRoundComplete(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 40:
+        u32(o + 4) && im_hwvx_pc_actions_4tVehicleGiveItem(u32(o + 4) + g.m, x[i].section_4);
+        break
+    case 41:
+        u32(o + 4) && im_hwvx_pc_actions_4tSetPlayerOrder(u32(o + 4) + g.m, x[i].section_4);
+        break
+    }
+
+    // ([0] *4) bytes;
+
+}
+function im_hwvx_pc_actions_4tAirboxChangeMode(o, x) {
+    x.push({
+        id: gen_id(),
+        sec_id: ":O[[",
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),//amount?
+    section_2: [],//amount?
+    });
+
+    let amt = u32(o + 4)
+    for (let i = 0; i < amt; i++) {
+        get_hwvx_pc_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+    }
+
+}
+
+function get_hwvx_pc_triggers_and_actions_sub_list(o, i, x) {
+    x.push({
+        sec_id: "sub?",
+        section_0: [],
+        type: "?",
+        //amount?
+    });
+    let type_object = hwvx_return_if_value_in_multilink(o)
+    x[i].section_0 = type_object.section
+    x[i].type = type_object.type
+}
+
+function im_hwvx_pc_actions_4tCameraSetTargetst13(o, x) {
+    x.push({
+        sec_id: "LGOJ",
+    u32_4: u32(o + 4),
+    u32_8: u32(o + 8),
+    section_12: [],
+    f32_16: f32(o + 16),
+    f32_20: f32(o + 20),
+    f32_24: f32(o + 24),
+    u32_28: u32(o + 28),
+    section_32: [],
+    f32_40: f32(o + 40),
+    u32_48: u32(o + 48),
+});
+
+ switch(u32(o + 8)){
+    case 1:
+x[0].section_12 = in_ml(u32(o + 12), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+    break;
+    case 6:
+x[0].section_12 = in_ml(u32(o + 12), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
+    break;
+}switch(u32(o + 28)){
+    case 1:
+x[0].section_32 = in_ml(u32(o + 32), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+    break;
+}return x[0].id 
+// 64 bytes;
+
+
+}
+function im_hwvx_pc_actions_4tCameraSetTargetst14(o, x) {
     x.push({
         id: gen_id(),
         sec_id: "E[LH",
-        u32_0: u32(o + 0),
-        //check this
-        section_4: [],
-        u32_8: u32(o + 8),
-        u32_12: u32(o + 12),
-        u8_16: u8(o + 16),
-        u8_17: u8(o + 17),
-        u8_18: u8(o + 18),
-        u8_19: u8(o + 19),
-        u32_20: u32(o + 20),
-    });
+    u32_4: u32(o + 4),
+    f32_8: f32(o + 8),
+    u32_12: u32(o + 12),
+    section_16: [],
+    f32_20: f32(o + 20),
+    f32_24: f32(o + 24),
+    f32_28: f32(o + 28),
+    u32_32: u32(o + 32),
+    section_36: [],
+    f32_44: f32(o + 44),
+    u32_52: u32(o + 52),
+});
 
-    switch (u32(o + 0)) {
-    case 0:
-        u32(o + 4) && im_hwvx_pc_actions_4tAirboxChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tCameraSetTargetst13(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tCameraSetTargetst14(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tCameraSetTargetst17(u32(o + 4) + g.m, x[i].section_4);
-        break;
+ switch(u32(o + 12)){
+    case 1:
+x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+    break;
     case 2:
-        u32(o + 4) && im_hwvx_pc_actions_4tDestructibleChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
+x[0].section_16 = in_ml(u32(o + 16), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
+    break;
     case 3:
-        u32(o + 4) && im_hwvx_pc_actions_4tFXPointChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
+x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
+    break;
+    case 6:
+x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
+    break;
+}switch(u32(o + 32)){
+    case 1:
+x[0].section_36 = in_ml(u32(o + 36), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+    break;
+    case 2:
+x[0].section_36 = in_ml(u32(o + 36), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
+    break;
+    case 3:
+x[0].section_36 = in_ml(u32(o + 36), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
+    break;
     case 4:
-        u32(o + 4) && im_hwvx_pc_actions_4tInterfacePlay(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 5:
-        u32(o + 4) && im_hwvx_pc_actions_4tItemChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 7:
-        u32(o + 4) && im_hwvx_pc_actions_4tTimerChangevalue(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 8:
-        u32(o + 4) && im_hwvx_pc_actions_4tTimerChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 9:
-        u32(o + 4) && im_hwvx_pc_actions_4tMoveableChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tMusicChanget10(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tMusicChanget20(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 12:
-        u32(o + 4) && im_hwvx_pc_actions_4tNavPointChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tTargetArrowSetTargett1(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tTargetArrowSetTargett5(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 16:
-        u32(o + 4) && im_hwvx_pc_actions_4tVariableChangeValue(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 17:
-        u32(o + 4) && im_hwvx_pc_actions_4tVehicleChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 20:
-        u32(o + 4) && im_hwvx_pc_actions_4tPrintDebugString(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 21:
-        u32(o + 4) && im_hwvx_pc_actions_4tVehicleTeleport(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 22:
-        u32(o + 4) && im_hwvx_pc_actions_4tVehicleChangeControl(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 24:
-        u32(o + 4) && im_hwvx_pc_actions_4tVehicleRemoveItem(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 26:
-        u32(o + 4) && im_hwvx_pc_actions_4tVariableChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 31:
-        u32(o + 4) && im_hwvx_pc_actions_4tEndInterface(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 32:
-        u32(o + 4) && im_hwvx_pc_actions_4tHUDChangeMode(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tCodeVariableModifyValuet5(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case [8]:
-        u32(o + 4) && im_hwvx_pc_actions_4tCodeVariableModifyValuet6(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 36:
-        u32(o + 4) && im_hwvx_pc_actions_4tPauseTACSystem(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 38:
-        u32(o + 4) && im_hwvx_pc_actions_4tResetGameRound(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 39:
-        u32(o + 4) && im_hwvx_pc_actions_4tRoundComplete(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 40:
-        u32(o + 4) && im_hwvx_pc_actions_4tVehicleGiveItem(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    case 41:
-        u32(o + 4) && im_hwvx_pc_actions_4tSetPlayerOrder(u32(o + 4) + g.m, x[i].section_4);
-        break;
-    }
+x[0].section_36 = in_ml(u32(o + 36), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
+    break;
+    case 6:
+x[0].section_36 = in_ml(u32(o + 36), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
+    break;
+} 
+// 64 bytes;
+
 }
 function im_hwvx_pc_actions_4tCameraSetTargetst17(o, x) {
     x.push({
         sec_id: "g9Bl",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        //amount?
-    });
+    u32_4: u32(o + 4),
+    f32_8: f32(o + 8),
+    f32_12: f32(o + 12),
+    f32_16: f32(o + 16),
+    f32_20: f32(o + 20),
+    u32_24: u32(o + 24),
+    section_28: [],
+    f32_32: f32(o + 32),
+    f32_36: f32(o + 36),
+    u32_44: u32(o + 44),
+    section_48: [],
+    f32_52: f32(o + 52),
+    f32_56: f32(o + 56),
+    u32_64: u32(o + 64),
+});
 
-    // 8 bytes;
-
+ switch(u32(o + 24)){
+    case 1:
+x[0].section_28 = in_ml(u32(o + 28), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+    break;
+    case 2:
+x[0].section_28 = in_ml(u32(o + 28), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
+    break;
+    case 3:
+x[0].section_28 = in_ml(u32(o + 28), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
+    break;
+    case 6:
+x[0].section_28 = in_ml(u32(o + 28), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
+    break;
+}switch(u32(o + 44)){
+    case 1:
+x[0].section_48 = in_ml(u32(o + 48), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+    break;
+    case 2:
+x[0].section_48 = in_ml(u32(o + 48), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
+    break;
+    case 3:
+x[0].section_48 = in_ml(u32(o + 48), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
+    break;
+    case 6:
+x[0].section_48 = in_ml(u32(o + 48), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
+    break;
+} 
+// 80 bytes;
 }
 function im_hwvx_pc_actions_4tDestructibleChangeMode(o, x) {
     x.push({
         sec_id: "tokw",
-        section_0: [],
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),//amount?
+    section_2:[],
     });
 
-    u32(o + 0) && im_hwvx_pc_world_108(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
-
+    let amt = u32(o + 4)
+    for (let i = 0; i < amt; i++) {
+        get_hwvx_pc_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+    }
     // ([4] *4) bytes;
 
 }
 function im_hwvx_pc_actions_4tFXPointChangeMode(o, x) {
     x.push({
         sec_id: "Mlm9",
-        u32_4: u32(o + 4),
-        u32_8: u32(o + 8),
-        section_12: [],
-        f32_16: f32(o + 16),
-        f32_20: f32(o + 20),
-        f32_24: f32(o + 24),
-        u32_28: u32(o + 28),
-        section_32: [],
-        f32_40: f32(o + 40),
-        u32_48: u32(o + 48),
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),//amount?
+    section_2:[],
     });
 
-    switch (u32(o + 8)) {
-    case 1:
-        x[0].section_12 = in_ml(u32(o + 12), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-        break;
-    case 6:
-        x[0].section_12 = in_ml(u32(o + 12), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
-        break;
+    let amt = u32(o + 4)
+    for (let i = 0; i < amt; i++) {
+        get_hwvx_pc_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
     }
-    switch (u32(o + 28)) {
-    case 1:
-        x[0].section_32 = in_ml(u32(o + 32), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-        break;
-    }
-    // 64 bytes;
 
 }
 function im_hwvx_pc_actions_4tInterfacePlay(o, x) {
     x.push({
         sec_id: "W_H0",
-        u32_4: u32(o + 4),
-        f32_8: f32(o + 8),
-        u32_12: u32(o + 12),
-        section_16: [],
-        f32_20: f32(o + 20),
-        f32_24: f32(o + 24),
-        f32_28: f32(o + 28),
-        u32_32: u32(o + 32),
-        section_36: [],
-        f32_44: f32(o + 44),
-        u32_52: u32(o + 52),
-    });
+      unordered_hwvx_interface_0: 0,
+});
 
-    switch (u32(o + 12)) {
-    case 1:
-        x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-        break;
-    case 2:
-        x[0].section_16 = in_ml(u32(o + 16), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
-        break;
-    case 3:
-        x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
-        break;
-    case 6:
-        x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
-        break;
-    }
-    switch (u32(o + 32)) {
-    case 1:
-        x[0].section_36 = in_ml(u32(o + 36), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-        break;
-    case 2:
-        x[0].section_36 = in_ml(u32(o + 36), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
-        break;
-    case 3:
-        x[0].section_36 = in_ml(u32(o + 36), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
-        break;
-    case 4:
-        x[0].section_36 = in_ml(u32(o + 36), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
-        break;
-    case 6:
-        x[0].section_36 = in_ml(u32(o + 36), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
-        break;
-    }
-    // 64 bytes;
+ x[0].unordered_hwvx_interface_0 = in_ml(u32(o + 0), g.hwvx_interface_array, im_hwvx_pc_interface, g.unordered_ref.hwvx_interface);
+
+    // 16 bytes;
+
 
 }
 function im_hwvx_pc_actions_4tItemChangeMode(o, x) {
     x.push({
         sec_id: "fX>L",
-        u32_4: u32(o + 4),
-        f32_8: f32(o + 8),
-        f32_12: f32(o + 12),
-        f32_16: f32(o + 16),
-        f32_20: f32(o + 20),
-        u32_24: u32(o + 24),
-        section_28: [],
-        f32_32: f32(o + 32),
-        f32_36: f32(o + 36),
-        u32_44: u32(o + 44),
-        section_48: [],
-        f32_52: f32(o + 52),
-        f32_56: f32(o + 56),
-        u32_64: u32(o + 64),
+      u32_0: u32(o + 0),
+    u32_4: u32(o + 4),//amount?
+    section_2:[],
     });
 
-    switch (u32(o + 24)) {
-    case 1:
-        x[0].section_28 = in_ml(u32(o + 28), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-        break;
-    case 2:
-        x[0].section_28 = in_ml(u32(o + 28), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
-        break;
-    case 3:
-        x[0].section_28 = in_ml(u32(o + 28), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
-        break;
-    case 6:
-        x[0].section_28 = in_ml(u32(o + 28), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
-        break;
+    let amt = u32(o + 4)
+    for (let i = 0; i < amt; i++) {
+        get_hwvx_pc_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
     }
-    switch (u32(o + 44)) {
-    case 1:
-        x[0].section_48 = in_ml(u32(o + 48), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-        break;
-    case 2:
-        x[0].section_48 = in_ml(u32(o + 48), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
-        break;
-    case 3:
-        x[0].section_48 = in_ml(u32(o + 48), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
-        break;
-    case 6:
-        x[0].section_48 = in_ml(u32(o + 48), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
-        break;
-    }
-    // 80 bytes;
 
 }
 function im_hwvx_pc_actions_4tTimerChangevalue(o, x) {
     x.push({
         sec_id: "fgHH",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        //amount?
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    unordered_hwvx_world_76_8: 0,
+    u32_12: u32(o + 12),
+    section_16: [],
+});
 
-    // 8 bytes;
-
+ x[0].unordered_hwvx_world_76_8 = in_ml(u32(o + 8), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+switch(u32(o + 12)){
+    case 1:
+x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+    break;
+}return x[0].id 
+// 32 bytes;
 }
 function im_hwvx_pc_actions_4tTimerChangeMode(o, x) {
     x.push({
         sec_id: "5a;y",
-        section_0: [],
-    });
+      u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    u32_8: u32(o + 8),
+    unordered_hwvx_world_76_12: 0,
+});
 
-    u32(o + 0) && im_hwvx_pc_Airbox(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
-
-    // ([4] *4) bytes;
-
+ x[0].unordered_hwvx_world_76_12 = in_ml(u32(o + 12), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+ 
+// 16 bytes;
 }
 function im_hwvx_pc_actions_4tMoveableChangeMode(o, x) {
     x.push({
         sec_id: "Nn0L",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        //amount?
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    u32_8: u32(o + 8),
+    u32_16: u32(o + 16),
+    unordered_hwvx_world_20_20: 0,
+    unordered_hwvx_world_20_24: 0,
+});
 
-    // 8 bytes;
-
+ x[0].unordered_hwvx_world_20_20 = in_ml(u32(o + 20), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
+x[0].unordered_hwvx_world_20_24 = in_ml(u32(o + 24), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
+ 
+// 32 bytes;
 }
 function im_hwvx_pc_actions_4tMusicChanget10(o, x) {
     x.push({
         sec_id: "FFn^",
-        section_0: [],
-    });
+    f32_0: f32(o + 0),
+    f32_8: f32(o + 8),
+    f32_16: f32(o + 16),
+    u32_24: u32(o + 24),
+    u32_28: u32(o + 28),
+    u32_32: u32(o + 32),
+});
 
-    u32(o + 0) && im_hwvx_pc_Airbox(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
-
-    // ([4] *4) bytes;
-
+// 48 bytes;
 }
 function im_hwvx_pc_actions_4tMusicChanget20(o, x) {
     x.push({
         sec_id: "QGo>",
-        unordered_hwvx_pc_interface_0: 0,
-    });
+    f32_0: f32(o + 0),
+    f32_8: f32(o + 8),
+    f32_16: f32(o + 16),
+    u32_24: u32(o + 24),
+    u32_28: u32(o + 28),
+    u32_32: u32(o + 32),
+    u32_36: u32(o + 36),
+    u32_48: u32(o + 48),
+    f32_52: f32(o + 52),
+    u32_76: u32(o + 76),
+});
 
-    x[0].unordered_hwvx_pc_interface_0 = in_ml(u32(o + 0), g.hwvx_interface_array, im_hwvx_pc_interface, g.unordered_ref.hwvx_interface);
-
-    // 16 bytes;
+// 80 bytes;
 
 }
 function im_hwvx_pc_actions_4tNavPointChangeMode(o, x) {
     x.push({
         sec_id: "iN;x",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        //amount?
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),//amount?
+    section_2:[],
     });
 
-    // 8 bytes;
+    let amt = u32(o + 4)
+    for (let i = 0; i < amt; i++) {
+        get_hwvx_pc_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+    }
+// 8 bytes;
 
 }
 function im_hwvx_pc_actions_4tTargetArrowSetTargett1(o, x) {
     x.push({
         sec_id: "a8@U",
-        section_0: [],
     });
-
-    u32(o + 0) && im_hwvx_pc_world_36_48_24(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
-
-    // ([4] *4) bytes;
+// 16 bytes;
 
 }
 function im_hwvx_pc_actions_4tTargetArrowSetTargett5(o, x) {
     x.push({
         sec_id: "_diC",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        unordered_hwvx_pc_world_76_8: 0,
-        u32_12: u32(o + 12),
-        section_16: [],
-    });
+      u32_0: u32(o + 0),
+    section_4: [],
+});
 
-    x[0].unordered_hwvx_pc_world_76_8 = in_ml(u32(o + 8), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
-    switch (u32(o + 12)) {
+ switch(u32(o + 0)){
     case 1:
-        x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
-        break;
-    }
-    // 32 bytes;
+x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+    break;
+    case 2:
+x[0].section_4 = in_ml(u32(o + 4), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
+    break;
+    case 3:
+x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
+    break;
+    case 4:
+x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
+    break;
+    case 6:
+x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
+    break;
+} 
+// 32 bytes;
 
 }
 function im_hwvx_pc_actions_4tVariableChangeValue(o, x) {
     x.push({
         sec_id: "ACYg",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        u32_8: u32(o + 8),
-        unordered_hwvx_pc_world_76_12: 0,
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    unordered_hwvx_world_76_8: 0,
+    u32_12: u32(o + 12),
+    section_16: [],
+    unordered_hwvx_world_12_20: 0,
+});
 
-    x[0].unordered_hwvx_pc_world_76_12 = in_ml(u32(o + 12), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
-
-    // 16 bytes;
-
+ x[0].unordered_hwvx_world_76_8 = in_ml(u32(o + 8), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+switch(u32(o + 12)){
+    case 1:
+x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+    break;
+}x[0].unordered_hwvx_world_12_20 = in_ml(u32(o + 20), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+ 
+// 32 bytes;
 }
 function im_hwvx_pc_actions_4tVehicleChangeMode(o, x) {
     x.push({
         sec_id: "e^ln",
         u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        u32_8: u32(o + 8),
-        u32_16: u32(o + 16),
-        unordered_hwvx_pc_world_20_20: 0,
-        unordered_hwvx_pc_world_20_24: 0,
+    u32_4: u32(o + 4),//amount?
+    section_2:[],
     });
 
-    x[0].unordered_hwvx_pc_world_20_20 = in_ml(u32(o + 20), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
-    x[0].unordered_hwvx_pc_world_20_24 = in_ml(u32(o + 24), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
-
-    // 32 bytes;
+    let amt = u32(o + 4)
+    for (let i = 0; i < amt; i++) {
+        get_hwvx_pc_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+    }
 
 }
 function im_hwvx_pc_actions_4tPrintDebugString(o, x) {
     x.push({
         sec_id: "4Yri",
-        f32_0: f32(o + 0),
-        f32_8: f32(o + 8),
-        f32_16: f32(o + 16),
-        u32_24: u32(o + 24),
-        u32_28: u32(o + 28),
-        u32_32: u32(o + 32),
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    unordered_hwvx_text_8: 0,
+});
 
-    // 48 bytes;
-
+ x[0].unordered_hwvx_text_8 = in_ml(u32(o + 8), g.hwvx_text_array, im_hwvx_pc_text, g.unordered_ref.hwvx_text);
+// 16 bytes;
 }
 function im_hwvx_pc_actions_4tVehicleTeleport(o, x) {
     x.push({
         sec_id: ">8[6",
-        f32_0: f32(o + 0),
-        f32_8: f32(o + 8),
-        f32_16: f32(o + 16),
-        u32_24: u32(o + 24),
-        u32_28: u32(o + 28),
-        u32_32: u32(o + 32),
-        u32_36: u32(o + 36),
-        u32_48: u32(o + 48),
-        f32_52: f32(o + 52),
-        u32_76: u32(o + 76),
-    });
+      u32_0: u32(o + 0),
+    unordered_hwvx_world_52_4: 0,
+    u32_8: u32(o + 8),
+    unordered_hwvx_world_12_12: 0,
+});
 
-    // 80 bytes;
+x[0].unordered_hwvx_world_52_4 = in_ml(u32(o + 4), g.hwvx_world_52_array, im_hwvx_pc_world_52, g.unordered_ref.hwvx_world_52);
+x[0].unordered_hwvx_world_12_12 = in_ml(u32(o + 12), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
 
+// 32 bytes;
 }
 function im_hwvx_pc_actions_4tVehicleChangeControl(o, x) {
     x.push({
         sec_id: "PQm;",
         u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        //amount?
+    u32_8: u32(o + 8),//amount?
+    section_2:[],
     });
 
-    // 8 bytes;
-
+    let amt = u32(o + 8)
+    for (let i = 0; i < amt; i++) {
+        get_hwvx_pc_triggers_and_actions_sub_list(u32(o + 12 + (i * 4)) + g.m, i, x[0].section_2)
+    }
 }
 function im_hwvx_pc_actions_4tVehicleRemoveItem(o, x) {
     x.push({
         sec_id: ">QCg",
-        section_0: [],
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    unordered_hwvx_world_12_8: 0,
+});
 
-    u32(o + 0) && im_hwvx_pc_world_routes(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
-
-    // ([4] *4) bytes;
-
+ x[0].unordered_hwvx_world_12_8 = in_ml(u32(o + 8), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
 }
 function im_hwvx_pc_actions_4tVariableChangeMode(o, x) {
     x.push({
         sec_id: "H:9G",
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    unordered_hwvx_world_76_8: 0,
+});
 
-    // 16 bytes;
-
+ x[0].unordered_hwvx_world_76_8 = in_ml(u32(o + 8), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+ 
+// 16 bytes;
 }
 function im_hwvx_pc_actions_4tEndInterface(o, x) {
     x.push({
         sec_id: "C;l7",
-        u32_0: u32(o + 0),
-        section_4: [],
-    });
+    u32_0: u32(o + 0),
+    unordered_hwvx_interface_4: 0,
+});
 
-    switch (u32(o + 0)) {
-    case 1:
-        x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-        break;
-    case 2:
-        x[0].section_4 = in_ml(u32(o + 4), g.hwvx_Airbox_array, im_hwvx_pc_Airbox, g.unordered_ref.hwvx_Airbox);
-        break;
-    case 3:
-        x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
-        break;
-    case 4:
-        x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_20_array, im_hwvx_pc_world_20, g.unordered_ref.hwvx_world_20);
-        break;
-    case 6:
-        x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_routes_array, im_hwvx_pc_world_routes, g.unordered_ref.hwvx_world_routes);
-        break;
-    }
-    // 32 bytes;
+ x[0].unordered_hwvx_interface_4 = in_ml(u32(o + 4), g.hwvx_interface_array, im_hwvx_pc_interface, g.unordered_ref.hwvx_interface);
+ 
+// 16 bytes;
 
 }
 function im_hwvx_pc_actions_4tHUDChangeMode(o, x) {
     x.push({
         sec_id: "dSi>",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        unordered_hwvx_pc_world_76_8: 0,
-        u32_12: u32(o + 12),
-        section_16: [],
-        unordered_hwvx_pc_world_12_20: 0,
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    u32_8: u32(o + 8),
+});
 
-    x[0].unordered_hwvx_pc_world_76_8 = in_ml(u32(o + 8), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
-    switch (u32(o + 12)) {
-    case 1:
-        x[0].section_16 = in_ml(u32(o + 16), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
-        break;
-    }
-    x[0].unordered_hwvx_pc_world_12_20 = in_ml(u32(o + 20), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+// 16 bytes;
 
-    // 32 bytes;
 
 }
 function im_hwvx_pc_actions_4tCodeVariableModifyValuet5(o, x) {
     x.push({
         sec_id: "j8XE",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        //amount?
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    u32_8: u32(o + 8),
+    f32_16: f32(o + 16),
+});
 
-    // 8 bytes;
-
+// 32 bytes;
 }
 function im_hwvx_pc_actions_4tCodeVariableModifyValuet6(o, x) {
     x.push({
         sec_id: "d?ko",
-        section_0: [],
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    u32_8: u32(o + 8),
+    unordered_hwvx_world_12_12: 0,
+    u32_16: u32(o + 16),
+    section_20: [],
+});
 
-    u32(o + 0) && im_hwvx_pc_world_routes(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
+ x[0].unordered_hwvx_world_12_12 = in_ml(u32(o + 12), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
 
-    // ([4] *4) bytes;
+    if (g.hwvx_world_76_array.includes(o + 20)) {
+      x[0].section_20 = in_ml(u32(o + 20), g.hwvx_world_76_array, im_hwvx_pc_world_76, g.unordered_ref.hwvx_world_76);
+    }else{
+        x[0].section_20 = f32(o + 20)
+    }
 
+// 32 bytes;
 }
 function im_hwvx_pc_actions_4tPauseTACSystem(o, x) {
     x.push({
         sec_id: "ujJ^",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        unordered_hwvx_pc_text_8: 0,
-    });
+    u32_0: u32(o + 0),
+});
 
-    x[0].unordered_hwvx_pc_text_8 = in_ml(u32(o + 8), g.hwvx_text_array, im_hwvx_pc_text, g.unordered_ref.hwvx_text);
-
-    // 16 bytes;
+// 16 bytes;
 
 }
 function im_hwvx_pc_actions_4tResetGameRound(o, x) {
     x.push({
         sec_id: "HmcY",
-        u32_0: u32(o + 0),
-        unordered_hwvx_pc_world_52_4: 0,
-        u32_8: u32(o + 8),
-        unordered_hwvx_pc_world_12_12: 0,
-    });
+    u32_0: u32(o + 0),
+    u32_4: u32(o + 4),
+    u32_8: u32(o + 8),
+});
 
-    x[0].unordered_hwvx_pc_world_52_4 = in_ml(u32(o + 4), g.hwvx_world_52_array, im_hwvx_pc_world_52, g.unordered_ref.hwvx_world_52);
-    x[0].unordered_hwvx_pc_world_12_12 = in_ml(u32(o + 12), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+// 16 bytes;
 
-    // 32 bytes;
 
 }
 function im_hwvx_pc_actions_4tRoundComplete(o, x) {
     x.push({
         sec_id: "jnUt",
-        u32_0: u32(o + 0),
-        u32_8: u32(o + 8),
-        //amount?
-    });
+    u32_0: u32(o + 0),
+});
 
-    // 12 bytes;
-
+// 16 bytes;
 }
 function im_hwvx_pc_actions_4tVehicleGiveItem(o, x) {
     x.push({
         sec_id: "tQ@M",
-        section_0: [],
-    });
+    u32_0: u32(o + 0),
+    section_4: [],
+    u32_8: u32(o + 8),
+    unordered_hwvx_world_12_12: 0,
+});
 
-    u32(o + 0) && im_hwvx_pc_world_12(u32(o + 0) + g.m, x[0].section_0);
-    // offset? 
-
-    // ([8] *4) bytes;
-
+ switch(u32(o + 0)){
+    case 0:
+x[0].section_4 = in_ml(u32(o + 4), g.hwvx_world_36_48_24_array, im_hwvx_pc_world_36_48_24, g.unordered_ref.hwvx_world_36_48_24);
+    break;
+}x[0].unordered_hwvx_world_12_12 = in_ml(u32(o + 12), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+ 
+// 32 bytes;
 }
 function im_hwvx_pc_actions_4tSetPlayerOrder(o, x) {
     x.push({
         sec_id: "idke",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        unordered_hwvx_pc_world_12_8: 0,
-    });
+    unordered_hwvx_world_12_0: 0,
+    unordered_hwvx_world_12_4: 0,
+    unordered_hwvx_world_12_8: 0,
+    unordered_hwvx_world_12_12: 0,
+});
 
-    x[0].unordered_hwvx_pc_world_12_8 = in_ml(u32(o + 8), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
-
-    // 16 bytes;
-
+ x[0].unordered_hwvx_world_12_0 = in_ml(u32(o + 0), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+x[0].unordered_hwvx_world_12_4 = in_ml(u32(o + 4), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+x[0].unordered_hwvx_world_12_8 = in_ml(u32(o + 8), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+x[0].unordered_hwvx_world_12_12 = in_ml(u32(o + 12), g.hwvx_world_12_array, im_hwvx_pc_world_12, g.unordered_ref.hwvx_world_12);
+ 
+// 16 bytes;
 }
 function im_hwvx_pc_collision(o, x) {
     x.push({
