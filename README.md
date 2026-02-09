@@ -67,3 +67,4 @@ Current Progress
 * Hot Wheels Velocity X (PC)
 * Hot Wheels Velocity X (GC)
 * Hot Wheels Velocity X (PS2)
+* Pac Man World Rally (Xbox)
