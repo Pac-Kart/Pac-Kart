@@ -153,12 +153,9 @@ add import/export tables for all sections
     hwvx_gc [traversable, no exports]
     hwvx_pc [traversable, no exports]
         fix:
-        im_hwvx_triggers_and_actions some sections not importing ?
         better way to handel this im_hwvx_proto_share_end
         im_hwvx_model_pc_8_12 can be imported but format is probbly wrong
-    hwvx_ps2
-        fix:
-        im_hwvx_ps2_actions_4tDestructibleChangeMode
+    hwvx_ps2 [traversable, no exports]
     svtrb_pc
     svtrb_psp
     svtrb_ps2

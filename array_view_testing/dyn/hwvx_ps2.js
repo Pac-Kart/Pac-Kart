@@ -134,6 +134,9 @@ function get_hwvx_ps2_sec_id(string) {
     case 'gIZv':
         return "hwvx_ps2_triggers_and_actions_12_4"
         break
+    case 'sub?':
+        return "hwvx_ps2_triggers_and_actions_sub_list"
+        break
     case '06f=':
         return "hwvx_ps2_actions"
         break
@@ -1868,7 +1871,7 @@ function im_hwvx_ps2_world(o, x) {
     u32(o + 4) && im_hwvx_ps2_world_4(u32(o + 4) + g.m, x[0].section_4);
 
     for (let i = 0; i < u32(o + 8); i++) {
-        im_hwvx_ps2_world_12(u32(o + 12) + (i * 96) + g.m, i, x[0].section_12);
+        x[0].section_12 = in_ml(u32(o + 12) + (i * 96), g.hwvx_ps2_world_12_array, im_hwvx_ps2_world_12, g.unordered_ref.hwvx_ps2_world_12);
     }
     for (let ii = 0; ii < u32(o + 16); ii++) {
         x[0].unordered_hwvx_ps2_world_20_20 = in_ml(u32(o + 20) + (ii * 32), g.hwvx_ps2_world_20_array, im_hwvx_ps2_world_20, g.unordered_ref.hwvx_ps2_world_20);
@@ -2755,10 +2758,10 @@ function hwvx_ps2_return_if_value_in_multilink(o) {
         section: [],
         type: "no link ?",
     }
-    if (o === 0) {
-    return value_object
+    let check_val = u32(o)
+    if (check_val === 0) {
+        return value_object
     }
-    let check_val = o
     if (g.models_array.includes(check_val)) {
         value_object.section = in_ml(u32(o), g.models_array, im_models, g.unordered_ref.models);
         value_object.type = "models"
@@ -3273,7 +3276,7 @@ function im_hwvx_ps2_triggers_and_actions_4trest(o, x) {
     let _1st_length = (_1st_amnt * 4) + 4 + o
 
     for (let i = 0; i < _1st_amnt; i++) {
-        get_hwvx_ps2_triggers_and_actions_4trest_1st(u32(o + 4) + (i * 4) + g.m, i, x[0].section_2)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 4 + (i * 4), i, x[0].section_2)
     }
 
     let _2nd_amnt = 0
@@ -3283,32 +3286,9 @@ function im_hwvx_ps2_triggers_and_actions_4trest(o, x) {
 
     o = _1st_length
     for (let i = 0; i < _2nd_amnt; i++) {
-        get_hwvx_ps2_triggers_and_actions_4trest_2nd(u32(o + 4) + (i * 4) + g.m, i, x[0].section_4)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 4 + (i * 4), i, x[0].section_4)
     }
     // 4 bytes;
-}
-
-function get_hwvx_ps2_triggers_and_actions_4trest_1st(o, i, x) {
-    x.push({
-        sec_id: "a????",
-        section_0: [],
-        type: "?",
-        //amount?
-    });
-    let type_object = hwvx_ps2_return_if_value_in_multilink(o)
-    x[i].section_0 = type_object.section
-    x[i].type = type_object.type
-}
-function get_hwvx_ps2_triggers_and_actions_4trest_2nd(o, i, x) {
-    x.push({
-        sec_id: "b????",
-        section_0: [],
-        type: "?",
-        //amount?
-    });
-    let type_object = hwvx_ps2_return_if_value_in_multilink(o)
-    x[i].section_0 = type_object.section
-    x[i].type = type_object.type
 }
 
 function im_hwvx_ps2_triggers_and_actions_12(o, i, x) {
@@ -3508,7 +3488,7 @@ function im_hwvx_ps2_actions_4tAirboxChangeMode(o, x) {
 
     let amt = u32(o + 4)
     for (let i = 0; i < amt; i++) {
-        get_hwvx_ps2_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 8 + (i * 4), i, x[0].section_2)
     }
 
 }
@@ -3664,7 +3644,7 @@ function im_hwvx_ps2_actions_4tDestructibleChangeMode(o, x) {
 
     let amt = u32(o + 4)
     for (let i = 0; i < amt; i++) {
-        get_hwvx_ps2_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 8 + (i * 4), i, x[0].section_2)
     }
     // ([4] *4) bytes;
 
@@ -3679,7 +3659,7 @@ function im_hwvx_ps2_actions_4tFXPointChangeMode(o, x) {
 
     let amt = u32(o + 4)
     for (let i = 0; i < amt; i++) {
-        get_hwvx_ps2_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 8 + (i * 4), i, x[0].section_2)
     }
 
 }
@@ -3705,7 +3685,7 @@ function im_hwvx_ps2_actions_4tItemChangeMode(o, x) {
 
     let amt = u32(o + 4)
     for (let i = 0; i < amt; i++) {
-        get_hwvx_ps2_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 8 + (i * 4), i, x[0].section_2)
     }
 
 }
@@ -3797,7 +3777,7 @@ function im_hwvx_ps2_actions_4tNavPointChangeMode(o, x) {
 
     let amt = u32(o + 4)
     for (let i = 0; i < amt; i++) {
-        get_hwvx_ps2_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 8 + (i * 4), i, x[0].section_2)
     }
 // 8 bytes;
 
@@ -3866,7 +3846,7 @@ function im_hwvx_ps2_actions_4tVehicleChangeMode(o, x) {
 
     let amt = u32(o + 4)
     for (let i = 0; i < amt; i++) {
-        get_hwvx_ps2_triggers_and_actions_sub_list(u32(o + 8 + (i * 4)) + g.m, i, x[0].section_2)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 8 + (i * 4), i, x[0].section_2)
     }
 
 }
@@ -3905,7 +3885,7 @@ function im_hwvx_ps2_actions_4tVehicleChangeControl(o, x) {
 
     let amt = u32(o + 8)
     for (let i = 0; i < amt; i++) {
-        get_hwvx_ps2_triggers_and_actions_sub_list(u32(o + 12 + (i * 4)) + g.m, i, x[0].section_2)
+        get_hwvx_ps2_triggers_and_actions_sub_list(o + 12 + (i * 4), i, x[0].section_2)
     }
 }
 function im_hwvx_ps2_actions_4tVehicleRemoveItem(o, x) {
