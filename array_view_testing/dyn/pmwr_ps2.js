@@ -89,7 +89,7 @@ function im_pmwr_ps2_directory(o, i, x, global) {
         section_datapack: [],
     });
 
-    u32(o + 16) && im_pmwr_ps2_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
+    u32(o + 16) && im_pmwr_ps2_datapack(global + u32(o + 20), 0, x[i].section_datapack);
 
     return x[i].id
     // 24 bytes;

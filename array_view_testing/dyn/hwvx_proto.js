@@ -1683,6 +1683,7 @@ function im_hwvx_proto_unordered(o, x) {
         hwvx_proto_link: [],
         hwvx_proto_sound_controls: [],
         hwvx_proto_sound_section: [],
+        hwvx_proto_world_color_section:[],
     })
     g.unordered_ref = x[0]
 
@@ -3107,153 +3108,156 @@ function hwvx_proto_return_if_value_in_multilink(o) {
         section: [],
         type: "no link ?",
     }
-    let check_val = o
+    let check_val = u32(o)
+    if (check_val === 0) {
+        return value_object
+    }
     if (g.hwvx_proto_world_12_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_12_array, im_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_12_array, im_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12);
         value_object.type = "hwvx_proto_world_12"
     } else if (g.hwvx_proto_world_20_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_20_array, im_hwvx_proto_world_20, g.unordered_ref.hwvx_proto_world_20);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_20_array, im_hwvx_proto_world_20, g.unordered_ref.hwvx_proto_world_20);
         value_object.type = "hwvx_proto_world_20"
     } else if (g.hwvx_proto_world_36_36_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_36_36_array, im_hwvx_proto_world_36_36, g.unordered_ref.hwvx_proto_world_36_36);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_36_36_array, im_hwvx_proto_world_36_36, g.unordered_ref.hwvx_proto_world_36_36);
         value_object.type = "hwvx_proto_world_36_36"
     } else if (g.hwvx_proto_world_36_48_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_36_48_array, im_hwvx_proto_world_36_48, g.unordered_ref.hwvx_proto_world_36_48);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_36_48_array, im_hwvx_proto_world_36_48, g.unordered_ref.hwvx_proto_world_36_48);
         value_object.type = "hwvx_proto_world_36_48"
     } else if (g.hwvx_proto_world_36_48_16_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_36_48_16_array, im_hwvx_proto_world_36_48_16, g.unordered_ref.hwvx_proto_world_36_48_16);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_36_48_16_array, im_hwvx_proto_world_36_48_16, g.unordered_ref.hwvx_proto_world_36_48_16);
         value_object.type = "hwvx_proto_world_36_48_16"
     } else if (g.hwvx_proto_world_36_48_8_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_36_48_8_array, im_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_36_48_8_array, im_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8);
         value_object.type = "hwvx_proto_world_36_48_8"
     } else if (g.hwvx_proto_world_36_48_24_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_36_48_24_array, im_hwvx_proto_world_36_48_24, g.unordered_ref.hwvx_proto_world_36_48_24);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_36_48_24_array, im_hwvx_proto_world_36_48_24, g.unordered_ref.hwvx_proto_world_36_48_24);
         value_object.type = "hwvx_proto_world_36_48_24"
     } else if (g.hwvx_proto_world_76_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_76_array, im_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_76_array, im_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76);
         value_object.type = "hwvx_proto_world_76"
     } else if (g.hwvx_proto_world_52_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_52_array, im_hwvx_proto_world_52, g.unordered_ref.hwvx_proto_world_52);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_52_array, im_hwvx_proto_world_52, g.unordered_ref.hwvx_proto_world_52);
         value_object.type = "hwvx_proto_world_52"
     } else if (g.hwvx_proto_world_108_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_108_array, im_hwvx_proto_world_108, g.unordered_ref.hwvx_proto_world_108);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_108_array, im_hwvx_proto_world_108, g.unordered_ref.hwvx_proto_world_108);
         value_object.type = "hwvx_proto_world_108"
     } else if (g.hwvx_proto_world_108_44t6_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_108_44t6_array, im_hwvx_proto_world_108_44t6, g.unordered_ref.hwvx_proto_world_108_44t6);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_108_44t6_array, im_hwvx_proto_world_108_44t6, g.unordered_ref.hwvx_proto_world_108_44t6);
         value_object.type = "hwvx_proto_world_108_44t6"
     } else if (g.hwvx_proto_world_120_0_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_120_0_array, im_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_120_0_array, im_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0);
         value_object.type = "hwvx_proto_world_120_0"
     } else if (g.hwvx_proto_collision_32_48_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_collision_32_48_array, im_hwvx_proto_collision_32_48, g.unordered_ref.hwvx_proto_collision_32_48);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_collision_32_48_array, im_hwvx_proto_collision_32_48, g.unordered_ref.hwvx_proto_collision_32_48);
         value_object.type = "hwvx_proto_collision_32_48"
     } else if (g.hwvx_proto_collision_link_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_collision_link_array, im_hwvx_proto_collision_link, g.unordered_ref.hwvx_proto_collision_link);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_collision_link_array, im_hwvx_proto_collision_link, g.unordered_ref.hwvx_proto_collision_link);
         value_object.type = "hwvx_proto_collision_link"
     } else if (g.hwvx_proto_triggers_and_actions_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_triggers_and_actions_array, im_hwvx_proto_triggers_and_actions, g.unordered_ref.hwvx_proto_triggers_and_actions);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_triggers_and_actions_array, im_hwvx_proto_triggers_and_actions, g.unordered_ref.hwvx_proto_triggers_and_actions);
         value_object.type = "hwvx_proto_triggers_and_actions"
     } else if (g.hwvx_proto_texture_anims_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_texture_anims_array, im_hwvx_proto_texture_anims, g.unordered_ref.hwvx_proto_texture_anims);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_texture_anims_array, im_hwvx_proto_texture_anims, g.unordered_ref.hwvx_proto_texture_anims);
         value_object.type = "hwvx_proto_texture_anims"
     } else if (g.hwvx_proto_model_anims_1_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_model_anims_1_array, im_hwvx_proto_model_anims_1, g.unordered_ref.hwvx_proto_model_anims_1);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_model_anims_1_array, im_hwvx_proto_model_anims_1, g.unordered_ref.hwvx_proto_model_anims_1);
         value_object.type = "hwvx_proto_model_anims_1"
     } else if (g.hwvx_proto_model_anims_2_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_model_anims_2_array, im_hwvx_proto_model_anims_2, g.unordered_ref.hwvx_proto_model_anims_2);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_model_anims_2_array, im_hwvx_proto_model_anims_2, g.unordered_ref.hwvx_proto_model_anims_2);
         value_object.type = "hwvx_proto_model_anims_2"
     } else if (g.hwvx_proto_texture_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_texture_array, im_hwvx_proto_texture, g.unordered_ref.hwvx_proto_texture);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_texture_array, im_hwvx_proto_texture, g.unordered_ref.hwvx_proto_texture);
         value_object.type = "hwvx_proto_texture"
     } else if (g.hwvx_proto_world_color_section_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_color_section_array, im_hwvx_proto_world_color_section, g.unordered_ref.hwvx_proto_world_color_section);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_color_section_array, im_hwvx_proto_world_color_section, g.unordered_ref.hwvx_proto_world_color_section);
         value_object.type = "hwvx_proto_world_color_section"
     } else if (g.hwvx_proto_world_text_link_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_text_link_array, im_hwvx_proto_world_text_link, g.unordered_ref.hwvx_proto_world_text_link);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_text_link_array, im_hwvx_proto_world_text_link, g.unordered_ref.hwvx_proto_world_text_link);
         value_object.type = "hwvx_proto_world_text_link"
     } else if (g.hwvx_proto_world_settings_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_settings_array, im_hwvx_proto_world_settings, g.unordered_ref.hwvx_proto_world_settings);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_settings_array, im_hwvx_proto_world_settings, g.unordered_ref.hwvx_proto_world_settings);
         value_object.type = "hwvx_proto_world_settings"
     } else if (g.hwvx_proto_world_small_section_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_small_section_array, im_hwvx_proto_world_small_section, g.unordered_ref.hwvx_proto_world_small_section);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_small_section_array, im_hwvx_proto_world_small_section, g.unordered_ref.hwvx_proto_world_small_section);
         value_object.type = "hwvx_proto_world_small_section"
     } else if (g.hwvx_proto_world_model_related_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_model_related_array, im_hwvx_proto_world_model_related, g.unordered_ref.hwvx_proto_world_model_related);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_model_related_array, im_hwvx_proto_world_model_related, g.unordered_ref.hwvx_proto_world_model_related);
         value_object.type = "hwvx_proto_world_model_related"
     } else if (g.hwvx_proto_world_idk_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_world_idk_array, im_hwvx_proto_world_idk, g.unordered_ref.hwvx_proto_world_idk);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_world_idk_array, im_hwvx_proto_world_idk, g.unordered_ref.hwvx_proto_world_idk);
         value_object.type = "hwvx_proto_world_idk"
     } else if (g.hwvx_proto_some_world_thing_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_some_world_thing_array, im_hwvx_proto_some_world_thing, g.unordered_ref.hwvx_proto_some_world_thing);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_some_world_thing_array, im_hwvx_proto_some_world_thing, g.unordered_ref.hwvx_proto_some_world_thing);
         value_object.type = "hwvx_proto_some_world_thing"
     } else if (g.hwvx_proto_geo_list_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_geo_list_array, im_hwvx_proto_geo_list, g.unordered_ref.hwvx_proto_geo_list);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_geo_list_array, im_hwvx_proto_geo_list, g.unordered_ref.hwvx_proto_geo_list);
         value_object.type = "hwvx_proto_geo_list"
     } else if (g.hwvx_proto_collision_settings_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_collision_settings_array, im_hwvx_proto_collision_settings, g.unordered_ref.hwvx_proto_collision_settings);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_collision_settings_array, im_hwvx_proto_collision_settings, g.unordered_ref.hwvx_proto_collision_settings);
         value_object.type = "hwvx_proto_collision_settings"
     } else if (g.hwvx_proto_car_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_car_array, im_hwvx_proto_car, g.unordered_ref.hwvx_proto_car);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_car_array, im_hwvx_proto_car, g.unordered_ref.hwvx_proto_car);
         value_object.type = "hwvx_proto_car"
     } else if (g.hwvx_proto_car_related_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_car_related_array, im_hwvx_proto_car_related, g.unordered_ref.hwvx_proto_car_related);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_car_related_array, im_hwvx_proto_car_related, g.unordered_ref.hwvx_proto_car_related);
         value_object.type = "hwvx_proto_car_related"
     } else if (g.hwvx_proto_car_link_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_car_link_array, im_hwvx_proto_car_link, g.unordered_ref.hwvx_proto_car_link);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_car_link_array, im_hwvx_proto_car_link, g.unordered_ref.hwvx_proto_car_link);
         value_object.type = "hwvx_proto_car_link"
     } else if (g.hwvx_proto_mysterious_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_mysterious_array, im_hwvx_proto_mysterious, g.unordered_ref.hwvx_proto_mysterious);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_mysterious_array, im_hwvx_proto_mysterious, g.unordered_ref.hwvx_proto_mysterious);
         value_object.type = "hwvx_proto_mysterious"
     } else if (g.hwvx_proto_strange_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_strange_array, im_hwvx_proto_strange, g.unordered_ref.hwvx_proto_strange);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_strange_array, im_hwvx_proto_strange, g.unordered_ref.hwvx_proto_strange);
         value_object.type = "hwvx_proto_strange"
     } else if (g.hwvx_proto_model_link_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_model_link_array, im_hwvx_proto_model_link, g.unordered_ref.hwvx_proto_model_link);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_model_link_array, im_hwvx_proto_model_link, g.unordered_ref.hwvx_proto_model_link);
         value_object.type = "hwvx_proto_model_link"
     } else if (g.hwvx_proto_text_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_text_array, im_hwvx_proto_text, g.unordered_ref.hwvx_proto_text);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_text_array, im_hwvx_proto_text, g.unordered_ref.hwvx_proto_text);
         value_object.type = "hwvx_proto_text"
     } else if (g.hwvx_proto_font_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_font_array, im_hwvx_proto_font, g.unordered_ref.hwvx_proto_font);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_font_array, im_hwvx_proto_font, g.unordered_ref.hwvx_proto_font);
         value_object.type = "hwvx_proto_font"
     } else if (g.hwvx_proto_interface_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_interface_array, im_hwvx_proto_interface, g.unordered_ref.hwvx_proto_interface);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_interface_array, im_hwvx_proto_interface, g.unordered_ref.hwvx_proto_interface);
         value_object.type = "hwvx_proto_interface"
     } else if (g.hwvx_proto_interface_text_related_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_interface_text_related_array, im_hwvx_proto_interface_text_related, g.unordered_ref.hwvx_proto_interface_text_related);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_interface_text_related_array, im_hwvx_proto_interface_text_related, g.unordered_ref.hwvx_proto_interface_text_related);
         value_object.type = "hwvx_proto_interface_text_related"
     } else if (g.hwvx_proto_unknown_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_unknown_array, im_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_unknown_array, im_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown);
         value_object.type = "hwvx_proto_unknown"
     } else if (g.hwvx_proto_unknown_idk_sec_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_unknown_idk_sec_array, im_hwvx_proto_unknown_idk_sec, g.unordered_ref.hwvx_proto_unknown_idk_sec);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_unknown_idk_sec_array, im_hwvx_proto_unknown_idk_sec, g.unordered_ref.hwvx_proto_unknown_idk_sec);
         value_object.type = "hwvx_proto_unknown_idk_sec"
     } else if (g.hwvx_proto_unknown_link_section_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_unknown_link_section_array, im_hwvx_proto_unknown_link_section, g.unordered_ref.hwvx_proto_unknown_link_section);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_unknown_link_section_array, im_hwvx_proto_unknown_link_section, g.unordered_ref.hwvx_proto_unknown_link_section);
         value_object.type = "hwvx_proto_unknown_link_section"
     } else if (g.hwvx_proto_grand_section_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_grand_section_array, im_hwvx_proto_grand_section, g.unordered_ref.hwvx_proto_grand_section);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_grand_section_array, im_hwvx_proto_grand_section, g.unordered_ref.hwvx_proto_grand_section);
         value_object.type = "hwvx_proto_grand_section"
     } else if (g.hwvx_proto_unknown_thing_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_unknown_thing_array, im_hwvx_proto_unknown_thing, g.unordered_ref.hwvx_proto_unknown_thing);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_unknown_thing_array, im_hwvx_proto_unknown_thing, g.unordered_ref.hwvx_proto_unknown_thing);
         value_object.type = "hwvx_proto_unknown_thing"
     } else if (g.hwvx_proto_asdf_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_asdf_array, im_hwvx_proto_asdf, g.unordered_ref.hwvx_proto_asdf);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_asdf_array, im_hwvx_proto_asdf, g.unordered_ref.hwvx_proto_asdf);
         value_object.type = "hwvx_proto_asdf"
     } else if (g.hwvx_proto_item_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_item_array, im_hwvx_proto_item, g.unordered_ref.hwvx_proto_item);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_item_array, im_hwvx_proto_item, g.unordered_ref.hwvx_proto_item);
         value_object.type = "hwvx_proto_item"
     } else if (g.hwvx_proto_link_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_link_array, im_hwvx_proto_link, g.unordered_ref.hwvx_proto_link);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_link_array, im_hwvx_proto_link, g.unordered_ref.hwvx_proto_link);
         value_object.type = "hwvx_proto_link"
     } else if (g.hwvx_proto_sound_controls_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_sound_controls_array, im_hwvx_proto_sound_controls, g.unordered_ref.hwvx_proto_sound_controls);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_sound_controls_array, im_hwvx_proto_sound_controls, g.unordered_ref.hwvx_proto_sound_controls);
         value_object.type = "hwvx_proto_sound_controls"
     } else if (g.hwvx_proto_sound_section_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_sound_section_array, im_hwvx_proto_sound_section, g.unordered_ref.hwvx_proto_sound_section);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_sound_section_array, im_hwvx_proto_sound_section, g.unordered_ref.hwvx_proto_sound_section);
         value_object.type = "hwvx_proto_sound_section"
     } else if (g.hwvx_proto_texture_anims_0_array.includes(check_val)) {
-        value_object.section = in_ml(u32(o - g.m), g.hwvx_proto_texture_anims_0_array, im_hwvx_proto_texture_anims_0, g.unordered_ref.hwvx_proto_texture_anims_0);
+        value_object.section = in_ml(u32(o), g.hwvx_proto_texture_anims_0_array, im_hwvx_proto_texture_anims_0, g.unordered_ref.hwvx_proto_texture_anims_0);
         value_object.type = "hwvx_proto_texture_anims_0"
     }
     return value_object
@@ -3287,7 +3291,7 @@ function im_hwvx_proto_triggers_and_actions_4trest(o, x) {
     let _1st_length = (_1st_amnt * 4) + 4 + o
 
     for (let i = 0; i < _1st_amnt; i++) {
-        get_hwvx_proto_triggers_and_actions_4trest_1st(u32(o + 4) + (i * 4) + g.m, i, x[0].section_2)
+        get_hwvx_proto_triggers_and_actions_4trest_1st(o + 4 + (i * 4), i, x[0].section_2)
     }
 
     let _2nd_amnt = 0
@@ -3297,7 +3301,7 @@ function im_hwvx_proto_triggers_and_actions_4trest(o, x) {
 
     o = _1st_length
     for (let i = 0; i < _2nd_amnt; i++) {
-        get_hwvx_proto_triggers_and_actions_4trest_2nd(u32(o + 4) + (i * 4) + g.m, i, x[0].section_4)
+        get_hwvx_proto_triggers_and_actions_4trest_2nd(o + 4 + (i * 4), i, x[0].section_4)
     }
     // 4 bytes;
 
@@ -3349,7 +3353,7 @@ function im_hwvx_proto_triggers_and_actions_12_4(o, x) {
         u32_16: u32(o + 16),
     });
 
-    let type_object = hwvx_proto_return_if_value_in_multilink(u32(o + 4) + g.m)
+    let type_object = hwvx_proto_return_if_value_in_multilink(o + 4)
     x[0].section_4 = type_object.section
     x[0].section_4_type = type_object.type
 
@@ -3796,7 +3800,7 @@ function im_hwvx_proto_triggers_and_actions_20_4t15(o, i, x) {
         section_4_type: [],
     });
 
-    let type_object = hwvx_proto_return_if_value_in_multilink(u32(o + 4) + g.m)
+    let type_object = hwvx_proto_return_if_value_in_multilink(o + 4)
     x[i].section_4 = type_object.section
     x[i].section_4_type = type_object.type
 
@@ -4581,7 +4585,7 @@ function im_hwvx_proto_world_settings(o, i, x) {
         section_260: [],
     });
 
-    let type_object = hwvx_proto_return_if_value_in_multilink(u32(o + 156) + g.m)
+    let type_object = hwvx_proto_return_if_value_in_multilink(o + 156)
     x[i].section_156 = type_object.section
     x[i].section_156_type = type_object.type
 

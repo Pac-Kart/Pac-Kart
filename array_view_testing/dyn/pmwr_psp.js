@@ -38,9 +38,9 @@ function im_pmwr_psp_file_header(o, i, x) {
     let directory_offset = (u32(12) * 24) + 16
 
     let time_array = []
-    for (let i = 0; i < u32(12); i++) {
+    for (let ii = 0; ii < u32(12); ii++) {
         let a = Date.now()
-        im_pmwr_psp_directory(16 + (i * 24), i, x[i].directory, directory_offset)
+        im_pmwr_psp_directory(16 + (ii * 24), ii, x[i].directory, directory_offset)
         time_array.push(Date.now() - a)
     }
     console.pk_log("saved in " + time_array)
@@ -89,7 +89,7 @@ function im_pmwr_psp_directory(o, i, x, global) {
         section_datapack: [],
     });
 
-    u32(o + 16) && im_pmwr_psp_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
+    u32(o + 16) && im_pmwr_psp_datapack(global + u32(o + 20), 0, x[i].section_datapack);
 
     return x[i].id
     // 24 bytes;
