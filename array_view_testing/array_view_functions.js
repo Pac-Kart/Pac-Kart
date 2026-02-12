@@ -654,7 +654,7 @@ function get_type_from_file() {
             create_new_array_view()
             break
         case 249:
-            g.type_string = "pmwr_ps2_demo"
+            g.type_string = "pmwr_demo"
             g.game = "pac_man_world_rally"
             g.console = "ps2"
             //demo ps2 pmwr

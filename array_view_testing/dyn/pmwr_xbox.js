@@ -1763,7 +1763,7 @@ function im_pmwr_xbox_datapack(o, i, x) {
         section_72_rifx:[],
         section_76_riff:[],
         //check this
-        u32_80: u32(o + 80),
+        section_80: im_string(o + 80 - g.m, o + 91 - g.m),
         u32_92: u32(o + 92),
         u32_112: u32(o + 112),
         index_patch_list: [],

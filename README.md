@@ -41,7 +41,6 @@ Array View
 * Snoopy vs. the Red Baron (PC)
 * Snoopy vs. the Red Baron (PS2)
 * Snoopy vs. the Red Baron (PSP)
-* Pac Man World Rally (Xbox)
 * Pac Man World Rally (Demo)
 * Pac Man World Rally (GC)
 * Pac Man World Rally (PS2)
@@ -54,6 +53,7 @@ Array View
 * Hot Wheels Velocity X (PC)
 * Hot Wheels Velocity X (GC)
 * Hot Wheels Velocity X (PS2)
+* Pac Man World Rally (Xbox)
 * Bee Movie Game (PC)
 * Bee Movie Game (Wii)
 * Bee Movie Game (Demo)
@@ -64,4 +64,4 @@ Array View
 Current Progress
 ============
 ### Working on making these formats Traversable
-* Pac Man World Rally (Xbox)
+* Pac Man World Rally (Demo)
