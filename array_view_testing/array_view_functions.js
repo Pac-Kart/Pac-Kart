@@ -2277,6 +2277,9 @@ function im_patch_list(o, a, t) {
 }
 
 function in_models(o, array, tfunction, x) {
+    if (u32(o) === 0) {
+        return -1
+    }
     let model_array = g.model_ref
     let value = -1
     let index = -1

@@ -1785,10 +1785,18 @@ function im_pmwr_demo_directory(o, i, x, global) {
         pmwr_demo_model_link_array: [],
         pmwr_demo_model_sub_link_array: [],
         pmwr_demo_emitter_array: [],
-        pmwr_demo_texture_anims_0_array: [],
     }
 
     g.file_dir_type = return_directory_type(u32(o + 4))
+
+    globalThis.log_array = {
+        p_offset: {
+            offset: 0,
+            array: [],
+            pointers: [],
+        },
+
+    }
 
     x.push({
         id: gen_id(),
@@ -1811,6 +1819,8 @@ function im_pmwr_demo_directory(o, i, x, global) {
 function im_pmwr_demo_datapack(o, i, x) {
     let end_datapack = o + 120
     end_datapack = divisible(end_datapack, 2048)
+    let offset_after_datapack = end_datapack
+
     if (u32(o + 8) || u32(o + 4)) {
         end_datapack += divisible(u32(o + 8) * 4, 32)
         end_datapack += u32(o + 4)
@@ -1850,8 +1860,6 @@ function im_pmwr_demo_datapack(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "0@i0",
-        section_0: [],
-        section_4: [],
         u32_8: u32(o + 8),
         //amount?
         u32_12: u32(o + 12),
@@ -1860,7 +1868,7 @@ function im_pmwr_demo_datapack(o, i, x) {
         //amount?
         u32_20: u32(o + 20),
         //amount?
-        section_24: [],
+        section_24_texture: [],
         u32_28: u32(o + 28),
         //amount?
         u32_32: u32(o + 32),
@@ -1871,34 +1879,139 @@ function im_pmwr_demo_datapack(o, i, x) {
         //amount?
         u32_56: u32(o + 56),
         //amount?
-        section_60: [],
-        section_80: im_string(u32(o + 80), 0, false),
+        section_60_texture_anims: [],
+        section_80: im_string(o + 80 - g.m, o + 91 - g.m),
         u32_92: u32(o + 92),
         u32_112: u32(o + 112),
+        index_patch_list: [],
+        offset_patch_list: [],
+        ordered_section: [],
+        section_audio: [],
     });
 
-    //  u32(o + 0) && im_ordered_list(u32(o + 0) + g.m,x[i].section_0); // offset? 
-    // u32(o + 4) && im_pmwr_demo_audio_list(u32(o + 4) + g.m,x[i].section_4); // offset? 
-    // u32(o + 24) && im_pmwr_demo_texture(u32(o + 24) + g.m,x[i].section_24); // offset? 
-    // u32(o + 60) && im_pmwr_demo_texture_anims(u32(o + 60) + g.m,x[i].section_60); // offset? 
+    im_pmwr_demo_audio(offset_after_datapack, x[i].section_audio, u32(o + 8))
+
+    g.datapack_offset = o
+    g.datapack_ref = x
+
+    im_pmwr_demo_get_index_patch_list(o, end_datapack, x[i].index_patch_list)
+    im_pmwr_demo_get_offset_patch_list(o, g.m + u32(o), x[i].offset_patch_list)
+
+    im_pmwr_demo_ordered(g.m, x[i].ordered_section)
+
+    for (let ii = 0; ii < u32(o + 20); ii++) {
+        im_pmwr_demo_texture_temp(u32(o + 24) + (ii * 64) + g.m, ii, x[i].section_24_texture)
+    }
+    for (let ii = 0; ii < u32(o + 20); ii++) {
+        im_pmwr_demo_texture(u32(o + 24) + (ii * 64) + g.m, ii, x[i].section_24_texture)
+    }
+
+    for (let ii = 0; ii < u32(o + 48); ii++) {
+        im_pmwr_demo_texture_anims(u32(o + 60) + (ii * 12) + g.m, ii, x[i].section_60_texture_anims)
+    }
+
     return x[i].id
     // 120 bytes;
 
 }
+
+function im_pmwr_demo_audio(o, x, a) {
+
+    const after_offset_list = o + divisible(a * 4, 32)
+    let padding_test = after_offset_list + (a * 32)
+
+    x.push({
+        sec_id: "audi",
+        sound: []
+    })
+
+    for (let i = 0; i < a; i++) {
+        padding_test = im_pmwr_demo_audio_00(after_offset_list + u32(o + (i * 4)), x[0].sound, i)
+    }
+
+    return padding_test
+
+    function im_pmwr_demo_audio_00(o, x, i) {
+        x.push({
+            sec_id: "ad00",
+            id: gen_id(),
+            u32_8: u32(o + 8),
+            soundsamplerate: u32(o + 12),
+            u32_20: u32(o + 20),
+            sound_data: 0,
+            padding: (u32(o + 0) + after_offset_list) - padding_test
+        })
+        const start_offset = u32(o + 0) + after_offset_list
+        const sound_buffer = convert_arraybuffer_base64(buffer.slice(start_offset, start_offset + u32(o + 4)))
+
+        x[i].sound_data = sound_buffer
+
+        return start_offset + u32(o + 4)
+
+    }
+
+}
+
+function im_pmwr_demo_get_index_patch_list(o, patch_offset, x) {
+    let texture_offset = patch_offset
+
+    patch_offset += u32(g.datapack_offset + 16) * 8
+    let texture_animation_offset = patch_offset
+
+    patch_offset += u32(g.datapack_offset + 52) * 8
+    let sound_offset = patch_offset
+
+    // patch_offset += u32(g.datapack_offset + 28) * 8
+    // let model_offset = patch_offset
+
+    // patch_offset += u32(g.datapack_offset + 56) * 8
+    // let general_offset = patch_offset
+
+    x.push({
+        sec_id: "ipll",
+        texture: im_patch_list(texture_offset, u32(g.datapack_offset + 16), 't'),
+        texture_animation: im_patch_list(texture_animation_offset, u32(g.datapack_offset + 52), 'a'),
+        sound: im_patch_list(sound_offset, u32(g.datapack_offset + 28), 's'),
+        // model: im_patch_list(model_offset, u32(g.datapack_offset + 56), 'm'),
+    })
+
+    g.texture_patch_ref = x[0].texture
+    g.animation_patch_ref = x[0].texture_animation
+    g.sound_patch_ref = x[0].sound
+}
+
+function im_pmwr_demo_get_offset_patch_list(o, patch_offset, x) {
+    let model_offset = patch_offset
+
+    patch_offset += u32(g.datapack_offset + 56) * 8
+    let general_offset = patch_offset
+
+    x.push({
+        sec_id: "opll",
+        model: im_patch_list(model_offset, u32(g.datapack_offset + 56), 'm'),
+    })
+
+    g.model_ref = x[0].model
+
+    log_array.p_offset.offset = general_offset
+    for (let i = 0; i < u32(g.datapack_offset + 12); i++) {
+        log_array.p_offset.array.push(u32(general_offset + (i * 4)))
+    }
+
+    log_array.p_offset.array.sort(function(a, b) {
+        return a - b;
+    });
+
+}
+
 function im_pmwr_demo_ordered(o, x) {
 
     x.push({
         sec_id: "ordr",
         id: gen_id(),
         pmwr_demo_file_specific_section: [],
-        pmwr_demo_texture_anims: [],
         pmwr_demo_model: [],
-        pmwr_demo_texture: [],
-        pmwr_demo_model_anims_1: [],
-        pmwr_demo_model_anims_2: [],
         pmwr_demo_unordered_list: [],
-        pmwr_demo_texture_anims: [],
-
     })
 
     im_pmwr_demo_unordered(o, x[0].pmwr_demo_unordered_list)
@@ -1908,14 +2021,14 @@ function im_pmwr_demo_ordered(o, x) {
     case "car":
     case "interface":
     case "link":
-        im_pmwr_demo_basic(o, x[0].pmwr_demo_file_specific_section)
+        im_pmwr_demo_basic(o, 0, x[0].pmwr_demo_file_specific_section)
         break
     case "world":
         im_pmwr_demo_world(o, x[0].pmwr_demo_file_specific_section)
         break
     case "share":
-        for (let i = 0; i < u32(o + 56); i++) {
-            im_pmwr_demo_share(o + (i * 4), x[0].pmwr_demo_file_specific_section)
+        for (let i = 0; i < u32(g.datapack_offset + 56); i++) {
+            im_pmwr_demo_share(o + (i * 4), i, x[0].pmwr_demo_file_specific_section)
         }
         break
     default:
@@ -1951,7 +2064,6 @@ function im_pmwr_demo_unordered(o, x) {
         pmwr_demo_single_car_sec: [],
         pmwr_demo_some_car_settings: [],
         pmwr_demo_strange: [],
-        pmwr_demo_mysterious: [],
         pmwr_demo_some_random_section: [],
         pmwr_demo_unknown: [],
         pmwr_demo_small_unknown_section: [],
@@ -1968,8 +2080,6 @@ function im_pmwr_demo_unordered(o, x) {
         pmwr_demo_model_link: [],
         pmwr_demo_model_sub_link: [],
         pmwr_demo_emitter: [],
-        pmwr_demo_texture_anims_0: [],
-
     })
     g.unordered_ref = x[0]
 
@@ -2168,7 +2278,7 @@ function im_pmwr_demo_world(o, x) {
     u32(o + 160) && im_pmwr_demo_world_160(u32(o + 160) + g.m, x[0].section_160);
 
     for (let ii = 0; ii < u32(o + 188); ii++) {
-        x[0].unordered_pmwr_demo_world_192_192 = in_ml(u32(o + 192) + (ii * 4), g.pmwr_demo_world_192_array, im_pmwr_demo_world_192, g.unordered_ref.pmwr_demo_world_192);
+        im_pmwr_demo_world_192(u32(o + 192) + (ii * 4) + g.m, ii, x[0].section_192);
     }
     // 272 bytes;
 
@@ -2297,7 +2407,9 @@ function im_pmwr_demo_world_0_32(o, i, x) {
     for (let ii = 0; ii < u32(o + 72); ii++) {
         im_pmwr_demo_world_0_32_48(u32(o + 48) + (ii * 16) + g.m, ii, x[i].section_48);
     }
-    u32(o + 68) && im_pmwr_demo_world_0_32_68(u32(o + 68) + g.m, x[i].section_68);
+    for (let ii = 0; ii < u32(o + 64); ii++) {
+        im_pmwr_demo_world_0_32_68(u32(o + 68) + (ii * 2) + g.m, ii, x[i].section_68);
+    }
     // offset? 
 
 }
@@ -2510,7 +2622,7 @@ function im_pmwr_demo_world_116(o, i, x) {
         f32_52: f32(o + 52),
         f32_72: f32(o + 72),
         f32_92: f32(o + 92),
-        model_100: im_patch(g.model_ref, o + 100),
+        model_100: in_models(o + 100, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
     });
 
     return x[i].id
@@ -3359,21 +3471,21 @@ function im_pmwr_demo_texture_anims(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "Z:TP",
-        unordered_pmwr_demo_texture_anims_0_0: 0,
+        section_0: [],
     });
 
-    x[i].unordered_pmwr_demo_texture_anims_0_0 = in_ml(u32(o + 0), g.pmwr_demo_texture_anims_0_array, im_pmwr_demo_texture_anims_0, g.unordered_ref.pmwr_demo_texture_anims_0);
+    u32(o + 0) && im_pmwr_demo_texture_anims_0(u32(o + 0) + g.m, 0, x[i].section_0);
 
 }
 function im_pmwr_demo_share(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "^YZ2",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: in_models(o + 0, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
     });
 
 }
-function im_pmwr_demo_model(o, x) {
+function im_pmwr_demo_models(o, i, x) {
     x.push({
         sec_id: "<4:j",
         u16_0: u16(o + 0),
@@ -3395,12 +3507,12 @@ function im_pmwr_demo_model(o, x) {
         f32_56: f32(o + 56),
     });
 
-    for (let i = 0; i < u16(o + 2); i++) {
-        im_pmwr_demo_model_8(u32(o + 8) + (i * 24) + g.m, i, x[0].section_8);
+    for (let ii = 0; ii < u16(o + 2); ii++) {
+        im_pmwr_demo_model_8(u32(o + 8) + (ii * 24) + g.m, ii, x[i].section_8);
     }
 
-    for (let i = 0; i < u16(o + 2); i++) {
-        im_pmwr_demo_model_12(u32(o + 12) + (i * 4) + g.m, i, x[0].section_12);
+    for (let ii = 0; ii < u16(o + 2); ii++) {
+        im_pmwr_demo_model_12(u32(o + 12) + (ii * 4) + g.m, ii, x[i].section_12);
     }
 
     // 64 bytes;
@@ -3639,6 +3751,10 @@ function im_pmwr_demo_model_12(o, i, x) {
     });
 
 }
+function im_pmwr_demo_texture_temp(o, i, x) {
+    u32(o + 8) && log_array.p_offset.array.push(u32(o + 8))
+
+}
 function im_pmwr_demo_texture(o, i, x) {
     x.push({
         id: gen_id(),
@@ -3648,65 +3764,80 @@ function im_pmwr_demo_texture(o, i, x) {
         u8_1: u8(o + 1),
         u8_2: u8(o + 2),
         u8_3: u8(o + 3),
-        texture_section: 0,
+        texture_section: [],
         section_12: 0,
     });
 
     x[i].section_12 = im_string(o + 12 - g.m, 0, false)
 
+    u32(o + 8) && im_pmwr_demo_texture_data(u32(o + 8) + g.m, x[i].texture_section);
+
+    // let find_next_offset_i = u32(o +8) + 1
+
+    // find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)))
+
     // calculate texture length
-    let texture_x = Math.pow(2, u8(o + 2))
-    let texture_y = Math.pow(2, u8(o + 3))
+    // let texture_x = Math.pow(2, u8(o + 2))
+    // let texture_y = Math.pow(2, u8(o + 3))
 
-    let total_length = 0
-    switch (u8(o + 0)) {
-    case 65:
-        total_length = texture_x * texture_y / 2
-        break
-    case 160:
-        total_length = texture_x * texture_y * 4
-        break
-    case 197:
-        total_length = texture_x * texture_y
-        break
-    case 200:
-        total_length = 1024 + texture_x * texture_y
-        break
-    default:
-        console.pk_log(`unknown texture type ${u8(o + 4)}`)
-    }
-    let start_08_texture = u32(o + 8) + g.m
-    let end_08_texture = start_08_texture + total_length
-    // 20 and 16 has mips
-    // 12 no mips
+    // let total_length = 0
+    // switch (u8(o + 0)) {
+    // case 160:
+    //     total_length = texture_x * texture_y * 4
+    //     break
+    // case 68:
+    // case 72:
+    // case 200:
+    //     total_length = 1024 + (texture_x * texture_y)
+    //     break
+    // default:
+    //     console.pk_log(`unknown texture type ${u8(o + 4)}`)
+    // }
+    // let start_08_texture = u32(o + 8) + g.m
+    // let end_08_texture = start_08_texture + total_length
+    // // 20 and 16 has mips
+    // // 12 no mips
 
-    if (u8(o + 1) === 0) {
-        // no mipmaps
-        if (u32(o + 8)) {
-            x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
-        }
+    // if (u8(o + 1) === 0) {
+    //     // no mipmaps
+    //     if (u32(o + 8)) {
+    //         x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+    //     }
 
-    } else {
-        let mipmap_offset = total_length
+    // } else {
+    //     let mipmap_offset = total_length
 
-        for (let ii = 0; ii < u8(o + 1) + 1; ii++) {
+    //     for (let ii = 0; ii < u8(o + 1) + 1; ii++) {
 
-            if (u32(o + 8)) {
-                x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
-            }
-            start_08_texture += mipmap_offset
-            mipmap_offset = Math.round(mipmap_offset / 4)
-            if (u8(o + 1) !== ii) {
-                end_08_texture += mipmap_offset
-            }
+    //         if (u32(o + 8)) {
+    //             x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+    //         }
+    //         start_08_texture += mipmap_offset
+    //         mipmap_offset = Math.round(mipmap_offset / 4)
+    //         if (u8(o + 1) !== ii) {
+    //             end_08_texture += mipmap_offset
+    //         }
 
-        }
+    //     }
 
-    }
+    // }
 
     // 32 bytes;
 
     return x[i].id
+}
+
+function im_pmwr_demo_texture_data(o, x) {
+    let find_next_offset_i = (o + 1) - g.m
+
+    find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    x.push({
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
+    });
+    // 4-48 bytes;
+
 }
 function im_pmwr_demo_model_anims_1(o, i, x) {
     x.push({
@@ -4812,14 +4943,12 @@ function im_pmwr_demo_world_unknown_link(o, i, x) {
         u32_4: u32(o + 4),
         f32_8: f32(o + 8),
         u32_12: u32(o + 12),
-        section_16: [],
-        section_20: [],
+        unordered_pmwr_demo_unknown_16: 0,
+        unordered_pmwr_demo_unknown_20: 0,
     });
 
-    u32(o + 16) && im_pmwr_demo_unknown(u32(o + 16) + g.m, x[i].section_16);
-    // offset? 
-    u32(o + 20) && im_pmwr_demo_unknown(u32(o + 20) + g.m, x[i].section_20);
-    // offset? 
+    x[0].unordered_pmwr_demo_unknown_16 = in_ml(u32(o + 16), g.pmwr_demo_unknown_array, im_pmwr_demo_unknown, g.unordered_ref.pmwr_demo_unknown);
+    x[0].unordered_pmwr_demo_unknown_20 = in_ml(u32(o + 20), g.pmwr_demo_unknown_array, im_pmwr_demo_unknown, g.unordered_ref.pmwr_demo_unknown);
     return x[i].id
     // 32 bytes;
 
@@ -5105,7 +5234,9 @@ function im_pmwr_demo_object_mysterious_link(o, i, x) {
         u32_24: u32(o + 24),
     });
 
-    u32(o + 4) && im_pmwr_demo_mysterious(u32(o + 4) + g.m, x[i].section_4);
+    for (let ii = 0; ii < u32(o); ii++) {
+        im_pmwr_demo_mysterious(u32(o + 4) + (ii * 64) + g.m, ii, x[i].section_4);
+    }
     // offset? 
     return x[i].id
     // 32 bytes;
@@ -5171,7 +5302,7 @@ function im_pmwr_demo_idk_12(o, x) {
         u8_12: u8(o + 12),
         u8_13: u8(o + 13),
         section_16: [],
-        model_20: im_patch(g.model_ref, o + 20),
+        model_20: in_models(o + 20, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
         section_28: [],
         f32_32: f32(o + 32),
         unordered_pmwr_demo_gate_44: 0,
@@ -6463,12 +6594,16 @@ function im_pmwr_demo_mysterious_4t5(o, x) {
 
     switch (u8(o + 3)) {
     case 0:
-        u32(o + 16) && im_pmwr_demo_mysterious_4t5_16t0(u32(o + 16) + g.m, x[0].section_16);
+        for (let i = 0; i < u32(o + 12); i++) {
+            im_pmwr_demo_mysterious_4t5_16t0(u32(o + 16) + g.m, i, x[0].section_16);
+        }
         break;
     case 2:
     case 3:
     case 5:
-        u32(o + 16) && im_pmwr_demo_mysterious_4t5_16t2(u32(o + 16) + g.m, x[0].section_16);
+        for (let i = 0; i < u32(o + 12); i++) {
+            im_pmwr_demo_mysterious_4t5_16t2(u32(o + 16) + g.m, i, x[0].section_16);
+        }
         break;
     }
     u32(o + 28) && im_pmwr_demo_mysterious_4t5_28(u32(o + 28) + g.m, x[0].section_28);
@@ -6490,7 +6625,7 @@ function im_pmwr_demo_mysterious_4t5_16t0(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: ">:n>",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: in_models(o + 0, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
     });
 
 }
@@ -6796,7 +6931,7 @@ function im_pmwr_demo_some_random_section_12(o, x) {
         section_12: [],
     });
 
-    for (let i = 0; i < u32(o + ___$$$___); i++) {
+    for (let i = 0; i < u32(o + 0); i++) {
         im_pmwr_demo_some_random_section_12_4(u32(o + 4) + (i * 52) + g.m, i, x[0].section_4);
     }
     u32(o + 12) && im_pmwr_demo_some_random_section_12_12(u32(o + 12) + g.m, x[0].section_12);
@@ -7144,7 +7279,7 @@ function im_pmwr_demo_unknown_4_4t29_4(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "mjtP",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: in_models(o + 0, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
         f32_12: f32(o + 12),
@@ -7596,7 +7731,7 @@ function im_pmwr_demo_unknown_thing_4t0_4(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "d1xs",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: in_models(o + 0, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
     });
 
 }
@@ -9937,7 +10072,7 @@ function im_pmwr_demo_interface_72_24t0(o, x) {
         u8_13: u8(o + 13),
     });
 
-    falseu32(o + 8) && im_pmwr_demo_interface_72_24t0_8(u32(o + 8) + g.m, x[0].section_8);
+    u32(o + 8) && im_pmwr_demo_interface_72_24t0_8(u32(o + 8) + g.m, x[0].section_8);
 
     // 16 bytes;
 
@@ -11044,7 +11179,7 @@ function im_pmwr_demo_model_link_24(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "Fie2",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: in_models(o + 0, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
     });
 
 }
@@ -11052,7 +11187,7 @@ function im_pmwr_demo_model_link_32(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "wYBN",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: in_models(o + 0, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
         u32_4: u32(o + 4),
     });
 
@@ -11122,7 +11257,7 @@ function im_pmwr_demo_model_sub_link_8(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "S;gy",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: in_models(o + 0, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
     });
 
 }
@@ -11130,7 +11265,7 @@ function im_pmwr_demo_model_sub_link_16(o, i, x) {
     x.push({
         id: gen_id(),
         sec_id: "Lnon",
-        model_0: im_patch(g.model_ref, o + 0),
+        model_0: in_models(o + 0, g.models_array, im_pmwr_demo_models, g.ordered_ref.pmwr_demo_model),
         u32_4: u32(o + 4),
     });
 

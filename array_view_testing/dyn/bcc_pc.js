@@ -78,6 +78,15 @@ function im_bcc_pc_directory(o, i, x, global) {
 
     g.file_dir_type = return_directory_type(u32(o + 4))
 
+    globalThis.log_array = {
+        p_offset: {
+            offset: 0,
+            array: [],
+            pointers: [],
+        },
+
+    }
+
     x.push({
         id: gen_id(),
         sec_id: "]7Zf",

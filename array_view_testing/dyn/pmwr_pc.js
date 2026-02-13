@@ -1985,7 +1985,7 @@ function im_pmwr_pc_datapack(o, x) {
     im_pmwr_pc_index_patch_list(offset_index_patch, x[0].pmwr_pc_index_patch_list)
 
     //ordered
-    im_ordered(g.m, x[0].ordered)
+    im_pmwr_pc_ordered(g.m, x[0].ordered)
 
     return
 
@@ -2023,7 +2023,7 @@ function im_pmwr_pc_datapack(o, x) {
     }
 }
 
-function im_ordered(o, x) {
+function im_pmwr_pc_ordered(o, x) {
     x.push({
         sec_id: "ordr",
         id: gen_id(),

@@ -41,6 +41,15 @@ function im_mm_file_header(o, i, x) {
         section_datapack: [],
     });
 
+    globalThis.log_array = {
+        p_offset: {
+            offset: 0,
+            array: [],
+            pointers: [],
+        },
+
+    }
+
     im_mm_datapack(12, 0, x[i].section_datapack)
 
     return x[i].id
