@@ -38,9 +38,6 @@ Array View
 --------
 ### Formats Not Yet Traversable in Array View:
 * Motor Mayhem: Vehicular Combat League
-* Snoopy vs. the Red Baron (PC)
-* Snoopy vs. the Red Baron (PS2)
-* Snoopy vs. the Red Baron (PSP)
 * Pac Man World Rally (GC)
 * Pac Man World Rally (PS2)
 * Pac Man World Rally (PSP)
@@ -52,6 +49,9 @@ Array View
 * Hot Wheels Velocity X (PC)
 * Hot Wheels Velocity X (GC)
 * Hot Wheels Velocity X (PS2)
+* Snoopy vs. the Red Baron (PC)
+* Snoopy vs. the Red Baron (PS2)
+* Snoopy vs. the Red Baron (PSP)
 * Pac Man World Rally (Xbox)
 * Pac Man World Rally (Demo)
 * Bee Movie Game (PC)
@@ -64,4 +64,5 @@ Array View
 Current Progress
 ============
 ### Working on making these formats Traversable
-* Snoopy vs. the Red Baron (PC)
+* Motor Mayhem: Vehicular Combat League
+* Bigfoot: Collision Course (PC)

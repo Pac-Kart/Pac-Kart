@@ -156,15 +156,15 @@ add import/export tables for all sections
         better way to handel this im_hwvx_proto_share_end
         im_hwvx_model_pc_8_12 can be imported but format is probbly wrong
     hwvx_ps2 [traversable, no exports]
-    svtrb_pc
-    svtrb_psp
-    svtrb_ps2
+    svtrb_pc [traversable, no exports]
+    svtrb_psp [traversable, no exports]
+    svtrb_ps2 [traversable, no exports]
     pmwr_gc
     pmwr_pc [f]
-    pmwr_ps2_demo
+    pmwr_ps2_demo [traversable, no exports]
     pmwr_ps2
     pmwr_psp
-    pmwr_xbox
+    pmwr_xbox [traversable, no exports]
     bmg_demo [traversable, no exports]
         how to handle bmg_demo_world_0_76 ?
         how to handle ex_bmg_demo_world_28 [56] ?
@@ -243,11 +243,7 @@ pmwr_ps2demo
     reorder functions based on docs
 
 pmwr_xdx
-    research music section
     reorder functions based on docs
-
-pmwr
-    current version is just copied from xbox mostly so wrong format
 
 svtrb
     reorder functions based on docs
