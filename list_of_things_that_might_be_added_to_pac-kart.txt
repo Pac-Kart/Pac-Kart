@@ -255,5 +255,4 @@ hwvx_proto
     reorder functions based on docs
 
 mmvcl
-    find lost offsets
-    research section order
+    reorder functions based on docs

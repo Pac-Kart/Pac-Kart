@@ -37,7 +37,6 @@ Main Page
 Array View
 --------
 ### Formats Not Yet Traversable in Array View:
-* Motor Mayhem: Vehicular Combat League
 * Pac Man World Rally (GC)
 * Pac Man World Rally (PS2)
 * Pac Man World Rally (PSP)
@@ -45,6 +44,7 @@ Array View
 * Bigfoot: Collision Course (Wii)
 
 ### Formats Traversable in Array View:
+* Motor Mayhem: Vehicular Combat League
 * Hot Wheels Velocity X (Proto)
 * Hot Wheels Velocity X (PC)
 * Hot Wheels Velocity X (GC)
@@ -64,5 +64,4 @@ Array View
 Current Progress
 ============
 ### Working on making these formats Traversable
-* Motor Mayhem: Vehicular Combat League
 * Bigfoot: Collision Course (PC)
