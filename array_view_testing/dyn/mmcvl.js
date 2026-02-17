@@ -744,7 +744,10 @@ function get_mm_sec_id(string) {
 /* start import list */
 
 async function im_mm_x(index) {
+    id_offset.push(0);
     x.push({
+        id: gen_id(),
+
         sec_id: "AAAA",
         format: [],
         game: g.game,
@@ -756,8 +759,10 @@ async function im_mm_x(index) {
 }
 
 function im_mm_file_header(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ":zlA",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -836,8 +841,10 @@ function im_mm_file_header(o, i, x) {
 }
 
 function im_mm_datapack(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ";YXC",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -871,7 +878,7 @@ function im_mm_datapack(o, i, x) {
     // x[i].patch_list = convert_arraybuffer_base64(buffer.slice(patchlistoffset, g.m))
     // x[i].ordered = convert_arraybuffer_base64(buffer.slice(g.m, buffer.byteLength))
 
-    //  x.push({
+    //  id_offset.push(o);x.push({id: gen_id(),          
     //     index_patch_list_buffer: buffer.slice(o, endoffset),
     //     ordered_list_buffer: buffer.slice(o, endoffset),
     //     offset_patch_list: buffer.slice(o, endoffset)
@@ -909,7 +916,10 @@ function im_mm_get_combined_patch_list(o, patch_offset, x) {
     patch_offset += u32(g.datapack_offset + 20) * 8
     let general_offset = patch_offset
 
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "ipll",
         texture: im_patch_list(texture_offset, u32(g.datapack_offset + 8), 't'),
         sound: im_patch_list(sound_offset, u32(g.datapack_offset + 20), 's'),
@@ -929,9 +939,12 @@ function im_mm_get_combined_patch_list(o, patch_offset, x) {
 }
 function im_mm_ordered(o, x) {
 
+    id_offset.push(o);
     x.push({
-        sec_id: "ordr",
         id: gen_id(),
+
+        sec_id: "ordr",
+
         mm_file_specific_section: [],
         mm_model: [],
         mm_model_texture_anims_list: [],
@@ -981,8 +994,10 @@ function im_mm_ordered(o, x) {
 }
 
 function im_mm_basic(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "M^Qa",
         u32_0: u32(o + 0),
         //amount?
@@ -997,8 +1012,10 @@ function im_mm_basic(o, i, x) {
 
 }
 function im_mm_basic_04(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "ny09",
         section_0: [],
         u32_4: u32(o + 4),
@@ -1023,7 +1040,10 @@ function im_mm_basic_04(o, i, x) {
 
 }
 function im_mm_world(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "jX9p",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1136,8 +1156,10 @@ function im_mm_world(o, x) {
 
 }
 function im_mm_world_84(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "D^dH",
         unordered_mm_model_0: 0,
         u32_4: u32(o + 4),
@@ -1148,8 +1170,10 @@ function im_mm_world_84(o, i, x) {
 
 }
 function im_mm_world_92(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "BcXl",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1169,8 +1193,10 @@ function im_mm_world_92(o, i, x) {
 
 }
 function im_mm_world_116(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "<6TW",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -1185,8 +1211,10 @@ function im_mm_world_116(o, i, x) {
 
 }
 function im_mm_world_116_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "[fz=",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1212,8 +1240,10 @@ function im_mm_world_116_24(o, i, x) {
 
 }
 function im_mm_world_124(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "4V5X",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1233,8 +1263,10 @@ function im_mm_world_124(o, i, x) {
 
 }
 function im_mm_world_124_32(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "N5PY",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1260,8 +1292,10 @@ function im_mm_world_124_32(o, i, x) {
 
 }
 function im_mm_world_100(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "RP0t",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -1282,7 +1316,10 @@ function im_mm_world_100_24(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -1291,8 +1328,10 @@ function im_mm_world_100_24(o, x) {
 
 }
 function im_mm_world_132(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "5N<a",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1316,8 +1355,10 @@ function im_mm_world_132(o, i, x) {
 
 }
 function im_mm_world_140(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "7^R6",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1340,8 +1381,10 @@ function im_mm_world_140(o, i, x) {
 
 }
 function im_mm_world_148(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Rj>P",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1365,8 +1408,10 @@ function im_mm_world_148(o, i, x) {
 
 }
 function im_mm_world_164(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "<_k?",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -1397,15 +1442,20 @@ function im_mm_world_164(o, i, x) {
 
 }
 function im_mm_world_164_88(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "O7@I",
         u32_0: u32(o + 0),
     });
 
 }
 function im_mm_world_176(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Mx4T",
         f32_4: f32(o + 4),
     });
@@ -1414,8 +1464,10 @@ function im_mm_world_176(o, x) {
 
 }
 function im_mm_world_52(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "GTfU",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1473,23 +1525,30 @@ function im_mm_world_52(o, i, x) {
 
 }
 function im_mm_world_60(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "6jgC",
         u32_0: u32(o + 0),
     });
 
 }
 function im_mm_world_68(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "KxFG",
         u32_0: u32(o + 0),
     });
 
 }
 function im_mm_world_180(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "<:y1",
         section_0: [],
         u32_4: u32(o + 4),
@@ -1504,8 +1563,10 @@ function im_mm_world_180(o, x) {
 
 }
 function im_mm_world_180_0(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "<d7m",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1547,8 +1608,10 @@ function im_mm_world_180_0(o, i, x) {
 
 }
 function im_mm_model(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "0QcK",
         u16_0: u16(o + 0),
         u16_2: u16(o + 2),
@@ -1589,16 +1652,20 @@ function im_mm_model(o, i, x) {
 
 }
 function im_mm_model_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "s9VS",
         f32_0: f32(o + 0),
     });
 
 }
 function im_mm_model_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "O>Zy",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -1629,8 +1696,10 @@ function im_mm_model_8(o, i, x) {
 
 }
 function im_mm_model_8_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "w35h",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1645,8 +1714,10 @@ function im_mm_model_8_12(o, i, x) {
 
 }
 function im_mm_model_8_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "=f4e",
         u8_2: u8(o + 2),
         u8_3: u8(o + 3),
@@ -1675,7 +1746,10 @@ function im_mm_model_8_8(o, i, x) {
     }
 }
 function im_mm_model_8_8_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "nm8i",
         u16_16: u16(o + 16),
         //amount?
@@ -1715,8 +1789,10 @@ function im_mm_model_8_8_12(o, x) {
 
 }
 function im_mm_model_8_8_12_type_0(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "x;iF",
         section_0: [],
         u8_4: u8(o + 4),
@@ -1731,7 +1807,10 @@ function im_mm_model_8_8_12_type_0_0(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -1743,7 +1822,10 @@ function im_mm_model_8_8_12_type_96(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -1752,7 +1834,10 @@ function im_mm_model_8_8_12_type_96(o, x) {
 
 }
 function im_mm_model_8_8_28t4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "<hYk",
         u16_0: u16(o + 0),
         u16_2: u16(o + 2),
@@ -1794,8 +1879,10 @@ function im_mm_model_8_8_28t4(o, x) {
 
 }
 function im_mm_model_texture_anims_list(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "REog",
         unordered_mm_texture_anims_0: 0,
         unordered_mm_model_4: 0,
@@ -1811,8 +1898,10 @@ function im_mm_model_texture_anims_list(o, i, x) {
 
 }
 function im_mm_model_anims_1(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "TJcJ",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -1864,7 +1953,10 @@ function im_mm_model_anims_1_24(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -1876,7 +1968,10 @@ function im_mm_model_anims_1_28(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -1887,7 +1982,10 @@ function im_mm_model_anims_1_32(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -1898,7 +1996,10 @@ function im_mm_model_anims_1_44(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -1909,7 +2010,10 @@ function im_mm_model_anims_1_36(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -1917,8 +2021,10 @@ function im_mm_model_anims_1_36(o, x) {
 
 }
 function im_mm_model_anims_2(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "L?[O",
         u32_0: u32(o + 0),
         //amount?
@@ -1942,8 +2048,10 @@ function im_mm_model_anims_2(o, i, x) {
 
 }
 function im_mm_model_anims_2_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "1up9",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1960,8 +2068,10 @@ function im_mm_model_anims_2_16(o, i, x) {
 
 }
 function im_mm_Texture(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "ZzKU",
         u16_0: u16(o + 0),
         //check this
@@ -2026,8 +2136,10 @@ function im_mm_Texture(o, i, x) {
 
 }
 function im_mm_sound_list(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "pk9q",
         u32_0: u32(o + 0),
         section_4: [],
@@ -2040,15 +2152,20 @@ function im_mm_sound_list(o, i, x) {
 
 }
 function im_mm_vag_file(o, x, length) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, o + length)),
     });
 
 }
 function im_mm_color_table(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "clt5",
         buffer: convert_arraybuffer_base64(buffer.slice(o, o + 1024)),
     });
@@ -2059,8 +2176,10 @@ function im_mm_color_table(o, i, x) {
 }
 
 function im_mm_car_section(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Bb@@",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2088,8 +2207,10 @@ function im_mm_car_section(o, i, x) {
 
 }
 function im_mm_car_section_44(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "3zRw",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2136,7 +2257,10 @@ function im_mm_car_section_44(o, i, x) {
 
 }
 function im_mm_car_section_44_88(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "mFTV",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2156,8 +2280,10 @@ function im_mm_car_section_44_88(o, x) {
 
 }
 function im_mm_car_section_44_100(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "R=ey",
         unordered_mm_car_text_related_0: 0,
     });
@@ -2166,7 +2292,10 @@ function im_mm_car_section_44_100(o, i, x) {
 
 }
 function im_mm_car_section_44_104(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "PiO;",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2183,7 +2312,10 @@ function im_mm_car_section_44_104(o, x) {
 
 }
 function im_mm_car_section_44_108(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "yany",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -2197,7 +2329,10 @@ function im_mm_car_section_44_108(o, x) {
 
 }
 function im_mm_car_section_44_112(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "C?6G",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -2208,8 +2343,10 @@ function im_mm_car_section_44_112(o, x) {
 
 }
 function im_mm_car_text_related(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "yYJB",
         section_0: im_string(u32(o + 0), 0, false),
         u32_4: u32(o + 4),
@@ -2225,8 +2362,10 @@ function im_mm_car_text_related(o, i, x) {
 
 }
 function im_mm_car_text_related_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "<Taz",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -2238,8 +2377,10 @@ function im_mm_car_text_related_8(o, i, x) {
 
 }
 function im_mm_unknown_idk_sec(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "h_qZ",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2263,7 +2404,10 @@ function im_mm_unknown_idk_sec(o, i, x) {
 
 }
 function im_mm_unknown_idk_sec_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "dIJ1",
         f32_8: f32(o + 8),
         f32_16: f32(o + 16),
@@ -2273,8 +2417,10 @@ function im_mm_unknown_idk_sec_40(o, x) {
 
 }
 function im_mm_some_model_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "p?uN",
         u32_0: u32(o + 0),
         //amount?
@@ -2291,8 +2437,10 @@ function im_mm_some_model_link(o, i, x) {
 
 }
 function im_mm_some_model_link_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "u6?T",
         u8_1: u8(o + 1),
         u8_2: u8(o + 2),
@@ -2310,7 +2458,10 @@ function im_mm_some_model_link_4(o, i, x) {
 
 }
 function im_mm_some_model_link_4_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: ";VKJ",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2321,7 +2472,10 @@ function im_mm_some_model_link_4_12(o, x) {
 
 }
 function im_mm_some_model_link_4_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Oj>K",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2332,8 +2486,10 @@ function im_mm_some_model_link_4_16(o, x) {
 
 }
 function im_mm_world_later(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "uZcU",
         u32_0: u32(o + 0),
         f32_12: f32(o + 12),
@@ -2351,7 +2507,10 @@ function im_mm_world_later(o, i, x) {
 
 }
 function im_mm_world_later_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "T9]W",
         u8_3: u8(o + 3),
         u8_12: u8(o + 12),
@@ -2364,7 +2523,10 @@ function im_mm_world_later_28(o, x) {
 
 }
 function im_mm_world_later_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "sNht",
         u32_0: u32(o + 0),
         //amount?
@@ -2385,8 +2547,10 @@ function im_mm_world_later_32(o, x) {
 
 }
 function im_mm_world_later_32_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "HLT5",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2400,7 +2564,10 @@ function im_mm_world_later_32_4(o, i, x) {
 
 }
 function im_mm_world_later_32_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Ta7@",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2414,8 +2581,10 @@ function im_mm_world_later_32_20(o, x) {
 
 }
 function im_mm_item_maybe(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "I74I",
         section_0: [],
         u8_4: u8(o + 4),
@@ -2474,7 +2643,10 @@ function im_mm_item_maybe(o, i, x) {
 
 }
 function im_mm_item_maybe_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "gLJV",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -2485,7 +2657,10 @@ function im_mm_item_maybe_20(o, x) {
 
 }
 function im_mm_item_maybe_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "3T[Q",
         f32_0: f32(o + 0),
     });
@@ -2494,8 +2669,10 @@ function im_mm_item_maybe_48(o, x) {
 
 }
 function im_mm_item_maybe_60(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "3]gT",
         u32_4: u32(o + 4),
         unordered_mm_strange_8: 0,
@@ -2507,7 +2684,10 @@ function im_mm_item_maybe_60(o, i, x) {
 
 }
 function im_mm_item_maybe_60_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "hR3m",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2522,7 +2702,10 @@ function im_mm_item_maybe_60_12(o, x) {
 
 }
 function im_mm_item_maybe_60_12_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "s]TI",
         unordered_mm_model_4: 0,
         u32_16: u32(o + 16),
@@ -2548,8 +2731,10 @@ function im_mm_item_maybe_60_12_24(o, x) {
 
 }
 function im_mm_item_maybe_60_12_24_20(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "x20C",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2561,8 +2746,10 @@ function im_mm_item_maybe_60_12_24_20(o, i, x) {
 
 }
 function im_mm_item_maybe_60_12_24_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "mS?1",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2574,7 +2761,10 @@ function im_mm_item_maybe_60_12_24_28(o, i, x) {
 
 }
 function im_mm_item_maybe_60_12_24_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "4Qlr",
         f32_8: f32(o + 8),
         f32_16: f32(o + 16),
@@ -2584,8 +2774,10 @@ function im_mm_item_maybe_60_12_24_40(o, x) {
 
 }
 function im_mm_item_maybe_68(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "M=9b",
         unordered_mm_unknown_0: 0,
     });
@@ -2594,8 +2786,10 @@ function im_mm_item_maybe_68(o, i, x) {
 
 }
 function im_mm_strange(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "iMV;",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -2614,7 +2808,10 @@ function im_mm_strange(o, i, x) {
 
 }
 function im_mm_strange_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "tAUI",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -2625,8 +2822,10 @@ function im_mm_strange_8(o, x) {
 
 }
 function im_mm_unknown_small_model_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ">bxj",
         u32_0: u32(o + 0),
         //amount?
@@ -2641,8 +2840,10 @@ function im_mm_unknown_small_model_link(o, i, x) {
 
 }
 function im_mm_unknown_small_model_link_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "MWRc",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2659,8 +2860,10 @@ function im_mm_unknown_small_model_link_4(o, i, x) {
 
 }
 function im_mm_car_3_texture_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "QzJi",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
         u8_9: u8(o + 9),
@@ -2675,7 +2878,10 @@ function im_mm_car_3_texture_link(o, i, x) {
 
 }
 function im_mm_car_3_texture_link_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "K8BC",
     });
 
@@ -2683,8 +2889,10 @@ function im_mm_car_3_texture_link_28(o, x) {
 
 }
 function im_mm_font(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Bvyy",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
         unordered_mm_sound_section_4: 0,
@@ -2707,8 +2915,10 @@ function im_mm_font(o, i, x) {
 
 }
 function im_mm_font_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "sFK8",
         f32_0: f32(o + 0),
         u8_16: u8(o + 16),
@@ -2718,8 +2928,10 @@ function im_mm_font_28(o, i, x) {
 
 }
 function im_mm_car_link_the_third(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "UrIB",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2743,8 +2955,10 @@ function im_mm_car_link_the_third(o, i, x) {
 
 }
 function im_mm_interface(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "0P6_",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -2777,8 +2991,10 @@ function im_mm_interface(o, i, x) {
 
 }
 function im_mm_interface_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "dwo?",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2827,7 +3043,10 @@ function im_mm_interface_16(o, i, x) {
 
 }
 function im_mm_interface_16_16t0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "c?KX",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2841,7 +3060,10 @@ function im_mm_interface_16_16t0(o, x) {
 
 }
 function im_mm_interface_16_16t0_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "izVD",
         u32_0: u32(o + 0),
         section_4: [],
@@ -2856,15 +3078,20 @@ function im_mm_interface_16_16t0_16(o, x) {
 
 }
 function im_mm_interface_16_16t0_16_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "00zy",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
     });
 
 }
 function im_mm_interface_16_16t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "jT9s",
         unordered_mm_text_0: 0,
         unordered_mm_font_4: 0,
@@ -2886,7 +3113,10 @@ function im_mm_interface_16_16t1(o, x) {
 
 }
 function im_mm_interface_16_16t1_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "amiI",
         u32_0: u32(o + 0),
         //amount?
@@ -2901,8 +3131,10 @@ function im_mm_interface_16_16t1_8(o, x) {
 
 }
 function im_mm_interface_16_16t1_8_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "tqDN",
         unordered_mm_text_0: 0,
     });
@@ -2911,7 +3143,10 @@ function im_mm_interface_16_16t1_8_4(o, i, x) {
 
 }
 function im_mm_interface_16_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "1=]d",
         unordered_mm_interface_0: 0,
     });
@@ -2922,7 +3157,10 @@ function im_mm_interface_16_32(o, x) {
 
 }
 function im_mm_interface_16_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "LVdG",
         u32_0: u32(o + 0),
     });
@@ -2931,7 +3169,10 @@ function im_mm_interface_16_36(o, x) {
 
 }
 function im_mm_interface_16_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "w>]4",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2951,8 +3192,10 @@ function im_mm_interface_16_40(o, x) {
 
 }
 function im_mm_interface_16_40_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "xb2g",
         u32_0: u32(o + 0),
         section_8: [],
@@ -2962,7 +3205,10 @@ function im_mm_interface_16_40_12(o, i, x) {
 
 }
 function im_mm_interface_16_40_12_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "h@<Z",
         unordered_mm_interface_0: 0,
         u8_5: u8(o + 5),
@@ -2977,7 +3223,10 @@ function im_mm_interface_16_40_12_8(o, x) {
 
 }
 function im_mm_interface_16_44(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "ii@E",
         u32_4: u32(o + 4),
         section_8: [],
@@ -3016,7 +3265,10 @@ function im_mm_interface_16_44(o, x) {
 
 }
 function im_mm_interface_16_44_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "D[eK",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -3027,8 +3279,10 @@ function im_mm_interface_16_44_8(o, x) {
 
 }
 function im_mm_interface_16_44_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "<BwA",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3038,8 +3292,10 @@ function im_mm_interface_16_44_16(o, i, x) {
 
 }
 function im_mm_interface_16_44_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "EkoO",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3052,8 +3308,10 @@ function im_mm_interface_16_44_24(o, i, x) {
 
 }
 function im_mm_interface_16_44_32(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "A8eh",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3064,7 +3322,10 @@ function im_mm_interface_16_44_32(o, i, x) {
 
 }
 function im_mm_interface_16_44_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "4Ars",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -3078,7 +3339,10 @@ function im_mm_interface_16_44_40(o, x) {
 
 }
 function im_mm_interface_16_44_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Pgfx",
         f32_0: f32(o + 0),
         u32_16: u32(o + 16),
@@ -3088,7 +3352,10 @@ function im_mm_interface_16_44_48(o, x) {
 
 }
 function im_mm_interface_16_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "h@1Z",
         u32_4: u32(o + 4),
         section_8: [],
@@ -3123,7 +3390,10 @@ function im_mm_interface_16_48(o, x) {
 
 }
 function im_mm_interface_16_48_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "@VNI",
         u32_0: u32(o + 0),
     });
@@ -3132,7 +3402,10 @@ function im_mm_interface_16_48_8(o, x) {
 
 }
 function im_mm_interface_16_48_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "qZ8O",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3143,8 +3416,10 @@ function im_mm_interface_16_48_16(o, x) {
 
 }
 function im_mm_interface_16_48_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "_y:1",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3157,8 +3432,10 @@ function im_mm_interface_16_48_24(o, i, x) {
 
 }
 function im_mm_interface_16_48_32(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "3?H1",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3170,7 +3447,10 @@ function im_mm_interface_16_48_32(o, i, x) {
 
 }
 function im_mm_interface_16_48_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: ">ip]",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3188,7 +3468,10 @@ function im_mm_interface_16_48_40(o, x) {
 
 }
 function im_mm_interface_16_48_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "k7?2",
         f32_0: f32(o + 0),
         u32_16: u32(o + 16),
@@ -3198,7 +3481,10 @@ function im_mm_interface_16_48_48(o, x) {
 
 }
 function im_mm_interface_16_52(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "xn1?",
         u32_4: u32(o + 4),
         section_8: [],
@@ -3232,7 +3518,10 @@ function im_mm_interface_16_52(o, x) {
 
 }
 function im_mm_interface_16_52_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "]_Dh",
         u32_0: u32(o + 0),
     });
@@ -3241,7 +3530,10 @@ function im_mm_interface_16_52_8(o, x) {
 
 }
 function im_mm_interface_16_52_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Muu0",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3251,8 +3543,10 @@ function im_mm_interface_16_52_16(o, x) {
 
 }
 function im_mm_interface_16_52_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "69Eh",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3264,7 +3558,10 @@ function im_mm_interface_16_52_24(o, i, x) {
 
 }
 function im_mm_interface_16_52_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "u_>L",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3275,7 +3572,10 @@ function im_mm_interface_16_52_32(o, x) {
 
 }
 function im_mm_interface_16_52_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "62@j",
         f32_8: f32(o + 8),
         f32_20: f32(o + 20),
@@ -3287,7 +3587,10 @@ function im_mm_interface_16_52_40(o, x) {
 
 }
 function im_mm_interface_16_52_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "DvQ[",
     });
 
@@ -3295,7 +3598,10 @@ function im_mm_interface_16_52_48(o, x) {
 
 }
 function im_mm_interface_16_56(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "SB:<",
         u32_4: u32(o + 4),
         section_8: [],
@@ -3332,7 +3638,10 @@ function im_mm_interface_16_56(o, x) {
 
 }
 function im_mm_interface_16_56_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "rqsL",
         u32_0: u32(o + 0),
     });
@@ -3341,7 +3650,10 @@ function im_mm_interface_16_56_8(o, x) {
 
 }
 function im_mm_interface_16_56_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "aSW5",
     });
 
@@ -3349,8 +3661,10 @@ function im_mm_interface_16_56_16(o, x) {
 
 }
 function im_mm_interface_16_56_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "sVfy",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3363,8 +3677,10 @@ function im_mm_interface_16_56_24(o, i, x) {
 
 }
 function im_mm_interface_16_56_32(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "H0qM",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3375,7 +3691,10 @@ function im_mm_interface_16_56_32(o, i, x) {
 
 }
 function im_mm_interface_16_56_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "p@aK",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -3389,7 +3708,10 @@ function im_mm_interface_16_56_40(o, x) {
 
 }
 function im_mm_interface_16_56_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "4hxP",
     });
 
@@ -3397,7 +3719,10 @@ function im_mm_interface_16_56_48(o, x) {
 
 }
 function im_mm_interface_16_64(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "mXkU",
         u32_4: u32(o + 4),
         section_8: [],
@@ -3432,7 +3757,10 @@ function im_mm_interface_16_64(o, x) {
 
 }
 function im_mm_interface_16_64_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "P5jn",
         u32_0: u32(o + 0),
     });
@@ -3441,7 +3769,10 @@ function im_mm_interface_16_64_8(o, x) {
 
 }
 function im_mm_interface_16_64_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "s9RK",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3451,8 +3782,10 @@ function im_mm_interface_16_64_16(o, x) {
 
 }
 function im_mm_interface_16_64_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ";7RW",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3463,8 +3796,10 @@ function im_mm_interface_16_64_24(o, i, x) {
 
 }
 function im_mm_interface_16_64_32(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "IvZ?",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3474,7 +3809,10 @@ function im_mm_interface_16_64_32(o, i, x) {
 
 }
 function im_mm_interface_16_64_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "BRIR",
         f32_8: f32(o + 8),
         f32_20: f32(o + 20),
@@ -3486,7 +3824,10 @@ function im_mm_interface_16_64_40(o, x) {
 
 }
 function im_mm_interface_16_64_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "0=Hv",
     });
 
@@ -3494,7 +3835,10 @@ function im_mm_interface_16_64_48(o, x) {
 
 }
 function im_mm_interface_16_68(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "nMTq",
         u32_0: u32(o + 0),
         //amount?
@@ -3533,8 +3877,10 @@ function im_mm_interface_16_68(o, x) {
 
 }
 function im_mm_interface_16_68_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "pdq@",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3545,8 +3891,10 @@ function im_mm_interface_16_68_4(o, i, x) {
 
 }
 function im_mm_interface_16_68_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "e@se",
         f32_0: f32(o + 0),
         u32_16: u32(o + 16),
@@ -3555,8 +3903,10 @@ function im_mm_interface_16_68_12(o, i, x) {
 
 }
 function im_mm_interface_16_68_20(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "oRd@",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3568,8 +3918,10 @@ function im_mm_interface_16_68_20(o, i, x) {
 
 }
 function im_mm_interface_16_68_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "OXAa",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3582,7 +3934,10 @@ function im_mm_interface_16_68_28(o, i, x) {
 
 }
 function im_mm_interface_16_68_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: ";5bR",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3598,8 +3953,10 @@ function im_mm_interface_16_68_36(o, x) {
 
 }
 function im_mm_interface_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "j88i",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3610,7 +3967,10 @@ function im_mm_interface_24(o, i, x) {
 
 }
 function im_mm_interface_24_08(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "xAU9",
         unordered_mm_interface_0: 0,
         u8_4: u8(o + 4),
@@ -3627,8 +3987,10 @@ function im_mm_interface_24_08(o, x) {
 
 }
 function im_mm_object(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "72Sp",
         f32_4: f32(o + 4),
         u8_16: u8(o + 16),
@@ -3673,7 +4035,10 @@ function im_mm_object(o, i, x) {
 
 }
 function im_mm_object_92(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "4pX3",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3685,8 +4050,10 @@ function im_mm_object_92(o, x) {
 
 }
 function im_mm_object_100(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Slb;",
         u32_4: u32(o + 4),
         section_12: [],
@@ -3696,7 +4063,10 @@ function im_mm_object_100(o, i, x) {
 
 }
 function im_mm_object_100_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: ":Xj>",
         f32_4: f32(o + 4),
         u8_19: u8(o + 19),
@@ -3709,7 +4079,10 @@ function im_mm_object_100_12(o, x) {
 
 }
 function im_mm_object_100_12_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: ";PMX",
         u8_1: u8(o + 1),
         section_4: [],
@@ -3740,7 +4113,10 @@ function im_mm_object_100_12_24(o, x) {
 
 }
 function im_mm_object_100_12_24_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "a0hi",
     });
 
@@ -3748,7 +4124,10 @@ function im_mm_object_100_12_24_12(o, x) {
 
 }
 function im_mm_object_100_12_24_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "RtVn",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3759,8 +4138,10 @@ function im_mm_object_100_12_24_20(o, x) {
 
 }
 function im_mm_object_100_12_24_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "4RB0",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3772,7 +4153,10 @@ function im_mm_object_100_12_24_28(o, i, x) {
 
 }
 function im_mm_object_100_12_24_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "X2G_",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -3783,8 +4167,10 @@ function im_mm_object_100_12_24_40(o, x) {
 
 }
 function im_mm_asdf_texture_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "bIQi",
         u32_0: u32(o + 0),
         //amount?
@@ -3805,8 +4191,10 @@ function im_mm_asdf_texture_link(o, i, x) {
 
 }
 function im_mm_asdf_texture_link_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "ANyz",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3820,7 +4208,10 @@ function im_mm_asdf_texture_link_4(o, i, x) {
 
 }
 function im_mm_asdf_texture_link_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "aG<u",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3834,8 +4225,10 @@ function im_mm_asdf_texture_link_20(o, x) {
 
 }
 function im_mm_another_unknown_sec(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "nB:q",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3863,8 +4256,10 @@ function im_mm_another_unknown_sec(o, i, x) {
 
 }
 function im_mm_another_unknown_sec_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "P0Fh",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3875,8 +4270,10 @@ function im_mm_another_unknown_sec_28(o, i, x) {
 
 }
 function im_mm_another_unknown_sec_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "iDY?",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3887,8 +4284,10 @@ function im_mm_another_unknown_sec_36(o, i, x) {
 
 }
 function im_mm_asdf_some_list(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "j9Z7",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3912,8 +4311,10 @@ function im_mm_asdf_some_list(o, i, x) {
 
 }
 function im_mm_asdf_some_list_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "qHpL",
         f32_0: f32(o + 0),
         u8_5: u8(o + 5),
@@ -3922,7 +4323,10 @@ function im_mm_asdf_some_list_16(o, i, x) {
 
 }
 function im_mm_asdf_some_list_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "qnMA",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -3936,8 +4340,10 @@ function im_mm_asdf_some_list_24(o, x) {
 
 }
 function im_mm_text(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "OKXb",
         section_0: im_string(u32(o + 0), 0, false),
         section_4: im_string(u32(o + 4), 0, false),
@@ -3950,8 +4356,10 @@ function im_mm_text(o, i, x) {
 
 }
 function im_mm_car_model_sec(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "e3Do",
         u32_0: u32(o + 0),
         //amount?
@@ -3999,8 +4407,10 @@ function im_mm_car_model_sec(o, i, x) {
 
 }
 function im_mm_car_model_sec_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "25oo",
         unordered_mm_model_0: 0,
     });
@@ -4009,8 +4419,10 @@ function im_mm_car_model_sec_4(o, i, x) {
 
 }
 function im_mm_car_model_sec_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "P=_>",
         unordered_mm_model_0: 0,
         u32_4: u32(o + 4),
@@ -4020,7 +4432,10 @@ function im_mm_car_model_sec_12(o, i, x) {
 
 }
 function im_mm_car_model_sec_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "0tIJ",
         f32_4: f32(o + 4),
     });
@@ -4029,7 +4444,10 @@ function im_mm_car_model_sec_32(o, x) {
 
 }
 function im_mm_car_model_sec_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "it;m",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4039,7 +4457,10 @@ function im_mm_car_model_sec_36(o, x) {
 
 }
 function im_mm_car_model_sec_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "L1E2",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4049,8 +4470,10 @@ function im_mm_car_model_sec_40(o, x) {
 
 }
 function im_mm_car_model_sec_48(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "HsCT",
         f32_0: f32(o + 0),
         u32_4: u32(o + 4),
@@ -4075,7 +4498,10 @@ function im_mm_car_model_sec_48(o, i, x) {
 
 }
 function im_mm_car_model_sec_48_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Yv35",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4091,7 +4517,10 @@ function im_mm_car_model_sec_48_12(o, x) {
 
 }
 function im_mm_car_model_sec_48_12_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "4VHU",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4131,8 +4560,10 @@ function im_mm_car_model_sec_48_12_24(o, x) {
 
 }
 function im_mm_car_model_sec_48_12_24_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "pLdT",
         f32_0: f32(o + 0),
         u32_16: u32(o + 16),
@@ -4141,7 +4572,10 @@ function im_mm_car_model_sec_48_12_24_12(o, i, x) {
 
 }
 function im_mm_car_model_sec_48_12_24_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "yQ0O",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4154,8 +4588,10 @@ function im_mm_car_model_sec_48_12_24_20(o, x) {
 
 }
 function im_mm_car_model_sec_48_12_24_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ";]Ov",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4167,7 +4603,10 @@ function im_mm_car_model_sec_48_12_24_28(o, i, x) {
 
 }
 function im_mm_car_model_sec_48_12_24_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Ni:3",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4177,7 +4616,10 @@ function im_mm_car_model_sec_48_12_24_32(o, x) {
 
 }
 function im_mm_car_model_sec_48_12_24_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "pzeh",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4189,7 +4631,10 @@ function im_mm_car_model_sec_48_12_24_36(o, x) {
 
 }
 function im_mm_car_model_sec_48_12_24_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "uNAW",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4201,7 +4646,10 @@ function im_mm_car_model_sec_48_12_24_40(o, x) {
 
 }
 function im_mm_car_model_sec_48_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "1Sz8",
         u32_0: u32(o + 0),
     });
@@ -4210,7 +4658,10 @@ function im_mm_car_model_sec_48_16(o, x) {
 
 }
 function im_mm_car_model_sec_52(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "g5gf",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4224,8 +4675,10 @@ function im_mm_car_model_sec_52(o, x) {
 
 }
 function im_mm_unknown_thing(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "X:<>",
         u8_16: u8(o + 16),
         u8_17: u8(o + 17),
@@ -4277,7 +4730,10 @@ function im_mm_unknown_thing(o, i, x) {
 
 }
 function im_mm_unknown_thing_20t0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "IiTn",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4292,7 +4748,10 @@ function im_mm_unknown_thing_20t0(o, x) {
 
 }
 function im_mm_unknown_thing_20t0_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "MGFo",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -4303,7 +4762,10 @@ function im_mm_unknown_thing_20t0_4(o, x) {
 
 }
 function im_mm_unknown_thing_20t0_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "8DJL",
         f32_4: f32(o + 4),
         f32_16: f32(o + 16),
@@ -4314,7 +4776,10 @@ function im_mm_unknown_thing_20t0_36(o, x) {
 
 }
 function im_mm_unknown_thing_20t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "89K[",
         u32_0: u32(o + 0),
         f32_8: f32(o + 8),
@@ -4324,8 +4789,10 @@ function im_mm_unknown_thing_20t1(o, x) {
 
 }
 function im_mm_unknown_thing_40(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "txEj",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4337,8 +4804,10 @@ function im_mm_unknown_thing_40(o, i, x) {
 
 }
 function im_mm_unknown_thing_48(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "rBbk",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4351,7 +4820,10 @@ function im_mm_unknown_thing_48(o, i, x) {
 
 }
 function im_mm_unknown_thing_60(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "6m[N",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4371,8 +4843,10 @@ function im_mm_unknown_thing_60(o, x) {
 
 }
 function im_mm_unknown_some_values(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "G<pU",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4393,7 +4867,10 @@ function im_mm_unknown_some_values(o, i, x) {
 
 }
 function im_mm_unknown_some_values_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "T3[=",
         u32_0: u32(o + 0),
         //amount?
@@ -4408,8 +4885,10 @@ function im_mm_unknown_some_values_24(o, x) {
 
 }
 function im_mm_unknown_some_values_24_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "VF>m",
         f32_0: f32(o + 0),
         u8_4: u8(o + 4),
@@ -4419,7 +4898,10 @@ function im_mm_unknown_some_values_24_4(o, i, x) {
 
 }
 function im_mm_unknown_some_values_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Y[vx",
         u32_0: u32(o + 0),
         //amount?
@@ -4434,8 +4916,10 @@ function im_mm_unknown_some_values_28(o, x) {
 
 }
 function im_mm_unknown_some_values_28_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "gMIE",
         f32_0: f32(o + 0),
         u8_5: u8(o + 5),
@@ -4444,8 +4928,10 @@ function im_mm_unknown_some_values_28_4(o, i, x) {
 
 }
 function im_mm_asdf(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "aV@L",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4519,7 +5005,10 @@ function im_mm_asdf(o, i, x) {
 
 }
 function im_mm_asdf_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Drrz",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4529,7 +5018,10 @@ function im_mm_asdf_12(o, x) {
 
 }
 function im_mm_asdf_96(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "LhtT",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4555,7 +5047,10 @@ function im_mm_asdf_96(o, x) {
 
 }
 function im_mm_asdf_96_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "yPrU",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4568,7 +5063,10 @@ function im_mm_asdf_96_4(o, x) {
 
 }
 function im_mm_asdf_96_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Bz?D",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -4579,7 +5077,10 @@ function im_mm_asdf_96_36(o, x) {
 
 }
 function im_mm_asdf_132(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "D@?<",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4592,8 +5093,10 @@ function im_mm_asdf_132(o, x) {
 
 }
 function im_mm_asdf_140(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "<t8u",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4605,7 +5108,10 @@ function im_mm_asdf_140(o, i, x) {
 
 }
 function im_mm_asdf_152(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "wnXX",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4625,7 +5131,10 @@ function im_mm_asdf_152(o, x) {
 
 }
 function im_mm_asdf_156(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "J^yV",
         u8_2: u8(o + 2),
         f32_4: f32(o + 4),
@@ -4645,7 +5154,10 @@ function im_mm_asdf_156(o, x) {
 
 }
 function im_mm_asdf_160(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "fDw=",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4657,8 +5169,10 @@ function im_mm_asdf_160(o, x) {
 
 }
 function im_mm_texture_anims(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "0Jdz",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4683,8 +5197,10 @@ function im_mm_texture_anims(o, i, x) {
 
 }
 function im_mm_texture_anims_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "h_yK",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4696,8 +5212,10 @@ function im_mm_texture_anims_8(o, i, x) {
 
 }
 function im_mm_texture_anims_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "bw4b",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4707,7 +5225,10 @@ function im_mm_texture_anims_16(o, i, x) {
 
 }
 function im_mm_texture_anims_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "kUrB",
         u32_0: u32(o + 0),
         //amount?
@@ -4724,16 +5245,20 @@ function im_mm_texture_anims_20(o, x) {
 
 }
 function im_mm_texture_anims_20_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "BSb5",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
     });
 
 }
 function im_mm_sound_section(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "QJYY",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4749,8 +5274,10 @@ function im_mm_sound_section(o, i, x) {
 
 }
 function im_mm_sound_controls(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "?qi0",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4766,8 +5293,10 @@ function im_mm_sound_controls(o, i, x) {
 
 }
 function im_mm_sound_controls_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "?6[u",
         f32_0: f32(o + 0),
         u32_4: u32(o + 4),
@@ -4782,8 +5311,10 @@ function im_mm_sound_controls_8(o, i, x) {
 
 }
 function im_mm_sound_controls_8_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "OT7M",
         unordered_mm_sound_section_0: 0,
     });
@@ -4792,8 +5323,10 @@ function im_mm_sound_controls_8_12(o, i, x) {
 
 }
 function im_mm_item_unknown_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "o4Vb",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4811,8 +5344,10 @@ function im_mm_item_unknown_link(o, i, x) {
 
 }
 function im_mm_car(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Sj[Z",
         u8_1: u8(o + 1),
         u8_2: u8(o + 2),
@@ -4915,7 +5450,10 @@ function im_mm_car(o, i, x) {
 
 }
 function im_mm_car_132(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "1zit",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4927,7 +5465,10 @@ function im_mm_car_132(o, x) {
 
 }
 function im_mm_car_136(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "?aiP",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4937,7 +5478,10 @@ function im_mm_car_136(o, x) {
 
 }
 function im_mm_car_144(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "BuC5",
         unordered_mm_car_model_sec_0: 0,
         unordered_mm_car_model_sec_4: 0,
@@ -4959,7 +5503,10 @@ function im_mm_car_144(o, x) {
 
 }
 function im_mm_car_152(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "yM?<",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4973,7 +5520,10 @@ function im_mm_car_152(o, x) {
 
 }
 function im_mm_car_156(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "lUse",
         u32_4: u32(o + 4),
         f32_12: f32(o + 12),
@@ -4993,7 +5543,10 @@ function im_mm_car_156(o, x) {
 
 }
 function im_mm_car_160(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "@0lS",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5054,7 +5607,10 @@ function im_mm_car_160(o, x) {
 
 }
 function im_mm_car_160_220(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "iH6Z",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -5089,7 +5645,10 @@ function im_mm_car_160_220(o, x) {
 
 }
 function im_mm_car_164(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "jYww",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -5108,7 +5667,10 @@ function im_mm_car_164(o, x) {
 
 }
 function im_mm_car_164_44(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "8WB6",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5120,8 +5682,10 @@ function im_mm_car_164_44(o, x) {
 
 }
 function im_mm_car_204(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ":xUg",
         u32_0: u32(o + 0),
         section_4: [],
@@ -5131,7 +5695,10 @@ function im_mm_car_204(o, i, x) {
 
 }
 function im_mm_car_204_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "4[hA",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5166,8 +5733,10 @@ function im_mm_car_204_4(o, x) {
 
 }
 function im_mm_car_212(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "?g5s",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5185,7 +5754,10 @@ function im_mm_car_212(o, i, x) {
 
 }
 function im_mm_car_228(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "GQSF",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -5197,8 +5769,10 @@ function im_mm_car_228(o, x) {
 
 }
 function im_mm_car_236(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "0^0M",
         u32_0: u32(o + 0),
         //amount?
@@ -5211,7 +5785,10 @@ function im_mm_car_236(o, i, x) {
 
 }
 function im_mm_car_236_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "LK5A",
         f32_0: f32(o + 0),
         u32_4: u32(o + 4),
@@ -5233,7 +5810,10 @@ function im_mm_car_236_4(o, x) {
 
 }
 function im_mm_car_236_4_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "ug^_",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5249,7 +5829,10 @@ function im_mm_car_236_4_12(o, x) {
 
 }
 function im_mm_car_236_4_12_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "azSN",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5293,8 +5876,10 @@ function im_mm_car_236_4_12_24(o, x) {
 
 }
 function im_mm_car_236_4_12_24_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "1AMg",
         f32_0: f32(o + 0),
         u32_16: u32(o + 16),
@@ -5303,8 +5888,10 @@ function im_mm_car_236_4_12_24_12(o, i, x) {
 
 }
 function im_mm_car_236_4_12_24_20(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "NdLP",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5315,8 +5902,10 @@ function im_mm_car_236_4_12_24_20(o, i, x) {
 
 }
 function im_mm_car_236_4_12_24_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "sRZr",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5329,7 +5918,10 @@ function im_mm_car_236_4_12_24_28(o, i, x) {
 
 }
 function im_mm_car_236_4_12_24_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "uk>3",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5339,7 +5931,10 @@ function im_mm_car_236_4_12_24_32(o, x) {
 
 }
 function im_mm_car_236_4_12_24_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "w8o4",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5351,7 +5946,10 @@ function im_mm_car_236_4_12_24_36(o, x) {
 
 }
 function im_mm_car_236_4_12_24_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "z24;",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -5362,8 +5960,10 @@ function im_mm_car_236_4_12_24_40(o, x) {
 
 }
 function im_mm_car_244(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "f6UA",
         u32_0: u32(o + 0),
         section_4: [],
@@ -5373,7 +5973,10 @@ function im_mm_car_244(o, i, x) {
 
 }
 function im_mm_car_244_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "5E=>",
         u32_0: u32(o + 0),
         //amount?
@@ -5388,8 +5991,10 @@ function im_mm_car_244_4(o, x) {
 
 }
 function im_mm_car_244_4_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "YyO;",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5397,7 +6002,10 @@ function im_mm_car_244_4_4(o, i, x) {
 
 }
 function im_mm_car_140(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Q@F<",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5420,8 +6028,10 @@ function im_mm_car_140(o, x) {
 
 }
 function im_mm_object_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "lKc5",
         unordered_mm_car_model_sec_0: 0,
         unordered_mm_text_16: 0,
@@ -5452,8 +6062,10 @@ function im_mm_object_link(o, i, x) {
 
 }
 function im_mm_unknown(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "fJ@Y",
         u32_0: u32(o + 0),
         //amount?
@@ -5468,8 +6080,10 @@ function im_mm_unknown(o, i, x) {
 
 }
 function im_mm_unknown_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "0c1X",
         u32_0: u32(o + 0),
         //check this
@@ -5539,7 +6153,10 @@ function im_mm_unknown_4(o, i, x) {
     }
 }
 function im_mm_unknown_4_8t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "g@v?",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -5568,7 +6185,10 @@ function im_mm_unknown_4_8t1(o, x) {
 
 }
 function im_mm_unknown_4_8t1_56(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "Iw6w",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5583,7 +6203,10 @@ function im_mm_unknown_4_8t1_56(o, x) {
 
 }
 function im_mm_unknown_4_8t1_60t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "L>D[",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5597,7 +6220,10 @@ function im_mm_unknown_4_8t1_60t2(o, x) {
 
 }
 function im_mm_unknown_4_8t1_60t4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "TOO0",
         u32_0: u32(o + 0),
     });
@@ -5606,7 +6232,10 @@ function im_mm_unknown_4_8t1_60t4(o, x) {
 
 }
 function im_mm_unknown_4_8t8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
+
         sec_id: "EB2E",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5625,7 +6254,7 @@ function im_mm_unknown_4_8t8(o, x) {
 /* start add list */
 function add_mm_file_header() {
     return {
-        id: gen_id(),
+
         sec_id: ":zlA",
         u32_0: 0,
         u32_4: u32(o + 4),
@@ -5638,7 +6267,7 @@ function add_mm_file_header() {
 
 function add_mm_datapack() {
     return {
-        id: gen_id(),
+
         sec_id: ";YXC",
         u32_0: 0,
         u32_4: 0,
@@ -5658,7 +6287,7 @@ function add_mm_datapack() {
 
 function add_mm_basic() {
     return {
-        id: gen_id(),
+
         sec_id: "M^Qa",
         u32_0: 0,
         section_4: [],
@@ -5667,7 +6296,7 @@ function add_mm_basic() {
 }
 function add_mm_basic_04() {
     return {
-        id: gen_id(),
+
         sec_id: "ny09",
         section_0: [],
         u32_4: u32(o + 4),
@@ -5727,7 +6356,7 @@ function add_mm_world() {
 }
 function add_mm_world_84() {
     return {
-        id: gen_id(),
+
         sec_id: "D^dH",
         unordered_mm_model_0: 0,
         u32_4: 0,
@@ -5737,7 +6366,7 @@ function add_mm_world_84() {
 }
 function add_mm_world_92() {
     return {
-        id: gen_id(),
+
         sec_id: "BcXl",
         f32_0: 0,
         f32_4: 0,
@@ -5758,7 +6387,7 @@ function add_mm_world_92() {
 }
 function add_mm_world_116() {
     return {
-        id: gen_id(),
+
         sec_id: "<6TW",
         u32_0: 0,
         u32_4: 0,
@@ -5770,7 +6399,7 @@ function add_mm_world_116() {
 }
 function add_mm_world_116_24() {
     return {
-        id: gen_id(),
+
         sec_id: "[fz=",
         f32_0: 0,
         f32_4: 0,
@@ -5797,7 +6426,7 @@ function add_mm_world_116_24() {
 }
 function add_mm_world_124() {
     return {
-        id: gen_id(),
+
         sec_id: "4V5X",
         f32_0: 0,
         f32_4: 0,
@@ -5814,7 +6443,7 @@ function add_mm_world_124() {
 }
 function add_mm_world_124_32() {
     return {
-        id: gen_id(),
+
         sec_id: "N5PY",
         f32_0: 0,
         f32_4: 0,
@@ -5841,7 +6470,7 @@ function add_mm_world_124_32() {
 }
 function add_mm_world_100() {
     return {
-        id: gen_id(),
+
         sec_id: "RP0t",
         u32_0: 0,
         u32_4: 0,
@@ -5866,7 +6495,7 @@ function add_mm_world_100_24() {
 }
 function add_mm_world_132() {
     return {
-        id: gen_id(),
+
         sec_id: "5N<a",
         f32_0: 0,
         f32_4: 0,
@@ -5888,7 +6517,7 @@ function add_mm_world_132() {
 }
 function add_mm_world_140() {
     return {
-        id: gen_id(),
+
         sec_id: "7^R6",
         f32_0: 0,
         f32_4: 0,
@@ -5910,7 +6539,7 @@ function add_mm_world_140() {
 }
 function add_mm_world_148() {
     return {
-        id: gen_id(),
+
         sec_id: "Rj>P",
         f32_0: 0,
         f32_4: 0,
@@ -5933,7 +6562,7 @@ function add_mm_world_148() {
 }
 function add_mm_world_164() {
     return {
-        id: gen_id(),
+
         sec_id: "<_k?",
         f32_0: 0,
         f32_8: 0,
@@ -5957,7 +6586,7 @@ function add_mm_world_164() {
 }
 function add_mm_world_164_88() {
     return {
-        id: gen_id(),
+
         sec_id: "O7@I",
         u32_0: 0,
     };
@@ -5972,7 +6601,7 @@ function add_mm_world_176() {
 }
 function add_mm_world_52() {
     return {
-        id: gen_id(),
+
         sec_id: "GTfU",
         f32_0: 0,
         f32_4: 0,
@@ -6029,7 +6658,7 @@ function add_mm_world_52() {
 }
 function add_mm_world_60() {
     return {
-        id: gen_id(),
+
         sec_id: "6jgC",
         u32_0: 0,
     };
@@ -6037,7 +6666,7 @@ function add_mm_world_60() {
 }
 function add_mm_world_68() {
     return {
-        id: gen_id(),
+
         sec_id: "KxFG",
         u32_0: 0,
     };
@@ -6053,7 +6682,7 @@ function add_mm_world_180() {
 }
 function add_mm_world_180_0() {
     return {
-        id: gen_id(),
+
         sec_id: "<d7m",
         f32_0: 0,
         f32_4: 0,
@@ -6096,7 +6725,7 @@ function add_mm_world_180_0() {
 }
 function add_mm_model() {
     return {
-        id: gen_id(),
+
         sec_id: "0QcK",
         u16_0: 0,
         u16_2: 0,
@@ -6127,7 +6756,7 @@ function add_mm_model() {
 }
 function add_mm_model_12() {
     return {
-        id: gen_id(),
+
         sec_id: "s9VS",
         f32_0: 0,
     };
@@ -6135,7 +6764,7 @@ function add_mm_model_12() {
 }
 function add_mm_model_8() {
     return {
-        id: gen_id(),
+
         sec_id: "O>Zy",
         u8_0: 0,
         u8_2: 0,
@@ -6153,7 +6782,7 @@ function add_mm_model_8() {
 }
 function add_mm_model_8_12() {
     return {
-        id: gen_id(),
+
         sec_id: "w35h",
         f32_0: 0,
         f32_4: 0,
@@ -6169,7 +6798,7 @@ function add_mm_model_8_12() {
 }
 function add_mm_model_8_8() {
     return {
-        id: gen_id(),
+
         sec_id: "=f4e",
         u8_2: 0,
         u8_3: 0,
@@ -6198,7 +6827,7 @@ function add_mm_model_8_8_12() {
 }
 function add_mm_model_8_8_12_type_0() {
     return {
-        id: gen_id(),
+
         sec_id: "x;iF",
         unordered_mm_model_8_8_12_type_0_0_0: 0,
         u8_4: 0,
@@ -6256,7 +6885,7 @@ function add_mm_model_8_8_28t4() {
 }
 function add_mm_model_texture_anims_list() {
     return {
-        id: gen_id(),
+
         sec_id: "REog",
         section_0: [],
         section_4: [],
@@ -6267,7 +6896,7 @@ function add_mm_model_texture_anims_list() {
 }
 function add_mm_model_anims_1() {
     return {
-        id: gen_id(),
+
         sec_id: "TJcJ",
         u32_0: 0,
         u32_4: 0,
@@ -6329,7 +6958,7 @@ function add_mm_model_anims_1_36() {
 }
 function add_mm_model_anims_2() {
     return {
-        id: gen_id(),
+
         sec_id: "L?[O",
         u32_0: 0,
         u8_4: 0,
@@ -6347,7 +6976,7 @@ function add_mm_model_anims_2() {
 }
 function add_mm_model_anims_2_16() {
     return {
-        id: gen_id(),
+
         sec_id: "1up9",
         f32_0: 0,
         f32_4: 0,
@@ -6365,7 +6994,7 @@ function add_mm_model_anims_2_16() {
 }
 function add_mm_Texture() {
     return {
-        id: gen_id(),
+
         sec_id: "ZzKU",
         u16_0: u16(o + 0),
         //check this
@@ -6379,7 +7008,7 @@ function add_mm_Texture() {
 }
 function add_mm_sound_list() {
     return {
-        id: gen_id(),
+
         sec_id: "pk9q",
         u32_0: 0,
         section_4: [],
@@ -6388,7 +7017,7 @@ function add_mm_sound_list() {
 }
 function add_mm_car_section() {
     return {
-        id: gen_id(),
+
         sec_id: "Bb@@",
         f32_0: 0,
         f32_4: 0,
@@ -6410,7 +7039,7 @@ function add_mm_car_section() {
 }
 function add_mm_car_section_44() {
     return {
-        id: gen_id(),
+
         sec_id: "3zRw",
         u8_0: 0,
         u8_1: 0,
@@ -6465,7 +7094,7 @@ function add_mm_car_section_44_88() {
 }
 function add_mm_car_section_44_100() {
     return {
-        id: gen_id(),
+
         sec_id: "R=ey",
         unordered_mm_car_text_related_0: 0,
     };
@@ -6509,7 +7138,7 @@ function add_mm_car_section_44_112() {
 }
 function add_mm_car_text_related() {
     return {
-        id: gen_id(),
+
         sec_id: "yYJB",
         section_0: ["Pac-Kart"],
         u32_4: 0,
@@ -6519,7 +7148,7 @@ function add_mm_car_text_related() {
 }
 function add_mm_car_text_related_8() {
     return {
-        id: gen_id(),
+
         sec_id: "<Taz",
         f32_0: 0,
         f32_8: 0,
@@ -6532,7 +7161,7 @@ function add_mm_car_text_related_8() {
 }
 function add_mm_unknown_idk_sec() {
     return {
-        id: gen_id(),
+
         sec_id: "h_qZ",
         u8_0: 0,
         u8_1: 0,
@@ -6561,7 +7190,7 @@ function add_mm_unknown_idk_sec_40() {
 }
 function add_mm_some_model_link() {
     return {
-        id: gen_id(),
+
         sec_id: "p?uN",
         u32_0: 0,
         section_4: [],
@@ -6571,7 +7200,7 @@ function add_mm_some_model_link() {
 }
 function add_mm_some_model_link_4() {
     return {
-        id: gen_id(),
+
         sec_id: "u6?T",
         u8_1: 0,
         u8_2: 0,
@@ -6603,7 +7232,7 @@ function add_mm_some_model_link_4_16() {
 }
 function add_mm_world_later() {
     return {
-        id: gen_id(),
+
         sec_id: "uZcU",
         u32_0: 0,
         f32_12: 0,
@@ -6641,7 +7270,7 @@ function add_mm_world_later_32() {
 }
 function add_mm_world_later_32_4() {
     return {
-        id: gen_id(),
+
         sec_id: "HLT5",
         u8_0: 0,
         u8_1: 0,
@@ -6668,7 +7297,7 @@ function add_mm_world_later_32_20() {
 }
 function add_mm_item_maybe() {
     return {
-        id: gen_id(),
+
         sec_id: "I74I",
         section_0: [],
         u8_4: 0,
@@ -6715,7 +7344,7 @@ function add_mm_item_maybe_48() {
 }
 function add_mm_item_maybe_60() {
     return {
-        id: gen_id(),
+
         sec_id: "3]gT",
         u32_4: 0,
         unordered_mm_strange_8: 0,
@@ -6748,7 +7377,7 @@ function add_mm_item_maybe_60_12_24() {
 }
 function add_mm_item_maybe_60_12_24_20() {
     return {
-        id: gen_id(),
+
         sec_id: "x20C",
         f32_0: 0,
         f32_4: 0,
@@ -6761,7 +7390,7 @@ function add_mm_item_maybe_60_12_24_20() {
 }
 function add_mm_item_maybe_60_12_24_28() {
     return {
-        id: gen_id(),
+
         sec_id: "mS?1",
         u8_0: 0,
         u8_1: 0,
@@ -6782,7 +7411,7 @@ function add_mm_item_maybe_60_12_24_40() {
 }
 function add_mm_item_maybe_68() {
     return {
-        id: gen_id(),
+
         sec_id: "M=9b",
         unordered_mm_unknown_0: 0,
     };
@@ -6790,7 +7419,7 @@ function add_mm_item_maybe_68() {
 }
 function add_mm_strange() {
     return {
-        id: gen_id(),
+
         sec_id: "iMV;",
         u8_0: 0,
         u8_2: 0,
@@ -6813,7 +7442,7 @@ function add_mm_strange_8() {
 }
 function add_mm_unknown_small_model_link() {
     return {
-        id: gen_id(),
+
         sec_id: ">bxj",
         u32_0: 0,
         section_4: [],
@@ -6822,7 +7451,7 @@ function add_mm_unknown_small_model_link() {
 }
 function add_mm_unknown_small_model_link_4() {
     return {
-        id: gen_id(),
+
         sec_id: "MWRc",
         f32_0: 0,
         f32_4: 0,
@@ -6837,7 +7466,7 @@ function add_mm_unknown_small_model_link_4() {
 }
 function add_mm_car_3_texture_link() {
     return {
-        id: gen_id(),
+
         sec_id: "QzJi",
         texture_0: [0, 0, 0, 't'],
         u8_9: 0,
@@ -6855,7 +7484,7 @@ function add_mm_car_3_texture_link_28() {
 }
 function add_mm_font() {
     return {
-        id: gen_id(),
+
         sec_id: "Bvyy",
         texture_0: [0, 0, 0, 't'],
         unordered_mm_sound_section_4: 0,
@@ -6870,7 +7499,7 @@ function add_mm_font() {
 }
 function add_mm_font_28() {
     return {
-        id: gen_id(),
+
         sec_id: "sFK8",
         f32_0: 0,
         u8_16: 0,
@@ -6881,7 +7510,7 @@ function add_mm_font_28() {
 }
 function add_mm_car_link_the_third() {
     return {
-        id: gen_id(),
+
         sec_id: "UrIB",
         f32_0: 0,
         f32_4: 0,
@@ -6899,7 +7528,7 @@ function add_mm_car_link_the_third() {
 }
 function add_mm_interface() {
     return {
-        id: gen_id(),
+
         sec_id: "0P6_",
         u32_0: 0,
         u32_4: 0,
@@ -6917,7 +7546,7 @@ function add_mm_interface() {
 }
 function add_mm_interface_16() {
     return {
-        id: gen_id(),
+
         sec_id: "dwo?",
         u8_0: 0,
         u8_1: 0,
@@ -6967,7 +7596,7 @@ function add_mm_interface_16_16t0_16() {
 }
 function add_mm_interface_16_16t0_16_4() {
     return {
-        id: gen_id(),
+
         sec_id: "00zy",
         texture_0: [0, 0, 0, 't'],
     };
@@ -6999,7 +7628,7 @@ function add_mm_interface_16_16t1_8() {
 }
 function add_mm_interface_16_16t1_8_4() {
     return {
-        id: gen_id(),
+
         sec_id: "tqDN",
         unordered_mm_text_0: 0,
     };
@@ -7034,7 +7663,7 @@ function add_mm_interface_16_40() {
 }
 function add_mm_interface_16_40_12() {
     return {
-        id: gen_id(),
+
         sec_id: "xb2g",
         u32_0: 0,
         section_8: [],
@@ -7080,7 +7709,7 @@ function add_mm_interface_16_44_8() {
 }
 function add_mm_interface_16_44_16() {
     return {
-        id: gen_id(),
+
         sec_id: "<BwA",
         f32_0: 0,
         f32_4: 0,
@@ -7091,7 +7720,7 @@ function add_mm_interface_16_44_16() {
 }
 function add_mm_interface_16_44_24() {
     return {
-        id: gen_id(),
+
         sec_id: "EkoO",
         u8_0: 0,
         u8_1: 0,
@@ -7105,7 +7734,7 @@ function add_mm_interface_16_44_24() {
 }
 function add_mm_interface_16_44_32() {
     return {
-        id: gen_id(),
+
         sec_id: "A8eh",
         f32_0: 0,
         f32_4: 0,
@@ -7171,7 +7800,7 @@ function add_mm_interface_16_48_16() {
 }
 function add_mm_interface_16_48_24() {
     return {
-        id: gen_id(),
+
         sec_id: "_y:1",
         u8_0: 0,
         u8_1: 0,
@@ -7185,7 +7814,7 @@ function add_mm_interface_16_48_24() {
 }
 function add_mm_interface_16_48_32() {
     return {
-        id: gen_id(),
+
         sec_id: "3?H1",
         f32_0: 0,
         f32_4: 0,
@@ -7255,7 +7884,7 @@ function add_mm_interface_16_52_16() {
 }
 function add_mm_interface_16_52_24() {
     return {
-        id: gen_id(),
+
         sec_id: "69Eh",
         u8_0: 0,
         u8_1: 0,
@@ -7325,7 +7954,7 @@ function add_mm_interface_16_56_16() {
 }
 function add_mm_interface_16_56_24() {
     return {
-        id: gen_id(),
+
         sec_id: "sVfy",
         u8_0: 0,
         u8_1: 0,
@@ -7339,7 +7968,7 @@ function add_mm_interface_16_56_24() {
 }
 function add_mm_interface_16_56_32() {
     return {
-        id: gen_id(),
+
         sec_id: "H0qM",
         f32_0: 0,
         f32_4: 0,
@@ -7402,7 +8031,7 @@ function add_mm_interface_16_64_16() {
 }
 function add_mm_interface_16_64_24() {
     return {
-        id: gen_id(),
+
         sec_id: ";7RW",
         u8_0: 0,
         u8_1: 0,
@@ -7414,7 +8043,7 @@ function add_mm_interface_16_64_24() {
 }
 function add_mm_interface_16_64_32() {
     return {
-        id: gen_id(),
+
         sec_id: "IvZ?",
         f32_0: 0,
         f32_4: 0,
@@ -7457,7 +8086,7 @@ function add_mm_interface_16_68() {
 }
 function add_mm_interface_16_68_4() {
     return {
-        id: gen_id(),
+
         sec_id: "pdq@",
         f32_0: 0,
         f32_4: 0,
@@ -7469,7 +8098,7 @@ function add_mm_interface_16_68_4() {
 }
 function add_mm_interface_16_68_12() {
     return {
-        id: gen_id(),
+
         sec_id: "e@se",
         f32_0: 0,
         u32_16: 0,
@@ -7479,7 +8108,7 @@ function add_mm_interface_16_68_12() {
 }
 function add_mm_interface_16_68_20() {
     return {
-        id: gen_id(),
+
         sec_id: "oRd@",
         f32_0: 0,
         f32_4: 0,
@@ -7492,7 +8121,7 @@ function add_mm_interface_16_68_20() {
 }
 function add_mm_interface_16_68_28() {
     return {
-        id: gen_id(),
+
         sec_id: "OXAa",
         u8_0: 0,
         u8_1: 0,
@@ -7520,7 +8149,7 @@ function add_mm_interface_16_68_36() {
 }
 function add_mm_interface_24() {
     return {
-        id: gen_id(),
+
         sec_id: "j88i",
         u32_0: 0,
         u32_4: 0,
@@ -7542,7 +8171,7 @@ function add_mm_interface_24_08() {
 }
 function add_mm_object() {
     return {
-        id: gen_id(),
+
         sec_id: "72Sp",
         f32_4: 0,
         u8_16: 0,
@@ -7584,7 +8213,7 @@ function add_mm_object_92() {
 }
 function add_mm_object_100() {
     return {
-        id: gen_id(),
+
         sec_id: "Slb;",
         u32_4: 0,
         section_12: [],
@@ -7632,7 +8261,7 @@ function add_mm_object_100_12_24_20() {
 }
 function add_mm_object_100_12_24_28() {
     return {
-        id: gen_id(),
+
         sec_id: "4RB0",
         u8_0: 0,
         u8_1: 0,
@@ -7654,7 +8283,7 @@ function add_mm_object_100_12_24_40() {
 }
 function add_mm_asdf_texture_link() {
     return {
-        id: gen_id(),
+
         sec_id: "bIQi",
         u32_0: 0,
         section_4: [],
@@ -7668,7 +8297,7 @@ function add_mm_asdf_texture_link() {
 }
 function add_mm_asdf_texture_link_4() {
     return {
-        id: gen_id(),
+
         sec_id: "ANyz",
         u8_0: 0,
         u8_1: 0,
@@ -7695,7 +8324,7 @@ function add_mm_asdf_texture_link_20() {
 }
 function add_mm_another_unknown_sec() {
     return {
-        id: gen_id(),
+
         sec_id: "nB:q",
         u32_0: 0,
         u32_4: 0,
@@ -7712,7 +8341,7 @@ function add_mm_another_unknown_sec() {
 }
 function add_mm_another_unknown_sec_28() {
     return {
-        id: gen_id(),
+
         sec_id: "P0Fh",
         u8_0: 0,
         u8_1: 0,
@@ -7724,7 +8353,7 @@ function add_mm_another_unknown_sec_28() {
 }
 function add_mm_another_unknown_sec_36() {
     return {
-        id: gen_id(),
+
         sec_id: "iDY?",
         u8_0: 0,
         u8_1: 0,
@@ -7736,7 +8365,7 @@ function add_mm_another_unknown_sec_36() {
 }
 function add_mm_asdf_some_list() {
     return {
-        id: gen_id(),
+
         sec_id: "j9Z7",
         u8_0: 0,
         u8_1: 0,
@@ -7752,7 +8381,7 @@ function add_mm_asdf_some_list() {
 }
 function add_mm_asdf_some_list_16() {
     return {
-        id: gen_id(),
+
         sec_id: "qHpL",
         f32_0: 0,
         u8_5: 0,
@@ -7774,7 +8403,7 @@ function add_mm_asdf_some_list_24() {
 }
 function add_mm_text() {
     return {
-        id: gen_id(),
+
         sec_id: "OKXb",
         section_0: ["Pac-Kart"],
         section_4: ["Pac-Kart"],
@@ -7785,7 +8414,7 @@ function add_mm_text() {
 }
 function add_mm_car_model_sec() {
     return {
-        id: gen_id(),
+
         sec_id: "e3Do",
         u32_0: 0,
         section_4: [],
@@ -7810,7 +8439,7 @@ function add_mm_car_model_sec() {
 }
 function add_mm_car_model_sec_4() {
     return {
-        id: gen_id(),
+
         sec_id: "25oo",
         unordered_mm_model_0: 0,
     };
@@ -7818,7 +8447,7 @@ function add_mm_car_model_sec_4() {
 }
 function add_mm_car_model_sec_12() {
     return {
-        id: gen_id(),
+
         sec_id: "P=_>",
         unordered_mm_model_0: 0,
         u32_4: 0,
@@ -7850,7 +8479,7 @@ function add_mm_car_model_sec_40() {
 }
 function add_mm_car_model_sec_48() {
     return {
-        id: gen_id(),
+
         sec_id: "HsCT",
         f32_0: 0,
         u32_4: 0,
@@ -7893,7 +8522,7 @@ function add_mm_car_model_sec_48_12_24() {
 }
 function add_mm_car_model_sec_48_12_24_12() {
     return {
-        id: gen_id(),
+
         sec_id: "pLdT",
         f32_0: 0,
         u32_16: 0,
@@ -7914,7 +8543,7 @@ function add_mm_car_model_sec_48_12_24_20() {
 }
 function add_mm_car_model_sec_48_12_24_28() {
     return {
-        id: gen_id(),
+
         sec_id: ";]Ov",
         u8_0: 0,
         u8_1: 0,
@@ -7974,7 +8603,7 @@ function add_mm_car_model_sec_52() {
 }
 function add_mm_unknown_thing() {
     return {
-        id: gen_id(),
+
         sec_id: "X:<>",
         u8_16: 0,
         u8_17: 0,
@@ -8035,7 +8664,7 @@ function add_mm_unknown_thing_20t1() {
 }
 function add_mm_unknown_thing_40() {
     return {
-        id: gen_id(),
+
         sec_id: "txEj",
         f32_0: 0,
         f32_4: 0,
@@ -8048,7 +8677,7 @@ function add_mm_unknown_thing_40() {
 }
 function add_mm_unknown_thing_48() {
     return {
-        id: gen_id(),
+
         sec_id: "rBbk",
         u8_0: 0,
         u8_1: 0,
@@ -8080,7 +8709,7 @@ function add_mm_unknown_thing_60() {
 }
 function add_mm_unknown_some_values() {
     return {
-        id: gen_id(),
+
         sec_id: "G<pU",
         u8_0: 0,
         u8_1: 0,
@@ -8105,7 +8734,7 @@ function add_mm_unknown_some_values_24() {
 }
 function add_mm_unknown_some_values_24_4() {
     return {
-        id: gen_id(),
+
         sec_id: "VF>m",
         f32_0: 0,
         u8_4: 0,
@@ -8124,7 +8753,7 @@ function add_mm_unknown_some_values_28() {
 }
 function add_mm_unknown_some_values_28_4() {
     return {
-        id: gen_id(),
+
         sec_id: "gMIE",
         f32_0: 0,
         u8_5: 0,
@@ -8134,7 +8763,7 @@ function add_mm_unknown_some_values_28_4() {
 }
 function add_mm_asdf() {
     return {
-        id: gen_id(),
+
         sec_id: "aV@L",
         u8_0: 0,
         u8_1: 0,
@@ -8239,7 +8868,7 @@ function add_mm_asdf_132() {
 }
 function add_mm_asdf_140() {
     return {
-        id: gen_id(),
+
         sec_id: "<t8u",
         u8_0: 0,
         u8_1: 0,
@@ -8298,7 +8927,7 @@ function add_mm_asdf_160() {
 }
 function add_mm_texture_anims() {
     return {
-        id: gen_id(),
+
         sec_id: "0Jdz",
         u32_0: 0,
         u32_4: 0,
@@ -8311,7 +8940,7 @@ function add_mm_texture_anims() {
 }
 function add_mm_texture_anims_8() {
     return {
-        id: gen_id(),
+
         sec_id: "h_yK",
         u8_0: 0,
         u8_1: 0,
@@ -8324,7 +8953,7 @@ function add_mm_texture_anims_8() {
 }
 function add_mm_texture_anims_16() {
     return {
-        id: gen_id(),
+
         sec_id: "bw4b",
         f32_0: 0,
         f32_4: 0,
@@ -8345,7 +8974,7 @@ function add_mm_texture_anims_20() {
 }
 function add_mm_texture_anims_20_4() {
     return {
-        id: gen_id(),
+
         sec_id: "BSb5",
         texture_0: [0, 0, 0, 't'],
     };
@@ -8353,7 +8982,7 @@ function add_mm_texture_anims_20_4() {
 }
 function add_mm_sound_section() {
     return {
-        id: gen_id(),
+
         sec_id: "QJYY",
         f32_0: 0,
         f32_4: 0,
@@ -8367,7 +8996,7 @@ function add_mm_sound_section() {
 }
 function add_mm_sound_controls() {
     return {
-        id: gen_id(),
+
         sec_id: "?qi0",
         u32_0: 0,
         u32_4: 0,
@@ -8377,7 +9006,7 @@ function add_mm_sound_controls() {
 }
 function add_mm_sound_controls_8() {
     return {
-        id: gen_id(),
+
         sec_id: "?6[u",
         f32_0: 0,
         u32_4: 0,
@@ -8388,7 +9017,7 @@ function add_mm_sound_controls_8() {
 }
 function add_mm_sound_controls_8_12() {
     return {
-        id: gen_id(),
+
         sec_id: "OT7M",
         unordered_mm_sound_section_0: 0,
     };
@@ -8396,7 +9025,7 @@ function add_mm_sound_controls_8_12() {
 }
 function add_mm_item_unknown_link() {
     return {
-        id: gen_id(),
+
         sec_id: "o4Vb",
         u8_0: 0,
         u8_1: 0,
@@ -8409,7 +9038,7 @@ function add_mm_item_unknown_link() {
 }
 function add_mm_car() {
     return {
-        id: gen_id(),
+
         sec_id: "Sj[Z",
         u8_1: 0,
         u8_2: 0,
@@ -8640,7 +9269,7 @@ function add_mm_car_164_44() {
 }
 function add_mm_car_204() {
     return {
-        id: gen_id(),
+
         sec_id: ":xUg",
         u32_0: 0,
         section_4: [],
@@ -8676,7 +9305,7 @@ function add_mm_car_204_4() {
 }
 function add_mm_car_212() {
     return {
-        id: gen_id(),
+
         sec_id: "?g5s",
         f32_0: 0,
         f32_4: 0,
@@ -8705,7 +9334,7 @@ function add_mm_car_228() {
 }
 function add_mm_car_236() {
     return {
-        id: gen_id(),
+
         sec_id: "0^0M",
         u32_0: 0,
         unordered_mm_car_model_sec_48_4: 0,
@@ -8756,7 +9385,7 @@ function add_mm_car_236_4_12_24() {
 }
 function add_mm_car_236_4_12_24_12() {
     return {
-        id: gen_id(),
+
         sec_id: "1AMg",
         f32_0: 0,
         u32_16: 0,
@@ -8766,7 +9395,7 @@ function add_mm_car_236_4_12_24_12() {
 }
 function add_mm_car_236_4_12_24_20() {
     return {
-        id: gen_id(),
+
         sec_id: "NdLP",
         f32_0: 0,
         f32_4: 0,
@@ -8778,7 +9407,7 @@ function add_mm_car_236_4_12_24_20() {
 }
 function add_mm_car_236_4_12_24_28() {
     return {
-        id: gen_id(),
+
         sec_id: "sRZr",
         u8_0: 0,
         u8_1: 0,
@@ -8819,7 +9448,7 @@ function add_mm_car_236_4_12_24_40() {
 }
 function add_mm_car_244() {
     return {
-        id: gen_id(),
+
         sec_id: "f6UA",
         u32_0: 0,
         section_4: [],
@@ -8836,7 +9465,7 @@ function add_mm_car_244_4() {
 }
 function add_mm_car_244_4_4() {
     return {
-        id: gen_id(),
+
         sec_id: "YyO;",
         u8_0: 0,
         u8_1: 0,
@@ -8861,7 +9490,7 @@ function add_mm_car_140() {
 }
 function add_mm_object_link() {
     return {
-        id: gen_id(),
+
         sec_id: "lKc5",
         section_0: [],
         section_16: [],
@@ -8885,7 +9514,7 @@ function add_mm_object_link() {
 }
 function add_mm_unknown() {
     return {
-        id: gen_id(),
+
         sec_id: "fJ@Y",
         u32_0: 0,
         section_4: [],
@@ -8894,7 +9523,7 @@ function add_mm_unknown() {
 }
 function add_mm_unknown_4() {
     return {
-        id: gen_id(),
+
         sec_id: "0c1X",
         u32_0: u32(o + 0),
         //check this

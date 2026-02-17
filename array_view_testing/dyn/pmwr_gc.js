@@ -14,7 +14,9 @@ function get_pmwr_gc_sec_id(string) {
 }
 
 async function im_pmwr_gc_x(index) {
+    id_offset.push(0);
     x.push({
+        id: gen_id(),
         sec_id: "AAAA",
         format: [],
         game: g.game,
@@ -26,8 +28,10 @@ async function im_pmwr_gc_x(index) {
 }
 
 function im_pmwr_gc_file_header(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "gjbf",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -78,8 +82,10 @@ function im_pmwr_gc_directory(o, i, x, global) {
 
     g.file_dir_type = return_directory_type(u32(o + 4))
 
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "]7Zf",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -98,7 +104,7 @@ function im_pmwr_gc_directory(o, i, x, global) {
 
 function add_pmwr_gc_file_header() {
     return {
-        id: gen_id(),
+
         sec_id: "gjbf",
         u32_0: 0,
         u32_4: 0,
@@ -110,7 +116,7 @@ function add_pmwr_gc_file_header() {
 
 function add_pmwr_gc_directory() {
     return {
-        id: gen_id(),
+
         sec_id: "]7Zf",
         u32_0: 0,
         u32_4: 0,

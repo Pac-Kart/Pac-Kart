@@ -26,6 +26,7 @@ async function import_new_file(event) {
     globalThis.x_global = []
     globalThis.x = []
     globalThis.id_list = 0;
+    globalThis.id_offset = [];
     let last_file_i = -1
 
     Object.keys(temp_files).forEach(i => {
@@ -223,9 +224,29 @@ function check_if_buffer(buffer, id) {
     let key = keys_array[id]
     let value = values_array[id]
 
-    let base_string = convert_arraybuffer_base64(buffer)
-    PK_path.obj[key] = base_string
-    console.pk_log(`buffer uploaded to ${key}`)
+    if (PK_path.is_dyn === false) {// let id = PK_path.obj.id
+    // if (typeof id !== 'number') {
+    //     console.pk_log(`<a style="color:red;">id is not number | id is a ${typeof id} </a>`)
+    //     return
+    // }
+    // let offset = id_offset[id]
+    // if (typeof offset !== 'number') {
+    //     console.pk_log(`<a style="color:red;">offset is not number | offset is a ${typeof offset} </a>`)
+    //     return
+    // }
+
+    // let old_buffer = convert_base64_arraybuffer(value)
+    // let old_length = old_buffer.length
+
+    // let new_buffer_length = buffer.length
+
+    // let new_buffer = new ArrayBuffer(old_length)
+
+    } else {
+        let base_string = convert_arraybuffer_base64(buffer)
+        PK_path.obj[key] = base_string
+        console.pk_log(`buffer uploaded to ${key}`)
+    }
 
     array_view_get_type(PK_path.array_path)
 }
@@ -317,9 +338,15 @@ function create_new_array_view() {
         obj: 0,
         view: "path",
         history: [],
+        is_dyn: null,
     }
 
-    // array_view_object()
+    if (g.type_string === "pmwr_pc") {
+        PK_path.is_dyn = true;
+    } else {
+        PK_path.is_dyn = false;
+    }
+
     array_view_get_type(PK_path.array_path)
     add_events()
 
@@ -803,6 +830,27 @@ function array_view_array(array_path) {
     PK_path.obj = get_full_path(PK_path.array_path)
     let sec_name = get_section_name()
 
+    let add_button_html = ''
+    let edit_button_html = ''
+    if (PK_path.is_dyn) {
+        add_button_html = `
+                <tr>
+               <td colspan="11" style="width:10%;white-space:nowrap;" data-plus="create_new" class='plus_button noselect'>+ Add</td>
+               </tr>
+`
+        edit_button_html = `
+                     <div>
+                     <a class="move_button">▲</a>
+                     <a class="move_button">▼</a>
+                     </div>
+                     <div>
+                     <a data-x="copy_to_bottom no_border" class='copy_button noselect'>⟳</a>
+                     <a data-x="delete_array" class='x_button noselect'>X</a>
+                    </div>
+`
+    }
+    let is_editable = PK_path.is_dyn
+
     let html_list = ""
     let section_id = ""
     for (let i = 0; i < PK_path.obj.length; i++) {
@@ -810,16 +858,9 @@ function array_view_array(array_path) {
         html_list += `
                <tr id="${i}">
                   <td class='no_border data-array_number="${i}" noselect array_button'>${i} | Array ${i + 1}
-                  </td>
-                  <td colspan="4" class='no_border noselect arrow_buttons'>
-                      <div>
-                     <a class="move_button">▲</a>
-                     <a class="move_button">▼</a>
-                     </div>
-                     <div>
-                     <a data-x="copy_to_bottom no_border" class='copy_button noselect'>⟳</a>
-                     <a data-x="delete_array" class='x_button noselect'>X</a>
-                     </div>
+            <td colspan="4" class='no_border noselect arrow_buttons'>
+                  ${edit_button_html}
+                 </td>
                  </td>
                </tr>
 `
@@ -833,9 +874,7 @@ function array_view_array(array_path) {
          <table style='width:100%;' >
             <tbody>
             ${html_list}
-               <tr>
-               <td colspan="11" style="width:10%;white-space:nowrap;" data-plus="create_new" class='plus_button noselect'>+ Add</td>
-               </tr>
+            ${add_button_html}
             </tbody>
         </table>
       </div>
@@ -862,22 +901,40 @@ function add_events() {
         const target = event.target;
         let keys_array = Object.keys(PK_path.obj)
         let key_id = keys_array[target.dataset.key_id]
+
         if (typeof PK_path.obj[key_id] === "object") {
             let key_path = PK_path.obj[key_id]
             let array_inner_keys = Object.keys(key_path)
 
             if (array_inner_keys.length === 1) {
                 key_path[array_inner_keys[0]] = target.value
-            }else{
+            } else {
                 console.pk_log(`array_inner_keys is ${array_inner_keys}`)
             }
 
         } else if (typeof PK_path.obj[key_id] === 'undefined') {
             PK_path.obj = target.value
-        }else{
+        } else {
             PK_path.obj[key_id] = target.value
         }
-        console.pk_log(`changed ${key_id} to ${target.value}`)
+        let new_value = target.value
+        if (PK_path.is_dyn === false) {
+            let amt_files = x_global[0].x_files.length
+            if (amt_files === 1) {
+                let temp_non_dyn = is_dyn_change(event, target, key_id, target.value)
+                if (typeof temp_non_dyn === 'number') {
+                    new_value = temp_non_dyn
+                    PK_path.obj[key_id] = new_value;
+                    target.value = new_value;
+                }
+            } else {
+                console.pk_log("can't make changes with more than 1 static file")
+                return
+            }
+        } else {
+            console.pk_log(`changed ${key_id} to ${new_value}`)
+        }
+
     });
 
     fileEditor.addEventListener('click', function(event) {
@@ -892,7 +949,6 @@ function add_events() {
             PK_path.array_path.push(key_i)
 
             array_view_get_type(PK_path.array_path)
-            // array_view_object()
 
         }
         if (classname.includes("obj_to_array")) {
@@ -1086,6 +1142,74 @@ function add_events() {
     //     }
     // })
 
+    function is_dyn_change(event, target, key_id, value) {
+        // console.log(event)
+        // console.log(target)
+        // console.log(key_id)
+
+        // is value
+
+        let id = PK_path.obj.id
+        if (typeof id !== 'number') {
+            console.pk_log(`<a style="color:red;">id is not number | id is a ${typeof id} </a>`)
+            return
+        }
+        let offset = id_offset[id]
+        if (typeof offset !== 'number') {
+            console.pk_log(`<a style="color:red;">offset is not number | offset is a ${typeof offset} </a>`)
+            return
+        }
+        const su8_temp = function(o, v) {
+            new DataView(globalThis.buffer).setUint8(o, v, g.endian)
+        }
+        const su16_temp = function(o, v) {
+            new DataView(globalThis.buffer).setUint16(o, v, g.endian)
+        }
+        const su32_temp = function(o, v) {
+            new DataView(globalThis.buffer).setUint32(o, v, g.endian)
+        }
+        const sf32_temp = function(o, v) {
+            new DataView(globalThis.buffer).setFloat32(o, v, g.endian)
+        }
+
+        let value_function = u32
+        let return_value_function = u32
+        if (key_id.includes("u32")) {
+            value_function = su32_temp
+            return_value_function = u32
+        } else if (key_id.includes("u16")) {
+            value_function = su16_temp
+            return_value_function = u16
+        } else if (key_id.includes("u8")) {
+            value_function = su8_temp
+            return_value_function = u8
+        } else if (key_id.includes("f32")) {
+            value_function = sf32_temp
+            return_value_function = f32
+        } else {
+            console.pk_log(`<a style="color:red;">key_id is not a u32,u16,u8,f32 | key_id is ${key_id} </a>`)
+            return
+        }
+
+        let split = key_id.split("_")
+        if (split.length !== 2) {
+            console.pk_log(`<a style="color:red;">split is not 2 | split amount is ${split.length} </a>`)
+            return
+        }
+        let sub_offset = Number(split[1])
+
+        let true_offset = sub_offset + offset
+        let true_value = Number(value)
+
+        value_function(true_offset, true_value)
+        let new_value = return_value_function(true_offset)
+        console.pk_log(`static buffer updated | offset ${true_offset} updated to ${new_value}`)
+
+        return new_value
+        // console.log(value_function,true_offset,true_value)
+
+    }
+
 }
 
 function array_view_get_type(array) {
@@ -1096,9 +1220,9 @@ function array_view_get_type(array) {
         array_view_array(array)
     } else if (typeof PK_path.obj === "string") {
         array_view_string(array)
-    } else if (typeof PK_path.obj === "object"){
+    } else if (typeof PK_path.obj === "object") {
         array_view_object(array)
-    }else{
+    } else {
         array_view_value(array)
     }
 
@@ -1696,6 +1820,16 @@ function save_file(e) {
 
     let amt_files = x_global[0].x_files.length
 
+    if (PK_path.is_dyn === false) {
+        if (amt_files === 1) {
+            let fileName = x_global[0].x_files[0].name
+            download_file(globalThis.buffer, fileName)
+        } else {
+            console.pk_log("can't save more than 1 static file")
+            return
+        }
+    }
+
     for (let i = 0; i < amt_files; i++) {
         let fileName = x_global[0].x_files[i].name
         let temp_buffer = dynamic_save(x_global[0].x_files[i])
@@ -2292,10 +2426,10 @@ function in_models(o, array, tfunction, x) {
     if (index !== -1) {
         if (model_array[index][2] !== 0) {
             value = model_array[index]
-        }else{
-        value = in_ml(u32(o), array, tfunction, x)
+        } else {
+            value = in_ml(u32(o), array, tfunction, x)
         }
-    }else{
+    } else {
         console.pk_log(`value ${value} not listed ? for models`)
         // alert("?")
     }

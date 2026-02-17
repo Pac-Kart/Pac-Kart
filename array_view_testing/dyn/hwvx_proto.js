@@ -1125,7 +1125,9 @@ function get_hwvx_proto_sec_id(string) {
 /////////////////////
 /* start import list */
 async function im_hwvx_proto_x(index) {
+    id_offset.push(0);
     x.push({
+        id: gen_id(),
         sec_id: "AAAA",
         format: [],
         game: g.game,
@@ -1137,8 +1139,10 @@ async function im_hwvx_proto_x(index) {
 }
 
 function im_hwvx_proto_file_header(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "gjbf",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -1246,8 +1250,10 @@ function im_hwvx_proto_directory(o, i, x) {
 
     g.file_dir_type = return_directory_type(u32(o + 4))
 
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "]7Zf",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -1297,15 +1303,17 @@ function im_hwvx_proto_datapack(o, i, x) {
     let offset_end_hwvx_proto_audio_data_2 = offset_index_patch
     if (u32(o + 76)) {
         offset_end_impulse_tracker = offset_start_hwvx_proto_audio_list + u32(o + 76)
-    }else{
+    } else {
         offset_end_impulse_tracker = offset_index_patch
     }
 
     let patchlistoffset = end_datapack
     g.m = patchlistoffset + (u32(o + 12) * 4) + ((u32(o + 16) + u32(o + 28) + u32(o + 52) + u32(o + 56)) * 8);
 
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "E@3Z",
         u32_8: u32(o + 8),
         //amount?
@@ -1357,7 +1365,7 @@ function im_hwvx_proto_datapack(o, i, x) {
     im_hwvx_proto_ordered(g.m, x[i].ordered)
 
     u32(o + 72) && im_hwvx_proto_impulse_tracker(offset_start_impulse_tracker, offset_end_impulse_tracker, x[i].section_72);
-    u32(o + 76) && im_hwvx_proto_audio_data_2(offset_start_hwvx_proto_audio_data_2,offset_end_hwvx_proto_audio_data_2, x[i].section_76);
+    u32(o + 76) && im_hwvx_proto_audio_data_2(offset_start_hwvx_proto_audio_data_2, offset_end_hwvx_proto_audio_data_2, x[i].section_76);
 
     for (let ii = 0; ii < u32(o + 20); ii++) {
         im_hwvx_proto_texture(u32(o + 24) + (ii * 16) + g.m, ii, x[i].section_24)
@@ -1384,8 +1392,10 @@ function im_hwvx_proto_datapack(o, i, x) {
 function im_hwvx_proto_geo_datapack(o, i, x) {
     let end_datapack = o + 84
     let patchlistoffset = end_datapack
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "PcI:",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -1399,8 +1409,8 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
         u32_40: u32(o + 40),
         //amount?
         section_44: im_string(o + 44 - g.m, o + 55 - g.m),
-         u32_56: u32(o + 56),
-       patch_list: [],
+        u32_56: u32(o + 56),
+        patch_list: [],
         ordered: [],
         models: [],
     });
@@ -1434,8 +1444,8 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
 }
 
 // function im_hwvx_proto_sound_offset_list(o, i, x, e) {
-//     x.push({
-//         id: gen_id(),
+//     id_offset.push(o); x.push({ id: gen_id(),
+//          
 //         sec_id: "Fgpx",
 //         section_0: [],
 //     });
@@ -1447,8 +1457,8 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
 
 // }
 // function im_hwvx_proto_audio_list(o, i, x) {
-//     x.push({
-//         id: gen_id(),
+//     id_offset.push(o); x.push({ id: gen_id(),
+//          
 //         sec_id: "4IJg",
 //         u32_0: u32(o + 0),
 //         u32_4: u32(o + 4),
@@ -1465,7 +1475,9 @@ function im_hwvx_proto_audio(o, x, a) {
     const after_offset_list = o + (a * 4)
     let padding_test = after_offset_list + (a * 32)
 
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "audi",
         sound: []
     })
@@ -1477,9 +1489,11 @@ function im_hwvx_proto_audio(o, x, a) {
     return padding_test
 
     function im_hwvx_proto_audio_00(o, x, i) {
+        id_offset.push(o);
         x.push({
-            sec_id: "ad00",
             id: gen_id(),
+            sec_id: "ad00",
+
             u32_8: u32(o + 8),
             soundsamplerate: u32(o + 12),
             u32_16: u32(o + 16),
@@ -1498,18 +1512,22 @@ function im_hwvx_proto_audio(o, x, a) {
 
 }
 
-function im_hwvx_proto_impulse_tracker(o,e,x) {
+function im_hwvx_proto_impulse_tracker(o, e, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "imps",
         buffer: convert_arraybuffer_base64(buffer.slice(o, e)),
     });
 
 }
 
-function im_hwvx_proto_audio_data_2(o,e,x) {
+function im_hwvx_proto_audio_data_2(o, e, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "ad2o",
         buffer: convert_arraybuffer_base64(buffer.slice(o, e)),
     });
@@ -1531,7 +1549,9 @@ function im_hwvx_proto_get_combined_patch_list(o, patch_offset, x) {
     patch_offset += u32(g.datapack_offset + 56) * 8
     let general_offset = patch_offset
 
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ipll",
         texture: im_patch_list(texture_offset, u32(g.datapack_offset + 16), 't'),
         texture_animation: im_patch_list(texture_animation_offset, u32(g.datapack_offset + 52), 'a'),
@@ -1569,7 +1589,9 @@ function im_hwvx_proto_geo_patch_list(o, patch_offset, x) {
     patch_offset += u32(g.datapack_offset + 4) * 4
     let padding = patch_offset
 
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ipll",
         texture: im_patch_list(texture_offset, u32(g.datapack_offset + 8), 't'),
         texture_animation: im_patch_list(texture_animation_offset, u32(g.datapack_offset + 28), 'a'),
@@ -1592,9 +1614,11 @@ function im_hwvx_proto_geo_patch_list(o, patch_offset, x) {
 }
 function im_hwvx_proto_ordered(o, x) {
 
+    id_offset.push(o);
     x.push({
-        sec_id: "ordr",
         id: gen_id(),
+        sec_id: "ordr",
+
         hwvx_proto_file_specific_section: [],
         hwvx_proto_models: [],
         hwvx_proto_unordered_list: [],
@@ -1636,7 +1660,9 @@ function im_hwvx_proto_ordered(o, x) {
 }
 
 function im_hwvx_proto_unordered(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "4unr",
         hwvx_proto_world_12: [],
         hwvx_proto_world_20: [],
@@ -1683,15 +1709,17 @@ function im_hwvx_proto_unordered(o, x) {
         hwvx_proto_link: [],
         hwvx_proto_sound_controls: [],
         hwvx_proto_sound_section: [],
-        hwvx_proto_world_color_section:[],
+        hwvx_proto_world_color_section: [],
     })
     g.unordered_ref = x[0]
 
 }
 
 function im_hwvx_proto_basic(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "uZNx",
         u32_0: u32(o + 0),
         section_4: [],
@@ -1703,7 +1731,9 @@ function im_hwvx_proto_basic(o, i, x) {
 
 }
 function im_hwvx_proto_basic_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "j3qp",
         section_0: [],
         u32_4: u32(o + 4),
@@ -1738,7 +1768,9 @@ function im_hwvx_proto_basic_4(o, x) {
 
 }
 function im_hwvx_proto_geo_basic(o, x, geo_model_amt) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "rwx_",
         section_0: [],
         section_4: [],
@@ -1754,8 +1786,10 @@ function im_hwvx_proto_geo_basic(o, x, geo_model_amt) {
 
 }
 function im_hwvx_proto_geo_basic_0(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "nMcM",
         u32_0: u32(o + 0),
         model_8: [],
@@ -1765,16 +1799,20 @@ function im_hwvx_proto_geo_basic_0(o, i, x) {
 
 }
 function im_hwvx_proto_share(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "FNM8",
         model_0: [],
     });
     x[i].model_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
-    
+
 }
 function im_hwvx_proto_world(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "rjJj",
         section_4: [],
         u32_8: u32(o + 8),
@@ -1872,8 +1910,10 @@ function im_hwvx_proto_world(o, x) {
 
 }
 function im_hwvx_proto_world_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "=>48",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -1916,8 +1956,10 @@ function im_hwvx_proto_world_12(o, i, x) {
 
 }
 function im_hwvx_proto_world_20(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "eBnd",
         u32_0: u32(o + 0),
         unordered_hwvx_proto_model_anims_1_4: 0,
@@ -1932,7 +1974,9 @@ function im_hwvx_proto_world_20(o, i, x) {
 
 }
 function im_hwvx_proto_world_20_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "taFF",
         model_0: [],
         u8_5: u8(o + 5),
@@ -1947,8 +1991,10 @@ function im_hwvx_proto_world_20_12(o, x) {
 
 }
 function im_hwvx_proto_world_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ">je2",
         u32_0: u32(o + 0),
         u32_12: u32(o + 12),
@@ -1971,8 +2017,10 @@ function im_hwvx_proto_world_36(o, i, x) {
 
 }
 function im_hwvx_proto_world_36_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "vH^o",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -1985,8 +2033,10 @@ function im_hwvx_proto_world_36_36(o, i, x) {
 
 }
 function im_hwvx_proto_world_36_48(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "U<>y",
         u32_4: u32(o + 4),
         //amount?
@@ -2013,8 +2063,10 @@ function im_hwvx_proto_world_36_48(o, i, x) {
 
 }
 function im_hwvx_proto_world_36_48_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "00LC",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2040,8 +2092,10 @@ function im_hwvx_proto_world_36_48_16(o, i, x) {
 
 }
 function im_hwvx_proto_world_36_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ">8l?",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2067,8 +2121,10 @@ function im_hwvx_proto_world_36_28(o, i, x) {
 
 }
 function im_hwvx_proto_world_36_48_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "HY@p",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2095,8 +2151,10 @@ function im_hwvx_proto_world_36_48_8(o, i, x) {
 
 }
 function im_hwvx_proto_world_36_48_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "S;d?",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2119,8 +2177,10 @@ function im_hwvx_proto_world_36_48_24(o, i, x) {
 
 }
 function im_hwvx_proto_world_44(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "zBaW",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2142,7 +2202,9 @@ function im_hwvx_proto_world_44(o, i, x) {
 
 }
 function im_hwvx_proto_world_116(o, i, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "7K=p",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2159,8 +2221,10 @@ function im_hwvx_proto_world_116(o, i, x) {
 
 }
 function im_hwvx_proto_world_76(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "ZEh]",
         unordered_hwvx_proto_world_small_section_0: 0,
     });
@@ -2172,8 +2236,10 @@ function im_hwvx_proto_world_76(o, i, x) {
 
 }
 function im_hwvx_proto_world_52(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "TQ0O",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2210,7 +2276,9 @@ function im_hwvx_proto_world_52(o, i, x) {
 
 }
 function im_hwvx_proto_world_52_88t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ESX3",
         u32_0: u32(o + 0),
     });
@@ -2219,8 +2287,10 @@ function im_hwvx_proto_world_52_88t1(o, x) {
 
 }
 function im_hwvx_proto_world_92(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "=Xx@",
         unordered_hwvx_proto_world_text_link_4: 0,
     });
@@ -2229,7 +2299,9 @@ function im_hwvx_proto_world_92(o, i, x) {
 
 }
 function im_hwvx_proto_world_100(o, i, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "1ctA",
         u32_0: u32(o + 0),
         unordered_hwvx_proto_world_color_section_4: 0,
@@ -2242,8 +2314,10 @@ function im_hwvx_proto_world_100(o, i, x) {
 
 }
 function im_hwvx_proto_world_108(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "6uH?",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -2282,7 +2356,9 @@ function im_hwvx_proto_world_108(o, i, x) {
 
 }
 function im_hwvx_proto_world_108_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "oqWI",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2529,7 +2605,9 @@ function im_hwvx_proto_world_108_40(o, x) {
 
 }
 function im_hwvx_proto_world_108_44t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "M=7v",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2544,7 +2622,9 @@ function im_hwvx_proto_world_108_44t1(o, x) {
 
 }
 function im_hwvx_proto_world_108_44t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "IENC",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -2560,7 +2640,9 @@ function im_hwvx_proto_world_108_44t2(o, x) {
 
 }
 function im_hwvx_proto_world_108_44t3(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "E=O_",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2570,8 +2652,10 @@ function im_hwvx_proto_world_108_44t3(o, x) {
 
 }
 function im_hwvx_proto_world_108_44t6(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "VGH4",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2593,7 +2677,9 @@ function im_hwvx_proto_world_108_44t6(o, i, x) {
 
 }
 function im_hwvx_proto_world_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "rWN=",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2626,16 +2712,20 @@ function im_hwvx_proto_world_4(o, x) {
 
 }
 function im_hwvx_proto_world_4_20(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "rjvv",
         u32_0: u32(o + 0),
     });
 
 }
 function im_hwvx_proto_world_4_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Nxlg",
         u32_0: u32(o + 0),
         //amount?
@@ -2676,8 +2766,10 @@ function im_hwvx_proto_world_4_16(o, i, x) {
 
 }
 function im_hwvx_proto_world_4_16_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "09ci",
         unordered_hwvx_proto_world_108_0: 0,
     });
@@ -2686,7 +2778,9 @@ function im_hwvx_proto_world_4_16_4(o, i, x) {
 
 }
 function im_hwvx_proto_world_120(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "?R3u",
         unordered_hwvx_proto_world_120_0_0: 0,
         u32_4: u32(o + 4),
@@ -2705,8 +2799,10 @@ function im_hwvx_proto_world_120(o, x) {
 
 }
 function im_hwvx_proto_world_120_0(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "xQij",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2768,7 +2864,9 @@ function im_hwvx_proto_world_120_0(o, i, x) {
 
 }
 function im_hwvx_proto_collision(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "56Am",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2819,8 +2917,10 @@ function im_hwvx_proto_collision(o, x) {
 
 }
 function im_hwvx_proto_collision_32(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "G_SO",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2860,8 +2960,10 @@ function im_hwvx_proto_collision_32(o, i, x) {
 }
 
 function im_hwvx_proto_collision_32_48(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "jPo9",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2886,24 +2988,30 @@ function im_hwvx_proto_collision_32_48(o, i, x) {
 
 }
 function im_hwvx_proto_collision_32_56(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "yQx5",
         u32_0: u32(o + 0),
     });
 
 }
 function im_hwvx_proto_collision_64(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "0lq8",
         u32_0: u32(o + 0),
     });
 
 }
 function im_hwvx_proto_collision_76(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "JRcn",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2918,7 +3026,9 @@ function im_hwvx_proto_collision_76(o, i, x) {
 
 }
 function im_hwvx_proto_collision_76_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "5i:=",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2937,8 +3047,10 @@ function im_hwvx_proto_collision_76_16(o, x) {
 
 }
 function im_hwvx_proto_collision_84(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "FN^k",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -2962,8 +3074,10 @@ function im_hwvx_proto_collision_84(o, i, x) {
 
 }
 function im_hwvx_proto_collision_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Gx;=",
         unordered_hwvx_proto_collision_settings_0: 0,
         unordered_hwvx_proto_collision_settings_4: 0,
@@ -2977,8 +3091,10 @@ function im_hwvx_proto_collision_link(o, i, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "3aN[",
         u32_0: u32(o + 0),
         section_4: [],
@@ -3024,7 +3140,9 @@ function im_hwvx_proto_triggers_and_actions(o, i, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_4t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "fN<n",
         unordered_hwvx_proto_interface_0: 0,
     });
@@ -3035,7 +3153,9 @@ function im_hwvx_proto_triggers_and_actions_4t1(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_4t3(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "t:LV",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3045,7 +3165,9 @@ function im_hwvx_proto_triggers_and_actions_4t3(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_4t5(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "7u;j",
         u32_0: u32(o + 0),
         section_4_type: "?",
@@ -3264,7 +3386,9 @@ function hwvx_proto_return_if_value_in_multilink(o) {
 }
 
 function im_hwvx_proto_triggers_and_actions_4t6(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "xXSo",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3279,7 +3403,9 @@ function im_hwvx_proto_triggers_and_actions_4t6(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_4trest(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "4Fw^",
         u32_0: u32(o + 0),
         section_2: [],
@@ -3307,7 +3433,9 @@ function im_hwvx_proto_triggers_and_actions_4trest(o, x) {
 
 }
 function get_hwvx_proto_triggers_and_actions_4trest_1st(o, i, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "a????",
         section_0: [],
         type: "?",
@@ -3318,7 +3446,9 @@ function get_hwvx_proto_triggers_and_actions_4trest_1st(o, i, x) {
     x[i].type = type_object.type
 }
 function get_hwvx_proto_triggers_and_actions_4trest_2nd(o, i, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "b????",
         section_0: [],
         type: "?",
@@ -3330,7 +3460,9 @@ function get_hwvx_proto_triggers_and_actions_4trest_2nd(o, i, x) {
 }
 
 function im_hwvx_proto_triggers_and_actions_12(o, i, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "X5:_",
         u32_0: u32(o + 0),
         section_4: [],
@@ -3343,7 +3475,9 @@ function im_hwvx_proto_triggers_and_actions_12(o, i, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_12_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "4CPG",
         u32_0: u32(o + 0),
         section_4: [],
@@ -3369,7 +3503,9 @@ function im_hwvx_proto_triggers_and_actions_12_4(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20(o, i, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "zCiR",
         u32_0: u32(o + 0),
         section_4: [],
@@ -3496,8 +3632,10 @@ function im_hwvx_proto_triggers_and_actions_20(o, i, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t0(o, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "nOZg",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3512,7 +3650,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t0(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t1t12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "pTQb",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3551,8 +3691,10 @@ function im_hwvx_proto_triggers_and_actions_20_4t1t12(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t1t13(o, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "s@JO",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -3591,7 +3733,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t1t13(o, x) {
     }
 }
 function im_hwvx_proto_triggers_and_actions_20_4t1t16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "YM2p",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -3627,7 +3771,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t1t16(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "KqY>",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3647,7 +3793,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t2(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t3(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "I^je",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3668,7 +3816,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t3(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Npx[",
         unordered_hwvx_proto_interface_0: 0,
     });
@@ -3677,7 +3827,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t4(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t5(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "LAop",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3692,7 +3844,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t5(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t6(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "fCWU",
         u32_0: u32(o + 0),
     });
@@ -3701,7 +3855,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t6(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t7(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: ":Hq]",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3715,7 +3871,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t7(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "i5vu",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3728,7 +3886,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t8(o, x) {
     // 16 bytes;
 }
 function im_hwvx_proto_triggers_and_actions_20_4t9(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "AQmR",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3742,7 +3902,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t9(o, x) {
     // 32 bytes;
 }
 function im_hwvx_proto_triggers_and_actions_20_4t10t10(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "x21k",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -3757,7 +3919,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t10t10(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t10t20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "r_Uv",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -3774,7 +3938,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t10t20(o, x) {
     // 80 bytes;
 }
 function im_hwvx_proto_triggers_and_actions_20_4t12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "twr?",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3792,7 +3958,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t12(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t15(o, i, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "?t]q",
         u32_0: u32(o + 0),
         //check this
@@ -3827,7 +3995,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t15(o, i, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t17(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "bitp",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3843,7 +4013,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t17(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ppf;",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3856,7 +4028,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t20(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t21(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "kA7T",
         u32_0: u32(o + 0),
         unordered_hwvx_proto_world_52_4: 0,
@@ -3869,7 +4043,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t21(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t22(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: ">Cf1",
         u32_0: u32(o + 0),
         u32_8: u32(o + 8),
@@ -3886,7 +4062,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t22(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "5]LU",
         u32_0: u32(o + 0),
         unordered_hwvx_proto_triggers_and_actions_20_4t24t5_4_4: 0,
@@ -3900,7 +4078,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t24(o, x) {
     // 32 bytes;
 }
 function im_hwvx_proto_triggers_and_actions_20_4t26(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "g1oO",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3912,7 +4092,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t26(o, x) {
     // 16 bytes;
 }
 function im_hwvx_proto_triggers_and_actions_20_4t31(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "KT>V",
         u32_0: u32(o + 0),
         unordered_hwvx_proto_interface_4: 0,
@@ -3924,7 +4106,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t31(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "P5tz",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3935,7 +4119,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t32(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t34(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "4E^b",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3947,7 +4133,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t34(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "MJOb",
         u32_0: u32(o + 0),
     });
@@ -3956,7 +4144,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t36(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t38(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "6Uxj",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -3967,7 +4157,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t38(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_20_4t39(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "[g5w",
         u32_0: u32(o + 0),
     });
@@ -3976,7 +4168,9 @@ function im_hwvx_proto_triggers_and_actions_20_4t39(o, x) {
 
 }
 function im_hwvx_proto_triggers_and_actions_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "cffS",
         u32_0: u32(o + 0),
         section_4: [],
@@ -3992,7 +4186,9 @@ function im_hwvx_proto_triggers_and_actions_24(o, x) {
     // 32 bytes;
 }
 function im_hwvx_proto_triggers_and_actions_24_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "pN<^",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -4003,8 +4199,10 @@ function im_hwvx_proto_triggers_and_actions_24_4(o, x) {
     // 48 bytes;
 }
 function im_hwvx_proto_models(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "NSr;",
         u16_0: u16(o + 0),
         u16_2: u16(o + 2),
@@ -4039,8 +4237,10 @@ function im_hwvx_proto_models(o, i, x) {
 
 }
 function im_hwvx_proto_model_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "U>9;",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -4059,23 +4259,26 @@ function im_hwvx_proto_model_8(o, i, x) {
     //     console.log("?")
     // }
 
-
     for (let ii = 0; ii < u16(o + 2); ii++) {
         im_hwvx_proto_model_8_8(u32(o + 8) + (ii * 32) + g.m, ii, x[i].section_8);
     }
 
 }
 function im_hwvx_proto_model_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "HklA",
         f32_0: f32(o + 0),
     });
 
 }
 function im_hwvx_proto_model_8_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "=AG@",
         animation_0: im_patch(g.animation_patch_ref, o + 0),
         u8_4: u8(o + 4),
@@ -4102,7 +4305,9 @@ function im_hwvx_proto_model_8_8(o, i, x) {
     }
 }
 function im_hwvx_proto_model_8_8_12t0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "^te<",
         u16_16: u16(o + 16),
         u8_19: u8(o + 19),
@@ -4138,7 +4343,9 @@ function im_hwvx_proto_model_8_8_12t0(o, x) {
 
 }
 function im_hwvx_proto_model_8_8_12t7(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "<Plf",
         u32_16: u32(o + 16),
         section_20: [],
@@ -4150,7 +4357,9 @@ function im_hwvx_proto_model_8_8_12t7(o, x) {
 
 }
 function im_hwvx_proto_model_8_8_12t8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: ";t0o",
         u32_16: u32(o + 16),
         section_20: [],
@@ -4168,7 +4377,9 @@ function im_hwvx_proto_model_8_8_12t8(o, x) {
 
 }
 function im_hwvx_proto_model_8_8_12t7_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "fR>T",
         u16_0: u16(o + 0),
         u16_2: u16(o + 2),
@@ -4199,8 +4410,10 @@ function im_hwvx_proto_model_8_8_12_modeldata(o, i, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "0goX",
         // f32_0: f32(o + 0),
         // f32_4: f32(o + 4),
@@ -4215,8 +4428,10 @@ function im_hwvx_proto_model_8_8_12_modeldata(o, i, x) {
 
 }
 function im_hwvx_proto_texture_anims(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "eFdb",
         section_0: [],
     });
@@ -4228,8 +4443,10 @@ function im_hwvx_proto_texture_anims(o, i, x) {
 
 }
 function im_hwvx_proto_model_anims_1(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "K??i",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4279,7 +4496,9 @@ function im_hwvx_proto_model_anims_1_24(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "]Wot",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -4289,7 +4508,9 @@ function im_hwvx_proto_model_anims_1_28(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "<j<O",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -4301,7 +4522,9 @@ function im_hwvx_proto_model_anims_1_32(o, x) {
     let find_next_offset_i = (o + 1) - g.m
 
     find_next_offset_i = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i)
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ir<<",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, find_next_offset_i + g.m)),
     });
@@ -4310,8 +4533,10 @@ function im_hwvx_proto_model_anims_1_32(o, x) {
 
 }
 function im_hwvx_proto_model_anims_1_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "6jDb",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4321,8 +4546,10 @@ function im_hwvx_proto_model_anims_1_36(o, i, x) {
 
 }
 function im_hwvx_proto_model_anims_1_44(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Ip4F",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4334,8 +4561,10 @@ function im_hwvx_proto_model_anims_1_44(o, i, x) {
 
 }
 function im_hwvx_proto_model_anims_2(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "X]2v",
         u32_0: u32(o + 0),
         //amount?
@@ -4355,8 +4584,10 @@ function im_hwvx_proto_model_anims_2(o, i, x) {
 
 }
 function im_hwvx_proto_model_anims_2_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "4PH5",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4373,8 +4604,10 @@ function im_hwvx_proto_model_anims_2_16(o, i, x) {
 
 }
 function im_hwvx_proto_texture(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "of0M",
         u16_0: u16(o + 0),
         //check this
@@ -4416,7 +4649,7 @@ function im_hwvx_proto_texture(o, i, x) {
     } else {
         let mipmap_offset = total_length
 
-        for (let ii = 0; ii < u16(o + 6) -1; ii++) {
+        for (let ii = 0; ii < u16(o + 6) - 1; ii++) {
 
             if (u32(o + 8)) {
                 x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
@@ -4440,8 +4673,10 @@ function im_hwvx_proto_texture(o, i, x) {
 }
 
 function im_hwvx_proto_color_table(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "clt5",
         buffer: convert_arraybuffer_base64(buffer.slice(o, o + 1024)),
     });
@@ -4451,7 +4686,9 @@ function im_hwvx_proto_color_table(o, i, x) {
 
 }
 function im_hwvx_proto_share_end(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "eCFb",
         section_0: im_string(u32(o + 0), 0, false),
         u32_4: u32(o + 4),
@@ -4467,16 +4704,20 @@ function im_hwvx_proto_share_end(o, x) {
 
 }
 function im_hwvx_proto_share_end_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "YJ<:",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
     });
 
 }
 function im_hwvx_proto_world_color_section(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "tBe]",
         u32_0: u32(o + 0),
         //amount?
@@ -4491,8 +4732,10 @@ function im_hwvx_proto_world_color_section(o, i, x) {
 
 }
 function im_hwvx_proto_world_color_section_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Igau",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4504,8 +4747,10 @@ function im_hwvx_proto_world_color_section_4(o, i, x) {
 
 }
 function im_hwvx_proto_world_text_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "om89",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4527,8 +4772,10 @@ function im_hwvx_proto_world_text_link(o, i, x) {
 
 }
 function im_hwvx_proto_world_settings(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "6DwQ",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -4616,7 +4863,9 @@ function im_hwvx_proto_world_settings(o, i, x) {
 
 }
 function im_hwvx_proto_world_settings_192(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "DnMC",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -4628,7 +4877,9 @@ function im_hwvx_proto_world_settings_192(o, x) {
 
 }
 function im_hwvx_proto_world_settings_196(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "xmCF",
         u32_0: u32(o + 0),
         u32_8: u32(o + 8),
@@ -4645,7 +4896,9 @@ function im_hwvx_proto_world_settings_196(o, x) {
 
 }
 function im_hwvx_proto_world_settings_196_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "4hhT",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -4656,7 +4909,9 @@ function im_hwvx_proto_world_settings_196_28(o, x) {
 
 }
 function im_hwvx_proto_world_settings_224(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "KG?R",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4671,7 +4926,9 @@ function im_hwvx_proto_world_settings_224(o, x) {
 
 }
 function im_hwvx_proto_world_settings_228(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "D^@z",
     });
 
@@ -4679,8 +4936,10 @@ function im_hwvx_proto_world_settings_228(o, x) {
 
 }
 function im_hwvx_proto_world_settings_236(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "P=hX",
         section_0: [],
     });
@@ -4689,7 +4948,9 @@ function im_hwvx_proto_world_settings_236(o, i, x) {
 
 }
 function im_hwvx_proto_world_settings_236_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "0gYO",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4706,7 +4967,9 @@ function im_hwvx_proto_world_settings_236_0(o, x) {
 
 }
 function im_hwvx_proto_world_settings_236_0_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "QHN[",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -4717,8 +4980,10 @@ function im_hwvx_proto_world_settings_236_0_28(o, x) {
 
 }
 function im_hwvx_proto_world_settings_244(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "iHBt",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -4727,8 +4992,10 @@ function im_hwvx_proto_world_settings_244(o, i, x) {
 
 }
 function im_hwvx_proto_world_settings_260(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "M<n9",
         u32_0: u32(o + 0),
         section_4: [],
@@ -4738,7 +5005,9 @@ function im_hwvx_proto_world_settings_260(o, i, x) {
 
 }
 function im_hwvx_proto_world_settings_260_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "lI0j",
         u8_2: u8(o + 2),
         u8_3: u8(o + 3),
@@ -4764,8 +5033,10 @@ function im_hwvx_proto_world_settings_260_4(o, x) {
 
 }
 function im_hwvx_proto_world_small_section(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "FhGs",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4779,7 +5050,9 @@ function im_hwvx_proto_world_small_section(o, i, x) {
 
 }
 function im_hwvx_proto_world_small_section_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "@oVM",
         u32_0: u32(o + 0),
     });
@@ -4788,8 +5061,10 @@ function im_hwvx_proto_world_small_section_12(o, x) {
 
 }
 function im_hwvx_proto_world_model_related(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Javg",
         section_0: [],
         u8_4: u8(o + 4),
@@ -4822,8 +5097,10 @@ function im_hwvx_proto_world_model_related(o, i, x) {
 
 }
 function im_hwvx_proto_world_idk(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "ib0X",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -4849,8 +5126,10 @@ function im_hwvx_proto_world_idk(o, i, x) {
 
 }
 function im_hwvx_proto_world_idk_48(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "=Bq3",
         unordered_hwvx_proto_some_world_thing_0: 0,
         u32_4: u32(o + 4),
@@ -4866,8 +5145,10 @@ function im_hwvx_proto_world_idk_48(o, i, x) {
 
 }
 function im_hwvx_proto_world_idk_48_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "NiNv",
         unordered_hwvx_proto_some_world_thing_0: 0,
     });
@@ -4876,8 +5157,10 @@ function im_hwvx_proto_world_idk_48_8(o, i, x) {
 
 }
 function im_hwvx_proto_some_world_thing(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "k<bM",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4903,7 +5186,9 @@ function im_hwvx_proto_some_world_thing(o, i, x) {
 
 }
 function im_hwvx_proto_some_world_thing_88(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "WbBj",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4914,8 +5199,10 @@ function im_hwvx_proto_some_world_thing_88(o, x) {
 
 }
 function im_hwvx_proto_geo_list(o, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "^UG0",
         u32_0: u32(o + 0),
         //amount?
@@ -4930,8 +5217,10 @@ function im_hwvx_proto_geo_list(o, x) {
 
 }
 function im_hwvx_proto_geo_list_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Gqys",
         u32_0: u32(o + 0),
         //amount?
@@ -4952,7 +5241,9 @@ function im_hwvx_proto_geo_list_4(o, i, x) {
 
 }
 function im_hwvx_proto_geo_list_4_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "BT?c",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -4964,16 +5255,20 @@ function im_hwvx_proto_geo_list_4_4(o, x) {
 
 }
 function im_hwvx_proto_geo_list_4_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "BVkg",
         f32_0: f32(o + 0),
     });
 
 }
 function im_hwvx_proto_collision_settings(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "@B[D",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -5015,8 +5310,10 @@ function im_hwvx_proto_collision_settings(o, i, x) {
 
 }
 function im_hwvx_proto_collision_settings_72(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "TrH@",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -5025,8 +5322,10 @@ function im_hwvx_proto_collision_settings_72(o, i, x) {
 
 }
 function im_hwvx_proto_car(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "i=g:",
         u32_16: u32(o + 16),
         u32_20: u32(o + 20),
@@ -5139,7 +5438,9 @@ function im_hwvx_proto_car(o, i, x) {
 
 }
 function im_hwvx_proto_car_108(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Q_rF",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5151,7 +5452,9 @@ function im_hwvx_proto_car_108(o, x) {
 
 }
 function im_hwvx_proto_car_120(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "hJ^O",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5166,7 +5469,9 @@ function im_hwvx_proto_car_120(o, x) {
 
 }
 function im_hwvx_proto_car_124(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ZdHL",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5177,7 +5482,9 @@ function im_hwvx_proto_car_124(o, x) {
 
 }
 function im_hwvx_proto_car_128(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "KQFs",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5221,8 +5528,10 @@ function im_hwvx_proto_car_128(o, x) {
 
 }
 function im_hwvx_proto_car_128_132(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "U[<W",
         u32_0: u32(o + 0),
         section_4: [],
@@ -5244,7 +5553,9 @@ function im_hwvx_proto_car_128_132(o, i, x) {
     }
 }
 function im_hwvx_proto_car_128_132_4t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "wxy:",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5261,7 +5572,9 @@ function im_hwvx_proto_car_128_132_4t1(o, x) {
 
 }
 function im_hwvx_proto_car_128_132_4t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "=CB9",
         f32_16: f32(o + 16),
     });
@@ -5270,7 +5583,9 @@ function im_hwvx_proto_car_128_132_4t2(o, x) {
 
 }
 function im_hwvx_proto_car_128_132_4t3(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ni0J",
         f32_4: f32(o + 4),
         f32_16: f32(o + 16),
@@ -5283,7 +5598,9 @@ function im_hwvx_proto_car_128_132_4t3(o, x) {
 
 }
 function im_hwvx_proto_car_128_132_4t4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "uVOT",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -5293,7 +5610,9 @@ function im_hwvx_proto_car_128_132_4t4(o, x) {
 
 }
 function im_hwvx_proto_car_132(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "DLjW",
         unordered_hwvx_proto_interface_16: 0,
         unordered_hwvx_proto_interface_24: 0,
@@ -5311,7 +5630,9 @@ function im_hwvx_proto_car_132(o, x) {
 
 }
 function im_hwvx_proto_car_132_44(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "0fgN",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5323,7 +5644,9 @@ function im_hwvx_proto_car_132_44(o, x) {
 
 }
 function im_hwvx_proto_car_136(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "pT66",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -5345,7 +5668,9 @@ function im_hwvx_proto_car_136(o, x) {
 
 }
 function im_hwvx_proto_car_140(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "<Xgk",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5387,8 +5712,10 @@ function im_hwvx_proto_car_140(o, x) {
 
 }
 function im_hwvx_proto_car_140_56(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "GkK1",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -5397,8 +5724,10 @@ function im_hwvx_proto_car_140_56(o, i, x) {
 
 }
 function im_hwvx_proto_car_140_64(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "sq>I",
         unordered_hwvx_proto_text_0: 0,
     });
@@ -5407,7 +5736,9 @@ function im_hwvx_proto_car_140_64(o, i, x) {
 
 }
 function im_hwvx_proto_car_164(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "cOSy",
         u32_4: u32(o + 4),
         section_8: [],
@@ -5419,7 +5750,9 @@ function im_hwvx_proto_car_164(o, x) {
 
 }
 function im_hwvx_proto_car_164_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "SBS0",
         u32_16: u32(o + 16),
         f32_20: f32(o + 20),
@@ -5429,7 +5762,9 @@ function im_hwvx_proto_car_164_8(o, x) {
 
 }
 function im_hwvx_proto_car_172(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "O5O:",
         u8_1: u8(o + 1),
         u8_2: u8(o + 2),
@@ -5441,8 +5776,10 @@ function im_hwvx_proto_car_172(o, x) {
 
 }
 function im_hwvx_proto_car_212(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "w?mc",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5464,8 +5801,10 @@ function im_hwvx_proto_car_212(o, i, x) {
 
 }
 function im_hwvx_proto_car_220(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Xtfw",
         f32_0: f32(o + 0),
         unordered_hwvx_proto_sound_section_4: 0,
@@ -5475,8 +5814,10 @@ function im_hwvx_proto_car_220(o, i, x) {
 
 }
 function im_hwvx_proto_car_228(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "P0mb",
         unordered_hwvx_proto_model_anims_2_0: 0,
         u32_4: u32(o + 4),
@@ -5492,7 +5833,9 @@ function im_hwvx_proto_car_228(o, i, x) {
 
 }
 function im_hwvx_proto_car_252(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "6l:Y",
         section_4: [],
     });
@@ -5503,7 +5846,9 @@ function im_hwvx_proto_car_252(o, x) {
 
 }
 function im_hwvx_proto_car_252_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "L6vT",
         u32_0: u32(o + 0),
         section_4: [],
@@ -5515,7 +5860,9 @@ function im_hwvx_proto_car_252_4(o, x) {
 
 }
 function im_hwvx_proto_car_252_4_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "emW9",
         u32_0: u32(o + 0),
     });
@@ -5524,7 +5871,9 @@ function im_hwvx_proto_car_252_4_4(o, x) {
 
 }
 function im_hwvx_proto_car_260(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "iIBS",
         u32_52: u32(o + 52),
         section_56: [],
@@ -5536,7 +5885,9 @@ function im_hwvx_proto_car_260(o, x) {
 
 }
 function im_hwvx_proto_car_260_56(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "K6P^",
     });
 
@@ -5544,7 +5895,9 @@ function im_hwvx_proto_car_260_56(o, x) {
 
 }
 function im_hwvx_proto_car_268(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "=@aQ",
     });
 
@@ -5552,8 +5905,10 @@ function im_hwvx_proto_car_268(o, x) {
 
 }
 function im_hwvx_proto_car_related(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "jg>I",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5579,8 +5934,10 @@ function im_hwvx_proto_car_related(o, i, x) {
 
 }
 function im_hwvx_proto_car_related_48(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "HYA?",
         section_0: [],
     });
@@ -5589,7 +5946,9 @@ function im_hwvx_proto_car_related_48(o, i, x) {
 
 }
 function im_hwvx_proto_car_related_48_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "VM^0",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -5610,8 +5969,10 @@ function im_hwvx_proto_car_related_48_0(o, x) {
 
 }
 function im_hwvx_proto_car_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "ZIP^",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5648,7 +6009,9 @@ function im_hwvx_proto_car_link(o, i, x) {
 
 }
 function im_hwvx_proto_car_link_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "2Ajg",
         f32_4: f32(o + 4),
         f32_8: f32(o + 8),
@@ -5686,8 +6049,10 @@ function im_hwvx_proto_car_link_48(o, x) {
 
 }
 function im_hwvx_proto_car_link_48_72(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ">a1]",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -5696,8 +6061,10 @@ function im_hwvx_proto_car_link_48_72(o, i, x) {
 
 }
 function im_hwvx_proto_car_link_56(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ";10P",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -5706,7 +6073,9 @@ function im_hwvx_proto_car_link_56(o, i, x) {
 
 }
 function im_hwvx_proto_car_link_64(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "hezc",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -5717,7 +6086,9 @@ function im_hwvx_proto_car_link_64(o, x) {
 
 }
 function im_hwvx_proto_car_link_68(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "hxcM",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5732,8 +6103,10 @@ function im_hwvx_proto_car_link_68(o, x) {
 
 }
 function im_hwvx_proto_mysterious(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "CP>2",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5773,7 +6146,9 @@ function im_hwvx_proto_mysterious(o, i, x) {
 
 }
 function im_hwvx_proto_mysterious_24t5(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "jpuw",
         model_8: [],
         u32_20: u32(o + 20),
@@ -5800,8 +6175,10 @@ function im_hwvx_proto_mysterious_24t5(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t5_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "wlid",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5812,8 +6189,10 @@ function im_hwvx_proto_mysterious_24t5_24(o, i, x) {
 
 }
 function im_hwvx_proto_mysterious_24t5_32(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "uUPO",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5825,7 +6204,9 @@ function im_hwvx_proto_mysterious_24t5_32(o, i, x) {
 
 }
 function im_hwvx_proto_mysterious_24t5_44(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "o7;i",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5838,7 +6219,9 @@ function im_hwvx_proto_mysterious_24t5_44(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t6(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "R<H4",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5873,8 +6256,10 @@ function im_hwvx_proto_mysterious_24t6(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t6_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "8cdg",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5885,8 +6270,10 @@ function im_hwvx_proto_mysterious_24t6_16(o, i, x) {
 
 }
 function im_hwvx_proto_mysterious_24t6_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "oV==",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5897,8 +6284,10 @@ function im_hwvx_proto_mysterious_24t6_24(o, i, x) {
 
 }
 function im_hwvx_proto_mysterious_24t6_32(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "aQ]J",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5910,7 +6299,9 @@ function im_hwvx_proto_mysterious_24t6_32(o, i, x) {
 
 }
 function im_hwvx_proto_mysterious_24t6_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "XqiO",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -5920,7 +6311,9 @@ function im_hwvx_proto_mysterious_24t6_36(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t7(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "@ZZb",
         u32_32: u32(o + 32),
         u32_36: u32(o + 36),
@@ -5947,8 +6340,10 @@ function im_hwvx_proto_mysterious_24t7(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t7_72(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "QK;_",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -5959,7 +6354,9 @@ function im_hwvx_proto_mysterious_24t7_72(o, i, x) {
 
 }
 function im_hwvx_proto_mysterious_24t7_80(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "7L6J",
     });
 
@@ -5967,7 +6364,9 @@ function im_hwvx_proto_mysterious_24t7_80(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t7_88(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "_8[1",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
     });
@@ -5976,7 +6375,9 @@ function im_hwvx_proto_mysterious_24t7_88(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t9(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "r8AQ",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6003,7 +6404,9 @@ function im_hwvx_proto_mysterious_24t9(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t9_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "juG4",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6015,7 +6418,9 @@ function im_hwvx_proto_mysterious_24t9_28(o, x) {
 
 }
 function im_hwvx_proto_mysterious_24t9_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "FGQj",
         u8_1: u8(o + 1),
         u8_2: u8(o + 2),
@@ -6026,8 +6431,10 @@ function im_hwvx_proto_mysterious_24t9_32(o, x) {
 
 }
 function im_hwvx_proto_strange(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "fz_?",
         u32_0: u32(o + 0),
         u32_8: u32(o + 8),
@@ -6048,8 +6455,10 @@ function im_hwvx_proto_strange(o, i, x) {
 
 }
 function im_hwvx_proto_strange_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Db4x",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -6058,8 +6467,10 @@ function im_hwvx_proto_strange_28(o, i, x) {
 
 }
 function im_hwvx_proto_model_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Metw",
         u32_0: u32(o + 0),
         section_4: [],
@@ -6098,7 +6509,9 @@ function im_hwvx_proto_model_link(o, i, x) {
 
 }
 function im_hwvx_proto_model_link_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "t5Jp",
         model_0: [],
     });
@@ -6108,7 +6521,9 @@ function im_hwvx_proto_model_link_4(o, x) {
 
 }
 function im_hwvx_proto_model_link_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "u66W",
         model_0: [],
         u32_4: u32(o + 4),
@@ -6120,7 +6535,9 @@ function im_hwvx_proto_model_link_12(o, x) {
 
 }
 function im_hwvx_proto_model_link_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Imly",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6130,7 +6547,9 @@ function im_hwvx_proto_model_link_32(o, x) {
 
 }
 function im_hwvx_proto_model_link_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "4_C=",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6140,7 +6559,9 @@ function im_hwvx_proto_model_link_36(o, x) {
 
 }
 function im_hwvx_proto_model_link_52(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "iS5S",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6154,7 +6575,9 @@ function im_hwvx_proto_model_link_52(o, x) {
 
 }
 function im_hwvx_proto_model_link_56(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "z4bY",
         u32_0: u32(o + 0),
         //amount?
@@ -6171,8 +6594,10 @@ function im_hwvx_proto_model_link_56(o, x) {
 
 }
 function im_hwvx_proto_model_link_56_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "s;ve",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6189,7 +6614,9 @@ function im_hwvx_proto_model_link_56_4(o, i, x) {
 
 }
 function im_hwvx_proto_model_link_56_4_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Q0z;",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6200,7 +6627,9 @@ function im_hwvx_proto_model_link_56_4_12(o, x) {
 
 }
 function im_hwvx_proto_model_link_56_4_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "m8[T",
     });
 
@@ -6208,8 +6637,10 @@ function im_hwvx_proto_model_link_56_4_16(o, x) {
 
 }
 function im_hwvx_proto_text(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "I[]x",
         section_0: im_string(u32(o + 0), 0, false),
     });
@@ -6219,8 +6650,10 @@ function im_hwvx_proto_text(o, i, x) {
 
 }
 function im_hwvx_proto_font(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "494j",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
         unordered_hwvx_proto_sound_section_4: 0,
@@ -6245,7 +6678,9 @@ function im_hwvx_proto_font(o, i, x) {
 
 }
 function im_hwvx_proto_font_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "7]7W",
         f32_0: f32(o + 0),
     });
@@ -6254,8 +6689,10 @@ function im_hwvx_proto_font_28(o, x) {
 
 }
 function im_hwvx_proto_font_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "tHz_",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -6263,8 +6700,10 @@ function im_hwvx_proto_font_36(o, i, x) {
 
 }
 function im_hwvx_proto_interface(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "qVyB",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -6301,8 +6740,10 @@ function im_hwvx_proto_interface(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "1d6S",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6377,7 +6818,9 @@ function im_hwvx_proto_interface_16(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_20t0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "8BNK",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6394,7 +6837,9 @@ function im_hwvx_proto_interface_16_20t0(o, x) {
 
 }
 function im_hwvx_proto_interface_16_20t0_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "kU0D",
         u32_0: u32(o + 0),
         //amount?
@@ -6411,15 +6856,19 @@ function im_hwvx_proto_interface_16_20t0_16(o, x) {
 
 }
 function im_hwvx_proto_interface_16_20t0_16_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "UuC9",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
     });
 
 }
 function im_hwvx_proto_interface_16_20t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Mh;=",
         unordered_hwvx_proto_text_0: 0,
         unordered_hwvx_proto_font_4: 0,
@@ -6438,7 +6887,9 @@ function im_hwvx_proto_interface_16_20t1(o, x) {
 
 }
 function im_hwvx_proto_interface_16_20t1_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "SGJ[",
         u32_0: u32(o + 0),
         //amount?
@@ -6455,8 +6906,10 @@ function im_hwvx_proto_interface_16_20t1_8(o, x) {
 
 }
 function im_hwvx_proto_interface_16_20t1_8_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "q_on",
         unordered_hwvx_proto_text_0: 0,
     });
@@ -6465,7 +6918,9 @@ function im_hwvx_proto_interface_16_20t1_8_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_20t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "IYWn",
         u32_0: u32(o + 0),
         //amount?
@@ -6480,8 +6935,10 @@ function im_hwvx_proto_interface_16_20t2(o, x) {
 
 }
 function im_hwvx_proto_interface_16_20t2_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ">@=_",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6506,8 +6963,10 @@ function im_hwvx_proto_interface_16_20t2_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_20t2_4_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "YSsF",
         u32_0: u32(o + 0),
         //amount?
@@ -6518,7 +6977,9 @@ function im_hwvx_proto_interface_16_20t2_4_28(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_20t2_4_28_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Qzyz",
         u8_1: u8(o + 1),
         u8_2: u8(o + 2),
@@ -6528,7 +6989,9 @@ function im_hwvx_proto_interface_16_20t2_4_28_4(o, x) {
 
 }
 function im_hwvx_proto_interface_16_20t4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "FM?k",
         u32_0: u32(o + 0),
         //amount?
@@ -6543,8 +7006,10 @@ function im_hwvx_proto_interface_16_20t4(o, x) {
 
 }
 function im_hwvx_proto_interface_16_20t4_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "?CuH",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6556,7 +7021,9 @@ function im_hwvx_proto_interface_16_20t4_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_20t10(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "0ah;",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -6571,7 +7038,9 @@ function im_hwvx_proto_interface_16_20t10(o, x) {
 
 }
 function im_hwvx_proto_interface_16_20t11(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: ">QXj",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -6581,7 +7050,9 @@ function im_hwvx_proto_interface_16_20t11(o, x) {
 
 }
 function im_hwvx_proto_interface_16_60(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "]Sms",
         unordered_hwvx_proto_interface_0: 0,
     });
@@ -6592,7 +7063,9 @@ function im_hwvx_proto_interface_16_60(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "J_pJ",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6616,8 +7089,10 @@ function im_hwvx_proto_interface_16_68(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "lXU^",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -6631,7 +7106,9 @@ function im_hwvx_proto_interface_16_68_12(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "bX^r",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -6644,7 +7121,9 @@ function im_hwvx_proto_interface_16_68_20(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "H_sG",
         section_0: [],
         u8_4: u8(o + 4),
@@ -6673,7 +7152,9 @@ function im_hwvx_proto_interface_16_68_20_8(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "[cs^",
         section_0: [],
         section_4: [],
@@ -6686,7 +7167,9 @@ function im_hwvx_proto_interface_16_68_20_8_8(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_8_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "r__j",
         u32_0: u32(o + 0),
     });
@@ -6695,7 +7178,9 @@ function im_hwvx_proto_interface_16_68_20_8_8_0(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_8_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "7xT1",
         u32_0: u32(o + 0),
     });
@@ -6704,7 +7189,9 @@ function im_hwvx_proto_interface_16_68_20_8_8_4(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "R=<n",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6715,7 +7202,9 @@ function im_hwvx_proto_interface_16_68_20_8_24(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "l3PK",
         u32_0: u32(o + 0),
         u8_4: u8(o + 4),
@@ -6728,7 +7217,9 @@ function im_hwvx_proto_interface_16_68_20_8_32(o, x) {
 
 }
 function im_hwvx_proto_interface_16_72(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "U=L=",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -6744,8 +7235,10 @@ function im_hwvx_proto_interface_16_72(o, x) {
 
 }
 function im_hwvx_proto_interface_16_72_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "AlcH",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -6756,7 +7249,9 @@ function im_hwvx_proto_interface_16_72_8(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_72_8_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "3wEt",
         u32_0: u32(o + 0),
         section_4: [],
@@ -6768,7 +7263,9 @@ function im_hwvx_proto_interface_16_72_8_8(o, x) {
 
 }
 function im_hwvx_proto_interface_16_72_8_8_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "P]zG",
         u32_0: u32(o + 0),
     });
@@ -6777,7 +7274,9 @@ function im_hwvx_proto_interface_16_72_8_8_4(o, x) {
 
 }
 function im_hwvx_proto_interface_16_96(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Rkdk",
         u32_0: u32(o + 0),
         //amount?
@@ -6820,8 +7319,10 @@ function im_hwvx_proto_interface_16_96(o, x) {
 
 }
 function im_hwvx_proto_interface_16_96_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "aTUt",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6832,8 +7333,10 @@ function im_hwvx_proto_interface_16_96_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_96_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "jdSj",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6845,8 +7348,10 @@ function im_hwvx_proto_interface_16_96_28(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_96_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Z<<y",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6858,8 +7363,10 @@ function im_hwvx_proto_interface_16_96_36(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_104(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "M?r;",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -6870,7 +7377,9 @@ function im_hwvx_proto_interface_16_104(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "sS_M",
         u32_0: u32(o + 0),
         //amount?
@@ -6924,8 +7433,10 @@ function im_hwvx_proto_interface_16_104_8(o, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "i4Z@",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -6933,8 +7444,10 @@ function im_hwvx_proto_interface_16_104_8_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "8<A2",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6944,8 +7457,10 @@ function im_hwvx_proto_interface_16_104_8_12(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8_20(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "RpkE",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -6957,8 +7472,10 @@ function im_hwvx_proto_interface_16_104_8_20(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "vfDd",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6969,8 +7486,10 @@ function im_hwvx_proto_interface_16_104_8_28(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "HIn]",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -6982,8 +7501,10 @@ function im_hwvx_proto_interface_16_104_8_36(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8_44(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "LJw3",
         f32_0: f32(o + 0),
         u32_16: u32(o + 16),
@@ -6992,7 +7513,9 @@ function im_hwvx_proto_interface_16_104_8_44(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8_56(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "hTcs",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7004,7 +7527,9 @@ function im_hwvx_proto_interface_16_104_8_56(o, x) {
 
 }
 function im_hwvx_proto_interface_16_104_8_56_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Zg[j",
     });
 
@@ -7012,7 +7537,9 @@ function im_hwvx_proto_interface_16_104_8_56_4(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_0t11(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "gwE5",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7026,8 +7553,10 @@ function im_hwvx_proto_interface_16_68_20_8_0t11(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_0t11_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Qvak",
         u32_0: u32(o + 0),
         //amount?
@@ -7040,8 +7569,10 @@ function im_hwvx_proto_interface_16_68_20_8_0t11_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_0t11_4_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "5uGd",
         section_0: [],
     });
@@ -7050,7 +7581,9 @@ function im_hwvx_proto_interface_16_68_20_8_0t11_4_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_0t11_4_4_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "HE?>",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7062,7 +7595,9 @@ function im_hwvx_proto_interface_16_68_20_8_0t11_4_4_0(o, x) {
 
 }
 function im_hwvx_proto_interface_16_68_20_8_0t11_4_4_0_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "vSGD",
         u32_0: u32(o + 0),
     });
@@ -7071,8 +7606,10 @@ function im_hwvx_proto_interface_16_68_20_8_0t11_4_4_0_4(o, x) {
 
 }
 function im_hwvx_proto_interface_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "K=ks",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -7083,7 +7620,9 @@ function im_hwvx_proto_interface_24(o, i, x) {
 
 }
 function im_hwvx_proto_interface_24_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "TCBf",
         section_0: [],
         u8_4: u8(o + 4),
@@ -7111,7 +7650,9 @@ function im_hwvx_proto_interface_24_8(o, x) {
 
 }
 function im_hwvx_proto_interface_24_8_0t11(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "EQvy",
         u32_0: u32(o + 0),
         //amount?
@@ -7126,8 +7667,10 @@ function im_hwvx_proto_interface_24_8_0t11(o, x) {
 
 }
 function im_hwvx_proto_interface_24_8_0t11_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "WMML",
         u32_0: u32(o + 0),
         //amount?
@@ -7140,8 +7683,10 @@ function im_hwvx_proto_interface_24_8_0t11_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_24_8_0t11_4_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "P<e^",
         section_0: [],
     });
@@ -7150,7 +7695,9 @@ function im_hwvx_proto_interface_24_8_0t11_4_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_24_8_0t11_4_4_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "8lvN",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7162,7 +7709,9 @@ function im_hwvx_proto_interface_24_8_0t11_4_4_0(o, x) {
 
 }
 function im_hwvx_proto_interface_24_8_0t11_4_4_0_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "QW[=",
         u32_0: u32(o + 0),
     });
@@ -7171,7 +7720,9 @@ function im_hwvx_proto_interface_24_8_0t11_4_4_0_4(o, x) {
 
 }
 function im_hwvx_proto_interface_24_8_8t15(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Xyg1",
         section_0: [],
         section_4: [],
@@ -7184,7 +7735,9 @@ function im_hwvx_proto_interface_24_8_8t15(o, x) {
 
 }
 function im_hwvx_proto_interface_24_8_8t15_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "q6pP",
         u8_2: u8(o + 2),
     });
@@ -7193,7 +7746,9 @@ function im_hwvx_proto_interface_24_8_8t15_0(o, x) {
 
 }
 function im_hwvx_proto_interface_24_8_8t15_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "81GP",
         u32_0: u32(o + 0),
     });
@@ -7202,7 +7757,9 @@ function im_hwvx_proto_interface_24_8_8t15_4(o, x) {
 
 }
 function im_hwvx_proto_interface_24_8_8t17(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "[@P4",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -7212,7 +7769,9 @@ function im_hwvx_proto_interface_24_8_8t17(o, x) {
 
 }
 function im_hwvx_proto_interface_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ZriU",
         u32_0: u32(o + 0),
         //amount?
@@ -7227,8 +7786,10 @@ function im_hwvx_proto_interface_28(o, x) {
 
 }
 function im_hwvx_proto_interface_28_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "vX8@",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -7242,7 +7803,9 @@ function im_hwvx_proto_interface_28_4(o, i, x) {
 
 }
 function im_hwvx_proto_interface_28_4_16(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "PfIg",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7254,7 +7817,9 @@ function im_hwvx_proto_interface_28_4_16(o, x) {
 
 }
 function im_hwvx_proto_interface_28_4_16_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "a=N3",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -7264,7 +7829,9 @@ function im_hwvx_proto_interface_28_4_16_4(o, x) {
 
 }
 function im_hwvx_proto_interface_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "xJ=Y",
         section_0: im_string(u32(o + 0), 0, false),
         u32_4: u32(o + 4),
@@ -7274,8 +7841,10 @@ function im_hwvx_proto_interface_48(o, x) {
 
 }
 function im_hwvx_proto_interface_text_related(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "3OW[",
         unordered_hwvx_proto_text_0: 0,
         unordered_hwvx_proto_font_8: 0,
@@ -7312,7 +7881,9 @@ function im_hwvx_proto_interface_text_related(o, i, x) {
 
 }
 function im_hwvx_proto_interface_text_related_12(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "<J>V",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -7324,8 +7895,10 @@ function im_hwvx_proto_interface_text_related_12(o, x) {
 
 }
 function im_hwvx_proto_interface_text_related_20(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "T8ye",
         u32_0: u32(o + 0),
         //amount?
@@ -7339,15 +7912,19 @@ function im_hwvx_proto_interface_text_related_20(o, i, x) {
 
 }
 function im_hwvx_proto_interface_text_related_20_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "AYTy",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
     });
 
 }
 function im_hwvx_proto_interface_text_related_52(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "O];A",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7358,8 +7935,10 @@ function im_hwvx_proto_interface_text_related_52(o, x) {
 
 }
 function im_hwvx_proto_unknown(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "9me0",
         u32_0: u32(o + 0),
         //amount?
@@ -7374,8 +7953,10 @@ function im_hwvx_proto_unknown(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "HP[]",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7436,7 +8017,9 @@ function im_hwvx_proto_unknown_4(o, i, x) {
     }
 }
 function im_hwvx_proto_unknown_4_8t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "oH:I",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -7469,7 +8052,9 @@ function im_hwvx_proto_unknown_4_8t1(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_8t1_40t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "KKwn",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7483,7 +8068,9 @@ function im_hwvx_proto_unknown_4_8t1_40t1(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_8t1_40t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "fJ[T",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7508,7 +8095,9 @@ function im_hwvx_proto_unknown_4_8t1_40t2(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_8t1_40t2_12t0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "qOTK",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7519,7 +8108,9 @@ function im_hwvx_proto_unknown_4_8t1_40t2_12t0(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_8t1_40t2_12t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "1A8k",
         f32_0: f32(o + 0),
         u32_16: u32(o + 16),
@@ -7529,7 +8120,9 @@ function im_hwvx_proto_unknown_4_8t1_40t2_12t1(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_8t1_40t2_12t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "8P[M",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7541,7 +8134,9 @@ function im_hwvx_proto_unknown_4_8t1_40t2_12t2(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_8t1_44(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Cu>6",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7555,7 +8150,9 @@ function im_hwvx_proto_unknown_4_8t1_44(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_8t5(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "g>hN",
         u32_24: u32(o + 24),
         section_28: [],
@@ -7567,7 +8164,9 @@ function im_hwvx_proto_unknown_4_8t5(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_8t5_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "]b4a",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -7578,7 +8177,9 @@ function im_hwvx_proto_unknown_4_8t5_28(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_4t4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "VD@9",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -7594,7 +8195,9 @@ function im_hwvx_proto_unknown_4_4t4(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_4t4_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "nTMN",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -7605,7 +8208,9 @@ function im_hwvx_proto_unknown_4_4t4_28(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_4t8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "d7nY",
         u8_1: u8(o + 1),
         u8_3: u8(o + 3),
@@ -7627,8 +8232,10 @@ function im_hwvx_proto_unknown_4_4t8(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_4t8_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "gS;?",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -7636,7 +8243,9 @@ function im_hwvx_proto_unknown_4_4t8_16(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_4_4t8_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "e2Rn",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -7649,7 +8258,9 @@ function im_hwvx_proto_unknown_4_4t8_24(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_4t29(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "NE9?",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -7666,8 +8277,10 @@ function im_hwvx_proto_unknown_4_4t29(o, x) {
 
 }
 function im_hwvx_proto_unknown_4_4t29_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Pd2k",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7684,8 +8297,10 @@ function im_hwvx_proto_unknown_4_4t29_12(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "^GRl",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -7712,7 +8327,9 @@ function im_hwvx_proto_unknown_idk_sec(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "3]3r",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -7729,7 +8346,9 @@ function im_hwvx_proto_unknown_idk_sec_28(o, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Q4<C",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -7745,8 +8364,10 @@ function im_hwvx_proto_unknown_idk_sec_32(o, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec_32_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "6yHH",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -7757,7 +8378,9 @@ function im_hwvx_proto_unknown_idk_sec_32_8(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "7vmh",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7769,7 +8392,9 @@ function im_hwvx_proto_unknown_idk_sec_36(o, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec_36_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "8Wto",
         f32_0: f32(o + 0),
         u32_16: u32(o + 16),
@@ -7780,7 +8405,9 @@ function im_hwvx_proto_unknown_idk_sec_36_4(o, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Zd;F",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7794,8 +8421,10 @@ function im_hwvx_proto_unknown_idk_sec_40(o, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec_40_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "3s]Q",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7803,7 +8432,9 @@ function im_hwvx_proto_unknown_idk_sec_40_4(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_idk_sec_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "pPZL",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7813,8 +8444,10 @@ function im_hwvx_proto_unknown_idk_sec_48(o, x) {
 
 }
 function im_hwvx_proto_unknown_link_section(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "H8fI",
         u32_0: u32(o + 0),
         u32_8: u32(o + 8),
@@ -7832,8 +8465,10 @@ function im_hwvx_proto_unknown_link_section(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_link_section_28(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "AGOy",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -7842,8 +8477,10 @@ function im_hwvx_proto_unknown_link_section_28(o, i, x) {
 
 }
 function im_hwvx_proto_grand_section(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "caGR",
         model_0: [],
         u32_4: u32(o + 4),
@@ -7865,8 +8502,10 @@ function im_hwvx_proto_grand_section(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_thing(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "tpqu",
         u32_0: u32(o + 0),
         section_4: [],
@@ -7899,7 +8538,9 @@ function im_hwvx_proto_unknown_thing(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_thing_4t0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "vK>c",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -7930,8 +8571,10 @@ function im_hwvx_proto_unknown_thing_4t0(o, x) {
 
 }
 function im_hwvx_proto_unknown_thing_4t0_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "2SLk",
         model_0: [],
     });
@@ -7940,8 +8583,10 @@ function im_hwvx_proto_unknown_thing_4t0_36(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_thing_4t0_44(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "h;uV",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -7952,7 +8597,9 @@ function im_hwvx_proto_unknown_thing_4t0_44(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_thing_4t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "]7y^",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -7981,16 +8628,20 @@ function im_hwvx_proto_unknown_thing_4t1(o, x) {
 
 }
 function im_hwvx_proto_unknown_thing_4t1_36(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "X594",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
     });
 
 }
 function im_hwvx_proto_unknown_thing_4t1_44(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "I>Pm",
         f32_0: f32(o + 0),
         u32_4: u32(o + 4),
@@ -7999,7 +8650,9 @@ function im_hwvx_proto_unknown_thing_4t1_44(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_thing_4t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "jbi0",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -8024,8 +8677,10 @@ function im_hwvx_proto_unknown_thing_4t2(o, x) {
 
 }
 function im_hwvx_proto_unknown_thing_4t2_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "n?lz",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -8033,8 +8688,10 @@ function im_hwvx_proto_unknown_thing_4t2_16(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_thing_4t2_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "8AvY",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -8045,8 +8702,10 @@ function im_hwvx_proto_unknown_thing_4t2_24(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_thing_24(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "<dYK",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -8058,7 +8717,9 @@ function im_hwvx_proto_unknown_thing_24(o, i, x) {
 
 }
 function im_hwvx_proto_unknown_thing_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "lLrJ",
         unordered_hwvx_proto_unknown_0: 0,
     });
@@ -8069,8 +8730,10 @@ function im_hwvx_proto_unknown_thing_32(o, x) {
 
 }
 function im_hwvx_proto_asdf(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Q7EE",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -8147,7 +8810,9 @@ function im_hwvx_proto_asdf(o, i, x) {
 
 }
 function im_hwvx_proto_asdf_12t1(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "x<;N",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -8157,7 +8822,9 @@ function im_hwvx_proto_asdf_12t1(o, x) {
 
 }
 function im_hwvx_proto_asdf_12t2(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: ":]L<",
         f32_0: f32(o + 0),
     });
@@ -8166,8 +8833,10 @@ function im_hwvx_proto_asdf_12t2(o, x) {
 
 }
 function im_hwvx_proto_asdf_144(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "Rg6^",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -8177,8 +8846,10 @@ function im_hwvx_proto_asdf_144(o, i, x) {
 
 }
 function im_hwvx_proto_asdf_152(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ";ZV3",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -8189,7 +8860,9 @@ function im_hwvx_proto_asdf_152(o, i, x) {
 
 }
 function im_hwvx_proto_asdf_164(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "n^l7",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -8207,7 +8880,9 @@ function im_hwvx_proto_asdf_164(o, x) {
 
 }
 function im_hwvx_proto_asdf_168(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "qO<v",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -8226,7 +8901,9 @@ function im_hwvx_proto_asdf_168(o, x) {
 
 }
 function im_hwvx_proto_asdf_172(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "UlWs",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -8238,8 +8915,10 @@ function im_hwvx_proto_asdf_172(o, x) {
 
 }
 function im_hwvx_proto_item(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "1<NQ",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -8277,7 +8956,9 @@ function im_hwvx_proto_item(o, i, x) {
 
 }
 function im_hwvx_proto_item_48(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "[Tf[",
         section_0: [],
         unordered_hwvx_proto_text_16: 0,
@@ -8307,7 +8988,9 @@ function im_hwvx_proto_item_48(o, x) {
 
 }
 function im_hwvx_proto_item_48_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "HU5e",
         u32_8: u32(o + 8),
         //amount?
@@ -8343,8 +9026,10 @@ function im_hwvx_proto_item_48_0(o, x) {
 
 }
 function im_hwvx_proto_item_48_0_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "rCXf",
         model_0: [],
         u32_4: u32(o + 4),
@@ -8353,7 +9038,9 @@ function im_hwvx_proto_item_48_0_12(o, i, x) {
 
 }
 function im_hwvx_proto_item_48_0_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "]sCt",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -8363,7 +9050,9 @@ function im_hwvx_proto_item_48_0_32(o, x) {
 
 }
 function im_hwvx_proto_item_48_0_36(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "Rn4S",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -8373,7 +9062,9 @@ function im_hwvx_proto_item_48_0_36(o, x) {
 
 }
 function im_hwvx_proto_item_48_0_40(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "<OmJ",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -8383,7 +9074,9 @@ function im_hwvx_proto_item_48_0_40(o, x) {
 
 }
 function im_hwvx_proto_item_48_0_52(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "4diD",
         f32_0: f32(o + 0),
         f32_8: f32(o + 8),
@@ -8396,8 +9089,10 @@ function im_hwvx_proto_item_48_0_52(o, x) {
 
 }
 function im_hwvx_proto_link(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "v8dg",
         section_4: im_string(u32(o + 4), 0, false),
         section_8: im_string(u32(o + 8), 0, false),
@@ -8434,8 +9129,10 @@ function im_hwvx_proto_link(o, i, x) {
 
 }
 function im_hwvx_proto_link_44(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ";1k?",
         u32_0: u32(o + 0),
         section_4: [],
@@ -8450,7 +9147,9 @@ function im_hwvx_proto_link_44(o, i, x) {
     }
 }
 function im_hwvx_proto_link_44_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "=Sj3",
         section_0: im_string(u32(o + 0), 0, false),
         u32_4: u32(o + 4),
@@ -8460,8 +9159,10 @@ function im_hwvx_proto_link_44_8(o, x) {
 
 }
 function im_hwvx_proto_link_52(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "VveN",
         section_0: [],
     });
@@ -8470,7 +9171,9 @@ function im_hwvx_proto_link_52(o, i, x) {
 
 }
 function im_hwvx_proto_link_52_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "fPWs",
         u32_0: u32(o + 0),
         //amount?
@@ -8485,8 +9188,10 @@ function im_hwvx_proto_link_52_0(o, x) {
 
 }
 function im_hwvx_proto_link_52_0_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "@QKQ",
         u32_0: u32(o + 0),
         //amount?
@@ -8508,8 +9213,10 @@ function im_hwvx_proto_link_52_0_4(o, i, x) {
 
 }
 function im_hwvx_proto_link_52_0_4_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "5JG5",
         u32_0: u32(o + 0),
         section_4: [],
@@ -8522,7 +9229,9 @@ function im_hwvx_proto_link_52_0_4_4(o, i, x) {
     }
 }
 function im_hwvx_proto_link_52_0_4_4_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "dqlY",
         section_0: im_string(u32(o + 0), 0, false),
         u32_4: u32(o + 4),
@@ -8532,7 +9241,9 @@ function im_hwvx_proto_link_52_0_4_4_4(o, x) {
 
 }
 function im_hwvx_proto_link_52_0_4_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "LgjN",
         section_0: im_string(u32(o + 0), 0, false),
         u32_4: u32(o + 4),
@@ -8542,7 +9253,9 @@ function im_hwvx_proto_link_52_0_4_8(o, x) {
 
 }
 function im_hwvx_proto_link_52_0_4_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "0ic:",
         u32_8: u32(o + 8),
     });
@@ -8551,7 +9264,9 @@ function im_hwvx_proto_link_52_0_4_20(o, x) {
 
 }
 function im_hwvx_proto_link_52_0_4_28(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "tXYf",
     });
 
@@ -8559,8 +9274,10 @@ function im_hwvx_proto_link_52_0_4_28(o, x) {
 
 }
 function im_hwvx_proto_link_60(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "29=@",
         section_0: [],
     });
@@ -8569,7 +9286,9 @@ function im_hwvx_proto_link_60(o, i, x) {
 
 }
 function im_hwvx_proto_link_60_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "VLW2",
         section_0: [],
     });
@@ -8580,7 +9299,9 @@ function im_hwvx_proto_link_60_0(o, x) {
 
 }
 function im_hwvx_proto_link_60_0_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "f3Y0",
         section_0: [],
         section_4: [],
@@ -8595,7 +9316,9 @@ function im_hwvx_proto_link_60_0_0(o, x) {
 
 }
 function im_hwvx_proto_link_60_0_0_0(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: ";cM0",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -8613,7 +9336,9 @@ function im_hwvx_proto_link_60_0_0_0(o, x) {
 
 }
 function im_hwvx_proto_link_60_0_0_4(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "hU]>",
         u8_2: u8(o + 2),
         u8_3: u8(o + 3),
@@ -8635,7 +9360,9 @@ function im_hwvx_proto_link_60_0_0_4(o, x) {
 
 }
 function im_hwvx_proto_link_60_0_0_8(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "D_EH",
         u8_0: u8(o + 0),
         u8_2: u8(o + 2),
@@ -8658,8 +9385,10 @@ function im_hwvx_proto_link_60_0_0_8(o, x) {
 
 }
 function im_hwvx_proto_sound_controls(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "aO>y",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
@@ -8676,8 +9405,10 @@ function im_hwvx_proto_sound_controls(o, i, x) {
 
 }
 function im_hwvx_proto_sound_controls_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "IT5f",
         f32_0: f32(o + 0),
         u32_4: u32(o + 4),
@@ -8692,8 +9423,10 @@ function im_hwvx_proto_sound_controls_12(o, i, x) {
 
 }
 function im_hwvx_proto_sound_controls_12_12(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: ";2Q?",
         unordered_hwvx_proto_sound_section_0: 0,
     });
@@ -8702,8 +9435,10 @@ function im_hwvx_proto_sound_controls_12_12(o, i, x) {
 
 }
 function im_hwvx_proto_sound_section(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "wg7F",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -8725,7 +9460,9 @@ function im_hwvx_proto_sound_section(o, i, x) {
 
 }
 function im_hwvx_proto_sound_section_24(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "b[E5",
         u32_0: u32(o + 0),
         f32_4: f32(o + 4),
@@ -8735,7 +9472,9 @@ function im_hwvx_proto_sound_section_24(o, x) {
 
 }
 function im_hwvx_proto_sound_section_32(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "ZBz8",
         f32_0: f32(o + 0),
     });
@@ -8744,8 +9483,10 @@ function im_hwvx_proto_sound_section_32(o, x) {
 
 }
 function im_hwvx_proto_texture_anims_0(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "D1YG",
         u32_4: u32(o + 4),
         //amount?
@@ -8769,7 +9510,9 @@ function im_hwvx_proto_texture_anims_0(o, i, x) {
 
 }
 function im_hwvx_proto_texture_anims_0_20(o, x) {
+    id_offset.push(o);
     x.push({
+        id: gen_id(),
         sec_id: "cMSE",
         u32_0: u32(o + 0),
         //amount?
@@ -8785,16 +9528,20 @@ function im_hwvx_proto_texture_anims_0_20(o, x) {
 
 }
 function im_hwvx_proto_texture_anims_0_20_4(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "<4l9",
         texture_0: im_patch(g.texture_patch_ref, o + 0),
     });
 
 }
 function im_hwvx_proto_texture_anims_0_8(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "^^gk",
         u8_0: u8(o + 0),
         u8_1: u8(o + 1),
@@ -8806,8 +9553,10 @@ function im_hwvx_proto_texture_anims_0_8(o, i, x) {
 
 }
 function im_hwvx_proto_texture_anims_0_16(o, i, x) {
+    id_offset.push(o);
     x.push({
         id: gen_id(),
+
         sec_id: "a]cr",
         f32_0: f32(o + 0),
         f32_4: f32(o + 4),
@@ -8822,7 +9571,7 @@ function im_hwvx_proto_texture_anims_0_16(o, i, x) {
 /* start add list */
 function add_hwvx_proto_file_header() {
     return {
-        id: gen_id(),
+
         sec_id: "gjbf",
         u32_0: 0,
         u32_4: 0,
@@ -8834,7 +9583,7 @@ function add_hwvx_proto_file_header() {
 
 function add_hwvx_proto_directory() {
     return {
-        id: gen_id(),
+
         sec_id: "]7Zf",
         multi: 1,
         u32_0: 0,
@@ -8848,7 +9597,7 @@ function add_hwvx_proto_directory() {
 }
 function add_hwvx_proto_datapack() {
     return {
-        id: gen_id(),
+
         sec_id: "E@3Z",
         section_0: [],
         section_4: [],
@@ -8880,7 +9629,7 @@ function add_hwvx_proto_datapack() {
 
 function add_hwvx_proto_geo_datapack() {
     return {
-        id: gen_id(),
+
         sec_id: "PcI:",
         u32_0: 0,
         u32_4: 0,
@@ -8896,7 +9645,7 @@ function add_hwvx_proto_geo_datapack() {
 
 function add_hwvx_proto_sound_offset_list() {
     return {
-        id: gen_id(),
+
         sec_id: "Fgpx",
         section_0: [],
     };
@@ -8904,7 +9653,7 @@ function add_hwvx_proto_sound_offset_list() {
 }
 function add_hwvx_proto_audio_list() {
     return {
-        id: gen_id(),
+
         sec_id: "4IJg",
         u32_0: 0,
         u32_4: 0,
@@ -8917,7 +9666,7 @@ function add_hwvx_proto_audio_list() {
 }
 function add_hwvx_proto_basic() {
     return {
-        id: gen_id(),
+
         sec_id: "uZNx",
         u32_0: 0,
         section_4: [],
@@ -8942,7 +9691,7 @@ function add_hwvx_proto_geo_basic() {
 }
 function add_hwvx_proto_geo_basic_0() {
     return {
-        id: gen_id(),
+
         sec_id: "nMcM",
         u32_0: 0,
         model_8: [0, 0, 0, 'm'],
@@ -8951,7 +9700,7 @@ function add_hwvx_proto_geo_basic_0() {
 }
 function add_hwvx_proto_share() {
     return {
-        id: gen_id(),
+
         sec_id: "FNM8",
         model_0: [0, 0, 0, 'm'],
     };
@@ -8993,7 +9742,7 @@ function add_hwvx_proto_world() {
 }
 function add_hwvx_proto_world_12() {
     return {
-        id: gen_id(),
+
         sec_id: "=>48",
         f32_0: 0,
         f32_4: 0,
@@ -9032,7 +9781,7 @@ function add_hwvx_proto_world_12() {
 }
 function add_hwvx_proto_world_20() {
     return {
-        id: gen_id(),
+
         sec_id: "eBnd",
         u32_0: 0,
         unordered_hwvx_proto_model_anims_1_4: 0,
@@ -9054,7 +9803,7 @@ function add_hwvx_proto_world_20_12() {
 }
 function add_hwvx_proto_world_36() {
     return {
-        id: gen_id(),
+
         sec_id: ">je2",
         u32_0: 0,
         u32_12: 0,
@@ -9068,7 +9817,7 @@ function add_hwvx_proto_world_36() {
 }
 function add_hwvx_proto_world_36_36() {
     return {
-        id: gen_id(),
+
         sec_id: "vH^o",
         u32_0: 0,
         u32_4: 0,
@@ -9079,7 +9828,7 @@ function add_hwvx_proto_world_36_36() {
 }
 function add_hwvx_proto_world_36_48() {
     return {
-        id: gen_id(),
+
         sec_id: "U<>y",
         u32_4: 0,
         section_8: [],
@@ -9092,7 +9841,7 @@ function add_hwvx_proto_world_36_48() {
 }
 function add_hwvx_proto_world_36_48_16() {
     return {
-        id: gen_id(),
+
         sec_id: "00LC",
         f32_0: 0,
         f32_4: 0,
@@ -9115,7 +9864,7 @@ function add_hwvx_proto_world_36_48_16() {
 }
 function add_hwvx_proto_world_36_28() {
     return {
-        id: gen_id(),
+
         sec_id: ">8l?",
         f32_0: 0,
         f32_4: 0,
@@ -9142,7 +9891,7 @@ function add_hwvx_proto_world_36_28() {
 }
 function add_hwvx_proto_world_36_48_8() {
     return {
-        id: gen_id(),
+
         sec_id: "HY@p",
         f32_0: 0,
         f32_4: 0,
@@ -9165,7 +9914,7 @@ function add_hwvx_proto_world_36_48_8() {
 }
 function add_hwvx_proto_world_36_48_24() {
     return {
-        id: gen_id(),
+
         sec_id: "S;d?",
         f32_0: 0,
         f32_4: 0,
@@ -9186,7 +9935,7 @@ function add_hwvx_proto_world_36_48_24() {
 }
 function add_hwvx_proto_world_44() {
     return {
-        id: gen_id(),
+
         sec_id: "zBaW",
         f32_0: 0,
         f32_4: 0,
@@ -9222,7 +9971,7 @@ function add_hwvx_proto_world_116() {
 }
 function add_hwvx_proto_world_76() {
     return {
-        id: gen_id(),
+
         sec_id: "ZEh]",
         section_0: [],
     };
@@ -9230,7 +9979,7 @@ function add_hwvx_proto_world_76() {
 }
 function add_hwvx_proto_world_52() {
     return {
-        id: gen_id(),
+
         sec_id: "TQ0O",
         f32_0: 0,
         f32_4: 0,
@@ -9263,7 +10012,7 @@ function add_hwvx_proto_world_52_88t1() {
 }
 function add_hwvx_proto_world_92() {
     return {
-        id: gen_id(),
+
         sec_id: "=Xx@",
         unordered_hwvx_proto_world_text_link_4: 0,
     };
@@ -9280,7 +10029,7 @@ function add_hwvx_proto_world_100() {
 }
 function add_hwvx_proto_world_108() {
     return {
-        id: gen_id(),
+
         sec_id: "6uH?",
         u32_0: 0,
         u32_4: 0,
@@ -9582,7 +10331,7 @@ function add_hwvx_proto_world_108_44t3() {
 }
 function add_hwvx_proto_world_108_44t6() {
     return {
-        id: gen_id(),
+
         sec_id: "VGH4",
         f32_0: 0,
         f32_4: 0,
@@ -9625,7 +10374,7 @@ function add_hwvx_proto_world_4() {
 }
 function add_hwvx_proto_world_4_20() {
     return {
-        id: gen_id(),
+
         sec_id: "rjvv",
         u32_0: 0,
     };
@@ -9633,7 +10382,7 @@ function add_hwvx_proto_world_4_20() {
 }
 function add_hwvx_proto_world_4_16() {
     return {
-        id: gen_id(),
+
         sec_id: "Nxlg",
         u32_0: 0,
         section_4: [],
@@ -9650,7 +10399,7 @@ function add_hwvx_proto_world_4_16() {
 }
 function add_hwvx_proto_world_4_16_4() {
     return {
-        id: gen_id(),
+
         sec_id: "09ci",
         unordered_hwvx_proto_world_108_0: 0,
     };
@@ -9670,7 +10419,7 @@ function add_hwvx_proto_world_120() {
 }
 function add_hwvx_proto_world_120_0() {
     return {
-        id: gen_id(),
+
         sec_id: "xQij",
         f32_0: 0,
         f32_4: 0,
@@ -9758,7 +10507,7 @@ function add_hwvx_proto_collision() {
 }
 function add_hwvx_proto_collision_32() {
     return {
-        id: gen_id(),
+
         sec_id: "G_SO",
         f32_0: 0,
         f32_4: 0,
@@ -9782,7 +10531,7 @@ function add_hwvx_proto_collision_32() {
 }
 function add_hwvx_proto_collision_32_48() {
     return {
-        id: gen_id(),
+
         sec_id: "jPo9",
         f32_0: 0,
         f32_4: 0,
@@ -9805,7 +10554,7 @@ function add_hwvx_proto_collision_32_48() {
 }
 function add_hwvx_proto_collision_32_56() {
     return {
-        id: gen_id(),
+
         sec_id: "yQx5",
         u32_0: 0,
     };
@@ -9813,7 +10562,7 @@ function add_hwvx_proto_collision_32_56() {
 }
 function add_hwvx_proto_collision_64() {
     return {
-        id: gen_id(),
+
         sec_id: "0lq8",
         u32_0: 0,
     };
@@ -9821,7 +10570,7 @@ function add_hwvx_proto_collision_64() {
 }
 function add_hwvx_proto_collision_76() {
     return {
-        id: gen_id(),
+
         sec_id: "JRcn",
         f32_0: 0,
         f32_4: 0,
@@ -9852,7 +10601,7 @@ function add_hwvx_proto_collision_76_16() {
 }
 function add_hwvx_proto_collision_84() {
     return {
-        id: gen_id(),
+
         sec_id: "FN^k",
         f32_0: 0,
         f32_4: 0,
@@ -9877,7 +10626,7 @@ function add_hwvx_proto_collision_84() {
 }
 function add_hwvx_proto_collision_link() {
     return {
-        id: gen_id(),
+
         sec_id: "Gx;=",
         section_0: [],
         section_4: [],
@@ -9886,7 +10635,7 @@ function add_hwvx_proto_collision_link() {
 }
 function add_hwvx_proto_triggers_and_actions() {
     return {
-        id: gen_id(),
+
         sec_id: "3aN[",
         u32_0: 0,
         section_4: [],
@@ -9969,7 +10718,7 @@ function add_hwvx_proto_triggers_and_actions_20() {
 }
 function add_hwvx_proto_triggers_and_actions_20_4t0() {
     return {
-        id: gen_id(),
+
         sec_id: "nOZg",
         u32_0: 0,
         section_4: [],
@@ -9990,7 +10739,7 @@ function add_hwvx_proto_triggers_and_actions_20_4t1t12() {
 }
 function add_hwvx_proto_triggers_and_actions_20_4t1t13() {
     return {
-        id: gen_id(),
+
         sec_id: "s@JO",
         u32_0: 0,
         section_4: [],
@@ -10288,7 +11037,7 @@ function add_hwvx_proto_models() {
 }
 function add_hwvx_proto_model_8() {
     return {
-        id: gen_id(),
+
         sec_id: "U>9;",
         u8_0: 0,
         u8_2: 0,
@@ -10305,7 +11054,7 @@ function add_hwvx_proto_model_8() {
 }
 function add_hwvx_proto_model_12() {
     return {
-        id: gen_id(),
+
         sec_id: "HklA",
         f32_0: 0,
     };
@@ -10313,7 +11062,7 @@ function add_hwvx_proto_model_12() {
 }
 function add_hwvx_proto_model_8_8() {
     return {
-        id: gen_id(),
+
         sec_id: "=AG@",
         animation_0: [0, 0, 0, 'a'],
         u8_4: 0,
@@ -10404,7 +11153,7 @@ function add_hwvx_proto_model_8_8_12t7_20() {
 }
 function add_hwvx_proto_model_8_8_12_modeldata() {
     return {
-        id: gen_id(),
+
         sec_id: "0goX",
         f32_0: 0,
         f32_4: 0,
@@ -10419,7 +11168,7 @@ function add_hwvx_proto_model_8_8_12_modeldata() {
 }
 function add_hwvx_proto_texture_anims() {
     return {
-        id: gen_id(),
+
         sec_id: "eFdb",
         section_0: [],
     };
@@ -10427,7 +11176,7 @@ function add_hwvx_proto_texture_anims() {
 }
 function add_hwvx_proto_model_anims_1() {
     return {
-        id: gen_id(),
+
         sec_id: "K??i",
         u32_0: 0,
         u32_4: 0,
@@ -10487,7 +11236,7 @@ function add_hwvx_proto_model_anims_1_32() {
 }
 function add_hwvx_proto_model_anims_1_36() {
     return {
-        id: gen_id(),
+
         sec_id: "6jDb",
         f32_0: 0,
         f32_4: 0,
@@ -10498,7 +11247,7 @@ function add_hwvx_proto_model_anims_1_36() {
 }
 function add_hwvx_proto_model_anims_1_44() {
     return {
-        id: gen_id(),
+
         sec_id: "Ip4F",
         f32_0: 0,
         f32_4: 0,
@@ -10511,7 +11260,7 @@ function add_hwvx_proto_model_anims_1_44() {
 }
 function add_hwvx_proto_model_anims_2() {
     return {
-        id: gen_id(),
+
         sec_id: "X]2v",
         u32_0: 0,
         u8_4: 0,
@@ -10525,7 +11274,7 @@ function add_hwvx_proto_model_anims_2() {
 }
 function add_hwvx_proto_model_anims_2_16() {
     return {
-        id: gen_id(),
+
         sec_id: "4PH5",
         f32_0: 0,
         f32_4: 0,
@@ -10543,7 +11292,7 @@ function add_hwvx_proto_model_anims_2_16() {
 }
 function add_hwvx_proto_texture() {
     return {
-        id: gen_id(),
+
         sec_id: "of0M",
         u16_0: u16(o + 0),
         //check this
@@ -10566,7 +11315,7 @@ function add_hwvx_proto_share_end() {
 }
 function add_hwvx_proto_share_end_8() {
     return {
-        id: gen_id(),
+
         sec_id: "YJ<:",
         texture_0: [0, 0, 0, 't'],
     };
@@ -10574,7 +11323,7 @@ function add_hwvx_proto_share_end_8() {
 }
 function add_hwvx_proto_world_color_section() {
     return {
-        id: gen_id(),
+
         sec_id: "tBe]",
         u32_0: 0,
         section_4: [],
@@ -10583,7 +11332,7 @@ function add_hwvx_proto_world_color_section() {
 }
 function add_hwvx_proto_world_color_section_4() {
     return {
-        id: gen_id(),
+
         sec_id: "Igau",
         u8_0: 0,
         u8_1: 0,
@@ -10596,7 +11345,7 @@ function add_hwvx_proto_world_color_section_4() {
 }
 function add_hwvx_proto_world_text_link() {
     return {
-        id: gen_id(),
+
         sec_id: "om89",
         u8_0: 0,
         u8_1: 0,
@@ -10611,7 +11360,7 @@ function add_hwvx_proto_world_text_link() {
 }
 function add_hwvx_proto_world_settings() {
     return {
-        id: gen_id(),
+
         sec_id: "6DwQ",
         f32_4: 0,
         f32_8: 0,
@@ -10714,7 +11463,7 @@ function add_hwvx_proto_world_settings_228() {
 }
 function add_hwvx_proto_world_settings_236() {
     return {
-        id: gen_id(),
+
         sec_id: "P=hX",
         section_0: [],
     };
@@ -10742,7 +11491,7 @@ function add_hwvx_proto_world_settings_236_0_28() {
 }
 function add_hwvx_proto_world_settings_244() {
     return {
-        id: gen_id(),
+
         sec_id: "iHBt",
         unordered_hwvx_proto_unknown_0: 0,
     };
@@ -10750,7 +11499,7 @@ function add_hwvx_proto_world_settings_244() {
 }
 function add_hwvx_proto_world_settings_260() {
     return {
-        id: gen_id(),
+
         sec_id: "M<n9",
         u32_0: 0,
         section_4: [],
@@ -10783,7 +11532,7 @@ function add_hwvx_proto_world_settings_260_4() {
 }
 function add_hwvx_proto_world_small_section() {
     return {
-        id: gen_id(),
+
         sec_id: "FhGs",
         u32_0: 0,
         u32_4: 0,
@@ -10801,7 +11550,7 @@ function add_hwvx_proto_world_small_section_12() {
 }
 function add_hwvx_proto_world_model_related() {
     return {
-        id: gen_id(),
+
         sec_id: "Javg",
         section_0: [],
         u8_4: 0,
@@ -10818,7 +11567,7 @@ function add_hwvx_proto_world_model_related() {
 }
 function add_hwvx_proto_world_idk() {
     return {
-        id: gen_id(),
+
         sec_id: "ib0X",
         f32_0: 0,
         f32_4: 0,
@@ -10838,7 +11587,7 @@ function add_hwvx_proto_world_idk() {
 }
 function add_hwvx_proto_world_idk_48() {
     return {
-        id: gen_id(),
+
         sec_id: "=Bq3",
         unordered_hwvx_proto_some_world_thing_0: 0,
         u32_4: 0,
@@ -10848,7 +11597,7 @@ function add_hwvx_proto_world_idk_48() {
 }
 function add_hwvx_proto_world_idk_48_8() {
     return {
-        id: gen_id(),
+
         sec_id: "NiNv",
         unordered_hwvx_proto_some_world_thing_0: 0,
     };
@@ -10856,7 +11605,7 @@ function add_hwvx_proto_world_idk_48_8() {
 }
 function add_hwvx_proto_some_world_thing() {
     return {
-        id: gen_id(),
+
         sec_id: "k<bM",
         u32_0: 0,
         u32_4: 0,
@@ -10888,7 +11637,7 @@ function add_hwvx_proto_some_world_thing_88() {
 }
 function add_hwvx_proto_geo_list() {
     return {
-        id: gen_id(),
+
         sec_id: "^UG0",
         u32_0: 0,
         section_4: [],
@@ -10897,7 +11646,7 @@ function add_hwvx_proto_geo_list() {
 }
 function add_hwvx_proto_geo_list_4() {
     return {
-        id: gen_id(),
+
         sec_id: "Gqys",
         u32_0: 0,
         section_4: [],
@@ -10921,7 +11670,7 @@ function add_hwvx_proto_geo_list_4_4() {
 }
 function add_hwvx_proto_geo_list_4_8() {
     return {
-        id: gen_id(),
+
         sec_id: "BVkg",
         f32_0: 0,
     };
@@ -10929,7 +11678,7 @@ function add_hwvx_proto_geo_list_4_8() {
 }
 function add_hwvx_proto_collision_settings() {
     return {
-        id: gen_id(),
+
         sec_id: "@B[D",
         u32_0: 0,
         f32_4: 0,
@@ -10954,7 +11703,7 @@ function add_hwvx_proto_collision_settings() {
 }
 function add_hwvx_proto_collision_settings_72() {
     return {
-        id: gen_id(),
+
         sec_id: "TrH@",
         unordered_hwvx_proto_unknown_0: 0,
     };
@@ -10962,7 +11711,7 @@ function add_hwvx_proto_collision_settings_72() {
 }
 function add_hwvx_proto_car() {
     return {
-        id: gen_id(),
+
         sec_id: "i=g:",
         u32_16: 0,
         u32_20: 0,
@@ -11080,7 +11829,7 @@ function add_hwvx_proto_car_128() {
 }
 function add_hwvx_proto_car_128_132() {
     return {
-        id: gen_id(),
+
         sec_id: "U[<W",
         u32_0: 0,
         section_4: [],
@@ -11197,7 +11946,7 @@ function add_hwvx_proto_car_140() {
 }
 function add_hwvx_proto_car_140_56() {
     return {
-        id: gen_id(),
+
         sec_id: "GkK1",
         unordered_hwvx_proto_unknown_0: 0,
     };
@@ -11205,7 +11954,7 @@ function add_hwvx_proto_car_140_56() {
 }
 function add_hwvx_proto_car_140_64() {
     return {
-        id: gen_id(),
+
         sec_id: "sq>I",
         unordered_hwvx_proto_text_0: 0,
     };
@@ -11239,7 +11988,7 @@ function add_hwvx_proto_car_172() {
 }
 function add_hwvx_proto_car_212() {
     return {
-        id: gen_id(),
+
         sec_id: "w?mc",
         f32_0: 0,
         f32_4: 0,
@@ -11262,7 +12011,7 @@ function add_hwvx_proto_car_212() {
 }
 function add_hwvx_proto_car_220() {
     return {
-        id: gen_id(),
+
         sec_id: "Xtfw",
         f32_0: 0,
         unordered_hwvx_proto_sound_section_4: 0,
@@ -11271,7 +12020,7 @@ function add_hwvx_proto_car_220() {
 }
 function add_hwvx_proto_car_228() {
     return {
-        id: gen_id(),
+
         sec_id: "P0mb",
         unordered_hwvx_proto_model_anims_2_0: 0,
         u32_4: 0,
@@ -11323,7 +12072,7 @@ function add_hwvx_proto_car_268() {
 }
 function add_hwvx_proto_car_related() {
     return {
-        id: gen_id(),
+
         sec_id: "jg>I",
         f32_0: 0,
         f32_4: 0,
@@ -11343,7 +12092,7 @@ function add_hwvx_proto_car_related() {
 }
 function add_hwvx_proto_car_related_48() {
     return {
-        id: gen_id(),
+
         sec_id: "HYA?",
         section_0: [],
     };
@@ -11370,7 +12119,7 @@ function add_hwvx_proto_car_related_48_0() {
 }
 function add_hwvx_proto_car_link() {
     return {
-        id: gen_id(),
+
         sec_id: "ZIP^",
         f32_0: 0,
         f32_4: 0,
@@ -11419,7 +12168,7 @@ function add_hwvx_proto_car_link_48() {
 }
 function add_hwvx_proto_car_link_48_72() {
     return {
-        id: gen_id(),
+
         sec_id: ">a1]",
         unordered_hwvx_proto_unknown_0: 0,
     };
@@ -11427,7 +12176,7 @@ function add_hwvx_proto_car_link_48_72() {
 }
 function add_hwvx_proto_car_link_56() {
     return {
-        id: gen_id(),
+
         sec_id: ";10P",
         unordered_hwvx_proto_unknown_0: 0,
     };
@@ -11455,7 +12204,7 @@ function add_hwvx_proto_car_link_68() {
 }
 function add_hwvx_proto_mysterious() {
     return {
-        id: gen_id(),
+
         sec_id: "CP>2",
         f32_0: 0,
         f32_4: 0,
@@ -11482,7 +12231,7 @@ function add_hwvx_proto_mysterious_24t5() {
 }
 function add_hwvx_proto_mysterious_24t5_24() {
     return {
-        id: gen_id(),
+
         sec_id: "wlid",
         f32_0: 0,
         f32_4: 0,
@@ -11494,7 +12243,7 @@ function add_hwvx_proto_mysterious_24t5_24() {
 }
 function add_hwvx_proto_mysterious_24t5_32() {
     return {
-        id: gen_id(),
+
         sec_id: "uUPO",
         u8_0: 0,
         u8_1: 0,
@@ -11536,7 +12285,7 @@ function add_hwvx_proto_mysterious_24t6() {
 }
 function add_hwvx_proto_mysterious_24t6_16() {
     return {
-        id: gen_id(),
+
         sec_id: "8cdg",
         f32_0: 0,
         f32_4: 0,
@@ -11548,7 +12297,7 @@ function add_hwvx_proto_mysterious_24t6_16() {
 }
 function add_hwvx_proto_mysterious_24t6_24() {
     return {
-        id: gen_id(),
+
         sec_id: "oV==",
         f32_0: 0,
         f32_4: 0,
@@ -11560,7 +12309,7 @@ function add_hwvx_proto_mysterious_24t6_24() {
 }
 function add_hwvx_proto_mysterious_24t6_32() {
     return {
-        id: gen_id(),
+
         sec_id: "aQ]J",
         u8_0: 0,
         u8_1: 0,
@@ -11599,7 +12348,7 @@ function add_hwvx_proto_mysterious_24t7() {
 }
 function add_hwvx_proto_mysterious_24t7_72() {
     return {
-        id: gen_id(),
+
         sec_id: "QK;_",
         u8_0: 0,
         u8_1: 0,
@@ -11665,7 +12414,7 @@ function add_hwvx_proto_mysterious_24t9_32() {
 }
 function add_hwvx_proto_strange() {
     return {
-        id: gen_id(),
+
         sec_id: "fz_?",
         u32_0: 0,
         u32_8: 0,
@@ -11679,7 +12428,7 @@ function add_hwvx_proto_strange() {
 }
 function add_hwvx_proto_strange_28() {
     return {
-        id: gen_id(),
+
         sec_id: "Db4x",
         unordered_hwvx_proto_unknown_0: 0,
     };
@@ -11687,7 +12436,7 @@ function add_hwvx_proto_strange_28() {
 }
 function add_hwvx_proto_model_link() {
     return {
-        id: gen_id(),
+
         sec_id: "Metw",
         u32_0: 0,
         section_4: [],
@@ -11762,7 +12511,7 @@ function add_hwvx_proto_model_link_56() {
 }
 function add_hwvx_proto_model_link_56_4() {
     return {
-        id: gen_id(),
+
         sec_id: "s;ve",
         u8_0: 0,
         u8_1: 0,
@@ -11791,7 +12540,7 @@ function add_hwvx_proto_model_link_56_4_16() {
 }
 function add_hwvx_proto_text() {
     return {
-        id: gen_id(),
+
         sec_id: "I[]x",
         section_0: ["Pac-Kart"],
     };
@@ -11799,7 +12548,7 @@ function add_hwvx_proto_text() {
 }
 function add_hwvx_proto_font() {
     return {
-        id: gen_id(),
+
         sec_id: "494j",
         texture_0: [0, 0, 0, 't'],
         unordered_hwvx_proto_sound_section_4: 0,
@@ -11822,7 +12571,7 @@ function add_hwvx_proto_font_28() {
 }
 function add_hwvx_proto_font_36() {
     return {
-        id: gen_id(),
+
         sec_id: "tHz_",
         u32_0: 0,
         f32_4: 0,
@@ -11831,7 +12580,7 @@ function add_hwvx_proto_font_36() {
 }
 function add_hwvx_proto_interface() {
     return {
-        id: gen_id(),
+
         sec_id: "qVyB",
         u32_0: 0,
         u32_4: 0,
@@ -11851,7 +12600,7 @@ function add_hwvx_proto_interface() {
 }
 function add_hwvx_proto_interface_16() {
     return {
-        id: gen_id(),
+
         sec_id: "1d6S",
         u8_0: 0,
         u8_1: 0,
@@ -11919,7 +12668,7 @@ function add_hwvx_proto_interface_16_20t0_16() {
 }
 function add_hwvx_proto_interface_16_20t0_16_4() {
     return {
-        id: gen_id(),
+
         sec_id: "UuC9",
         texture_0: [0, 0, 0, 't'],
     };
@@ -11950,7 +12699,7 @@ function add_hwvx_proto_interface_16_20t1_8() {
 }
 function add_hwvx_proto_interface_16_20t1_8_4() {
     return {
-        id: gen_id(),
+
         sec_id: "q_on",
         unordered_hwvx_proto_text_0: 0,
     };
@@ -11966,7 +12715,7 @@ function add_hwvx_proto_interface_16_20t2() {
 }
 function add_hwvx_proto_interface_16_20t2_4() {
     return {
-        id: gen_id(),
+
         sec_id: ">@=_",
         u8_0: 0,
         u8_1: 0,
@@ -11984,7 +12733,7 @@ function add_hwvx_proto_interface_16_20t2_4() {
 }
 function add_hwvx_proto_interface_16_20t2_4_28() {
     return {
-        id: gen_id(),
+
         sec_id: "YSsF",
         u32_0: 0,
         section_4: [],
@@ -12009,7 +12758,7 @@ function add_hwvx_proto_interface_16_20t4() {
 }
 function add_hwvx_proto_interface_16_20t4_4() {
     return {
-        id: gen_id(),
+
         sec_id: "?CuH",
         f32_0: 0,
         f32_4: 0,
@@ -12063,7 +12812,7 @@ function add_hwvx_proto_interface_16_68() {
 }
 function add_hwvx_proto_interface_16_68_12() {
     return {
-        id: gen_id(),
+
         sec_id: "lXU^",
         u32_0: 0,
         u32_4: 0,
@@ -12153,7 +12902,7 @@ function add_hwvx_proto_interface_16_72() {
 }
 function add_hwvx_proto_interface_16_72_8() {
     return {
-        id: gen_id(),
+
         sec_id: "AlcH",
         u32_0: 0,
         u32_4: 0,
@@ -12194,7 +12943,7 @@ function add_hwvx_proto_interface_16_96() {
 }
 function add_hwvx_proto_interface_16_96_4() {
     return {
-        id: gen_id(),
+
         sec_id: "aTUt",
         f32_0: 0,
         f32_4: 0,
@@ -12206,7 +12955,7 @@ function add_hwvx_proto_interface_16_96_4() {
 }
 function add_hwvx_proto_interface_16_96_28() {
     return {
-        id: gen_id(),
+
         sec_id: "jdSj",
         u8_0: 0,
         u8_1: 0,
@@ -12219,7 +12968,7 @@ function add_hwvx_proto_interface_16_96_28() {
 }
 function add_hwvx_proto_interface_16_96_36() {
     return {
-        id: gen_id(),
+
         sec_id: "Z<<y",
         f32_0: 0,
         f32_4: 0,
@@ -12232,7 +12981,7 @@ function add_hwvx_proto_interface_16_96_36() {
 }
 function add_hwvx_proto_interface_16_104() {
     return {
-        id: gen_id(),
+
         sec_id: "M?r;",
         u32_0: 0,
         u32_4: 0,
@@ -12262,7 +13011,7 @@ function add_hwvx_proto_interface_16_104_8() {
 }
 function add_hwvx_proto_interface_16_104_8_4() {
     return {
-        id: gen_id(),
+
         sec_id: "i4Z@",
         u32_0: 0,
         f32_4: 0,
@@ -12271,7 +13020,7 @@ function add_hwvx_proto_interface_16_104_8_4() {
 }
 function add_hwvx_proto_interface_16_104_8_12() {
     return {
-        id: gen_id(),
+
         sec_id: "8<A2",
         f32_0: 0,
         f32_4: 0,
@@ -12282,7 +13031,7 @@ function add_hwvx_proto_interface_16_104_8_12() {
 }
 function add_hwvx_proto_interface_16_104_8_20() {
     return {
-        id: gen_id(),
+
         sec_id: "RpkE",
         u8_0: 0,
         u8_1: 0,
@@ -12295,7 +13044,7 @@ function add_hwvx_proto_interface_16_104_8_20() {
 }
 function add_hwvx_proto_interface_16_104_8_28() {
     return {
-        id: gen_id(),
+
         sec_id: "vfDd",
         f32_0: 0,
         f32_4: 0,
@@ -12307,7 +13056,7 @@ function add_hwvx_proto_interface_16_104_8_28() {
 }
 function add_hwvx_proto_interface_16_104_8_36() {
     return {
-        id: gen_id(),
+
         sec_id: "HIn]",
         f32_0: 0,
         f32_4: 0,
@@ -12320,7 +13069,7 @@ function add_hwvx_proto_interface_16_104_8_36() {
 }
 function add_hwvx_proto_interface_16_104_8_44() {
     return {
-        id: gen_id(),
+
         sec_id: "LJw3",
         f32_0: 0,
         u32_16: 0,
@@ -12352,7 +13101,7 @@ function add_hwvx_proto_interface_16_68_20_8_0t11() {
 }
 function add_hwvx_proto_interface_16_68_20_8_0t11_4() {
     return {
-        id: gen_id(),
+
         sec_id: "Qvak",
         u32_0: 0,
         section_4: [],
@@ -12361,7 +13110,7 @@ function add_hwvx_proto_interface_16_68_20_8_0t11_4() {
 }
 function add_hwvx_proto_interface_16_68_20_8_0t11_4_4() {
     return {
-        id: gen_id(),
+
         sec_id: "5uGd",
         section_0: [],
     };
@@ -12384,7 +13133,7 @@ function add_hwvx_proto_interface_16_68_20_8_0t11_4_4_0_4() {
 }
 function add_hwvx_proto_interface_24() {
     return {
-        id: gen_id(),
+
         sec_id: "K=ks",
         u32_0: 0,
         u32_4: 0,
@@ -12412,7 +13161,7 @@ function add_hwvx_proto_interface_24_8_0t11() {
 }
 function add_hwvx_proto_interface_24_8_0t11_4() {
     return {
-        id: gen_id(),
+
         sec_id: "WMML",
         u32_0: 0,
         section_4: [],
@@ -12421,7 +13170,7 @@ function add_hwvx_proto_interface_24_8_0t11_4() {
 }
 function add_hwvx_proto_interface_24_8_0t11_4_4() {
     return {
-        id: gen_id(),
+
         sec_id: "P<e^",
         section_0: [],
     };
@@ -12482,7 +13231,7 @@ function add_hwvx_proto_interface_28() {
 }
 function add_hwvx_proto_interface_28_4() {
     return {
-        id: gen_id(),
+
         sec_id: "vX8@",
         u8_0: 0,
         u8_1: 0,
@@ -12519,7 +13268,7 @@ function add_hwvx_proto_interface_48() {
 }
 function add_hwvx_proto_interface_text_related() {
     return {
-        id: gen_id(),
+
         sec_id: "3OW[",
         unordered_hwvx_proto_text_0: 0,
         unordered_hwvx_proto_font_8: 0,
@@ -12546,7 +13295,7 @@ function add_hwvx_proto_interface_text_related_12() {
 }
 function add_hwvx_proto_interface_text_related_20() {
     return {
-        id: gen_id(),
+
         sec_id: "T8ye",
         u32_0: 0,
         section_4: [],
@@ -12556,7 +13305,7 @@ function add_hwvx_proto_interface_text_related_20() {
 }
 function add_hwvx_proto_interface_text_related_20_4() {
     return {
-        id: gen_id(),
+
         sec_id: "AYTy",
         texture_0: [0, 0, 0, 't'],
     };
@@ -12573,7 +13322,7 @@ function add_hwvx_proto_interface_text_related_52() {
 }
 function add_hwvx_proto_unknown() {
     return {
-        id: gen_id(),
+
         sec_id: "9me0",
         u32_0: 0,
         section_4: [],
@@ -12582,7 +13331,7 @@ function add_hwvx_proto_unknown() {
 }
 function add_hwvx_proto_unknown_4() {
     return {
-        id: gen_id(),
+
         sec_id: "HP[]",
         u32_0: 0,
         section_4: [],
@@ -12725,7 +13474,7 @@ function add_hwvx_proto_unknown_4_4t8() {
 }
 function add_hwvx_proto_unknown_4_4t8_16() {
     return {
-        id: gen_id(),
+
         sec_id: "gS;?",
         f32_0: 0,
         f32_8: 0,
@@ -12755,7 +13504,7 @@ function add_hwvx_proto_unknown_4_4t29() {
 }
 function add_hwvx_proto_unknown_4_4t29_12() {
     return {
-        id: gen_id(),
+
         sec_id: "Pd2k",
         f32_0: 0,
         f32_4: 0,
@@ -12770,7 +13519,7 @@ function add_hwvx_proto_unknown_4_4t29_12() {
 }
 function add_hwvx_proto_unknown_idk_sec() {
     return {
-        id: gen_id(),
+
         sec_id: "^GRl",
         u32_0: 0,
         u32_4: 0,
@@ -12812,7 +13561,7 @@ function add_hwvx_proto_unknown_idk_sec_32() {
 }
 function add_hwvx_proto_unknown_idk_sec_32_8() {
     return {
-        id: gen_id(),
+
         sec_id: "6yHH",
         u8_0: 0,
         u8_1: 0,
@@ -12849,7 +13598,7 @@ function add_hwvx_proto_unknown_idk_sec_40() {
 }
 function add_hwvx_proto_unknown_idk_sec_40_4() {
     return {
-        id: gen_id(),
+
         sec_id: "3s]Q",
         f32_0: 0,
         f32_4: 0,
@@ -12866,7 +13615,7 @@ function add_hwvx_proto_unknown_idk_sec_48() {
 }
 function add_hwvx_proto_unknown_link_section() {
     return {
-        id: gen_id(),
+
         sec_id: "H8fI",
         u32_0: 0,
         u32_8: 0,
@@ -12878,7 +13627,7 @@ function add_hwvx_proto_unknown_link_section() {
 }
 function add_hwvx_proto_unknown_link_section_28() {
     return {
-        id: gen_id(),
+
         sec_id: "AGOy",
         unordered_hwvx_proto_unknown_0: 0,
     };
@@ -12886,7 +13635,7 @@ function add_hwvx_proto_unknown_link_section_28() {
 }
 function add_hwvx_proto_grand_section() {
     return {
-        id: gen_id(),
+
         sec_id: "caGR",
         model_0: [0, 0, 0, 'm'],
         u32_4: 0,
@@ -12899,7 +13648,7 @@ function add_hwvx_proto_grand_section() {
 }
 function add_hwvx_proto_unknown_thing() {
     return {
-        id: gen_id(),
+
         sec_id: "tpqu",
         u32_0: 0,
         section_4: [],
@@ -12932,7 +13681,7 @@ function add_hwvx_proto_unknown_thing_4t0() {
 }
 function add_hwvx_proto_unknown_thing_4t0_36() {
     return {
-        id: gen_id(),
+
         sec_id: "2SLk",
         model_0: [0, 0, 0, 'm'],
     };
@@ -12940,7 +13689,7 @@ function add_hwvx_proto_unknown_thing_4t0_36() {
 }
 function add_hwvx_proto_unknown_thing_4t0_44() {
     return {
-        id: gen_id(),
+
         sec_id: "h;uV",
         f32_0: 0,
         f32_4: 0,
@@ -12969,7 +13718,7 @@ function add_hwvx_proto_unknown_thing_4t1() {
 }
 function add_hwvx_proto_unknown_thing_4t1_36() {
     return {
-        id: gen_id(),
+
         sec_id: "X594",
         texture_0: [0, 0, 0, 't'],
     };
@@ -12977,7 +13726,7 @@ function add_hwvx_proto_unknown_thing_4t1_36() {
 }
 function add_hwvx_proto_unknown_thing_4t1_44() {
     return {
-        id: gen_id(),
+
         sec_id: "I>Pm",
         f32_0: 0,
         u32_4: 0,
@@ -13000,7 +13749,7 @@ function add_hwvx_proto_unknown_thing_4t2() {
 }
 function add_hwvx_proto_unknown_thing_4t2_16() {
     return {
-        id: gen_id(),
+
         sec_id: "n?lz",
         f32_0: 0,
         f32_8: 0,
@@ -13009,7 +13758,7 @@ function add_hwvx_proto_unknown_thing_4t2_16() {
 }
 function add_hwvx_proto_unknown_thing_4t2_24() {
     return {
-        id: gen_id(),
+
         sec_id: "8AvY",
         u8_0: 0,
         u8_1: 0,
@@ -13021,7 +13770,7 @@ function add_hwvx_proto_unknown_thing_4t2_24() {
 }
 function add_hwvx_proto_unknown_thing_24() {
     return {
-        id: gen_id(),
+
         sec_id: "<dYK",
         u8_0: 0,
         u8_1: 0,
@@ -13041,7 +13790,7 @@ function add_hwvx_proto_unknown_thing_32() {
 }
 function add_hwvx_proto_asdf() {
     return {
-        id: gen_id(),
+
         sec_id: "Q7EE",
         u8_0: 0,
         u8_2: 0,
@@ -13100,7 +13849,7 @@ function add_hwvx_proto_asdf_12t2() {
 }
 function add_hwvx_proto_asdf_144() {
     return {
-        id: gen_id(),
+
         sec_id: "Rg6^",
         f32_0: 0,
         f32_4: 0,
@@ -13111,7 +13860,7 @@ function add_hwvx_proto_asdf_144() {
 }
 function add_hwvx_proto_asdf_152() {
     return {
-        id: gen_id(),
+
         sec_id: ";ZV3",
         u8_0: 0,
         u8_1: 0,
@@ -13166,7 +13915,7 @@ function add_hwvx_proto_asdf_172() {
 }
 function add_hwvx_proto_item() {
     return {
-        id: gen_id(),
+
         sec_id: "1<NQ",
         u8_0: 0,
         u8_1: 0,
@@ -13235,7 +13984,7 @@ function add_hwvx_proto_item_48_0() {
 }
 function add_hwvx_proto_item_48_0_12() {
     return {
-        id: gen_id(),
+
         sec_id: "rCXf",
         model_0: [0, 0, 0, 'm'],
         u32_4: 0,
@@ -13279,7 +14028,7 @@ function add_hwvx_proto_item_48_0_52() {
 }
 function add_hwvx_proto_link() {
     return {
-        id: gen_id(),
+
         sec_id: "v8dg",
         section_4: ["Pac-Kart"],
         section_8: ["Pac-Kart"],
@@ -13300,7 +14049,7 @@ function add_hwvx_proto_link() {
 }
 function add_hwvx_proto_link_44() {
     return {
-        id: gen_id(),
+
         sec_id: ";1k?",
         u32_0: 0,
         section_4: [],
@@ -13318,7 +14067,7 @@ function add_hwvx_proto_link_44_8() {
 }
 function add_hwvx_proto_link_52() {
     return {
-        id: gen_id(),
+
         sec_id: "VveN",
         section_0: [],
     };
@@ -13334,7 +14083,7 @@ function add_hwvx_proto_link_52_0() {
 }
 function add_hwvx_proto_link_52_0_4() {
     return {
-        id: gen_id(),
+
         sec_id: "@QKQ",
         u32_0: 0,
         section_4: [],
@@ -13349,7 +14098,7 @@ function add_hwvx_proto_link_52_0_4() {
 }
 function add_hwvx_proto_link_52_0_4_4() {
     return {
-        id: gen_id(),
+
         sec_id: "5JG5",
         u32_0: 0,
         section_4: [],
@@ -13387,7 +14136,7 @@ function add_hwvx_proto_link_52_0_4_28() {
 }
 function add_hwvx_proto_link_60() {
     return {
-        id: gen_id(),
+
         sec_id: "29=@",
         section_0: [],
     };
@@ -13468,7 +14217,7 @@ function add_hwvx_proto_link_60_0_0_8() {
 }
 function add_hwvx_proto_sound_controls() {
     return {
-        id: gen_id(),
+
         sec_id: "aO>y",
         u32_0: 0,
         u32_4: 0,
@@ -13479,7 +14228,7 @@ function add_hwvx_proto_sound_controls() {
 }
 function add_hwvx_proto_sound_controls_12() {
     return {
-        id: gen_id(),
+
         sec_id: "IT5f",
         f32_0: 0,
         u32_4: 0,
@@ -13490,7 +14239,7 @@ function add_hwvx_proto_sound_controls_12() {
 }
 function add_hwvx_proto_sound_controls_12_12() {
     return {
-        id: gen_id(),
+
         sec_id: ";2Q?",
         unordered_hwvx_proto_sound_section_0: 0,
     };
@@ -13498,7 +14247,7 @@ function add_hwvx_proto_sound_controls_12_12() {
 }
 function add_hwvx_proto_sound_section() {
     return {
-        id: gen_id(),
+
         sec_id: "wg7F",
         u8_0: 0,
         u8_1: 0,
@@ -13531,7 +14280,7 @@ function add_hwvx_proto_sound_section_32() {
 }
 function add_hwvx_proto_texture_anims_0() {
     return {
-        id: gen_id(),
+
         sec_id: "D1YG",
         u32_4: 0,
         section_8: [],
@@ -13552,7 +14301,7 @@ function add_hwvx_proto_texture_anims_0_20() {
 }
 function add_hwvx_proto_texture_anims_0_20_4() {
     return {
-        id: gen_id(),
+
         sec_id: "<4l9",
         texture_0: [0, 0, 0, 't'],
     };
@@ -13560,7 +14309,7 @@ function add_hwvx_proto_texture_anims_0_20_4() {
 }
 function add_hwvx_proto_texture_anims_0_8() {
     return {
-        id: gen_id(),
+
         sec_id: "^^gk",
         u8_0: 0,
         u8_1: 0,
@@ -13573,7 +14322,7 @@ function add_hwvx_proto_texture_anims_0_8() {
 }
 function add_hwvx_proto_texture_anims_0_16() {
     return {
-        id: gen_id(),
+
         sec_id: "a]cr",
         f32_0: 0,
         f32_4: 0,
