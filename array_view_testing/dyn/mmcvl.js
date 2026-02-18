@@ -3,6 +3,15 @@
 
 function get_mm_sec_id(string) {
     switch (string) {
+    case 'ordr':
+        return "mm_ordered"
+        break
+    case 'ipll':
+        return "mm_get_combined_patch_list"
+        break
+    case 'buff':
+        return "mm_data_buffer"
+        break
     case ':zlA':
         return "mm_file_header"
         break
@@ -919,7 +928,6 @@ function im_mm_get_combined_patch_list(o, patch_offset, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "ipll",
         texture: im_patch_list(texture_offset, u32(g.datapack_offset + 8), 't'),
         sound: im_patch_list(sound_offset, u32(g.datapack_offset + 20), 's'),
@@ -942,7 +950,6 @@ function im_mm_ordered(o, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "ordr",
 
         mm_file_specific_section: [],
@@ -2071,7 +2078,6 @@ function im_mm_Texture(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "ZzKU",
         u16_0: u16(o + 0),
         //check this
@@ -2107,7 +2113,8 @@ function im_mm_Texture(o, i, x) {
     if (u16(o + 6) === 0) {
         // no mipmaps
         if (u32(o + 8)) {
-            x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+            im_mm_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+            // .push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
         }
 
     } else {
@@ -2116,7 +2123,8 @@ function im_mm_Texture(o, i, x) {
         for (let ii = 0; ii < u16(o + 6) - 1; ii++) {
 
             if (u32(o + 8)) {
-                x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+                im_mm_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+                // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
             }
             start_08_texture += mipmap_offset
             mipmap_offset = Math.round(mipmap_offset / 4)
@@ -2133,6 +2141,15 @@ function im_mm_Texture(o, i, x) {
     // x[i].unordered_hwvx_proto_texture_data_8 = in_ml(u32(o + 8), g.hwvx_proto_texture_data_array, im_hwvx_proto_texture_data, g.ordered_ref.hwvx_proto_texture_data);
     return x[i].id
     // 16 bytes;
+
+}
+function im_mm_Texture_8(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
 
 }
 function im_mm_sound_list(o, i, x) {
@@ -2155,7 +2172,6 @@ function im_mm_vag_file(o, x, length) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "buff",
         temp_buffer: convert_arraybuffer_base64(buffer.slice(o, o + length)),
     });

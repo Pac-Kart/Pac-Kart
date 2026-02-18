@@ -2,11 +2,35 @@
 
 function get_pmwr_xbox_sec_id(string) {
     switch (string) {
+    case "jz8p":
+        return "pmwr_xdx_datapack"
+        break
+    case "audi":
+        return "pmwr_xdx_audio"
+        break
+    case "ad00":
+        return "pmwr_xdx_audio_00"
+        break
+    case "opll":
+        return "pmwr_xdx_get_offset_patch_list"
+        break
+    case "ipll":
+        return "pmwr_xdx_get_index_patch_list"
+        break
+    case "ordr":
+        return "pmwr_xdx_ordered"
+        break
+    case "4unr":
+        return "pmwr_xdx_unordered"
+        break
+    case 'buff':
+        return "pmwr_xdx_Texture_8"
+        break
     case 'gjbf':
-        return "pmwr_xbox_file_header"
+        return "pmwr_xdx_file_header"
         break
     case ']7Zf':
-        return "pmwr_xbox_directory"
+        return "pmwr_xdx_directory"
         break
     case 'Z0pY':
         return "pmwr_xdx_basic"
@@ -1614,10 +1638,10 @@ async function im_pmwr_xbox_x(index) {
         name: g.file_name,
     })
 
-    im_pmwr_xbox_file_header(0, 0, x[index].format)
+    im_pmwr_xdx_file_header(0, 0, x[index].format)
 }
 
-function im_pmwr_xbox_file_header(o, i, x) {
+function im_pmwr_xdx_file_header(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
@@ -1634,7 +1658,7 @@ function im_pmwr_xbox_file_header(o, i, x) {
     let time_array = []
     for (let ii = 0; ii < u32(12); ii++) {
         let a = Date.now()
-        im_pmwr_xbox_directory(16 + (ii * 24), ii, x[i].directory, directory_offset)
+        im_pmwr_xdx_directory(16 + (ii * 24), ii, x[i].directory, directory_offset)
         time_array.push(Date.now() - a)
     }
     console.pk_log("saved in " + time_array)
@@ -1644,7 +1668,7 @@ function im_pmwr_xbox_file_header(o, i, x) {
 
 }
 
-function im_pmwr_xbox_directory(o, i, x, global) {
+function im_pmwr_xdx_directory(o, i, x, global) {
     let next_offset = o + 24
 
     g = {
@@ -1738,14 +1762,14 @@ function im_pmwr_xbox_directory(o, i, x, global) {
         section_datapack: [],
     });
 
-    u32(o + 16) && im_pmwr_xbox_datapack(global + u32(o + 20), 0, x[i].section_datapack);
+    u32(o + 16) && im_pmwr_xdx_datapack(global + u32(o + 20), 0, x[i].section_datapack);
 
     return x[i].id
     // 24 bytes;
 
 }
 
-function im_pmwr_xbox_datapack(o, i, x) {
+function im_pmwr_xdx_datapack(o, i, x) {
     let end_datapack = o + 120
     let offset_after_datapack = end_datapack
     if (u32(o + 8) || u32(o + 4)) {
@@ -3797,7 +3821,8 @@ function im_pmwr_xdx_texture(o, i, x) {
     if (u8(o + 1) === 0) {
         // no mipmaps
         if (u32(o + 8)) {
-            x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+            im_pmwr_xdx_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+            // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
         }
 
     } else {
@@ -3806,7 +3831,8 @@ function im_pmwr_xdx_texture(o, i, x) {
         for (let ii = 0; ii < u8(o + 1) + 1; ii++) {
 
             if (u32(o + 8)) {
-                x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+                im_pmwr_xdx_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+                // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
             }
             start_08_texture += mipmap_offset
             mipmap_offset = Math.round(mipmap_offset / 4)
@@ -3823,6 +3849,16 @@ function im_pmwr_xdx_texture(o, i, x) {
     return x[i].id
     // 16 bytes;
 }
+function im_pmwr_xdx_Texture_8(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
+
+}
+
 function im_pmwr_xdx_idk(o, i, x) {
     id_offset.push(o);
     x.push({
@@ -11899,7 +11935,7 @@ function im_pmwr_xdx_texture_anims_0_20(o, i, x) {
 /* end import list */
 /////////////////////
 /* start add list */
-function add_pmwr_xbox_file_header() {
+function add_pmwr_xdx_file_header() {
     return {
 
         sec_id: "gjbf",
@@ -11911,7 +11947,7 @@ function add_pmwr_xbox_file_header() {
 
 }
 
-function add_pmwr_xbox_directory() {
+function add_pmwr_xdx_directory() {
     return {
 
         sec_id: "]7Zf",
@@ -17954,7 +17990,7 @@ function add_pmwr_xdx_texture_anims_0_20() {
 /* end add list */
 /////////////////////
 /* start info list */
-function info_pmwr_xbox_file_header() {
+function info_pmwr_xdx_file_header() {
     return {
         sec_id: "gjbf",
         multi: 0,
@@ -17972,7 +18008,7 @@ function info_pmwr_xbox_file_header() {
 
 }
 
-function info_pmwr_xbox_directory() {
+function info_pmwr_xdx_directory() {
     return {
         sec_id: "]7Zf",
         multi: 1,
@@ -24309,7 +24345,7 @@ function ex_pmwr_xbox_x(o, x) {
     let time_array = []
     let a = Date.now()
 
-    ex_pmwr_xbox_file_header(o, x)
+    ex_pmwr_xdx_file_header(o, x)
 
     time_array.push(Date.now() - a)
 
@@ -24317,7 +24353,7 @@ function ex_pmwr_xbox_x(o, x) {
 
 }
 
-function ex_pmwr_xbox_file_header(o, x) {
+function ex_pmwr_xdx_file_header(o, x) {
     let e = o + 16
     su32(0, x.u32_0)
     su32(4, x.u32_4)
@@ -24331,7 +24367,7 @@ function ex_pmwr_xbox_file_header(o, x) {
     for (let i = 0; i < x[0].directory.length; i++) {
         let a = Date.now()
 
-        e = ex_pmwr_xbox_directory(16 + (i * 24), e, x[0].directory[i], global)
+        e = ex_pmwr_xdx_directory(16 + (i * 24), e, x[0].directory[i], global)
         time_array.push(Date.now() - a)
 
     }
@@ -24342,7 +24378,7 @@ function ex_pmwr_xbox_file_header(o, x) {
     return e
 }
 
-function ex_pmwr_xbox_directory(o, e, x, global) {
+function ex_pmwr_xdx_directory(o, e, x, global) {
     g.oa = []
     g.texture_patch_array = []
     g.animation_patch_array = []
@@ -24402,7 +24438,7 @@ function ex_pmwr_xbox_directory(o, e, x, global) {
     su32(o + 12, x.u32_12)
     su32(o + 20, e - global)
 
-    e = ex_pmwr_xbox_datapack(16 + (i * 24), e, x[0].section_datapack[i], global)
+    e = ex_pmwr_xdx_datapack(16 + (i * 24), e, x[0].section_datapack[i], global)
 
     dynamic_buffer = directory_buffer
     su32(o + 16, datapack_buffer.byteLength + index_patch_buffer.byteLength + ordered_buffer.byteLength + offset_patch_buffer.byteLength)

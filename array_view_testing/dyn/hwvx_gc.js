@@ -2,6 +2,33 @@
 
 function get_hwvx_gc_sec_id(string) {
     switch (string) {
+    case "E@3Z":
+        return "hwvx_gc_datapack"
+        break
+    case "audi":
+        return "hwvx_gc_audio"
+        break
+    case "ad00":
+        return "hwvx_gc_audio_00"
+        break
+    case "opll":
+        return "hwvx_gc_get_offset_patch_list"
+        break
+    case "ipll":
+        return "hwvx_gc_get_index_patch_list"
+        break
+    case "iplq":
+        return "hwvx_gc_geo_patch_list"
+        break
+    case "ordr":
+        return "hwvx_gc_ordered"
+        break
+    case "4unr":
+        return "hwvx_gc_unordered"
+        break
+    case 'buff':
+        return "hwvx_gc_Texture_8"
+        break
     case 'gjbf':
         return "hwvx_gc_file_header"
         break
@@ -1652,7 +1679,7 @@ function im_hwvx_gc_geo_patch_list(o, patch_offset, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-        sec_id: "ipll",
+        sec_id: "iplq",
         texture: im_patch_list(texture_offset, u32(g.datapack_offset + 8), 't'),
         texture_animation: im_patch_list(texture_animation_offset, u32(g.datapack_offset + 28), 'a'),
         model: im_patch_list(model_offset, u32(g.datapack_offset + 40), 'm'),
@@ -5114,11 +5141,15 @@ function im_hwvx_gc_texture(o, i, x) {
         texture_section: [],
         u32_12: u32(o + 12),
     });
-    let texture_x = u16(o + 2)
-    let texture_y = u16(o + 4)
+    if (g.console === "gamecube") {
+        g.endian = false;
+    }
+
+    let texture_x = x[i].u16_2
+    let texture_y = x[i].u16_4
     // calculate texture length
     let total_length = 0
-    switch (u16(o + 0)) {
+    switch (x[i].u16_0) {
     case 0:
         total_length = texture_x * texture_y * 3
         break
@@ -5142,23 +5173,25 @@ function im_hwvx_gc_texture(o, i, x) {
     // 20 and 16 has mips
     // 12 no mips
 
-    if (u16(o + 6) === 0) {
+    if (x[i].u16_6 === 0) {
         // no mipmaps
         if (u32(o + 8)) {
-            x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+            im_hwvx_gc_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+            // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
         }
 
     } else {
         let mipmap_offset = total_length
 
-        for (let ii = 0; ii < u16(o + 6) - 1; ii++) {
+        for (let ii = 0; ii < x[i].u16_6 - 1; ii++) {
 
             if (u32(o + 8)) {
-                x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+             im_hwvx_gc_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+               // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
             }
             start_08_texture += mipmap_offset
             mipmap_offset = Math.round(mipmap_offset / 4)
-            if (u16(o + 6) !== ii) {
+            if (x[i].u16_6 !== ii) {
                 end_08_texture += mipmap_offset
             }
 
@@ -5174,6 +5207,15 @@ function im_hwvx_gc_texture(o, i, x) {
 
     return x[i].id
     // 16 bytes;
+}
+function im_hwvx_gc_Texture_8(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
+
 }
 function im_hwvx_gc_share_end(o, x) {
     id_offset.push(o);

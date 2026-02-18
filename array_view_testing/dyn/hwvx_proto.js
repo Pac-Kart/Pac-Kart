@@ -3,6 +3,9 @@
 /* start sec id list */
 function get_hwvx_proto_sec_id(string) {
     switch (string) {
+    case 'buff':
+        return "hwvx_proto_Texture_8"
+        break
     case 'gjbf':
         return "hwvx_proto_file_header"
         break
@@ -1652,6 +1655,9 @@ function im_hwvx_proto_ordered(o, x) {
         } else {
             im_hwvx_proto_share_end(get_end + g.m, x[0].hwvx_proto_share_end_section)
         }
+        break
+    case "world texture":
+        // nothing ?
         break
     default:
         console.pk_log('file type is not set')
@@ -4643,7 +4649,8 @@ function im_hwvx_proto_texture(o, i, x) {
     if (u16(o + 6) === 0) {
         // no mipmaps
         if (u32(o + 8)) {
-            x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+           im_hwvx_proto_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+           // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
         }
 
     } else {
@@ -4652,7 +4659,8 @@ function im_hwvx_proto_texture(o, i, x) {
         for (let ii = 0; ii < u16(o + 6) - 1; ii++) {
 
             if (u32(o + 8)) {
-                x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+               im_hwvx_proto_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+                // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
             }
             start_08_texture += mipmap_offset
             mipmap_offset = Math.round(mipmap_offset / 4)
@@ -4671,7 +4679,15 @@ function im_hwvx_proto_texture(o, i, x) {
     // 16 bytes;
 
 }
+function im_hwvx_proto_Texture_8(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
 
+}
 function im_hwvx_proto_color_table(o, i, x) {
     id_offset.push(o);
     x.push({

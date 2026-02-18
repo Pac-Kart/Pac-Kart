@@ -2,6 +2,33 @@
 
 function get_hwvx_pc_sec_id(string) {
     switch (string) {
+    case "E@3Z":
+        return "hwvx_pc_datapack"
+        break
+    case "audi":
+        return "hwvx_pc_audio"
+        break
+    case "ad00":
+        return "hwvx_pc_audio_00"
+        break
+    case "opll":
+        return "hwvx_pc_get_offset_patch_list"
+        break
+    case "ipll":
+        return "hwvx_pc_get_index_patch_list"
+        break
+    case "iplq":
+        return "hwvx_pc_geo_patch_list"
+        break
+    case "ordr":
+        return "hwvx_pc_ordered"
+        break
+    case "4unr":
+        return "hwvx_pc_unordered"
+        break
+    case 'buff':
+        return "hwvx_pc_Texture_8"
+        break
     case 'gjbf':
         return "hwvx_pc_file_header"
         break
@@ -1652,7 +1679,7 @@ function im_hwvx_pc_geo_patch_list(o, patch_offset, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-        sec_id: "ipll",
+        sec_id: "iplq",
         texture: im_patch_list(texture_offset, u32(g.datapack_offset + 8), 't'),
         texture_animation: im_patch_list(texture_animation_offset, u32(g.datapack_offset + 28), 'a'),
         model: im_patch_list(model_offset, u32(g.datapack_offset + 40), 'm'),
@@ -5140,7 +5167,8 @@ function im_hwvx_pc_texture(o, i, x) {
     if (u16(o + 6) === 0) {
         // no mipmaps
         if (u32(o + 8)) {
-            x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+            im_hwvx_pc_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+            // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
         }
 
     } else {
@@ -5149,7 +5177,8 @@ function im_hwvx_pc_texture(o, i, x) {
         for (let ii = 0; ii < u16(o + 6) - 1; ii++) {
 
             if (u32(o + 8)) {
-                x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+                im_hwvx_pc_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+                // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
             }
             start_08_texture += mipmap_offset
             mipmap_offset = Math.round(mipmap_offset / 4)
@@ -5166,6 +5195,16 @@ function im_hwvx_pc_texture(o, i, x) {
     return x[i].id
     // 16 bytes;
 }
+function im_hwvx_pc_Texture_8(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
+
+}
+
 function im_hwvx_pc_share_end(o, x) {
     id_offset.push(o);
     x.push({

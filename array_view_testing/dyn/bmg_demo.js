@@ -4,6 +4,12 @@
 
 function get_bmg_demo_sec_id(string) {
     switch (string) {
+    case "opll":
+        return "bmg_demo_offset_patch_list"
+        break
+    case "ipll":
+        return "bmg_demo_index_patch_list"
+        break
     case '5S25':
         return "bmg_demo_file_header"
         break

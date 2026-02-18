@@ -217,6 +217,20 @@ function check_if_json(string) {
     }
 }
 
+function check_static_id() {
+        let id = PK_path.obj.id
+        if (typeof id !== 'number') {
+            console.pk_log(`<a style="color:red;">id is not number | id is a ${typeof id} </a>`)
+            return null
+        }
+        let offset = id_offset[id]
+        if (typeof offset !== 'number') {
+            console.pk_log(`<a style="color:red;">offset is not number | offset is a ${typeof offset} </a>`)
+            return null
+        }
+    return true
+}
+
 function check_if_buffer(buffer, id) {
 
     let keys_array = Object.keys(PK_path.obj)
@@ -349,6 +363,10 @@ function create_new_array_view() {
 
     array_view_get_type(PK_path.array_path)
     add_events()
+
+    if (id_list !== id_offset.length) {
+            console.pk_log(`id_list !== id_offset.length | id_list: ${id_list} | id_offset.length: ${id_offset.length}`)
+    }
 
     // console.log(x_global)
 
@@ -981,8 +999,6 @@ function add_events() {
 
             array_view_get_type(PK_path.array_path)
 
-            // array_view_array()
-
         } else if (classname.includes("move_button")) {
             if (target.innerText = "Up ▲") {
                 console.pk_log('up not added')
@@ -1216,6 +1232,8 @@ function array_view_get_type(array) {
     format_pk_history_array(array)
     PK_path.obj = get_full_path(array)
 
+    document.getElementById("file_view_options_bar").innerHTML = ''
+
     if (Array.isArray(PK_path.obj)) {
         array_view_array(array)
     } else if (typeof PK_path.obj === "string") {
@@ -1292,13 +1310,18 @@ function array_view_object() {
 `
     }
 
+    let dyn_upload_button_html = ''
+    if (PK_path.is_dyn) {
+        dyn_upload_button_html =`<button title="upload json" id="json_upload_button">⤒</button>`
+    }
+
     let html = `
 <div style="display:inline-block;width:95%;padding:5px;">
 
    <div style='height:15%'>
         <span style="display: flex;width: 100%;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;height: 20px;"><a>${sec_name}</a><div style="display: flex;">
         <button title="download json" id="json_download_button">⤓</button>
-        <button title="upload json" id="json_upload_button">⤒</button>
+        ${dyn_upload_button_html}
         </div>
         </span>
       <div class='save_records_boarder'>
@@ -1315,6 +1338,14 @@ function array_view_object() {
     document.getElementById("_2nd_data_bar").innerHTML = ''
 
     check_section(sec_name)
+
+    if (PK_path.is_dyn === false) {
+        let check = check_static_id()
+        if (check === true) {
+        document.getElementById("file_view_options_bar").innerHTML = `section offset: ${id_offset[PK_path.obj.id]}`
+        }
+    }
+
     // document.getElementById('game').value = TXFA.game
     // document.getElementById("name").addEventListener('change', edit_change_name);
 }
@@ -1362,16 +1393,16 @@ function check_section(string_name) {
     let export_function = window[("ex_" + string_name)]
 
     if (typeof import_function === "function") {} else {
-        console.pk_log(`<a style="color:red;">${string_name} import_function null</a>`)
+        // console.pk_log(`<a style="color:red;">${string_name} import_function null</a>`)
     }
     if (typeof add_function === "function") {} else {
-        console.pk_log(`<a style="color:red;">${string_name} add_function null</a>`)
+        // console.pk_log(`<a style="color:red;">${string_name} add_function null</a>`)
     }
     if (typeof info_function === "function") {} else {
-        console.pk_log(`<a style="color:red;">${string_name} info_function null</a>`)
+        // console.pk_log(`<a style="color:red;">${string_name} info_function null</a>`)
     }
     if (typeof export_function === "function") {} else {
-        console.pk_log(`<a style="color:red;">${string_name} export_function null</a>`)
+        // console.pk_log(`<a style="color:red;">${string_name} export_function null</a>`)
     }
 }
 
@@ -1541,12 +1572,16 @@ function get_input_type(value, i=-1, key="null") {
     } else if ("string"in value) {
         input_type = `<input data-key_id="${i}" style='width:100%;' type='text' value="${value.string}">`
     } else if ("buffer"in value) {
+        let is_dyn_html = ''
+        if (PK_path.is_dyn) {
+            is_dyn_html = `<button data-key_id="${i}" class="upload_buffer" title="upload buffer">⤒</button>`
+        }
         input_type = `
         <span style="display: inline-flex;width: 100%;justify-content: space-between;">
         <a> buffer (${convert_base64_arraybuffer(value).byteLength}) bytes </a>
         <span>
             <button data-key_id="${i}" class="download_buffer" title="download buffer">⤓</button>
-            <button data-key_id="${i}" class="upload_buffer" title="upload buffer">⤒</button>
+            ${is_dyn_html}
         </span>
         </span>
 `
@@ -1824,6 +1859,7 @@ function save_file(e) {
         if (amt_files === 1) {
             let fileName = x_global[0].x_files[0].name
             download_file(globalThis.buffer, fileName)
+            return
         } else {
             console.pk_log("can't save more than 1 static file")
             return

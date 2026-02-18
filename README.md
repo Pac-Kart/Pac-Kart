@@ -58,8 +58,12 @@ Array View
 * Bee Movie Game (Wii)
 * Bee Movie Game (Demo)
 
+Limited editing with these sections, values prefixed with u8,u16,u32,f32 are editable.
+
 ### Formats Traversable + Exportable in Array View:
 * Pac Man World Rally (PC)
+
+Most sections are editable.
 
 Current Progress
 ============

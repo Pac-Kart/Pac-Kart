@@ -2,6 +2,24 @@
 /* start sec id list */
 function get_bmg_pc_sec_id(string) {
     switch (string) {
+    case "buff":
+        return "bmg_pc_Texture_8"
+        break
+    case "buf3":
+        return "bmg_pc_Texture_12"
+        break
+    case "buf5":
+        return "bmg_pc_Texture_20"
+        break
+    case "ordr":
+        return "bmg_pc_ordered"
+        break
+    case "4unr":
+        return "bmg_pc_unordered"
+        break
+    case "ipll":
+        return "bmg_pc_index_patch_list"
+        break
     case 'gjbf':
         return "bmg_pc_file_header"
         break
@@ -2987,15 +3005,18 @@ function im_bmg_pc_texture_offset_list_0(o, x) {
         let calculate_12_length = total_length * 2
         let start = u32(o + 12) + end_after_datapack
         let end = calculate_12_length + start
-        x[0].texture_section_12 = convert_arraybuffer_base64(buffer.slice(start, end))
+        im_bmg_pc_Texture_12(start, x[0].texture_section_12, end)
+        // x[0].texture_section_12 = convert_arraybuffer_base64(buffer.slice(start, end))
     }
     if (u8(o + 5) === 0) {
         // no mipmaps
         if (u32(o + 8)) {
-            x[0].texture_section_8.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+            im_bmg_pc_Texture_8(start_08_texture, x[0].texture_section_8, end_08_texture)
+            // x[0].texture_section_8.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
         }
         if (u32(o + 20)) {
-            x[0].texture_section_20.push(convert_arraybuffer_base64(buffer.slice(start_20_texture, end_20_texture)))
+            im_bmg_pc_Texture_20(start_20_texture, x[0].texture_section_20, end_20_texture)
+            // x[0].texture_section_20.push(convert_arraybuffer_base64(buffer.slice(start_20_texture, end_20_texture)))
         }
 
     } else {
@@ -3004,10 +3025,12 @@ function im_bmg_pc_texture_offset_list_0(o, x) {
         for (let i = 0; i < u8(o + 5) + 1; i++) {
 
             if (u32(o + 8)) {
-                x[0].texture_section_8.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+                im_bmg_pc_Texture_8(start_08_texture, x[0].texture_section_8, end_08_texture)
+                // x[0].texture_section_8.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
             }
             if (u32(o + 20)) {
-                x[0].texture_section_20.push(convert_arraybuffer_base64(buffer.slice(start_20_texture, end_20_texture)))
+                im_bmg_pc_Texture_20(start_20_texture, x[0].texture_section_20, end_20_texture)
+                // x[0].texture_section_20.push(convert_arraybuffer_base64(buffer.slice(start_20_texture, end_20_texture)))
             }
             start_08_texture += mipmap_offset
             start_20_texture += mipmap_offset
@@ -3042,7 +3065,33 @@ function im_bmg_pc_texture_offset_list_0(o, x) {
     // 32 bytes;
 
 }
+function im_bmg_pc_Texture_8(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
 
+}
+function im_bmg_pc_Texture_12(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buf3",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
+
+}
+function im_bmg_pc_Texture_20(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buf5",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
+
+}
 function im_bmg_pc_get_texture_offsets(o, section_offset) {
     get_bmg_texture_offset_list_0(u32(o) + section_offset, section_offset)
 

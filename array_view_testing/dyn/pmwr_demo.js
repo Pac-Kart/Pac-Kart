@@ -2,6 +2,27 @@
 
 function get_pmwr_demo_sec_id(string) {
     switch (string) {
+    case "audi":
+        return "pmwr_demo_audio"
+        break
+    case "ad00":
+        return "pmwr_demo_audio_00"
+        break
+    case "opll":
+        return "pmwr_demo_get_offset_patch_list"
+        break
+    case "ipll":
+        return "pmwr_demo_get_index_patch_list"
+        break
+    case "ordr":
+        return "pmwr_demo_ordered"
+        break
+    case "4unr":
+        return "pmwr_demo_unordered"
+        break
+    case 'buff':
+        return "pmwr_demo_buffer"
+        break
     case 'gjbf':
         return "pmwr_demo_file_header"
         break
