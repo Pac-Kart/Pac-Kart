@@ -40,8 +40,6 @@ Array View
 * Pac Man World Rally (GC)
 * Pac Man World Rally (PS2)
 * Pac Man World Rally (PSP)
-* Bigfoot: Collision Course (PC)
-* Bigfoot: Collision Course (Wii)
 
 ### Formats Traversable in Array View:
 * Motor Mayhem: Vehicular Combat League
@@ -57,6 +55,8 @@ Array View
 * Bee Movie Game (PC)
 * Bee Movie Game (Wii)
 * Bee Movie Game (Demo)
+* Bigfoot: Collision Course (PC)
+* Bigfoot: Collision Course (Wii)
 
 Limited editing with these sections, values prefixed with u8,u16,u32,f32 are editable.
 
@@ -68,4 +68,6 @@ Most sections are editable.
 Current Progress
 ============
 ### Working on making these formats Traversable
-* Bigfoot: Collision Course (PC)
+* Pac Man World Rally (GC)
+* Pac Man World Rally (PS2)
+* Pac Man World Rally (PSP)

@@ -173,8 +173,8 @@ add import/export tables for all sections
         fix ex_bmg_extended_world_link & ex_bmg_world_link links
     bmg_wii [traversable, no exports]
         does the D3DX9 section exist here?
-    bcc_pc
-    bcc_wii
+    bcc_pc [traversable, no exports]
+    bcc_wii [traversable, no exports]
 
     have a better way to handle padding sections for byte accurate file exports
 
@@ -191,14 +191,8 @@ research other region formats
 
 list if offset is 'up' or 'down' based on general offset list patch list
 
-bcc
-    update linked sections
-    verify bcc offsets
-    probably need to rename some sections
-
 bmg
-    research bmg missing sections in datapack
-    also what is patch list 3
+    what is patch list 3
 
 pmwr
     non pmwr pc formats not fully documented
@@ -231,10 +225,7 @@ ideas for pac-kart filetesting:
 reserch other save files?
 
 bcc
-    does bcc_world actually have a sound at offset 0 or is patch list misaligned
-        think its probably misaligned
     reorder functions based on docs
-    research audio missing sections
 
 bmg
     find model length sections calculated

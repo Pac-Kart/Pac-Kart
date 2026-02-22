@@ -220,8 +220,12 @@ function check_if_json(string) {
 function check_static_id() {
         let id = PK_path.obj.id
         if (typeof id !== 'number') {
+            if (PK_path.obj.sec_id === "XSET") {
+            return null
+            }else{
             console.pk_log(`<a style="color:red;">id is not number | id is a ${typeof id} </a>`)
             return null
+            }
         }
         let offset = id_offset[id]
         if (typeof offset !== 'number') {
