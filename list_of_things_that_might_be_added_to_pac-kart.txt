@@ -148,7 +148,7 @@ add import/export tables for outer datapack/sound only sections
     bcc_wii
 
 add import/export tables for all sections
-    mmcvl
+    mmcvl [traversable, no exports]
     hwvx_proto [traversable, no exports]
     hwvx_gc [traversable, no exports]
     hwvx_pc [traversable, no exports]
@@ -159,7 +159,7 @@ add import/export tables for all sections
     svtrb_pc [traversable, no exports]
     svtrb_psp [traversable, no exports]
     svtrb_ps2 [traversable, no exports]
-    pmwr_gc
+    pmwr_gc [traversable, no exports]
     pmwr_pc [f]
     pmwr_ps2_demo [traversable, no exports]
     pmwr_ps2

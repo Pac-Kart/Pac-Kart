@@ -37,8 +37,6 @@ Main Page
 Array View
 --------
 ### Formats Not Yet Traversable in Array View:
-* Pac Man World Rally (GC)
-* Pac Man World Rally (PS2)
 * Pac Man World Rally (PSP)
 
 ### Formats Traversable in Array View:
@@ -52,6 +50,8 @@ Array View
 * Snoopy vs. the Red Baron (PSP)
 * Pac Man World Rally (Xbox)
 * Pac Man World Rally (Demo)
+* Pac Man World Rally (GC)
+* Pac Man World Rally (PS2)
 * Bee Movie Game (PC)
 * Bee Movie Game (Wii)
 * Bee Movie Game (Demo)
@@ -68,6 +68,4 @@ Most sections are editable.
 Current Progress
 ============
 ### Working on making these formats Traversable
-* Pac Man World Rally (GC)
-* Pac Man World Rally (PS2)
 * Pac Man World Rally (PSP)
