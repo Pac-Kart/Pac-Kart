@@ -36,9 +36,6 @@ Main Page
 
 Array View
 --------
-### Formats Not Yet Traversable in Array View:
-* Pac Man World Rally (PSP)
-
 ### Formats Traversable in Array View:
 * Motor Mayhem: Vehicular Combat League
 * Hot Wheels Velocity X (Proto)
@@ -52,6 +49,7 @@ Array View
 * Pac Man World Rally (Demo)
 * Pac Man World Rally (GC)
 * Pac Man World Rally (PS2)
+* Pac Man World Rally (PSP)
 * Bee Movie Game (PC)
 * Bee Movie Game (Wii)
 * Bee Movie Game (Demo)
@@ -67,5 +65,4 @@ Most sections are editable.
 
 Current Progress
 ============
-### Working on making these formats Traversable
-* Pac Man World Rally (PSP)
+Various Pac-Kart Editor Updates, may try and work on Motor Mayhem exports.

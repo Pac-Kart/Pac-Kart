@@ -162,8 +162,8 @@ add import/export tables for all sections
     pmwr_gc [traversable, no exports]
     pmwr_pc [f]
     pmwr_ps2_demo [traversable, no exports]
-    pmwr_ps2
-    pmwr_psp
+    pmwr_ps2 [traversable, no exports]
+    pmwr_psp [traversable, no exports]
     pmwr_xbox [traversable, no exports]
     bmg_demo [traversable, no exports]
         how to handle bmg_demo_world_0_76 ?
