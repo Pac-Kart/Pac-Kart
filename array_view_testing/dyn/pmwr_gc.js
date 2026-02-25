@@ -14,8 +14,23 @@ function get_pmwr_gc_sec_id(string) {
     case 'ordr':
         return "pmwr_gc_ordered"
         break
+    case "^YZ2":
+        return "pmwr_gc_share"
+        break
     case '4unr':
         return "pmwr_gc_unordered"
+        break
+    case "0Yay":
+        return "pmwr_gc_models"
+        break
+    case "afas":
+        return "pmwr_gc_models_12"
+        break
+    case "afa2":
+        return "pmwr_gc_models_04"
+        break
+    case "afa3":
+        return "pmwr_gc_models_04_4"
         break
     case 'bsck':
         return 'pmwr_gc_basic'
@@ -357,6 +372,12 @@ function get_pmwr_gc_sec_id(string) {
     case 'ZXhq':
         return "pmwr_gc_models_04_04_00_84"
         break
+case "<Gsc":
+    return "pmwr_gc_models_04_4_0_gc"
+break
+case "buff":
+    return "pmwr_gc_data_buffer"
+break
     case '=vXT':
         return "pmwr_gc_models_04_04_00_92"
         break
@@ -3805,14 +3826,14 @@ function im_pmwr_gc_texture(o, x) {
         if (temp_alpha) {
             pmwr_gc_texture_offset = u32(pmwr_gc_texture_settings_offset + 4) + g.m
             temp_pmwr_gc_texture_array = convert_arraybuffer_base64(buffer.slice(pmwr_gc_texture_offset, pmwr_gc_texture_offset + temp_alpha))
-            x[ti].alpha.push(temp_pmwr_gc_texture_array)
+            x[ti].alpha = temp_pmwr_gc_texture_array
         }
         if (u8(pmwr_gc_texture_settings_offset + 1) === 0) {
 
             pmwr_gc_texture_offset = u32(pmwr_gc_texture_settings_offset + 8) + g.m
             temp_pmwr_gc_texture_array = convert_arraybuffer_base64(buffer.slice(pmwr_gc_texture_offset, pmwr_gc_texture_offset + temp_value))
 
-            x[ti].pmwr_gc_texture.push(temp_pmwr_gc_texture_array)
+            x[ti].pmwr_gc_texture = temp_pmwr_gc_texture_array
             e = pmwr_gc_texture_offset + temp_value
         } else {
 
@@ -4011,7 +4032,7 @@ function im_pmwr_gc_audio(o, x, a) {
         const start_offset = u32(o + 0) + after_offset_list
         const sound_buffer = convert_arraybuffer_base64(buffer.slice(start_offset, start_offset + u32(o + 4)))
 
-        x[i].sound_data.push(sound_buffer)
+        x[i].sound_data = sound_buffer
 
         return start_offset + u32(o + 4)
 
@@ -4033,7 +4054,7 @@ function im_pmwr_gc_models(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
+        sec_id: "0Yay",
         magic: u16(o),
         name: get_string(u32(o + 8) + g.m, 0, false),
         section_4: [],
@@ -4082,7 +4103,7 @@ function im_pmwr_gc_models_04_4(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-        sec_id: "afa2",
+        sec_id: "afa3",
 
         section_0: [],
     });

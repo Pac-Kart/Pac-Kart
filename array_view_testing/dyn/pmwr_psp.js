@@ -11,11 +11,41 @@ function get_pmwr_psp_sec_id(string) {
     case 'dtpk':
         return "pmwr_psp_datapack"
         break
+    case "txtz":
+        return "pmwr_psp_texture_4"
+        break
+    case "buff":
+        return "pmwr_psp_data_buffer"
+        break
+    case "0Yay":
+        return "pmwr_psp_models"
+        break
+    case "afas":
+        return "pmwr_psp_models_12"
+        break
+    case "afa2":
+        return "pmwr_psp_models_04"
+        break
+    case "afa3":
+        return "pmwr_psp_models_04_4"
+        break
+    case "ubc1":
+        return "pmwr_psp_models_04_4_0_psp"
+        break
+    case "UbDd":
+        return "models_04_4_0_psp_100t0"
+        break
+    case "n=Ee":
+        return "models_04_4_0_psp_100trest"
+        break
     case 'ordr':
         return "pmwr_psp_ordered"
         break
     case '4unr':
         return "pmwr_psp_unordered"
+        break
+    case "0Yay":
+        return "pmwr_psp_models"
         break
     case 'bsck':
         return 'pmwr_psp_basic'
@@ -23,11 +53,17 @@ function get_pmwr_psp_sec_id(string) {
     case 'unrd':
         return 'pmwr_psp_basic_04'
         break
+    case "^YZ2":
+        return "pmwr_psp_share"
+        break
     case 'ipll':
         return 'pmwr_psp_index_patch_list'
         break
     case 'opll':
         return 'pmwr_psp_offset_patch_list'
+        break
+    case "jh0q":
+        return "datapack_psp_84"
         break
     case 'txtr':
         return 'pmwr_psp_texture'
@@ -3830,9 +3866,9 @@ function im_pmwr_psp_world_24_12(o, i, x) {
 function im_pmwr_psp_texture(o, x) {
     let e = o + (u32(g.datapack_offset + 20) * 64)
 
-    if (u32(g.datapack_offset + 20)) {
-        g.ordered_ref.pmwr_psp_texturepadding = (u32(o + 8) + g.m) - e
-    }
+    // if (u32(g.datapack_offset + 20)) {
+    //     g.ordered_ref.pmwr_psp_texturepadding = (u32(o + 8) + g.m) - e
+    // }
     for (let ti = 0; ti < u32(g.datapack_offset + 20); ti++) {
 
         let pmwr_psp_texture_settings_offset = o + (ti * 64)
@@ -3843,24 +3879,6 @@ function im_pmwr_psp_texture(o, x) {
         let pmwr_psp_texture_name = im_string(pmwr_psp_texture_settings_offset + 12 - g.m, 0, false)
 
         pmwr_psp_texture_name.string = pmwr_psp_texture_name.string.substr(0, 51)
-
-        id_offset.push(o);
-        x.push({
-            id: gen_id(),
-
-            sec_id: "txtr",
-
-            type: u8(pmwr_psp_texture_settings_offset),
-            mipmaps: u8(pmwr_psp_texture_settings_offset + 1),
-            x: u8(pmwr_psp_texture_settings_offset + 2),
-            y: u8(pmwr_psp_texture_settings_offset + 3),
-            alpha: [],
-            pmwr_psp_texture: [],
-            name: pmwr_psp_texture_name,
-            start: u32(pmwr_psp_texture_settings_offset + 8) + g.m,
-            padding: e
-        })
-
         let pmwr_psp_texture_x = Math.pow(2, u8(pmwr_psp_texture_settings_offset + 2))
         let pmwr_psp_texture_y = Math.pow(2, u8(pmwr_psp_texture_settings_offset + 3))
 
@@ -3883,7 +3901,7 @@ function im_pmwr_psp_texture(o, x) {
         } else if (type === 68) {
             //dxt5
             type = '???'
-            temp_value = 1024 + pmwr_psp_texture_x * pmwr_psp_texture_y
+            temp_value = pmwr_psp_texture_x * pmwr_psp_texture_y
 
         } else if (type === 72) {
             //dxt5
@@ -3910,82 +3928,182 @@ function im_pmwr_psp_texture(o, x) {
         } else if (type === 200) {
             //dxt5
             type = '???'
-            temp_value = 1024 + pmwr_psp_texture_x * pmwr_psp_texture_y
+            temp_value = pmwr_psp_texture_x * pmwr_psp_texture_y
         }
-        let pmwr_psp_texture_offset;
-        let temp_pmwr_psp_texture_array;
-        let temp_2 = temp_value
 
-        // console.log(u32(pmwr_psp_texture_settings_offset + 8) + g.m +temp_value,'t')
-        // console.log(u32(pmwr_psp_texture_settings_offset + 4) + g.m +temp_alpha,'a')
+        id_offset.push(o);
+        x.push({
+            id: gen_id(),
 
-        if (temp_alpha) {
-            pmwr_psp_texture_offset = u32(pmwr_psp_texture_settings_offset + 4) + g.m
-            temp_pmwr_psp_texture_array = convert_arraybuffer_base64(buffer.slice(pmwr_psp_texture_offset, pmwr_psp_texture_offset + temp_alpha))
-            x[ti].alpha.push(temp_pmwr_psp_texture_array)
-        }
-        if (u8(pmwr_psp_texture_settings_offset + 1) === 0) {
+            sec_id: "txtr",
 
-            pmwr_psp_texture_offset = u32(pmwr_psp_texture_settings_offset + 8) + g.m
-            temp_pmwr_psp_texture_array = convert_arraybuffer_base64(buffer.slice(pmwr_psp_texture_offset, pmwr_psp_texture_offset + temp_value))
+            type: u8(pmwr_psp_texture_settings_offset),
+            x: u8(pmwr_psp_texture_settings_offset + 2),
+            y: u8(pmwr_psp_texture_settings_offset + 3),
+            name: pmwr_psp_texture_name,
+            section_4: [],
+        })
 
-            x[ti].pmwr_psp_texture.push(temp_pmwr_psp_texture_array)
-            e = pmwr_psp_texture_offset + temp_value
-        } else {
+        u32(o + 4) && im_pmwr_psp_texture_4(u32(o + 4) + g.m, x[ti].section_4, temp_value);
 
-            let mip_map_pmwr_psp_idk = 1
+        //     let pmwr_psp_texture_x = Math.pow(2, u8(pmwr_psp_texture_settings_offset + 2))
+        //     let pmwr_psp_texture_y = Math.pow(2, u8(pmwr_psp_texture_settings_offset + 3))
 
-            if (type === "rgb888") {
-                mip_map_pmwr_psp_idk = 0
-            }
+        //     let temp_value
+        //     let temp_alpha = 0;
+        //     let type = u8(pmwr_psp_texture_settings_offset)
+        //     if (type === 65) {
+        //         // dxt1
+        //         type = 'dxt1'
+        //         temp_value = pmwr_psp_texture_x * pmwr_psp_texture_y / 2
 
-            let mipmap_start = u32(pmwr_psp_texture_settings_offset + 8) + g.m
-            let mipmap_end = mipmap_start + temp_value
+        //     } else if (type === 160) {
+        //         //rgba888
+        //         temp_value = pmwr_psp_texture_x * pmwr_psp_texture_y * 4
+        //         type = 'rgba8888'
+        //     } else if (type === 24) {
+        //         //rgba888
+        //         temp_value = pmwr_psp_texture_x * pmwr_psp_texture_y * 3
+        //         type = 'rgb888'
+        //     } else if (type === 68) {
+        //         //dxt5
+        //         type = '???'
+        //         temp_value = 1024 + pmwr_psp_texture_x * pmwr_psp_texture_y
 
-            let temp_mipmap_offset = 0
+        //     } else if (type === 72) {
+        //         //dxt5
+        //         type = '???'
+        //         temp_value = 1024 + pmwr_psp_texture_x * pmwr_psp_texture_y
 
-            let pmwr_psp_texture_offset = u32(pmwr_psp_texture_settings_offset + 8) + g.m
-            for (let i = 0; i < u8(pmwr_psp_texture_settings_offset + 1) + 1; i++) {
+        //     } else if (type === 193) {
+        //         type = 'dxt1'
+        //         temp_value = pmwr_psp_texture_x * pmwr_psp_texture_y / 2
+        //         temp_alpha = temp_value
 
-                let temp_pmwr_psp_texture_array = convert_arraybuffer_base64(buffer.slice(mipmap_start, mipmap_end))
+        //     } else if (type === 194) {
+        //         type = 'dxt1'
+        //         temp_value = pmwr_psp_texture_x * pmwr_psp_texture_y / 2
+        //         temp_alpha = temp_value
+        //     } else if (type === 196) {
+        //         //dxt5
+        //         type = '???'
+        //         temp_value = 1024 + pmwr_psp_texture_x * pmwr_psp_texture_y
+        //     } else if (type === 197) {
+        //         //dxt5
+        //         type = 'dxt5'
+        //         temp_value = pmwr_psp_texture_x * pmwr_psp_texture_y
+        //     } else if (type === 200) {
+        //         //dxt5
+        //         type = '???'
+        //         temp_value = 1024 + pmwr_psp_texture_x * pmwr_psp_texture_y
+        //     }
+        //     let pmwr_psp_texture_offset;
+        //     let temp_pmwr_psp_texture_array;
+        //     let temp_2 = temp_value
 
-                // let temp_pmwr_psp_texture_array = new ArrayBuffer(temp_2)
+        //     // console.log(u32(pmwr_psp_texture_settings_offset + 8) + g.m +temp_value,'t')
+        //     // console.log(u32(pmwr_psp_texture_settings_offset + 4) + g.m +temp_alpha,'a')
 
-                x[ti].pmwr_psp_texture.push(temp_pmwr_psp_texture_array)
-                mipmap_start += temp_2
-                temp_mipmap_offset += temp_2
-                temp_2 = Math.round(temp_2 / 4)
-                if (u8(pmwr_psp_texture_settings_offset + 1) !== i) {
-                    mipmap_end += temp_2
-                }
+        //     if (temp_alpha) {
+        //         pmwr_psp_texture_offset = u32(pmwr_psp_texture_settings_offset + 4) + g.m
+        //         temp_pmwr_psp_texture_array = convert_arraybuffer_base64(buffer.slice(pmwr_psp_texture_offset, pmwr_psp_texture_offset + temp_alpha))
+        //         x[ti].alpha.push(temp_pmwr_psp_texture_array)
+        //     }
+        //     if (u8(pmwr_psp_texture_settings_offset + 1) === 0) {
 
-            }
-            e = mipmap_end
+        //         pmwr_psp_texture_offset = u32(pmwr_psp_texture_settings_offset + 8) + g.m
+        //         temp_pmwr_psp_texture_array = convert_arraybuffer_base64(buffer.slice(pmwr_psp_texture_offset, pmwr_psp_texture_offset + temp_value))
 
-        }
-        if (g.file_dir_type === 'share' && g.pmwr_psp_texture_patch_ref.length === 69) {
-            e += divisible(e - o, 16) - (e - o)
-        }
-        x[ti].padding = e
+        //         x[ti].pmwr_psp_texture.push(temp_pmwr_psp_texture_array)
+        //         e = pmwr_psp_texture_offset + temp_value
+        //     } else {
+
+        //         let mip_map_pmwr_psp_idk = 1
+
+        //         if (type === "rgb888") {
+        //             mip_map_pmwr_psp_idk = 0
+        //         }
+
+        //         let mipmap_start = u32(pmwr_psp_texture_settings_offset + 8) + g.m
+        //         let mipmap_end = mipmap_start + temp_value
+
+        //         let temp_mipmap_offset = 0
+
+        //         let pmwr_psp_texture_offset = u32(pmwr_psp_texture_settings_offset + 8) + g.m
+        //         for (let i = 0; i < u8(pmwr_psp_texture_settings_offset + 1) + 1; i++) {
+
+        //             let temp_pmwr_psp_texture_array = convert_arraybuffer_base64(buffer.slice(mipmap_start, mipmap_end))
+
+        //             // let temp_pmwr_psp_texture_array = new ArrayBuffer(temp_2)
+
+        //             x[ti].pmwr_psp_texture.push(temp_pmwr_psp_texture_array)
+        //             mipmap_start += temp_2
+        //             temp_mipmap_offset += temp_2
+        //             temp_2 = Math.round(temp_2 / 4)
+        //             if (u8(pmwr_psp_texture_settings_offset + 1) !== i) {
+        //                 mipmap_end += temp_2
+        //             }
+
+        //         }
+        //         e = mipmap_end
+
+        //     }
+        //     if (g.file_dir_type === 'share' && g.pmwr_psp_texture_patch_ref.length === 69) {
+        //         e += divisible(e - o, 16) - (e - o)
+        //     }
+        //     x[ti].padding = e
+        // }
+
     }
 
     //padding
 
-    if (x.length) {
+    // if (x.length) {
 
-        let i = 0
-        for (; i < x.length - 1; i++) {
-            if (x[i].alpha.length === 0) {
-                x[i].padding = ((x[i + 1].start) - x[i].padding)
-            } else {
-                x[i].padding = 0
-            }
+    //     let i = 0
+    //     for (; i < x.length - 1; i++) {
+    //         if (x[i].alpha.length === 0) {
+    //             x[i].padding = ((x[i + 1].start) - x[i].padding)
+    //         } else {
+    //             x[i].padding = 0
+    //         }
 
-        }
-        x[i].padding = 0
-    }
+    //     }
+    //     x[i].padding = 0
+    // }
 
     return e
+}
+function im_pmwr_psp_texture_4(o, x, length) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "txtz",
+        section_0: [],
+        section_4: [],
+    })
+    u32(o + 0) && im_pmwr_psp_texture_4_0(u32(o + 0) + g.m, x[0].section_0);
+    u32(o + 4) && im_pmwr_psp_texture_4_4(u32(o + 4) + g.m, x[0].section_4, length);
+}
+function im_pmwr_psp_texture_4_0(o, x) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, o + 1024)),
+    });
+    // 1024 bytes;
+
+}
+
+function im_pmwr_psp_texture_4_4(o, x, length) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, o + length)),
+    });
+    // 1024 bytes;
 }
 
 function im_pmwr_psp_texture_animation_section(o, i, x) {
@@ -4141,7 +4259,7 @@ function im_pmwr_psp_audio(o, x, a) {
         const start_offset = u32(o + 0) + after_offset_list
         const sound_buffer = convert_arraybuffer_base64(buffer.slice(start_offset, start_offset + u32(o + 4)))
 
-        x[i].sound_data.push(sound_buffer)
+        x[i].sound_data = sound_buffer
 
         return start_offset + u32(o + 4)
 
@@ -4154,7 +4272,6 @@ function im_pmwr_psp_share(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "^YZ2",
         model_0: in_models(o + 0, g.pmwr_psp_models_array, im_pmwr_psp_models, g.ordered_ref.pmwr_psp_models),
     });
@@ -4165,6 +4282,7 @@ function im_pmwr_psp_models(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
+        sec_id: "0Yay",
         magic: u16(o),
         name: get_string(u32(o + 8) + g.m, 0, false),
         section_4: [],
@@ -4217,7 +4335,7 @@ function im_pmwr_psp_models_04_4(o, i, x) {
     x.push({
         id: gen_id(),
 
-        sec_id: "afa2",
+        sec_id: "afa3",
 
         section_0: [],
     });
@@ -4238,7 +4356,6 @@ function im_pmwr_psp_models_04_4_0_psp(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "ubc1",
         u32_0: u32(o + 0),
         u8_8: u8(o + 8),
@@ -4276,12 +4393,10 @@ function im_pmwr_psp_models_04_4_0_psp(o, i, x) {
     case 0:
         u32(o + 100) && im_models_04_4_0_psp_100t0(u32(o + 100) + g.m, x[i].section_100);
         break;
+    default:
         for (let ii = 0; ii < u32(o + 60); ii++) {
             im_models_04_4_0_psp_100trest(u32(o + 100) + (ii * 36) + g.m, ii, x[i].section_100);
         }
-
-    default:
-
     }
     return x[i].id
     // 112 bytes;
@@ -4349,169 +4464,6 @@ function im_pmwr_psp_models_04_4_0_ps2(o, i, x) {
         sec_id: "afa3",
         section_0: [],
     });
-
-    switch (u32(o)) {
-    case 0:
-        im_models_04_4_0_ps2_t0(o, 0, x[i].section_0);
-        break
-    case 1:
-        im_models_04_4_0_ps2_t1(o, 0, x[i].section_0);
-        break
-    case 2:
-        im_models_04_4_0_ps2_t2(o, 0, x[i].section_0);
-        break
-    }
-}
-function im_models_04_4_0_ps2_t0(o, i, x) {
-
-    id_offset.push(o);
-    x.push({
-        id: gen_id(),
-
-        sec_id: "C65L",
-        u32_4: u32(o + 4),
-        u8_8: u8(o + 8),
-        u8_9: u8(o + 9),
-        u8_10: u8(o + 10),
-        u8_11: u8(o + 11),
-        u32_12: u32(o + 12),
-        u32_16: u32(o + 16),
-        animation_24: im_patch(g.animation_patch_ref, o + 24),
-        u32_28: u32(o + 28),
-        texture_40: im_patch(g.pmwr_psp_texture_patch_ref, o + 40),
-        u8_41: u8(o + 41),
-        u8_42: u8(o + 42),
-        u8_43: u8(o + 43),
-        u8_44: u8(o + 44),
-        u8_45: u8(o + 45),
-        u8_46: u8(o + 46),
-        u8_47: u8(o + 47),
-        u32_48: u32(o + 48),
-        u32_52: u32(o + 52),
-        u32_56: u32(o + 56),
-        u32_60: u32(o + 60),
-        section_64: [],
-        section_68: [],
-        section_72: [],
-        section_76: [],
-    });
-
-    u32(o + 64) && im_models_04_4_0_ps2_model_buffer(u32(o + 64) + g.m, x[i].section_64);
-    // offset? 
-    u32(o + 68) && im_models_04_4_0_ps2_model_buffer(u32(o + 68) + g.m, x[i].section_68);
-    // offset? 
-    u32(o + 72) && im_models_04_4_0_ps2_model_buffer(u32(o + 72) + g.m, x[i].section_72);
-    // offset? 
-    u32(o + 76) && im_models_04_4_0_ps2_model_buffer(u32(o + 76) + g.m, x[i].section_76);
-    // offset? 
-    return x[i].id
-    // 80 bytes;
-
-}
-function im_models_04_4_0_ps2_t1(o, i, x) {
-
-    id_offset.push(o);
-    x.push({
-        id: gen_id(),
-
-        sec_id: "5N8t",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        f32_8: f32(o + 8),
-        u8_12: u8(o + 12),
-        u8_13: u8(o + 13),
-        u8_15: u8(o + 15),
-        u32_16: u32(o + 16),
-        animation_24: im_patch(g.animation_patch_ref, o + 24),
-        u32_28: u32(o + 28),
-        texture_40: im_patch(g.pmwr_psp_texture_patch_ref, o + 40),
-        u8_41: u8(o + 41),
-        u8_42: u8(o + 42),
-        u8_43: u8(o + 43),
-        u8_44: u8(o + 44),
-        u8_45: u8(o + 45),
-        u8_46: u8(o + 46),
-        u8_47: u8(o + 47),
-        u32_48: u32(o + 48),
-        u32_52: u32(o + 52),
-        u32_56: u32(o + 56),
-        u32_60: u32(o + 60),
-        section_64: [],
-        section_68: [],
-        section_72: [],
-        section_80: [],
-    });
-
-    u32(o + 64) && im_models_04_4_0_ps2_model_buffer(u32(o + 64) + g.m, x[i].section_64);
-    // offset? 
-    u32(o + 68) && im_models_04_4_0_ps2_model_buffer(u32(o + 68) + g.m, x[i].section_68);
-    // offset? 
-    u32(o + 72) && im_models_04_4_0_ps2_model_buffer(u32(o + 72) + g.m, x[i].section_72);
-    // offset? 
-    u32(o + 80) && im_models_04_4_0_ps2_t1_80(u32(o + 80) + g.m, 0, x[i].section_80);
-    // offset? 
-    return x[i].id
-    // 96 bytes;
-
-}
-function im_models_04_4_0_ps2_t1_80(o, i, x) {
-
-    id_offset.push(o);
-    x.push({
-        id: gen_id(),
-
-        sec_id: "9UB0",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        section_8: [],
-    });
-
-    u32(o + 8) && im_models_04_4_0_ps2_model_buffer(u32(o + 8) + g.m, x[i].section_8);
-    // offset? 
-    return x[i].id
-    // 16 bytes;
-
-}
-function im_models_04_4_0_ps2_t2(o, i, x) {
-
-    id_offset.push(o);
-    x.push({
-        id: gen_id(),
-
-        sec_id: "<4g_",
-        u32_0: u32(o + 0),
-        u8_8: u8(o + 8),
-        u8_9: u8(o + 9),
-        u8_10: u8(o + 10),
-        u8_11: u8(o + 11),
-        u32_12: u32(o + 12),
-        u32_16: u32(o + 16),
-        u32_24: u32(o + 24),
-        u32_28: u32(o + 28),
-        u32_40: u32(o + 40),
-        u8_44: u8(o + 44),
-        u8_45: u8(o + 45),
-        u8_46: u8(o + 46),
-        u8_47: u8(o + 47),
-        u32_48: u32(o + 48),
-        f32_56: f32(o + 56),
-        f32_60: f32(o + 60),
-        f32_64: f32(o + 64),
-        u32_68: u32(o + 68),
-        section_72: [],
-        u32_76: u32(o + 76),
-        section_80: [],
-        section_84: [],
-    });
-
-    u32(o + 72) && im_models_04_4_0_ps2_model_buffer(u32(o + 72) + g.m, x[i].section_72);
-    // offset? 
-    u32(o + 80) && im_models_04_4_0_ps2_model_buffer(u32(o + 80) + g.m, x[i].section_80);
-    // offset? 
-    u32(o + 84) && im_models_04_4_0_ps2_model_buffer(u32(o + 84) + g.m, x[i].section_84);
-    // offset? 
-    return x[i].id
-    // 96 bytes;
 
 }
 

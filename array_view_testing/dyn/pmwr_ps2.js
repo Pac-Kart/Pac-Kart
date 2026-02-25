@@ -17,6 +17,21 @@ function get_pmwr_ps2_sec_id(string) {
     case '4unr':
         return "pmwr_ps2_unordered"
         break
+    case "0Yay":
+        return "pmwr_ps2_models"
+        break
+    case "^YZ2":
+        return "pmwr_ps2_share"
+        break
+    case "afas":
+        return "pmwr_ps2_models_12"
+        break
+    case "afa2":
+        return "pmwr_ps2_models_04"
+        break
+    case "afa3":
+        return "pmwr_ps2_models_04_4"
+        break
     case 'bsck':
         return 'pmwr_ps2_basic'
         break
@@ -44,12 +59,29 @@ function get_pmwr_ps2_sec_id(string) {
     case 'ma21':
         return 'pmwr_ps2_model_animation_2_1'
         break
-
+    case "afa4":
+        return "pmwr_ps2_models_04_4_0_ps2"
+        break
+    case "C65L":
+        return "im_models_04_4_0_ps2_t0"
+        break
+    case "5N8t":
+        return "models_04_4_0_ps2_t1"
+        break
+    case "9UB0":
+        return "models_04_4_0_ps2_t1_80"
+        break
+    case "<4g_":
+        return "im_models_04_4_0_ps2_t2"
+        break
     case 'du1v':
         return "pmwr_ps2_world"
         break
     case '95=m':
         return "pmwr_ps2_collision"
+        break
+    case 'buff':
+        return "pmwr_ps2_data_buffer"
         break
     case 'ttK_':
         return "pmwr_ps2_collision_76"
@@ -3899,14 +3931,14 @@ function im_pmwr_ps2_texture(o, x) {
         if (temp_alpha) {
             pmwr_ps2_texture_offset = u32(pmwr_ps2_texture_settings_offset + 4) + g.m
             temp_pmwr_ps2_texture_array = convert_arraybuffer_base64(buffer.slice(pmwr_ps2_texture_offset, pmwr_ps2_texture_offset + temp_alpha))
-            x[ti].alpha.push(temp_pmwr_ps2_texture_array)
+            x[ti].alpha = temp_pmwr_ps2_texture_array
         }
         if (u8(pmwr_ps2_texture_settings_offset + 1) === 0) {
 
             pmwr_ps2_texture_offset = u32(pmwr_ps2_texture_settings_offset + 8) + g.m
             temp_pmwr_ps2_texture_array = convert_arraybuffer_base64(buffer.slice(pmwr_ps2_texture_offset, pmwr_ps2_texture_offset + temp_value))
 
-            x[ti].pmwr_ps2_texture.push(temp_pmwr_ps2_texture_array)
+            x[ti].pmwr_ps2_texture = temp_pmwr_ps2_texture_array
             e = pmwr_ps2_texture_offset + temp_value
         } else {
 
@@ -3924,11 +3956,13 @@ function im_pmwr_ps2_texture(o, x) {
             let pmwr_ps2_texture_offset = u32(pmwr_ps2_texture_settings_offset + 8) + g.m
             for (let i = 0; i < u8(pmwr_ps2_texture_settings_offset + 1) + 1; i++) {
 
-                let temp_pmwr_ps2_texture_array = convert_arraybuffer_base64(buffer.slice(mipmap_start, mipmap_end))
+                im_pmwr_ps2_texture_8(mipmap_start, x[ti].pmwr_ps2_texture, mipmap_end)
+                // let temp_pmwr_ps2_texture_array = convert_arraybuffer_base64(buffer.slice(mipmap_start, mipmap_end))
 
                 // let temp_pmwr_ps2_texture_array = new ArrayBuffer(temp_2)
 
-                x[ti].pmwr_ps2_texture.push(temp_pmwr_ps2_texture_array)
+                // im_pmwr_ps2_texture_8(start_08_texture, x[i].pmwr_ps2_texture, end_08_texture)
+                // x[ti].pmwr_ps2_texture.push(temp_pmwr_ps2_texture_array)
                 mipmap_start += temp_2
                 temp_mipmap_offset += temp_2
                 temp_2 = Math.round(temp_2 / 4)
@@ -3963,6 +3997,15 @@ function im_pmwr_ps2_texture(o, x) {
     }
 
     return e
+}
+function im_pmwr_ps2_texture_8(o, x, end) {
+    id_offset.push(o);
+    x.push({
+        id: gen_id(),
+        sec_id: "buff",
+        temp_buffer: convert_arraybuffer_base64(buffer.slice(o, end)),
+    });
+
 }
 
 function im_pmwr_ps2_texture_animation_section(o, i, x) {
@@ -4119,7 +4162,7 @@ function im_pmwr_ps2_audio(o, x, a) {
         const start_offset = u32(o + 0) + after_offset_list
         const sound_buffer = convert_arraybuffer_base64(buffer.slice(start_offset, start_offset + u32(o + 4)))
 
-        x[i].sound_data.push(sound_buffer)
+        x[i].sound_data = sound_buffer
 
         return start_offset + u32(o + 4)
 
@@ -4143,7 +4186,7 @@ function im_pmwr_ps2_models(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
+        sec_id: "0Yay",
         magic: u16(o),
         name: get_string(u32(o + 8) + g.m, 0, false),
         section_4: [],
@@ -4196,7 +4239,7 @@ function im_pmwr_ps2_models_04_4(o, i, x) {
     x.push({
         id: gen_id(),
 
-        sec_id: "afa2",
+        sec_id: "afa3",
 
         section_0: [],
     });
@@ -4218,7 +4261,7 @@ function im_pmwr_ps2_models_04_4_0_ps2(o, i, x) {
     x.push({
         id: gen_id(),
 
-        sec_id: "afa3",
+        sec_id: "afa4",
         section_0: [],
     });
 
