@@ -329,6 +329,18 @@ th {
     background: #bcbcbc;
     color: #000000;
 }
+.move_to_array {
+    border: 0px;
+    text-align: center;
+    width: 20%;
+    cursor: pointer;
+    user-select:none;
+}
+
+.move_to_array:hover {
+    background: #bcbcbc;
+    color: #000000;
+}
 
 .plus_button {
     text-align: center;

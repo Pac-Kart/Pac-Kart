@@ -218,20 +218,20 @@ function check_if_json(string) {
 }
 
 function check_static_id() {
-        let id = PK_path.obj.id
-        if (typeof id !== 'number') {
-            if (PK_path.obj.sec_id === "XSET") {
+    let id = PK_path.obj.id
+    if (typeof id !== 'number') {
+        if (PK_path.obj.sec_id === "XSET") {
             return null
-            }else{
+        } else {
             console.pk_log(`<a style="color:red;">id is not number | id is a ${typeof id} </a>`)
             return null
-            }
         }
-        let offset = id_offset[id]
-        if (typeof offset !== 'number') {
-            console.pk_log(`<a style="color:red;">offset is not number | offset is a ${typeof offset} </a>`)
-            return null
-        }
+    }
+    let offset = id_offset[id]
+    if (typeof offset !== 'number') {
+        console.pk_log(`<a style="color:red;">offset is not number | offset is a ${typeof offset} </a>`)
+        return null
+    }
     return true
 }
 
@@ -363,14 +363,13 @@ function create_new_array_view() {
         PK_path.is_dyn = true;
     } else {
         PK_path.is_dyn = false;
+        if (id_list !== id_offset.length) {
+            console.pk_log(`id_list !== id_offset.length | id_list: ${id_list} | id_offset.length: ${id_offset.length}`)
+        }
     }
 
     array_view_get_type(PK_path.array_path)
     add_events()
-
-    if (id_list !== id_offset.length) {
-            console.pk_log(`id_list !== id_offset.length | id_list: ${id_list} | id_offset.length: ${id_offset.length}`)
-    }
 
     // console.log(x_global)
 
@@ -876,10 +875,14 @@ function array_view_array(array_path) {
     let html_list = ""
     let section_id = ""
     for (let i = 0; i < PK_path.obj.length; i++) {
+        let id = ''
+        if (typeof PK_path.obj[i]?.id !== 'undefined') {
+            id = `id ${PK_path.obj[i]?.id} | `
+        }
         // section_id = window[("get_" + g.type_string + "_sec_id")](array_path[i].sec_id)
         html_list += `
                <tr id="${i}">
-                  <td class='no_border data-array_number="${i}" noselect array_button'>${i} | Array ${i + 1}
+                  <td class='no_border data-array_number="${i}" noselect array_button'>${id} Array ${i}
             <td colspan="4" class='no_border noselect arrow_buttons'>
                   ${edit_button_html}
                  </td>
@@ -1003,19 +1006,55 @@ function add_events() {
 
             array_view_get_type(PK_path.array_path)
 
+        } else if (classname.includes("move_to_array")) {
+        let temp_obj = get_full_path_up(PK_path.array_path, 1)
+        let current_section = Number(PK_path.array_path[PK_path.array_path.length -1])
+        let temp_array = PK_path.array_path
+
+            if (target.innerText === "▲") {
+                temp_array[temp_array.length-1] = String(current_section-1)
+            } else if (target.innerText === "▼") {
+                temp_array[temp_array.length-1] = String(current_section+1)
+            }
+                array_view_get_type(temp_array)
+
         } else if (classname.includes("move_button")) {
-            if (target.innerText = "Up ▲") {
-                console.pk_log('up not added')
+            let array_id = Number(target.parentElement.parentElement.parentElement.id)
+            if (typeof array_id !== "number") {
+                console.pk_log('x_button not added')
+                return
+            }
+
+            if (target.innerText === "▲") {
+                PK_path.obj.splice(array_id - 1, 0, PK_path.obj.splice(array_id, 1)[0]);
+                console.pk_log(`array ${array_id} moved up`)
                 // move up
             } else {
-                console.pk_log('down not added')
+                PK_path.obj.splice(array_id + 1, 0, PK_path.obj.splice(array_id, 1)[0]);
+                console.pk_log(`array ${array_id} moved down`)
                 // move down
             }
+                array_view_get_type(PK_path.array_path)
+
         } else if (classname.includes("copy_button")) {
-            console.pk_log('copy_button not added')
-            // console.log('?')
+            let array_id = Number(target.parentElement.parentElement.parentElement.id)
+            if (typeof array_id === "number") {
+                PK_path.obj.push(PK_path.obj[array_id])
+                array_view_get_type(PK_path.array_path)
+                console.pk_log(`copied array ${array_id} down`)
+            } else {
+                console.pk_log('copy_button not added')
+            }
+
         } else if (classname.includes("x_button")) {
-            console.pk_log('x_button not added')
+            let array_id = Number(target.parentElement.parentElement.parentElement.id)
+            if (typeof array_id === "number") {
+                PK_path.obj.splice(array_id, 1)
+                array_view_get_type(PK_path.array_path)
+                console.pk_log(`deleted array ${array_id}`)
+            } else {
+                console.pk_log('x_button not added')
+            }
             // console.log('?')
         } else if (classname.includes("plus_button")) {
             console.pk_log('plus_button not added')
@@ -1226,7 +1265,6 @@ function add_events() {
         console.pk_log(`static buffer updated | offset ${true_offset} updated to ${new_value}`)
 
         return new_value
-        // console.log(value_function,true_offset,true_value)
 
     }
 
@@ -1316,7 +1354,7 @@ function array_view_object() {
 
     let dyn_upload_button_html = ''
     if (PK_path.is_dyn) {
-        dyn_upload_button_html =`<button title="upload json" id="json_upload_button">⤒</button>`
+        dyn_upload_button_html = `<button title="upload json" id="json_upload_button">⤒</button>`
     }
 
     let html = `
@@ -1346,7 +1384,26 @@ function array_view_object() {
     if (PK_path.is_dyn === false) {
         let check = check_static_id()
         if (check === true) {
-        document.getElementById("file_view_options_bar").innerHTML = `section offset: ${id_offset[PK_path.obj.id]}`
+            document.getElementById("file_view_options_bar").innerHTML = `section offset: ${id_offset[PK_path.obj.id]}`
+        }
+    }else{
+        let temp_obj = get_full_path_up(PK_path.array_path, 1)
+        let length = temp_obj.length
+        if (typeof temp_obj.length === 'undefined') {
+            return
+        }
+        if (length !== 1) {
+        let up = '<div class="move_to_array">▲</div>'
+        let down = '<div class="move_to_array">▼</div>'
+        let current_section = Number(PK_path.array_path[PK_path.array_path.length -1])
+            if (current_section === 0) {
+                up = '<div class="move_to_array"> </div>'
+            }
+            if (current_section === (length-1)) {
+                down = '<div class="move_to_array"> </div>'
+            }
+
+        document.getElementById("file_view_options_bar").innerHTML = `${up} ${down} `
         }
     }
 
@@ -1396,17 +1453,13 @@ function check_section(string_name) {
     let info_function = window[("info_" + string_name)]
     let export_function = window[("ex_" + string_name)]
 
-    if (typeof import_function === "function") {} else {
-        // console.pk_log(`<a style="color:red;">${string_name} import_function null</a>`)
+    if (typeof import_function === "function") {} else {// console.pk_log(`<a style="color:red;">${string_name} import_function null</a>`)
     }
-    if (typeof add_function === "function") {} else {
-        // console.pk_log(`<a style="color:red;">${string_name} add_function null</a>`)
+    if (typeof add_function === "function") {} else {// console.pk_log(`<a style="color:red;">${string_name} add_function null</a>`)
     }
-    if (typeof info_function === "function") {} else {
-        // console.pk_log(`<a style="color:red;">${string_name} info_function null</a>`)
+    if (typeof info_function === "function") {} else {// console.pk_log(`<a style="color:red;">${string_name} info_function null</a>`)
     }
-    if (typeof export_function === "function") {} else {
-        // console.pk_log(`<a style="color:red;">${string_name} export_function null</a>`)
+    if (typeof export_function === "function") {} else {// console.pk_log(`<a style="color:red;">${string_name} export_function null</a>`)
     }
 }
 
@@ -1417,6 +1470,37 @@ function get_full_path(array_path) {
     let temp_array = x_global
 
     for (let i = 0; i < path_array.length; i++) {
+        let temp_path = temp_array[path_array[i]]
+        // temp_array = Object.values(temp_path);
+        temp_array = temp_path
+
+    }
+
+    if (temp_array === undefined) {
+        console.pk_log("temp_array is undefined, moving to x_global[0]")
+        temp_array = x_global[0]
+        PK_path.array_path = ["0"]
+    }
+
+    if (array_path.length === 0) {
+        temp_array = x_global[0]
+        PK_path.array_path = ["0"]
+    }
+
+    get_update_pk_list_type()
+    // update_pk_path_list()
+    return temp_array
+}
+
+function get_full_path_up(array_path,up_amt) {
+
+    let path_array = array_path
+
+    let temp_array = x_global
+
+    let new_length = path_array.length - up_amt
+
+    for (let i = 0; i < new_length; i++) {
         let temp_path = temp_array[path_array[i]]
         // temp_array = Object.values(temp_path);
         temp_array = temp_path

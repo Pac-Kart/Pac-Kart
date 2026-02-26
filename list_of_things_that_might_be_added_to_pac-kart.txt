@@ -62,13 +62,6 @@ array_viewer ideas:
     maybe have a version showing history of sections clicked
         have history arrows at the bottom of either the file viewer or file editor?
 
-    also have path in file editor section at the top would look like
-    Path: x[0].directory[3].datapack[0].ordered[0].file_specific[0].basic_04[0]
-
-    in an array entry with multiple other entries on either side
-        maybe have an arrow above / below somewhere in the file editor section
-            so able to loop/move between besides file viewer
-
     have the ability to add a new file without importing
         save file would probably be selectable here as well
 
@@ -195,12 +188,7 @@ bmg
     what is patch list 3
 
 pmwr
-    non pmwr pc formats not fully documented
     sections dont have pmwr listed
-
-pmwr_demo
-    should be pmwr_demo
-    probably need to rename some sections
 
 hwvx
     some linked to by: sections missing entries
@@ -214,11 +202,6 @@ hwvx_proto
     maybe create a sha list of texture data ???
     also fx_sprite_bloodStain_b&w.tga is probably texture 29 in HW_Share
 
-mmvcl
-    some sections dont have mm listed
-    add patch list  list of links
-    should this be mm or mmvcl?
-        should be mm
 --------------------------------
 ideas for pac-kart filetesting:
 
@@ -230,7 +213,7 @@ bcc
 bmg
     find model length sections calculated
 
-pmwr_ps2demo
+pmwr_demo
     reorder functions based on docs
 
 pmwr_xdx
@@ -245,5 +228,5 @@ hwvx
 hwvx_proto
     reorder functions based on docs
 
-mmvcl
+mm
     reorder functions based on docs
