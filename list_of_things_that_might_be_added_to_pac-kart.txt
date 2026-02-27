@@ -143,6 +143,8 @@ add import/export tables for outer datapack/sound only sections
 add import/export tables for all sections
     mmcvl [traversable, no exports]
     hwvx_proto [traversable, no exports]
+        fix:
+        hwvx_proto_geo_list_4_16
     hwvx_gc [traversable, no exports]
     hwvx_pc [traversable, no exports]
         fix:
