@@ -15532,17 +15532,19 @@ function info_hwvx_pc_world_36_48() {
 function info_hwvx_pc_Airbox() {
     return {
         sec_id: "huaA",
-        f32_0: 0,
-        f32_4: 0,
-        f32_8: 0,
+        f32_0: {
+            n: "x position"
+        },
+        f32_4: {n: "y position"},
+        f32_8: {n: "z position"},
         u8_12: 0,
         u8_13: 0,
         u8_14: 0,
         u8_15: 0,
-        f32_16: 0,
-        f32_20: 0,
-        f32_24: 0,
-        f32_28: 0,
+        f32_16: {n: "f32_16 | rotation?"},
+        f32_20: {n: "f32_20 | rotation?"},
+        f32_24: {n: "f32_24 | rotation?"},
+        f32_28: {n: "f32_28 | rotation?"},
         u32_32: 0,
         section_36: ["change this"],
         f32_40: 0,

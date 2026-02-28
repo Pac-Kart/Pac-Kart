@@ -1339,11 +1339,12 @@ function array_view_object() {
     let section_id = ""
     for (let i = 0; i < keys_array.length; i++) {
         let input_type = get_input_type(values_array[i], i, keys_array[i])
+        let key_name = return_key_name(keys_array[i],sec_name)
 
         // section_id = window[("get_" + g.type_string + "_sec_id")](str_path[i].sec_id)
         html_list += `
                <tr id="${i}">
-                  <td class='no_border' data-x_id="${keys_array[i]}" noselect'>${keys_array[i]}
+                  <td class='no_border' data-x_id="${keys_array[i]}" noselect'>${key_name}
                   </td>
                    <td class='no_border noselect arrow_buttons'>
                        ${input_type}
@@ -1409,6 +1410,27 @@ function array_view_object() {
 
     // document.getElementById('game').value = TXFA.game
     // document.getElementById("name").addEventListener('change', edit_change_name);
+}
+
+function info_global() {
+    return {}
+}
+// function info_file() {
+//     return {}
+// }
+
+function return_key_name(name,sec) {
+    const info_name = "info_" + sec
+    const window_f = window[info_name]
+    if (typeof window_f === "undefined") {
+        return name
+    }
+    let info_obj = window_f()
+    let new_name = info_obj[name]?.n
+    if (typeof new_name !== "undefined") {
+        return new_name
+    }
+    return name
 }
 
 function array_view_value() {
