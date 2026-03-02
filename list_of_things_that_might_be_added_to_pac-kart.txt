@@ -121,7 +121,7 @@ add ability to change css colors, probably on file settings section
 
 add import/export tables for outer datapack/sound only sections
     mmcvl [f]
-    hwvx_proto
+    hwvx_proto [f]
     hwvx_gc
     hwvx_pc
     hwvx_ps2

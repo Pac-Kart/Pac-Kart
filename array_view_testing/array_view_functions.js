@@ -359,7 +359,7 @@ function create_new_array_view() {
         is_dyn: null,
     }
 
-    if (g.type_string === "pmwr_pc") {
+    if (g.type_string === "pmwr_pc" || pk_debug === true) {
         PK_path.is_dyn = true;
     } else {
         PK_path.is_dyn = false;
@@ -1007,16 +1007,16 @@ function add_events() {
             array_view_get_type(PK_path.array_path)
 
         } else if (classname.includes("move_to_array")) {
-        let temp_obj = get_full_path_up(PK_path.array_path, 1)
-        let current_section = Number(PK_path.array_path[PK_path.array_path.length -1])
-        let temp_array = PK_path.array_path
+            let temp_obj = get_full_path_up(PK_path.array_path, 1)
+            let current_section = Number(PK_path.array_path[PK_path.array_path.length - 1])
+            let temp_array = PK_path.array_path
 
             if (target.innerText === "▲") {
-                temp_array[temp_array.length-1] = String(current_section-1)
+                temp_array[temp_array.length - 1] = String(current_section - 1)
             } else if (target.innerText === "▼") {
-                temp_array[temp_array.length-1] = String(current_section+1)
+                temp_array[temp_array.length - 1] = String(current_section + 1)
             }
-                array_view_get_type(temp_array)
+            array_view_get_type(temp_array)
 
         } else if (classname.includes("move_button")) {
             let array_id = Number(target.parentElement.parentElement.parentElement.id)
@@ -1034,7 +1034,7 @@ function add_events() {
                 console.pk_log(`array ${array_id} moved down`)
                 // move down
             }
-                array_view_get_type(PK_path.array_path)
+            array_view_get_type(PK_path.array_path)
 
         } else if (classname.includes("copy_button")) {
             let array_id = Number(target.parentElement.parentElement.parentElement.id)
@@ -1339,7 +1339,7 @@ function array_view_object() {
     let section_id = ""
     for (let i = 0; i < keys_array.length; i++) {
         let input_type = get_input_type(values_array[i], i, keys_array[i])
-        let key_name = return_key_name(keys_array[i],sec_name)
+        let key_name = return_key_name(keys_array[i], sec_name)
 
         // section_id = window[("get_" + g.type_string + "_sec_id")](str_path[i].sec_id)
         html_list += `
@@ -1387,24 +1387,24 @@ function array_view_object() {
         if (check === true) {
             document.getElementById("file_view_options_bar").innerHTML = `section offset: ${id_offset[PK_path.obj.id]}`
         }
-    }else{
+    } else {
         let temp_obj = get_full_path_up(PK_path.array_path, 1)
         let length = temp_obj.length
         if (typeof temp_obj.length === 'undefined') {
             return
         }
         if (length !== 1) {
-        let up = '<div class="move_to_array">▲</div>'
-        let down = '<div class="move_to_array">▼</div>'
-        let current_section = Number(PK_path.array_path[PK_path.array_path.length -1])
+            let up = '<div class="move_to_array">▲</div>'
+            let down = '<div class="move_to_array">▼</div>'
+            let current_section = Number(PK_path.array_path[PK_path.array_path.length - 1])
             if (current_section === 0) {
                 up = '<div class="move_to_array"> </div>'
             }
-            if (current_section === (length-1)) {
+            if (current_section === (length - 1)) {
                 down = '<div class="move_to_array"> </div>'
             }
 
-        document.getElementById("file_view_options_bar").innerHTML = `${up} ${down} `
+            document.getElementById("file_view_options_bar").innerHTML = `${up} ${down} `
         }
     }
 
@@ -1419,7 +1419,7 @@ function info_global() {
 //     return {}
 // }
 
-function return_key_name(name,sec) {
+function return_key_name(name, sec) {
     const info_name = "info_" + sec
     const window_f = window[info_name]
     if (typeof window_f === "undefined") {
@@ -1514,7 +1514,7 @@ function get_full_path(array_path) {
     return temp_array
 }
 
-function get_full_path_up(array_path,up_amt) {
+function get_full_path_up(array_path, up_amt) {
 
     let path_array = array_path
 
@@ -2014,6 +2014,9 @@ async function dynamic_save(obj_x) {
     for (let i = 0; i < buffer_array.length; i++) {
         final_array.set(new Uint8Array(buffer_array[i]), offset)
         offset += buffer_array[i].byteLength
+        if (typeof buffer_array === 'undefined') {
+            console.pk_log(`buffer ${i} is undefined`)
+        }
     }
 
     if (1000000000 < offset) {
@@ -2029,11 +2032,41 @@ async function dynamic_save(obj_x) {
         console.pk_log("same")
         return null
     } else {
+        if (pk_debug) {
+            check_debug_x_file_buffers(final_array)
+        }
         return final_array
     }
 
     delete globalThis.buffer_array
     delete globalThis.dynamic_buffer
+
+}
+
+function check_debug_x_file_buffers(final_array) {
+    let final_check = Array.from(new Uint8Array(final_array));
+    let buffer_check = Array.from(new Uint8Array(buffer));
+    let buffer_is_same = true
+    if (final_check.length !== buffer_check.length) {
+        console.pk_log(`diff length !!!
+        final_check: ${final_check.length}
+        buffer_check: ${buffer_check.length}
+        diff: ${buffer_check.length - final_check.length}
+        `)
+        console.pk_log("dif")
+    }
+
+    for (let i = 0; i < buffer_check.length; i++) {
+
+        if (final_check[i] !== buffer_check[i]) {
+            console.pk_log(`diff value at byte ${i}
+        final_check: ${final_check.slice(i, i + 16)}
+        buffer_check: ${buffer_check.slice(i, i + 16)}`)
+            i = buffer_check.length
+            buffer_is_same = false
+        }
+    }
+    console.pk_log(`buffer_is_same is ${buffer_is_same}`)
 
 }
 

@@ -11768,7 +11768,7 @@ function add_hwvx_pc_model() {
     return {
 
         sec_id: "7iX0",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         section_8: [],
@@ -12054,9 +12054,8 @@ function add_hwvx_pc_model_anims_2_16() {
 }
 function add_hwvx_pc_texture() {
     return {
-
         sec_id: "w_ld",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         u16_4: 0,
@@ -16722,7 +16721,7 @@ function info_hwvx_pc_share() {
 function info_hwvx_pc_model() {
     return {
         sec_id: "7iX0",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: {
             a: null
@@ -17010,7 +17009,7 @@ function info_hwvx_pc_model_anims_2_16() {
 function info_hwvx_pc_texture() {
     return {
         sec_id: "w_ld",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         u16_4: 0,

@@ -1171,7 +1171,7 @@ function im_hwvx_proto_directory(o, i, x) {
 
     g = {
         divisible_prev_value: [],
-        debug: pk_debug,
+        debug: false,
         type_string: g.type_string,
         game: g.game,
         console: g.console,
@@ -1256,13 +1256,13 @@ function im_hwvx_proto_directory(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "]7Zf",
         u32_0: u32(o + 0),
         u32_4: u32(o + 4),
         u32_8: u32(o + 8),
         u32_12: u32(o + 12),
         u32_16: u32(o + 16),
+        u32_20: u32(o + 20),
         section_datapack: [],
     });
 
@@ -1318,6 +1318,7 @@ function im_hwvx_proto_datapack(o, i, x) {
         id: gen_id(),
 
         sec_id: "E@3Z",
+        u32_4: u32(o + 4),
         u32_8: u32(o + 8),
         //amount?
         u32_12: u32(o + 12),
@@ -1325,6 +1326,7 @@ function im_hwvx_proto_datapack(o, i, x) {
         u32_16: u32(o + 16),
         //amount?
         u32_20: u32(o + 20),
+        u32_24: u32(o + 24),
         //amount?
         section_24: [],
         u32_28: u32(o + 28),
@@ -1332,6 +1334,7 @@ function im_hwvx_proto_datapack(o, i, x) {
         u32_32: u32(o + 32),
         //amount?
         u32_40: u32(o + 40),
+        u32_44: u32(o + 44),
         //amount?
         section_44: [],
         u32_48: u32(o + 48),
@@ -1339,9 +1342,13 @@ function im_hwvx_proto_datapack(o, i, x) {
         u32_52: u32(o + 52),
         //amount?
         u32_56: u32(o + 56),
+        u32_60: u32(o + 60),
         //amount?
         section_60: [],
         u32_64: u32(o + 64),
+        u32_68: u32(o + 68),
+        u32_72: u32(o + 72),
+        u32_76: u32(o + 76),
         //amount?
         section_68: [],
         section_72: [],
@@ -1356,9 +1363,15 @@ function im_hwvx_proto_datapack(o, i, x) {
         hwvx_proto_audio_index_patch_padding: 0,
     });
 
+    // export testing only
+    if (pk_debug) {
+        x[i].ordered_buffer = convert_arraybuffer_base64(buffer.slice(g.m, g.m + u32(o)))
+        x[i].patch_buffer = convert_arraybuffer_base64(buffer.slice(patchlistoffset, g.m))
+    }
+
     let padding_test = im_hwvx_proto_audio(offset_after_datapack, x[i].section_audio, u32(o + 8))
 
-    // x[i].hwvx_proto_audio_index_patch_padding = offset_index_patch - padding_test
+    x[i].hwvx_proto_audio_index_patch_padding = offset_index_patch - padding_test
 
     g.datapack_offset = o
     g.datapack_ref = x
@@ -1366,8 +1379,12 @@ function im_hwvx_proto_datapack(o, i, x) {
     im_hwvx_proto_get_combined_patch_list(o, patchlistoffset, x[i].patch_list)
 
     im_hwvx_proto_ordered(g.m, x[i].ordered)
+    if (g.file_dir_type === "music") {
+        im_hwvx_proto_impulse_tracker(offset_start_impulse_tracker, offset_end_impulse_tracker, x[i].section_72);
+    }else{
+        u32(o + 72) && im_hwvx_proto_impulse_tracker(offset_start_impulse_tracker, offset_end_impulse_tracker, x[i].section_72);
+    }
 
-    u32(o + 72) && im_hwvx_proto_impulse_tracker(offset_start_impulse_tracker, offset_end_impulse_tracker, x[i].section_72);
     u32(o + 76) && im_hwvx_proto_audio_data_2(offset_start_hwvx_proto_audio_data_2, offset_end_hwvx_proto_audio_data_2, x[i].section_76);
 
     for (let ii = 0; ii < u32(o + 20); ii++) {
@@ -1434,6 +1451,12 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
     g.datapack_offset = o
     g.datapack_ref = x[0]
 
+    if (pk_debug) {
+        x[i].ordered_buffer = convert_arraybuffer_base64(buffer.slice(g.m, g.m + u32(o)))
+        x[i].patch_buffer = convert_arraybuffer_base64(buffer.slice(patchlistoffset, g.m))
+    }
+
+
     // get_hwvx_proto_get_combined_geo_patch_list(o)
     // globalThis.old_log_array = structuredClone(log_array)
 
@@ -1476,14 +1499,22 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
 function im_hwvx_proto_audio(o, x, a) {
 
     const after_offset_list = o + (a * 4)
-    let padding_test = after_offset_list + (a * 32)
 
     id_offset.push(o);
     x.push({
         id: gen_id(),
         sec_id: "audi",
-        sound: []
+        sound: [],
+        padding:0,
     })
+
+    let padding_test = after_offset_list + (a * 32)
+    if (a) {
+        let start_audio_data = 0
+        let temp = after_offset_list + u32(o)
+        let temp_offset = (u32(temp) + after_offset_list)
+        x[0].padding = temp_offset - padding_test
+    }
 
     for (let i = 0; i < a; i++) {
         padding_test = im_hwvx_proto_audio_00(after_offset_list + u32(o + (i * 4)), x[0].sound, i)
@@ -1725,7 +1756,6 @@ function im_hwvx_proto_basic(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "uZNx",
         u32_0: u32(o + 0),
         section_4: [],
@@ -4649,8 +4679,8 @@ function im_hwvx_proto_texture(o, i, x) {
     if (u16(o + 6) === 0) {
         // no mipmaps
         if (u32(o + 8)) {
-           im_hwvx_proto_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
-           // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+            im_hwvx_proto_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+            // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
         }
 
     } else {
@@ -4659,7 +4689,7 @@ function im_hwvx_proto_texture(o, i, x) {
         for (let ii = 0; ii < u16(o + 6) - 1; ii++) {
 
             if (u32(o + 8)) {
-               im_hwvx_proto_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+                im_hwvx_proto_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
                 // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
             }
             start_08_texture += mipmap_offset
@@ -11310,7 +11340,7 @@ function add_hwvx_proto_texture() {
     return {
 
         sec_id: "of0M",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         u16_4: 0,
@@ -16195,7 +16225,7 @@ function info_hwvx_proto_model_anims_2_16() {
 function info_hwvx_proto_texture() {
     return {
         sec_id: "of0M",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         u16_4: 0,
@@ -19354,15 +19384,15 @@ function info_hwvx_proto_texture_anims_0_16() {
 /////////////////////
 /* start export list */
 function ex_hwvx_proto_x(o, x) {
-    console.pk_log("save not finished")
+    // console.pk_log("save not finished")
 
-    return null
+    // return null
 
     g = {
         divisibility: 16,
         divisible_prev_value: [],
         type_string: g.type_string,
-        debug: pk_debug,
+        debug: false,
         endian: g.endian,
         file_dir_type: 0,
         ordered_ref: 0,
@@ -19425,15 +19455,25 @@ function ex_hwvx_proto_x(o, x) {
         hwvx_proto_texture_anims_0_array: [],
     }
 
-    globalThis.directory_buffer = new ArrayBuffer(268435455)
-
-    buffer_array.push(directory_buffer)
-    dynamic_buffer = directory_buffer
-
     let time_array = []
     let a = Date.now()
 
     ex_hwvx_proto_file_header(o, x)
+
+    let array_reorder = []
+    let buffer_array_m1 = buffer_array.length - 1
+    array_reorder.push(buffer_array[buffer_array_m1])
+
+    for (let i = 0; i < buffer_array_m1; i += 3) {
+        // datapack
+        array_reorder.push(buffer_array[i + 2])
+        //  patch list
+        array_reorder.push(buffer_array[i + 1])
+        // ordered
+        array_reorder.push(buffer_array[i + 0])
+    }
+
+    buffer_array = array_reorder
 
     time_array.push(Date.now() - a)
 
@@ -19443,21 +19483,41 @@ function ex_hwvx_proto_x(o, x) {
 
 function ex_hwvx_proto_file_header(o, x) {
     let e = o + 16
+
+    globalThis.directory_length_array = []
+    let global = ((x.directory.length) * 24) + 16
+    e = e + (x.directory.length * 24)
+
+    let time_array = []
+    for (let i = 0; i < x.directory.length; i++) {
+        let a = Date.now()
+
+        e = ex_hwvx_proto_directory(16 + (i * 24), e, x.directory[i], global)
+        time_array.push(Date.now() - a)
+
+    }
+
+    globalThis.directory_buffer = new ArrayBuffer(global)
+
+    buffer_array.push(directory_buffer)
+    dynamic_buffer = directory_buffer
+
     su32(0, x.u32_0)
     su32(4, x.u32_4)
     su32(8, x.u32_8)
-    su32(12, x[0].directory.length)
+    su32(12, x.directory.length)
 
-    let global = ((x[0].directory.length) * 24) + 16
-    e = e + (x[0].directory.length * 24)
-
-    let time_array = []
-    for (let i = 0; i < x[0].directory.length; i++) {
-        let a = Date.now()
-
-        e = ex_hwvx_proto_directory(16 + (i * 24), e, x[0].directory[i], global)
-        time_array.push(Date.now() - a)
-
+    let temp_offset = 16
+    // let calculate_offset = temp_offset + (x.directory.length * 24)
+    for (let i = 0; i < x.directory.length; i++) {
+        su32(temp_offset + 0, x.directory[i].u32_0)
+        su32(temp_offset + 4, x.directory[i].u32_4)
+        su32(temp_offset + 8, x.directory[i].u32_8)
+        su32(temp_offset + 12, x.directory[i].u32_12)
+        // su32(temp_offset + 16, globalThis.directory_length_array[i])
+        su32(temp_offset + 16, x.directory[i].u32_16)
+        su32(temp_offset + 20, x.directory[i].u32_20)
+        temp_offset += 24
     }
 
     console.pk_log("saved in " + time_array)
@@ -19524,12 +19584,6 @@ function ex_hwvx_proto_directory(o, e, x, global) {
     let ce = e
     g.file_dir_type = return_directory_type(x.u32_4)
 
-    su32(o + 0, x.u32_0)
-    su32(o + 4, x.u32_4)
-    su32(o + 8, x.u32_8)
-    su32(o + 12, x.u32_12)
-    su32(o + 20, e - global)
-
     switch (x.u32_4) {
     case 1:
     case 2:
@@ -19540,37 +19594,63 @@ function ex_hwvx_proto_directory(o, e, x, global) {
     case 8:
     case 9:
     case 10:
-        e = ex_hwvx_proto_datapack(16 + (i * 24), e, x[0].section_datapack[i], global)
+        e = ex_hwvx_proto_datapack(e, x.section_datapack[0], global)
         break;
     case 7:
-        e = ex_hwvx_proto_geo_datapack(16 + (i * 24), e, x[0].section_datapack[i], global)
+        e = ex_hwvx_proto_geo_datapack(e, x.section_datapack[0], global)
         break;
     }
-
-    dynamic_buffer = directory_buffer
-    su32(o + 16, datapack_buffer.byteLength + patch_buffer.byteLength + ordered_buffer.byteLength)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
 function ex_hwvx_proto_datapack(o, x) {
-    let e = o + 120
-    su32(o + 8, x.u32_8)
-    su32(o + 12, x.u32_12)
-    su32(o + 16, x.u32_16)
-    su32(o + 20, x.u32_20)
-    su32(o + 28, x.u32_28)
-    su32(o + 32, x.u32_32)
-    su32(o + 40, x.u32_40)
-    su32(o + 48, x.u32_48)
-    su32(o + 52, x.u32_52)
-    su32(o + 56, x.u32_56)
-    su32(o + 64, x.u32_64)
-    su32(o + 92, x.u32_92)
-    su32(o + 112, x.u32_112)
+    g.datapack_offset = o
+    let e = 120
 
-    // x.section_audio
+    /*
+    start ordered
+    */
+
+    let ordered_list_buffer = convert_base64_arraybuffer(x.ordered_buffer)
+    globalThis.ordered_buffer = new ArrayBuffer(ordered_list_buffer.byteLength)
+
+    buffer_array.push(ordered_list_buffer)
+    dynamic_buffer = ordered_list_buffer
+
+    /*
+    end ordered
+    start patch list
+    */
+    let patch_list_buffer = convert_base64_arraybuffer(x.patch_buffer)
+    globalThis.patch_buffer = new ArrayBuffer(patch_list_buffer.byteLength)
+
+    buffer_array.push(patch_list_buffer)
+    dynamic_buffer = patch_list_buffer
+
+    /*
+    end patch list
+    start datapack
+    */
+
+    globalThis.datapack_buffer = new ArrayBuffer(100000000)
+
+    buffer_array.push(datapack_buffer)
+    dynamic_buffer = datapack_buffer
+
+    // globalThis.datapack_buffer = new ArrayBuffer(100000000)
+
+    // buffer_array.push(datapack_buffer)
+    // dynamic_buffer = datapack_buffer
+
+    e = ex_hwvx_proto_sound_offset_list(e, x.section_audio[0])
+    e = ex_hwvx_proto_impulse_tracker(e, x.section_72)
+    e = ex_hwvx_proto_audio_data_2(e, x.section_76)
+
+    // globalThis.ordered_buffer = new ArrayBuffer(ordered_length)
+
+    // e = ex_hwvx_proto_ordered(e, x.ordered[0])
 
     // e = ex_s_offset(o + 0, e, ex_ordered_list, x.section_0, 'down');
     // e = ex_s_offset(o + 4, e, ex_audio_section, x.section_4, 'down');
@@ -19579,22 +19659,86 @@ function ex_hwvx_proto_datapack(o, x) {
     // e = ex_s_offset(o + 60, e, ex_hwvx_proto_texture_anims, x.section_60, 'down');
     // e = ex_s_offset(o + 68, e, ex_hwvx_proto_datapack_68, x.section_68, 'down');
     // e = ex_s_offset(o + 72, e, ex_impulse_tracker, x.section_72, 'down');
-    // e = ex_s_offset(o + 76, e, ex_hwvx_proto_audio_data_2, x.section_76, 'down');
     // e = ex_string(o + 80, e, x.section_80)
     // e = ex_string(o + 100, e, x.section_100)
+
+    su32(0, ordered_buffer.byteLength)
+    su32(4, x.u32_4)
+    su32(8, x.u32_8)
+    su32(12, x.u32_12)
+    su32(16, x.u32_16)
+    su32(20, x.u32_20)
+    su32(28, x.u32_28)
+    su32(32, x.u32_32)
+    su32(40, x.u32_40)
+    su32(48, x.u32_48)
+    su32(52, x.u32_52)
+    su32(56, x.u32_56)
+    su32(64, x.u32_64)
+    su32(92, x.u32_92)
+    su32(112, x.u32_112)
+
+    su32(24, x.u32_24)
+    su32(44, x.u32_44)
+    su32(60, x.u32_60)
+    su32(64, x.u32_64)
+    su32(68, x.u32_68)
+    su32(72, x.u32_72)
+    su32(76, x.u32_76)
+    ex_string(80, 80, x.section_80, 1, 0)
+    ex_string(100, 100, x.section_100, 1, 0)
+
+    let file_length = globalThis.ordered_buffer.byteLength + e + globalThis.patch_buffer.byteLength
+    globalThis.directory_length_array.push(file_length)
+
+    buffer_array[buffer_array.length - 1] = datapack_buffer.slice(0, e)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 
 function ex_hwvx_proto_geo_datapack(o, x) {
-    let e = o + 84
-    su32(o + 0, x.u32_0)
-    //amount?   su32(o +4, x.u32_4)
-    //amount?   su32(o +8, x.u32_8)
-    //amount?   su32(o +28, x.u32_28)
-    //amount?   su32(o +36, x.u32_36)
-    //amount?   su32(o +40, x.u32_40)
+    g.datapack_offset = o
+    let e = 84
+
+    /*
+    start ordered
+    */
+
+    let ordered_list_buffer = convert_base64_arraybuffer(x.ordered_buffer)
+    globalThis.ordered_buffer = new ArrayBuffer(ordered_list_buffer.byteLength)
+
+    buffer_array.push(ordered_list_buffer)
+    dynamic_buffer = ordered_list_buffer
+
+    /*
+    end ordered
+    start patch list
+    */
+    let patch_list_buffer = convert_base64_arraybuffer(x.patch_buffer)
+    globalThis.patch_buffer = new ArrayBuffer(patch_list_buffer.byteLength)
+
+    buffer_array.push(patch_list_buffer)
+    dynamic_buffer = patch_list_buffer
+
+    /*
+    end patch list
+    start datapack
+    */
+
+    globalThis.datapack_buffer = new ArrayBuffer(84)
+
+    buffer_array.push(datapack_buffer)
+    dynamic_buffer = datapack_buffer
+
+    su32(0, x.u32_0)
+    su32(4, x.u32_4)
+    su32(8, x.u32_8)
+    su32(28, x.u32_28)
+    su32(36, x.u32_36)
+    su32(40, x.u32_40)
+    ex_string(44, 44, x.section_44, 1, 0)
+    su32(56, x.u32_56)
 
     // e = ex_string(o + 55, e, x.section_44)
     // e = ex_string(o + 56, e, x.section_56)
@@ -19603,30 +19747,69 @@ function ex_hwvx_proto_geo_datapack(o, x) {
     return e
 }
 
-function ex_hwvx_proto_sound_offset_list(o, e, x) {
+function ex_hwvx_proto_sound_offset_list(o, x) {
+    // let e = o
+    let sound_length = x.sound.length
+    // let end_block = o + (sound_length * 4)
+    // e += XFA.length * 32
 
-    e = ex_s_offset(o + 0, e, ex_hwvx_proto_audio_list, x.section_0, 'down');
+    let e = o + (sound_length * 4)
+    let base_offset = e
+    e += sound_length * 32
+    e += x.padding
+
+    if (sound_length) {
+        for (let i = 0; i < sound_length; i++) {
+            su32(o + (i * 4), i * 32)
+            e = ex_hwvx_proto_audio_list(base_offset + (i * 32), x.sound[i],e,base_offset);
+        }
+
+    }
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
-function ex_hwvx_proto_audio_list(o, e, x) {
-    su32(o + 0, x.u32_0)
-    su32(o + 4, x.u32_4)
+function ex_hwvx_proto_audio_list(o,x,e,base_offset) {
+    let buffer = convert_base64_arraybuffer(x.sound_data)
+
+    su32(o + 0, e - base_offset)
+    su32(o + 4, buffer.byteLength)
     su32(o + 8, x.u32_8)
-    su32(o + 12, x.u32_12)
-    su16(o + 16, x.u16_16)
-    su16(o + 18, x.u16_18)
+    su32(o + 12, x.soundsamplerate)
+    su32(o + 16, x.u32_16)
+    su16(o + 20, x.u32_20)
+
+    e = ex_hwvx_proto_audio_data(e, buffer)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
+}
+
+function ex_hwvx_proto_audio_data(o, buffer) {
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
+
+    return o + buffer.byteLength
+}
+function ex_hwvx_proto_impulse_tracker(o, x) {
+    if (x.length) {
+    let buffer = convert_base64_arraybuffer(x[0].buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
+
+    return o + buffer.byteLength
+    }
+    return o
+}
+function ex_hwvx_proto_audio_data_2(o, x) {
+    if (x.length) {
+    let buffer = convert_base64_arraybuffer(x[0].buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
+
+    return o + buffer.byteLength
+    }
+    return o
 }
 
 function ex_hwvx_proto_ordered(o, x) {
-    globalThis.ordered_buffer = new ArrayBuffer(268435455)
-
-    buffer_array.push(ordered_buffer)
-    dynamic_buffer = ordered_buffer
 
     let aftero = o
     let e = o
@@ -19638,46 +19821,26 @@ function ex_hwvx_proto_ordered(o, x) {
     ex_hwvx_proto_unordered(x.unordered[0])
 
     switch (g.file_dir_type) {
-
-    case "car":
-        e = ex_hwvx_proto_basic(o, x.file_specific[0])
-        break
-
-    case "interface":
-        e = ex_hwvx_proto_basic(o, x.file_specific[0])
-        break
-
     case "item":
-        e = ex_hwvx_proto_basic(o, x.file_specific[0])
-        break
-
+    case "interface":
+    case "car":
     case "link":
+    case "audio":
+    case "music":
         e = ex_hwvx_proto_basic(o, x.file_specific[0])
         break
-
     case "world":
         e = ex_hwvx_proto_world(o, x.file_specific[0])
         break
-
     case "colliders":
         e = ex_hwvx_proto_collision(o, x.file_specific[0])
         break
-
     case "geometry":
         e = ex_hwvx_proto_geo_basic(o, x.file_specific[0])
         break
     case "share":
         e = ex_hwvx_proto_share(o, x.file_specific[0])
         break
-
-    case "audio":
-        e = ex_hwvx_proto_basic(o, x.file_specific[0])
-        break
-
-    case "music":
-        e = ex_hwvx_proto_basic(o, x.file_specific[0])
-        break
-
     default:
         console.pk_log('file type is not set')
     }

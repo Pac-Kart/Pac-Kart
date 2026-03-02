@@ -65,4 +65,4 @@ Most sections are editable.
 
 Current Progress
 ============
-Patch List order research
+Format research for Hot Wheels Velocity X (Proto)
