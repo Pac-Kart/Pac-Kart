@@ -2464,7 +2464,11 @@ function sf32(o, v) {
 
 function ex_byte_alignment_testing(o) {
     let e = o
+    if (pk_debug) {
+        
+    }else{
     e = window[("ex_" + g.type_string + "_byte_alignment_testing")](o)
+    }
     return e
 
 }
