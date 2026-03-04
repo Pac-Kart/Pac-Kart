@@ -1318,6 +1318,7 @@ function im_hwvx_proto_datapack(o, i, x) {
         id: gen_id(),
 
         sec_id: "E@3Z",
+        u32_0: u32(o + 0),
         u32_4: u32(o + 4),
         u32_8: u32(o + 8),
         //amount?
@@ -1746,6 +1747,7 @@ function im_hwvx_proto_unordered(o, x) {
         hwvx_proto_sound_controls: [],
         hwvx_proto_sound_section: [],
         hwvx_proto_world_color_section: [],
+        hwvx_proto_texture_anims_0:[],
     })
     g.unordered_ref = x[0]
 
@@ -4468,11 +4470,12 @@ function im_hwvx_proto_texture_anims(o, i, x) {
         id: gen_id(),
 
         sec_id: "eFdb",
-        section_0: [],
+        unordered_hwvx_proto_texture_anims_0_0: 0,
     });
 
-    u32(o + 0) && im_hwvx_proto_texture_anims_0(u32(o + 0) + g.m, 0, x[i].section_0);
-    // offset? 
+    x[i].unordered_hwvx_proto_texture_anims_0_0 = in_ml(u32(o + 0), g.hwvx_proto_texture_anims_0_array, im_hwvx_proto_texture_anims_0, g.unordered_ref.hwvx_proto_texture_anims_0);
+
+    // offset?
     return x[i].id
     // 12 bytes;
 
@@ -4650,6 +4653,7 @@ function im_hwvx_proto_texture(o, i, x) {
         u16_4: u16(o + 4),
         u16_6: u16(o + 6),
         texture_section: [],
+        u32_8: u32(o + 8),
         u32_12: u32(o + 12),
     });
 
@@ -19402,7 +19406,10 @@ function ex_hwvx_proto_x(o, x) {
         animation_patch_array: [],
         sound_patch_array: [],
         model_patch_array: [],
-        tex_anims: 0,
+        tex_anims_hold_offset: 0,
+        triggers_and_actions_offset_hold: 0,
+        texture_offset_hold: 0,
+        color_table_offset_hold: 0,
         hwvx_proto_world_12_array: [],
         hwvx_proto_world_20_array: [],
         hwvx_proto_world_36_36_array: [],
@@ -19452,6 +19459,7 @@ function ex_hwvx_proto_x(o, x) {
         hwvx_proto_sound_controls_array: [],
         hwvx_proto_sound_section_array: [],
         hwvx_proto_texture_anims_0_array: [],
+        hwvx_proto_texture_anims_old_offsets:[],
     }
 
     let time_array = []
@@ -19580,6 +19588,7 @@ function ex_hwvx_proto_directory(o, e, x, global) {
     g.hwvx_proto_sound_controls_array = []
     g.hwvx_proto_sound_section_array = []
     g.hwvx_proto_texture_anims_0_array = []
+    g.hwvx_proto_color_table_array = []
     let ce = e
     g.file_dir_type = return_directory_type(x.u32_4)
 
@@ -19615,11 +19624,12 @@ function ex_hwvx_proto_datapack(o, x) {
 
     let ordered_list_buffer = convert_base64_arraybuffer(x.ordered_buffer)
     globalThis.ordered_buffer = new ArrayBuffer(ordered_list_buffer.byteLength)
+    dynamic_buffer = ordered_buffer
 
-    e = ex_hwvx_proto_ordered(e, x.ordered[0])
+    ex_hwvx_proto_ordered(e, x.ordered[0])
 
     buffer_array.push(ordered_buffer)
-    dynamic_buffer = ordered_list_buffer
+    // dynamic_buffer = ordered_list_buffer
 
     /*
     end ordered
@@ -19662,7 +19672,7 @@ function ex_hwvx_proto_datapack(o, x) {
     // e = ex_string(o + 80, e, x.section_80)
     // e = ex_string(o + 100, e, x.section_100)
 
-    su32(0, ordered_buffer.byteLength)
+    su32(0, x.u32_0)
     su32(4, x.u32_4)
     su32(8, x.u32_8)
     su32(12, x.u32_12)
@@ -19687,6 +19697,16 @@ function ex_hwvx_proto_datapack(o, x) {
     su32(76, x.u32_76)
     ex_string(80, 80, x.section_80, 1, 0)
     ex_string(100, 100, x.section_100, 1, 0)
+
+
+    /*
+    later
+    su32(0, ordered_buffer.byteLength)
+    su32(24, g.texture_offset_hold)
+    su32(44, g.color_table_offset_hold)
+    su32(60, g.tex_anims_hold_offset)
+    su32(68, g.triggers_and_actions_offset_hold)
+    */
 
     let file_length = globalThis.ordered_buffer.byteLength + e + globalThis.patch_buffer.byteLength
     globalThis.directory_length_array.push(file_length)
@@ -19852,7 +19872,16 @@ function ex_hwvx_proto_ordered(o, x) {
 
     ordered_buffer = ordered_buffer.slice(0, e)
 
-    buffer_array[buffer_array.length - 1] = ordered_buffer
+    // if (buffer_array.length === 0) {
+    // buffer_array[buffer_array.length] = ordered_buffer
+    // }else{
+    // let buffer_index = buffer_array.length
+    // if (buffer_index !== 0)  {
+    //     buffer_index--
+    // }
+    // buffer_array[buffer_index] = ordered_buffer
+    // }
+
 
     return e + aftero
 }
@@ -19871,12 +19900,13 @@ function ex_hwvx_proto_unordered(x) {
     generate_id_offset_array(g.hwvx_proto_world_120_0_array = [], x.hwvx_proto_world_120_0)
     generate_id_offset_array(g.hwvx_proto_collision_32_48_array = [], x.hwvx_proto_collision_32_48)
     generate_id_offset_array(g.hwvx_proto_collision_link_array = [], x.hwvx_proto_collision_link)
-    // generate_id_offset_array(g.hwvx_proto_triggers_and_actions_array = [], x.hwvx_proto_triggers_and_actions)
-    // generate_id_offset_array(g.hwvx_proto_texture_anims_array = [], x.hwvx_proto_texture_anims)
+    generate_id_offset_array(g.hwvx_proto_triggers_and_actions_array = [], g.datapack_ref.section_68)
+    generate_id_offset_array(g.hwvx_proto_texture_anims_array = [], g.datapack_ref.section_60)
     generate_id_offset_array(g.hwvx_proto_model_anims_1_array = [], x.hwvx_proto_model_anims_1)
     generate_id_offset_array(g.hwvx_proto_model_anims_2_array = [], x.hwvx_proto_model_anims_2)
-    generate_id_offset_array(g.hwvx_proto_texture_array = [], x.hwvx_proto_texture)
-    // generate_id_offset_array(g.datapack_ref.hwvx_proto_world_color_section_array = [], g.datapack_ref.hwvx_proto_world_color_section)
+    generate_id_offset_array(g.hwvx_proto_texture_array = [], g.datapack_ref.section_24)
+    generate_id_offset_array(g.hwvx_proto_color_table_array = [], g.datapack_ref.section_44)
+    generate_id_offset_array(g.hwvx_proto_world_color_section_array = [], x.hwvx_proto_world_color_section)
     generate_id_offset_array(g.hwvx_proto_world_text_link_array = [], x.hwvx_proto_world_text_link)
     generate_id_offset_array(g.hwvx_proto_world_settings_array = [], x.hwvx_proto_world_settings)
     generate_id_offset_array(g.hwvx_proto_world_small_section_array = [], x.hwvx_proto_world_small_section)
@@ -19905,7 +19935,7 @@ function ex_hwvx_proto_unordered(x) {
     generate_id_offset_array(g.hwvx_proto_link_array = [], x.hwvx_proto_link)
     generate_id_offset_array(g.hwvx_proto_sound_controls_array = [], x.hwvx_proto_sound_controls)
     generate_id_offset_array(g.hwvx_proto_sound_section_array = [], x.hwvx_proto_sound_section)
-    // generate_id_offset_array(g.hwvx_proto_texture_anims_0_array = [], x.hwvx_proto_texture_anims_0)
+    generate_id_offset_array(g.hwvx_proto_texture_anims_0_array = [], x.hwvx_proto_texture_anims_0)
 
 }
 function ex_hwvx_proto_ordered_list_layout(o) {
@@ -19913,9 +19943,15 @@ function ex_hwvx_proto_ordered_list_layout(o) {
     if (g.ordered_ref.hwvx_proto_models.length) {
         e = ex_ma(g.ordered_ref.hwvx_proto_models, g.hwvx_proto_model_array, ex_hwvx_proto_model, e, g.m)
     }
+    if (g.datapack_ref.section_68) {
+        g.triggers_and_actions_offset_hold = e
+        e = ex_ma(g.datapack_ref.section_60, g.hwvx_proto_triggers_and_actions_array, ex_hwvx_proto_triggers_and_actions, e, g.m)
+    }
 
     if (g.datapack_ref.section_60.length) {
-        e = ex_ma(g.datapack_ref.section_60, g.hwvx_proto_texture_anims_array, ex_hwvx_proto_texture_anims, e, g.m)
+        g.tex_anims_hold_offset = e
+        ex_ma(g.datapack_ref.section_60, g.hwvx_proto_texture_anims_array, ex_hwvx_proto_texture_anims, e, g.m)
+        e = g.tex_anims_hold_offset
     }
 
     if (g.unordered_ref.hwvx_proto_model_anims_1.length) {
@@ -19927,21 +19963,24 @@ function ex_hwvx_proto_ordered_list_layout(o) {
     }
 
     if (g.datapack_ref.section_24.length) {
+        g.texture_offset_hold = e
+        g.textur_data_start = e + (g.datapack_ref.section_24.length*16)
         e = ex_ma(g.datapack_ref.section_24, g.hwvx_proto_texture_array, ex_hwvx_proto_texture, e, g.m)
     }
 
     if (g.datapack_ref.section_44.length) {
+        g.color_table_offset_hold = e
         e = ex_ma(g.datapack_ref.section_44, g.hwvx_proto_color_table_array, ex_hwvx_proto_color_table, e, g.m)
     }
 
     // if (g.ordered_ref.hwvx_proto_share_end.length) {
-    //     e = ex_ma(g.ordered_ref.hwvx_proto_share_end, g.hwvx_proto_share_end_array, ex_hwvx_proto_share_end, e, g.m)
+    //     e = ex_ma(g.ordered_ref.hwvx_proto_share_end_section, g.hwvx_proto_share_end_array, ex_hwvx_proto_share_end, e, g.m)
     // }
 
-    // if (g.ordered_ref.hwvx_proto_texture_anims_0.length) {
-    //     e = ex_ma(g.ordered_ref.hwvx_proto_texture_anims_0, g.hwvx_proto_texture_anims_0_array, ex_hwvx_proto_texture_anims_0, e, g.m)
-    // }
-
+    if (g.hwvx_proto_texture_anims_old_offsets.length) {
+        e = ex_ma(g.ordered_ref.hwvx_proto_texture_anims_0, g.hwvx_proto_texture_anims_0_array, ex_hwvx_proto_texture_anims_0, e, g.m)
+    }
+    return e
 }
 
 function ex_hwvx_proto_basic(o, x) {
@@ -19954,7 +19993,8 @@ function ex_hwvx_proto_basic(o, x) {
     return e
 }
 function ex_hwvx_proto_basic_4(o, x) {
-    let e = o + 8
+    let e = o + divisible(8, g.divisibility)
+
     su32(o + 4, x.u32_4)
 
     e = ex_hwvx_proto_ordered_list_layout(e)
@@ -21798,7 +21838,14 @@ function ex_hwvx_proto_model_8_8_12_modeldata(o, e, x) {
 }
 function ex_hwvx_proto_texture_anims(o, e, x) {
 
-    e = ex_s_offset(o + 0, e, ex_hwvx_proto_texture_anims_0, x.section_0, 'down');
+    // later
+        // for (let i = 0; i < g.ordered_ref.pmwr_pc_texture_animation.length; i++) {
+    g.oa.push(o)
+    g.hwvx_proto_texture_anims_old_offsets.push(o)
+        // }
+        // e += divisible(g.ordered_ref.pmwr_pc_texture_animation.length * 12, 16)
+
+    // e = ex_ml(x.unordered_hwvx_proto_texture_anims_0_0, g.hwvx_proto_texture_anims_0_array, ex_hwvx_proto_texture_anims_0, g.unordered_ref.hwvx_proto_texture_anims_0, o + 0, e, 'down');
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -21940,18 +21987,37 @@ function ex_hwvx_proto_model_anims_2_16(o, e, x) {
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
-function ex_hwvx_proto_texture(o, e, x) {
+function ex_hwvx_proto_texture(o, x) {
+    let e = g.textur_data_start
+
     su16(o + 0, x.u16_0)
-    //?
     su16(o + 2, x.u16_2)
     su16(o + 4, x.u16_4)
     su16(o + 6, x.u16_6)
+    su32(o + 12, x.u32_8)
     su32(o + 12, x.u32_12)
 
-    e = ex_ml(x.unordered_hwvx_proto_texture_data_8, g.hwvx_proto_texture_data_array, ex_hwvx_proto_texture_data, g.unordered_ref.hwvx_proto_texture_data, o + 8, e, 'down');
+    for (let i = 0; i < x.texture_section.length; i++) {
+        e = ex_hwvx_proto_texture_data(g.textur_data_start, x.texture_section[i].temp_buffer)
+        g.textur_data_start = e
+    }
 
     g.debug && ex_debug(o, x.sec_id);
-    return e
+    return o + 16
+}
+
+
+function ex_hwvx_proto_texture_data(o, x) {
+    let buffer = convert_base64_arraybuffer(x)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
+
+    return o + buffer.byteLength
+}
+function ex_hwvx_proto_color_table(o, x) {
+    let buffer = convert_base64_arraybuffer(x.buffer)
+    new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
+
+    return o + buffer.byteLength
 }
 function ex_hwvx_proto_share_end(o, x) {
     let e = o + 32
@@ -25964,6 +26030,11 @@ function ex_hwvx_proto_sound_section_32(o, x) {
 }
 function ex_hwvx_proto_texture_anims_0(o, x) {
     let e = o + 32
+
+    // set hwvx_proto_texture_anims section offset
+    su32(g.hwvx_proto_texture_anims_old_offsets[0], o)
+    g.hwvx_proto_texture_anims_old_offsets.shift()
+
     //amount?   su32(o +4, x.u32_4)
     //amount?   su32(o +12, x.u32_12)
 
