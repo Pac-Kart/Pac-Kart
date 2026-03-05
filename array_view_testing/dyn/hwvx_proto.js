@@ -4645,7 +4645,6 @@ function im_hwvx_proto_texture(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "of0M",
         u16_0: u16(o + 0),
         //check this
@@ -9188,12 +9187,12 @@ function im_hwvx_proto_link_44(o, i, x) {
         section_8: [],
     });
 
-    switch (u32(o + 0)) {
-    case 1:
-    case 4:
+    if (u32(o) === 0) {
+        x[i].section_4 = im_string(u32(o + 4), 0, false)
+    } else {
         u32(o + 8) && im_hwvx_proto_link_44_8(u32(o + 8) + g.m, x[i].section_8);
-        break;
     }
+
 }
 function im_hwvx_proto_link_44_8(o, x) {
     id_offset.push(o);
@@ -9271,11 +9270,12 @@ function im_hwvx_proto_link_52_0_4_4(o, i, x) {
         section_4: [],
     });
 
-    switch (u32(o + 0)) {
-    case 1:
+    if (u32(o) === 1) {
         u32(o + 4) && im_hwvx_proto_link_52_0_4_4_4(u32(o + 4) + g.m, x[i].section_4);
-        break;
+    } else {
+        x[i].section_4 = im_string(u32(o + 4), 0, false)
     }
+
 }
 function im_hwvx_proto_link_52_0_4_4_4(o, x) {
     id_offset.push(o);
@@ -19489,7 +19489,7 @@ function ex_hwvx_proto_x(o, x) {
 }
 
 function ex_hwvx_proto_file_header(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     globalThis.directory_length_array = []
     let global = ((x.directory.length) * 24) + 16
@@ -19965,7 +19965,8 @@ function ex_hwvx_proto_ordered_list_layout(o) {
     if (g.datapack_ref.section_24.length) {
         g.texture_offset_hold = e
         g.textur_data_start = e + (g.datapack_ref.section_24.length*16)
-        e = ex_ma(g.datapack_ref.section_24, g.hwvx_proto_texture_array, ex_hwvx_proto_texture, e, g.m)
+        ex_ma(g.datapack_ref.section_24, g.hwvx_proto_texture_array, ex_hwvx_proto_texture, e, g.m)
+        e = g.textur_data_start
     }
 
     if (g.datapack_ref.section_44.length) {
@@ -19984,7 +19985,7 @@ function ex_hwvx_proto_ordered_list_layout(o) {
 }
 
 function ex_hwvx_proto_basic(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_basic_4, x.section_4, 'down');
@@ -20014,6 +20015,9 @@ function ex_hwvx_proto_basic_4(o, x) {
         break
     case "link":
         e = ex_ml(x.section_0, g.hwvx_proto_link_array, ex_hwvx_proto_link, g.unordered_ref.hwvx_proto_link, o + 0, e, 'null');
+        break
+    case "audio":
+        e = ex_ml(x.section_0, g.hwvx_proto_sound_controls_array, ex_hwvx_proto_sound_controls, g.unordered_ref.hwvx_proto_sound_controls, o + 0, e, 'null');
         break
     default:
         console.log("later")
@@ -20057,7 +20061,7 @@ function ex_hwvx_proto_share(o, e, x) {
     return e
 }
 function ex_hwvx_proto_world(o, x) {
-    let e = o + 160
+    let e = o + divisible(160, g.divisibility)
     //amount?   su32(o +8, x.u32_8)
     //amount?   su32(o +16, x.u32_16)
     //amount?   su32(o +32, x.u32_32)
@@ -20177,7 +20181,7 @@ function ex_hwvx_proto_world_36(o, e, x) {
     return e
 }
 function ex_hwvx_proto_world_36_36(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     su32(o + 8, x.u32_8)
@@ -20362,7 +20366,7 @@ function ex_hwvx_proto_world_52(o, e, x) {
     return e
 }
 function ex_hwvx_proto_world_52_88t1(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -20376,7 +20380,7 @@ function ex_hwvx_proto_world_92(o, e, x) {
     return e
 }
 function ex_hwvx_proto_world_100(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 8, x.u32_8)
 
@@ -20677,7 +20681,7 @@ function ex_hwvx_proto_world_108_44t1(o, x) {
     return e
 }
 function ex_hwvx_proto_world_108_44t2(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -20691,7 +20695,7 @@ function ex_hwvx_proto_world_108_44t2(o, x) {
     return e
 }
 function ex_hwvx_proto_world_108_44t3(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
 
@@ -20839,7 +20843,7 @@ function ex_hwvx_proto_world_4_16_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_world_120(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +4, x.u32_4)
     su8(o + 8, x.u8_8)
     su8(o + 9, x.u8_9)
@@ -21058,7 +21062,7 @@ function ex_hwvx_proto_collision_84(o, e, x) {
     return e
 }
 function ex_hwvx_proto_collision_link(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_s_offset(o + 0, e, ex_hwvx_proto_collision_settings, x.section_0, 'down');
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_collision_settings, x.section_4, 'down');
@@ -21099,7 +21103,7 @@ function ex_hwvx_proto_triggers_and_actions(o, e, x) {
     return e
 }
 function ex_hwvx_proto_triggers_and_actions_4t1(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_ml(x.unordered_hwvx_proto_interface_0, g.hwvx_proto_interface_array, ex_hwvx_proto_interface, g.unordered_ref.hwvx_proto_interface, o + 0, e, 'down');
 
@@ -21107,7 +21111,7 @@ function ex_hwvx_proto_triggers_and_actions_4t1(o, x) {
     return e
 }
 function ex_hwvx_proto_triggers_and_actions_4t3(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
 
@@ -21452,7 +21456,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t9(o, x) {
     return e
 }
 function ex_hwvx_proto_triggers_and_actions_20_4t10t10(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_ml(x.unordered_hwvx_proto_interface_0, g.hwvx_proto_interface_array, ex_hwvx_proto_interface, g.unordered_ref.hwvx_proto_interface, o + 0, e, 'down');
 
@@ -21476,7 +21480,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t12(o, x) {
     return e
 }
 function ex_hwvx_proto_triggers_and_actions_20_4t15(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -21494,7 +21498,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t17(o, x) {
     return e
 }
 function ex_hwvx_proto_triggers_and_actions_20_4t20(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     su32(o + 8, x.u32_8)
@@ -21600,7 +21604,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t36(o, x) {
     return e
 }
 function ex_hwvx_proto_triggers_and_actions_20_4t38(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
 
@@ -21621,7 +21625,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t39(o, x) {
     return e
 }
 function ex_hwvx_proto_triggers_and_actions_24(o, x) {
-    let e = o + 12
+    let e = o + divisible(12, g.divisibility)
     su32(o + 0, x.u32_0)
     //amount?   su32(o +8, x.u32_8)
 
@@ -21920,7 +21924,7 @@ function ex_hwvx_proto_model_anims_1_28(o, x) {
     return e
 }
 function ex_hwvx_proto_model_anims_1_32(o, x) {
-    let e = o + 16 + sf32(o + 0, x.f32_0)
+    let e = o + divisible(16, g.divisibility) + sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
     sf32(o + 8, x.f32_8)
     sf32(o + 8, x.f32_8)
@@ -21994,13 +21998,14 @@ function ex_hwvx_proto_texture(o, x) {
     su16(o + 2, x.u16_2)
     su16(o + 4, x.u16_4)
     su16(o + 6, x.u16_6)
-    su32(o + 12, x.u32_8)
+    su32(o + 8, x.u32_8)
     su32(o + 12, x.u32_12)
 
     for (let i = 0; i < x.texture_section.length; i++) {
         e = ex_hwvx_proto_texture_data(g.textur_data_start, x.texture_section[i].temp_buffer)
         g.textur_data_start = e
     }
+    g.textur_data_start = divisible(g.textur_data_start,16)
 
     g.debug && ex_debug(o, x.sec_id);
     return o + 16
@@ -22045,7 +22050,7 @@ function ex_hwvx_proto_share_end_8(o, e, x) {
     return e
 }
 function ex_hwvx_proto_world_color_section(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -22183,7 +22188,7 @@ function ex_hwvx_proto_world_settings(o, x) {
     return e
 }
 function ex_hwvx_proto_world_settings_192(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -22206,7 +22211,7 @@ function ex_hwvx_proto_world_settings_196(o, x) {
     return e
 }
 function ex_hwvx_proto_world_settings_196_28(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_ml(x.unordered_hwvx_proto_unknown_0, g.hwvx_proto_unknown_array, ex_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown, o + 0, e, 'down');
 
@@ -22227,7 +22232,7 @@ function ex_hwvx_proto_world_settings_224(o, x) {
     return e
 }
 function ex_hwvx_proto_world_settings_228(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -22254,7 +22259,7 @@ function ex_hwvx_proto_world_settings_236_0(o, x) {
     return e
 }
 function ex_hwvx_proto_world_settings_236_0_28(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_ml(x.unordered_hwvx_proto_unknown_0, g.hwvx_proto_unknown_array, ex_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown, o + 0, e, 'down');
 
@@ -22301,7 +22306,7 @@ function ex_hwvx_proto_world_settings_260_4(o, x) {
     return e
 }
 function ex_hwvx_proto_world_small_section(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     sf32(o + 8, x.f32_8)
@@ -22312,7 +22317,7 @@ function ex_hwvx_proto_world_small_section(o, x) {
     return e
 }
 function ex_hwvx_proto_world_small_section_12(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -22409,7 +22414,7 @@ function ex_hwvx_proto_world_idk_48_8(o, e, x) {
     return e
 }
 function ex_hwvx_proto_some_world_thing(o, x) {
-    let e = o + 128
+    let e = o + divisible(128, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     sf32(o + 24, x.f32_24)
@@ -22441,7 +22446,7 @@ function ex_hwvx_proto_some_world_thing_88(o, x) {
     return e
 }
 function ex_hwvx_proto_geo_list(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -22483,7 +22488,7 @@ function ex_hwvx_proto_geo_list_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_geo_list_4_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     su32(o + 8, x.u32_8)
@@ -22667,7 +22672,7 @@ function ex_hwvx_proto_car(o, x) {
     return e
 }
 function ex_hwvx_proto_car_108(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -22698,7 +22703,7 @@ function ex_hwvx_proto_car_124(o, x) {
     return e
 }
 function ex_hwvx_proto_car_128(o, x) {
-    let e = o + 160
+    let e = o + divisible(160, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
     sf32(o + 8, x.f32_8)
@@ -22821,7 +22826,7 @@ function ex_hwvx_proto_car_132(o, x) {
     return e
 }
 function ex_hwvx_proto_car_132_44(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -22995,7 +23000,7 @@ function ex_hwvx_proto_car_228(o, e, x) {
     return e
 }
 function ex_hwvx_proto_car_252(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_car_252_4, x.section_4, 'down');
 
@@ -23003,7 +23008,7 @@ function ex_hwvx_proto_car_252(o, x) {
     return e
 }
 function ex_hwvx_proto_car_252_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_car_252_4_4, x.section_4, 'down');
@@ -23012,7 +23017,7 @@ function ex_hwvx_proto_car_252_4(o, x) {
     return e
 }
 function ex_hwvx_proto_car_252_4_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -23028,13 +23033,13 @@ function ex_hwvx_proto_car_260(o, x) {
     return e
 }
 function ex_hwvx_proto_car_260_56(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_car_268(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -23076,7 +23081,7 @@ function ex_hwvx_proto_car_related_48(o, e, x) {
     return e
 }
 function ex_hwvx_proto_car_related_48_0(o, x) {
-    let e = o + 128
+    let e = o + divisible(128, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 2, x.u8_2)
     su32(o + 4, x.u32_4)
@@ -23188,7 +23193,7 @@ function ex_hwvx_proto_car_link_56(o, e, x) {
     return e
 }
 function ex_hwvx_proto_car_link_64(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_ml(x.unordered_hwvx_proto_unknown_0, g.hwvx_proto_unknown_array, ex_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown, o + 0, e, 'down');
 
@@ -23389,7 +23394,7 @@ function ex_hwvx_proto_mysterious_24t6_32(o, e, x) {
     return e
 }
 function ex_hwvx_proto_mysterious_24t6_36(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
 
@@ -23436,13 +23441,13 @@ function ex_hwvx_proto_mysterious_24t7_72(o, e, x) {
     return e
 }
 function ex_hwvx_proto_mysterious_24t7_80(o, x) {
-    let e = o + 12
+    let e = o + divisible(12, g.divisibility)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_mysterious_24t7_88(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     ex_patch(o + 0, g.texture_patch_array, x.texture_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -23472,7 +23477,7 @@ function ex_hwvx_proto_mysterious_24t9(o, x) {
     return e
 }
 function ex_hwvx_proto_mysterious_24t9_28(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -23555,7 +23560,7 @@ function ex_hwvx_proto_model_link(o, x) {
     return e
 }
 function ex_hwvx_proto_model_link_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     ex_patch(o + 0, g.model_array, x.model_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -23570,7 +23575,7 @@ function ex_hwvx_proto_model_link_12(o, x) {
     return e
 }
 function ex_hwvx_proto_model_link_32(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
 
@@ -23578,7 +23583,7 @@ function ex_hwvx_proto_model_link_32(o, x) {
     return e
 }
 function ex_hwvx_proto_model_link_36(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
 
@@ -23598,7 +23603,7 @@ function ex_hwvx_proto_model_link_52(o, x) {
     return e
 }
 function ex_hwvx_proto_model_link_56(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -23631,7 +23636,7 @@ function ex_hwvx_proto_model_link_56_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_model_link_56_4_12(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
     sf32(o + 8, x.f32_8)
@@ -23640,13 +23645,13 @@ function ex_hwvx_proto_model_link_56_4_12(o, x) {
     return e
 }
 function ex_hwvx_proto_model_link_56_4_16(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_text(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_string(o + 0, e, x.section_0)
 
@@ -23819,7 +23824,7 @@ function ex_hwvx_proto_interface_16_20t0(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_20t0_16(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
     su32(o + 8, x.u32_8)
     su32(o + 12, x.u32_12)
@@ -23859,7 +23864,7 @@ function ex_hwvx_proto_interface_16_20t1(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_20t1_8(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
     su8(o + 8, x.u8_8)
     su8(o + 10, x.u8_10)
@@ -23886,7 +23891,7 @@ function ex_hwvx_proto_interface_16_20t1_8_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_20t2(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -23938,7 +23943,7 @@ function ex_hwvx_proto_interface_16_20t2_4_28(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_20t2_4_28_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
 
@@ -23946,7 +23951,7 @@ function ex_hwvx_proto_interface_16_20t2_4_28_4(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_20t4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -23995,7 +24000,7 @@ function ex_hwvx_proto_interface_16_20t11(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_60(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_ml(x.unordered_hwvx_proto_interface_0, g.hwvx_proto_interface_array, ex_hwvx_proto_interface, g.unordered_ref.hwvx_proto_interface, o + 0, e, 'down');
 
@@ -24042,7 +24047,7 @@ function ex_hwvx_proto_interface_16_68_12(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_68_20(o, x) {
-    let e = o + 12
+    let e = o + divisible(12, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
 
@@ -24075,7 +24080,7 @@ function ex_hwvx_proto_interface_16_68_20_8(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_68_20_8_8(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_s_offset(o + 0, e, ex_hwvx_proto_interface_16_68_20_8_8_0, x.section_0, 'down');
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_interface_16_68_20_8_8_4, x.section_4, 'down');
@@ -24084,21 +24089,21 @@ function ex_hwvx_proto_interface_16_68_20_8_8(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_68_20_8_8_0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_interface_16_68_20_8_8_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_interface_16_68_20_8_24(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -24107,7 +24112,7 @@ function ex_hwvx_proto_interface_16_68_20_8_24(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_68_20_8_32(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su8(o + 4, x.u8_4)
     su8(o + 5, x.u8_5)
@@ -24118,7 +24123,7 @@ function ex_hwvx_proto_interface_16_68_20_8_32(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_72(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     //amount?   su32(o +4, x.u32_4)
 
@@ -24146,7 +24151,7 @@ function ex_hwvx_proto_interface_16_72_8(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_72_8_8(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_interface_16_72_8_8_4, x.section_4, 'down');
@@ -24155,7 +24160,7 @@ function ex_hwvx_proto_interface_16_72_8_8(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_72_8_8_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -24406,7 +24411,7 @@ function ex_hwvx_proto_interface_16_104_8_44(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_104_8_56(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_interface_16_104_8_56_4, x.section_4, 'down');
@@ -24415,13 +24420,13 @@ function ex_hwvx_proto_interface_16_104_8_56(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_104_8_56_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_interface_16_68_20_8_0t11(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     if (x.section_4.length) {
@@ -24463,7 +24468,7 @@ function ex_hwvx_proto_interface_16_68_20_8_0t11_4_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_68_20_8_0t11_4_4_0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_interface_16_68_20_8_0t11_4_4_0_4, x.section_4, 'down');
@@ -24472,7 +24477,7 @@ function ex_hwvx_proto_interface_16_68_20_8_0t11_4_4_0(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_16_68_20_8_0t11_4_4_0_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -24512,7 +24517,7 @@ function ex_hwvx_proto_interface_24_8(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_24_8_0t11(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -24554,7 +24559,7 @@ function ex_hwvx_proto_interface_24_8_0t11_4_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_24_8_0t11_4_4_0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_interface_24_8_0t11_4_4_0_4, x.section_4, 'down');
@@ -24563,14 +24568,14 @@ function ex_hwvx_proto_interface_24_8_0t11_4_4_0(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_24_8_0t11_4_4_0_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_interface_24_8_8t15(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_s_offset(o + 0, e, ex_hwvx_proto_interface_24_8_8t15_0, x.section_0, 'down');
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_interface_24_8_8t15_4, x.section_4, 'down');
@@ -24579,21 +24584,21 @@ function ex_hwvx_proto_interface_24_8_8t15(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_24_8_8t15_0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 2, x.u8_2)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_interface_24_8_8t15_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_interface_24_8_8t17(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 2, x.u8_2)
 
@@ -24601,7 +24606,7 @@ function ex_hwvx_proto_interface_24_8_8t17(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_28(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -24631,7 +24636,7 @@ function ex_hwvx_proto_interface_28_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_28_4_16(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_interface_28_4_16_4, x.section_4, 'down');
@@ -24640,7 +24645,7 @@ function ex_hwvx_proto_interface_28_4_16(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_28_4_16_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 2, x.u8_2)
 
@@ -24648,7 +24653,7 @@ function ex_hwvx_proto_interface_28_4_16_4(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_48(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 4, x.u32_4)
 
     e = ex_string(o + 0, e, x.section_0)
@@ -24694,7 +24699,7 @@ function ex_hwvx_proto_interface_text_related(o, x) {
     return e
 }
 function ex_hwvx_proto_interface_text_related_12(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -24728,7 +24733,7 @@ function ex_hwvx_proto_interface_text_related_20_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_interface_text_related_52(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
     sf32(o + 8, x.f32_8)
@@ -24737,7 +24742,7 @@ function ex_hwvx_proto_interface_text_related_52(o, x) {
     return e
 }
 function ex_hwvx_proto_unknown(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -24854,7 +24859,7 @@ function ex_hwvx_proto_unknown_4_8t1_40t1(o, x) {
     return e
 }
 function ex_hwvx_proto_unknown_4_8t1_40t2(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
     su8(o + 9, x.u8_9)
@@ -24876,7 +24881,7 @@ function ex_hwvx_proto_unknown_4_8t1_40t2(o, x) {
     return e
 }
 function ex_hwvx_proto_unknown_4_8t1_40t2_12t0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
     sf32(o + 8, x.f32_8)
@@ -24946,7 +24951,7 @@ function ex_hwvx_proto_unknown_4_4t4(o, x) {
     return e
 }
 function ex_hwvx_proto_unknown_4_4t4_28(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_ml(x.unordered_hwvx_proto_unknown_0, g.hwvx_proto_unknown_array, ex_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown, o + 0, e, 'down');
 
@@ -24985,7 +24990,7 @@ function ex_hwvx_proto_unknown_4_4t8_16(o, e, x) {
     return e
 }
 function ex_hwvx_proto_unknown_4_4t8_24(o, x) {
-    let e = o + 12
+    let e = o + divisible(12, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -24996,7 +25001,7 @@ function ex_hwvx_proto_unknown_4_4t8_24(o, x) {
     return e
 }
 function ex_hwvx_proto_unknown_4_4t29(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     //amount?   su32(o +8, x.u32_8)
@@ -25064,7 +25069,7 @@ function ex_hwvx_proto_unknown_idk_sec_28(o, x) {
     return e
 }
 function ex_hwvx_proto_unknown_idk_sec_32(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     //amount?   su32(o +4, x.u32_4)
 
@@ -25093,7 +25098,7 @@ function ex_hwvx_proto_unknown_idk_sec_32_8(o, e, x) {
     return e
 }
 function ex_hwvx_proto_unknown_idk_sec_36(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_unknown_idk_sec_36_4, x.section_4, 'down');
@@ -25111,7 +25116,7 @@ function ex_hwvx_proto_unknown_idk_sec_36_4(o, x) {
     return e
 }
 function ex_hwvx_proto_unknown_idk_sec_40(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
 
     if (x.section_4.length) {
@@ -25136,7 +25141,7 @@ function ex_hwvx_proto_unknown_idk_sec_40_4(o, e, x) {
     return e
 }
 function ex_hwvx_proto_unknown_idk_sec_48(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
 
@@ -25395,7 +25400,7 @@ function ex_hwvx_proto_unknown_thing_24(o, e, x) {
     return e
 }
 function ex_hwvx_proto_unknown_thing_32(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_ml(x.unordered_hwvx_proto_unknown_0, g.hwvx_proto_unknown_array, ex_hwvx_proto_unknown, g.unordered_ref.hwvx_proto_unknown, o + 0, e, 'down');
 
@@ -25484,7 +25489,7 @@ function ex_hwvx_proto_asdf(o, x) {
     return e
 }
 function ex_hwvx_proto_asdf_12t1(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
 
@@ -25492,7 +25497,7 @@ function ex_hwvx_proto_asdf_12t1(o, x) {
     return e
 }
 function ex_hwvx_proto_asdf_12t2(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -25551,7 +25556,7 @@ function ex_hwvx_proto_asdf_168(o, x) {
     return e
 }
 function ex_hwvx_proto_asdf_172(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -25668,7 +25673,7 @@ function ex_hwvx_proto_item_48_0_12(o, e, x) {
     return e
 }
 function ex_hwvx_proto_item_48_0_32(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
 
@@ -25676,7 +25681,7 @@ function ex_hwvx_proto_item_48_0_32(o, x) {
     return e
 }
 function ex_hwvx_proto_item_48_0_36(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
 
@@ -25684,7 +25689,7 @@ function ex_hwvx_proto_item_48_0_36(o, x) {
     return e
 }
 function ex_hwvx_proto_item_48_0_40(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     sf32(o + 0, x.f32_0)
     sf32(o + 4, x.f32_4)
 
@@ -25713,7 +25718,7 @@ function ex_hwvx_proto_link(o, x) {
     //amount?   su32(o +48, x.u32_48)
     //amount?   su32(o +56, x.u32_56)
 
-    e = ex_string(o + 12, e, x.section_12)
+
     if (x.section_44.length) {
         su32(o + 40, x.section_44.length)
         su32(o + 44, e - g.m)
@@ -25725,8 +25730,9 @@ function ex_hwvx_proto_link(o, x) {
         }
         ;
     }
-    e = ex_string(o + 4, e, x.section_4)
     ;
+    e = ex_string(o + 4, e, x.section_4)
+
     if (x.section_52.length) {
         su32(o + 48, x.section_52.length)
         su32(o + 52, e - g.m)
@@ -25738,6 +25744,7 @@ function ex_hwvx_proto_link(o, x) {
         }
         ;
     }
+    // e = ex_string(o + 12, e, x.section_12)
     e = ex_string(o + 8, e, x.section_8)
     e = ex_string(o + 12, e, x.section_12)
     ;
@@ -25758,17 +25765,17 @@ function ex_hwvx_proto_link(o, x) {
 function ex_hwvx_proto_link_44(o, e, x) {
     su32(o + 0, x.u32_0)
 
-    switch (x.u32_0) {
-    case 1:
-    case 4:
+    if (x.u32_0 === 0) {
+        e = ex_string(o + 4, e, x.section_4)
+    } else {
         e = ex_s_offset(o + 8, e, ex_hwvx_proto_link_44_8, x.section_8, 'down');
-        break;
     }
+
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_link_44_8(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 4, x.u32_4)
 
     e = ex_string(o + 0, e, x.section_0)
@@ -25784,7 +25791,7 @@ function ex_hwvx_proto_link_52(o, e, x) {
     return e
 }
 function ex_hwvx_proto_link_52_0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
 
     if (x.section_4.length) {
@@ -25828,16 +25835,17 @@ function ex_hwvx_proto_link_52_0_4(o, e, x) {
 function ex_hwvx_proto_link_52_0_4_4(o, e, x) {
     su32(o + 0, x.u32_0)
 
-    switch (x.u32_0) {
-    case 1:
+    if (x.u32_0 === 1) {
         e = ex_s_offset(o + 4, e, ex_hwvx_proto_link_52_0_4_4_4, x.section_4, 'down');
-        break;
+    } else {
+        e = ex_string(o + 4, e, x.section_4)
     }
+
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_link_52_0_4_4_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 4, x.u32_4)
 
     e = ex_string(o + 0, e, x.section_0)
@@ -25846,7 +25854,7 @@ function ex_hwvx_proto_link_52_0_4_4_4(o, x) {
     return e
 }
 function ex_hwvx_proto_link_52_0_4_8(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 4, x.u32_4)
 
     e = ex_string(o + 0, e, x.section_0)
@@ -25855,14 +25863,14 @@ function ex_hwvx_proto_link_52_0_4_8(o, x) {
     return e
 }
 function ex_hwvx_proto_link_52_0_4_20(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 8, x.u32_8)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
 function ex_hwvx_proto_link_52_0_4_28(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -25875,7 +25883,7 @@ function ex_hwvx_proto_link_60(o, e, x) {
     return e
 }
 function ex_hwvx_proto_link_60_0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_s_offset(o + 0, e, ex_hwvx_proto_link_60_0_0, x.section_0, 'down');
 
@@ -25883,7 +25891,7 @@ function ex_hwvx_proto_link_60_0(o, x) {
     return e
 }
 function ex_hwvx_proto_link_60_0_0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
 
     e = ex_s_offset(o + 0, e, ex_hwvx_proto_link_60_0_0_0, x.section_0, 'down');
     e = ex_s_offset(o + 4, e, ex_hwvx_proto_link_60_0_0_4, x.section_4, 'down');
@@ -25893,7 +25901,7 @@ function ex_hwvx_proto_link_60_0_0(o, x) {
     return e
 }
 function ex_hwvx_proto_link_60_0_0_0(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 1, x.u8_1)
     su8(o + 2, x.u8_2)
@@ -25909,7 +25917,7 @@ function ex_hwvx_proto_link_60_0_0_0(o, x) {
     return e
 }
 function ex_hwvx_proto_link_60_0_0_4(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 2, x.u8_2)
     su8(o + 3, x.u8_3)
     su8(o + 4, x.u8_4)
@@ -25929,7 +25937,7 @@ function ex_hwvx_proto_link_60_0_0_4(o, x) {
     return e
 }
 function ex_hwvx_proto_link_60_0_0_8(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su8(o + 0, x.u8_0)
     su8(o + 2, x.u8_2)
     su8(o + 3, x.u8_3)
@@ -25950,7 +25958,7 @@ function ex_hwvx_proto_link_60_0_0_8(o, x) {
     return e
 }
 function ex_hwvx_proto_sound_controls(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
     //amount?   su32(o +8, x.u32_8)
@@ -26014,7 +26022,7 @@ function ex_hwvx_proto_sound_section(o, x) {
     return e
 }
 function ex_hwvx_proto_sound_section_24(o, x) {
-    let e = o + 12
+    let e = o + divisible(12, g.divisibility)
     su32(o + 0, x.u32_0)
     sf32(o + 4, x.f32_4)
 
@@ -26022,7 +26030,7 @@ function ex_hwvx_proto_sound_section_24(o, x) {
     return e
 }
 function ex_hwvx_proto_sound_section_32(o, x) {
-    let e = o + 12
+    let e = o + divisible(12, g.divisibility)
     sf32(o + 0, x.f32_0)
 
     g.debug && ex_debug(o, x.sec_id);
@@ -26066,7 +26074,7 @@ function ex_hwvx_proto_texture_anims_0(o, x) {
     return e
 }
 function ex_hwvx_proto_texture_anims_0_20(o, x) {
-    let e = o + 16
+    let e = o + divisible(16, g.divisibility)
     //amount?   su32(o +0, x.u32_0)
     su32(o + 8, x.u32_8)
 
