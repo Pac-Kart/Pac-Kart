@@ -2719,3 +2719,8 @@ function get_next_value_in_array(arr, value) {
     }
     return found ? nextHigher : null;
 }
+
+function calculate_after_section_padding(o) {
+    
+    log_array.p_offset.array
+}
