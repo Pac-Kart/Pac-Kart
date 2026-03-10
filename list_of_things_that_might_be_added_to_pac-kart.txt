@@ -152,8 +152,8 @@ add import/export tables for all sections
         hw_ipack
         hw_cars
         hw_mcp
-        limited export list (matching structure, patch list not finished):
         bat8
+        limited export list (matching structure, patch list not finished):
     hwvx_gc [traversable, no exports]
     hwvx_pc [traversable, no exports]
         fix:
