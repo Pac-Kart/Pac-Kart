@@ -1425,12 +1425,19 @@ function return_key_name(name, sec) {
     if (typeof window_f === "undefined") {
         return name
     }
-    let info_obj = window_f()
+    let info_obj;
+        try {
+         let info_obj = window_f()
     let new_name = info_obj[name]?.n
     if (typeof new_name !== "undefined") {
         return new_name
     }
     return name
+
+        } catch (error) {
+            return name
+        }
+
 }
 
 function array_view_value() {

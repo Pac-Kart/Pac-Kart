@@ -2105,10 +2105,29 @@ function im_pmwr_ps2_get_offset_patch_list(o, patch_offset, x) {
 
     g.model_ref = x[0].model
 
+    let temp_model_list = []
+    for (let i = 0; i < g.model_ref.length; i++) {
+        if (g.model_ref[i][2] === 0) {
+            temp_model_list.push(u32(g.model_ref[i][0] + g.m))
+        }
+    }
+
     log_array.p_offset.offset = general_offset
     for (let i = 0; i < u32(g.datapack_offset + 12); i++) {
         log_array.p_offset.array.push(u32(general_offset + (i * 4)))
     }
+
+    let _2ndarray = []
+    for (let patchoffset of log_array.p_offset.array) {
+        _2ndarray.push(u32(patchoffset + g.m))
+    }
+    log_array.p_offset.pointers = _2ndarray.slice(0)
+    log_array.p_offset.pointers.push(...temp_model_list)
+    log_array.p_offset.array = log_array.p_offset.pointers
+
+    log_array.p_offset.array.push(u32(g.datapack_offset + 0))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 24))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 60))
 
     log_array.p_offset.array.sort(function(a, b) {
         return a - b;

@@ -3155,13 +3155,35 @@ function im_bmg_wii_index_patch_list(o, x) {
 }
 
 function im_bmg_wii_get_general_offsets_list(o, patch_offset) {
-    let patchlistoffset = patch_offset
-    patchlistoffset += u32(o + 56) * 8
+    let model_offset = patch_offset
+    let general_offset = model_offset
+    general_offset += u32(o + 56) * 8
 
-    log_array.p_offset.offset = patchlistoffset
-    for (let i = 0; i < u32(o + 12); i++) {
-        log_array.p_offset.array.push(u32(patchlistoffset + (i * 4)))
+    g.model_ref = im_patch_list(model_offset, u32(g.datapack_offset + 56), 'm')
+
+    let temp_model_list = []
+    for (let i = 0; i < g.model_ref.length; i++) {
+        if (g.model_ref[i][2] === 0) {
+            temp_model_list.push(u32(g.model_ref[i][0] + g.m))
+        }
     }
+
+    log_array.p_offset.offset = general_offset
+    for (let i = 0; i < u32(g.datapack_offset + 12); i++) {
+        log_array.p_offset.array.push(u32(general_offset + (i * 4)))
+    }
+
+    let _2ndarray = []
+    for (let patchoffset of log_array.p_offset.array) {
+        _2ndarray.push(u32(patchoffset + g.m))
+    }
+    log_array.p_offset.pointers = _2ndarray.slice(0)
+    log_array.p_offset.pointers.push(...temp_model_list)
+    log_array.p_offset.array = log_array.p_offset.pointers
+
+    log_array.p_offset.array.push(u32(g.datapack_offset + 0))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 60))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 132))
 
     log_array.p_offset.array.sort(function(a, b) {
         return a - b;
@@ -18773,7 +18795,7 @@ function add_bmg_wii_datapack() {
         model_56: [0, 0, 0, 'm'],
         section_60: [],
         u32_80: 0,
-        u32_84: u32(o + 84),
+        u32_84: 0,
         //patch?
         u32_88: 0,
         u32_92: 0,
@@ -20060,7 +20082,7 @@ function add_bmg_wii_model_20_4_0tpct1() {
         f32_116: 0,
         f32_136: 0,
         f32_156: 0,
-        u8_160: u8(o + 160),
+        u8_160: 0,
         //check this
         u8_161: 0,
         u8_162: 0,
@@ -20311,7 +20333,7 @@ function add_bmg_wii_link() {
         u32_64: 0,
         section_68: [],
         section_72: [],
-        u32_76: u32(o + 76),
+        u32_76: 0,
         //check this
     };
 
@@ -27987,7 +28009,7 @@ function info_bmg_wii_datapack() {
         model_56: "model_patch",
         section_60: ["change this"],
         u32_80: 0,
-        u32_84: u32(o + 84),
+        u32_84: 0,
         //patch?
         u32_88: 0,
         u32_92: 0,
@@ -29311,7 +29333,7 @@ function info_bmg_wii_model_20_4_0tpct1() {
         f32_116: 0,
         f32_136: 0,
         f32_156: 0,
-        u8_160: u8(o + 160),
+        u8_160: 0,
         //check this
         u8_161: 0,
         u8_162: 0,
@@ -29560,7 +29582,7 @@ function info_bmg_wii_link() {
         u32_64: 0,
         section_68: ["VtIB"],
         section_72: ["9W_o"],
-        u32_76: u32(o + 76),
+        u32_76: 0,
         //check this
     };
 

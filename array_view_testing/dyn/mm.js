@@ -941,6 +941,19 @@ function im_mm_get_combined_patch_list(o, patch_offset, x) {
         log_array.p_offset.array.push(u32(general_offset + (i * 4)))
     }
 
+    let _2ndarray = []
+    for (let patchoffset of log_array.p_offset.array) {
+        _2ndarray.push(u32(patchoffset + g.m))
+    }
+    log_array.p_offset.pointers = _2ndarray.slice(0)
+    log_array.p_offset.array = log_array.p_offset.pointers
+
+    log_array.p_offset.array.push(u32(g.datapack_offset + 0))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 16))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 28))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 36))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 44))
+
     log_array.p_offset.array.sort(function(a, b) {
         return a - b;
     });
@@ -6273,9 +6286,9 @@ function add_mm_file_header() {
 
         sec_id: ":zlA",
         u32_0: 0,
-        u32_4: u32(o + 4),
+        u32_4: 0,
         //check this
-        u32_8: u32(o + 8),
+        u32_8: 0,
         //check this
     };
 
@@ -6315,7 +6328,7 @@ function add_mm_basic_04() {
 
         sec_id: "ny09",
         section_0: [],
-        u32_4: u32(o + 4),
+        u32_4: 0,
         //check this
     };
 
@@ -7012,7 +7025,7 @@ function add_mm_Texture() {
     return {
 
         sec_id: "ZzKU",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         u16_4: 0,
@@ -9541,7 +9554,7 @@ function add_mm_unknown_4() {
     return {
 
         sec_id: "0c1X",
-        u32_0: u32(o + 0),
+        u32_0: 0,
         //check this
         section_4: [],
         section_8: [],
@@ -9620,9 +9633,9 @@ function info_mm_file_header() {
         multi: 0,
         sec_id: ":zlA",
         u32_0: 0,
-        u32_4: u32(o + 4),
+        u32_4: 0,
         //check this
-        u32_8: u32(o + 8),
+        u32_8: 0,
         //check this
     };
 
@@ -9672,7 +9685,7 @@ function info_mm_basic_04() {
     return {
         sec_id: "ny09",
         section_0: ["change this"],
-        u32_4: u32(o + 4),
+        u32_4: 0,
         //check this
     };
 
@@ -10378,7 +10391,7 @@ function info_mm_model_anims_2_16() {
 function info_mm_Texture() {
     return {
         sec_id: "ZzKU",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         u16_4: 0,
@@ -12968,7 +12981,7 @@ function info_mm_unknown() {
 function info_mm_unknown_4() {
     return {
         sec_id: "0c1X",
-        u32_0: u32(o + 0),
+        u32_0: 0,
         //check this
         section_4: {
             s: 0

@@ -1957,15 +1957,33 @@ function im_pmwr_xdx_get_offset_patch_list(o, patch_offset, x) {
 
     g.model_ref = x[0].model
 
+    let temp_model_list = []
+    for (let i = 0; i < g.model_ref.length; i++) {
+        if (g.model_ref[i][2] === 0) {
+            temp_model_list.push(u32(g.model_ref[i][0] + g.m))
+        }
+    }
+
     log_array.p_offset.offset = general_offset
     for (let i = 0; i < u32(g.datapack_offset + 12); i++) {
         log_array.p_offset.array.push(u32(general_offset + (i * 4)))
     }
 
+    let _2ndarray = []
+    for (let patchoffset of log_array.p_offset.array) {
+        _2ndarray.push(u32(patchoffset + g.m))
+    }
+    log_array.p_offset.pointers = _2ndarray.slice(0)
+    log_array.p_offset.pointers.push(...temp_model_list)
+    log_array.p_offset.array = log_array.p_offset.pointers
+
+    log_array.p_offset.array.push(u32(g.datapack_offset + 0))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 24))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 60))
+
     log_array.p_offset.array.sort(function(a, b) {
         return a - b;
     });
-
 }
 
 function im_pmwr_xdx_ordered(o, x) {
@@ -13102,7 +13120,7 @@ function add_pmwr_xdx_texture() {
     return {
 
         sec_id: "xer]",
-        u8_0: u8(o + 0),
+        u8_0: 0,
         //check this
         u8_1: 0,
         u8_2: 0,
@@ -16514,7 +16532,7 @@ function add_pmwr_xdx_unknown_4() {
         u32_0: 0,
         section_4: [],
         section_8: [],
-        u32_12: u32(o + 12),
+        u32_12: 0,
         //check this
     };
 
@@ -19194,7 +19212,7 @@ function info_pmwr_xdx_model_anims_2_16() {
 function info_pmwr_xdx_texture() {
     return {
         sec_id: "xer]",
-        u8_0: u8(o + 0),
+        u8_0: 0,
         //check this
         u8_1: {
             a: null
@@ -22737,7 +22755,7 @@ function info_pmwr_xdx_unknown_4() {
         section_8: {
             s: 0
         },
-        u32_12: u32(o + 12),
+        u32_12: 0,
         //check this
     };
 

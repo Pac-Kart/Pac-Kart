@@ -1254,6 +1254,10 @@ function im_hwvx_proto_directory(o, i, x) {
         hwvx_proto_car_sub_link_array: [],
         triggers_and_actions_hold_multilink: [],
         hwvx_proto_unknown_small_model_link_array: [],
+        color_table_offset_hold: 0,
+        texture_offset_hold: 0,
+        tex_anims_hold_offset: 0,
+        triggers_and_actions_offset_hold: 0,
     }
 
     globalThis.log_array = {
@@ -1290,11 +1294,13 @@ function im_hwvx_proto_directory(o, i, x) {
     case 8:
     case 9:
     case 10:
-        u32(o + 16) && im_hwvx_proto_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
+        im_hwvx_proto_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
         break;
     case 7:
-        u32(o + 16) && im_hwvx_proto_geo_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
+        im_hwvx_proto_geo_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
         break;
+        default:
+        console.log("?")
     }
     return x[i].id
     // 24 bytes;
@@ -1331,39 +1337,39 @@ function im_hwvx_proto_datapack(o, i, x) {
         id: gen_id(),
 
         sec_id: "E@3Z",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
-        u32_8: u32(o + 8),
+        // u32_0: u32(o + 0),
+        // u32_4: u32(o + 4),
+        // u32_8: u32(o + 8),
         //amount?
-        u32_12: u32(o + 12),
+        // u32_12: u32(o + 12),
         //amount?
-        u32_16: u32(o + 16),
+        // u32_16: u32(o + 16),
         //amount?
-        u32_20: u32(o + 20),
-        u32_24: u32(o + 24),
+        // u32_20: u32(o + 20),
+        // u32_24: u32(o + 24),
         //amount?
         section_24: [],
         section_24_padding: 0,
-        u32_28: u32(o + 28),
+        // u32_28: u32(o + 28),
         //amount?
-        u32_32: u32(o + 32),
+        // u32_32: u32(o + 32),
         //amount?
-        u32_40: u32(o + 40),
-        u32_44: u32(o + 44),
+        // u32_40: u32(o + 40),
+        // u32_44: u32(o + 44),
         //amount?
         section_44: [],
-        u32_48: u32(o + 48),
+        // u32_48: u32(o + 48),
         //amount?
-        u32_52: u32(o + 52),
+        // u32_52: u32(o + 52),
         //amount?
-        u32_56: u32(o + 56),
-        u32_60: u32(o + 60),
+        // u32_56: u32(o + 56),
+        // u32_60: u32(o + 60),
         //amount?
         section_60: [],
-        u32_64: u32(o + 64),
-        u32_68: u32(o + 68),
-        u32_72: u32(o + 72),
-        u32_76: u32(o + 76),
+        // u32_64: u32(o + 64),
+        // u32_68: u32(o + 68),
+        // u32_72: u32(o + 72),
+        // u32_76: u32(o + 76),
         //amount?
         section_68: [],
         section_72: [],
@@ -1437,18 +1443,17 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
-
         sec_id: "PcI:",
-        u32_0: u32(o + 0),
-        u32_4: u32(o + 4),
+        // u32_0: u32(o + 0),
+        // u32_4: u32(o + 4),
         //amount?
-        u32_8: u32(o + 8),
+        // u32_8: u32(o + 8),
         //amount?
-        u32_28: u32(o + 28),
+        // u32_28: u32(o + 28),
         //amount?
         u32_36: u32(o + 36),
         //amount?
-        u32_40: u32(o + 40),
+        // u32_40: u32(o + 40),
         //amount?
         section_44: im_string(o + 44 - g.m, o + 55 - g.m),
         u32_56: u32(o + 56),
@@ -1491,33 +1496,6 @@ function im_hwvx_proto_geo_datapack(o, i, x) {
     // 84 bytes;
 
 }
-
-// function im_hwvx_proto_sound_offset_list(o, i, x, e) {
-//     id_offset.push(o); x.push({ id: gen_id(),
-//          
-//         sec_id: "Fgpx",
-//         section_0: [],
-//     });
-
-//     u32(o + 0) && im_hwvx_proto_audio_list(u32(o + 0) + g.m, 0, x[i].section_0);
-//     // offset?
-//     return x[i].id
-//     // 4 bytes;
-
-// }
-// function im_hwvx_proto_audio_list(o, i, x) {
-//     id_offset.push(o); x.push({ id: gen_id(),
-//          
-//         sec_id: "4IJg",
-//         u32_0: u32(o + 0),
-//         u32_4: u32(o + 4),
-//         u32_8: u32(o + 8),
-//         u32_12: u32(o + 12),
-//         u16_16: u16(o + 16),
-//         u16_18: u16(o + 18),
-//     });
-
-// }
 
 function im_hwvx_proto_audio(o, x, a) {
 
@@ -1808,7 +1786,7 @@ function im_hwvx_proto_unordered(o, x) {
         hwvx_proto_texture_anims_0: [],
         hwvx_proto_car_sub_link: [],
         hwvx_proto_world_20_12_16: [],
-        hwvx_proto_unknown_small_model_link:[],
+        hwvx_proto_unknown_small_model_link: [],
     })
     g.unordered_ref = x[0]
 
@@ -1969,11 +1947,39 @@ function im_hwvx_proto_world(o, x) {
         section_132: im_string(u32(o + 132), 0, false),
         section_140: im_string(u32(o + 140), 0, false),
         unordered_hwvx_proto_world_settings_156: 0,
+        unordered_first_linked_section: "settings",
+        unordered_first_linked_section_index: 0,
     });
+
+    g.temp_check_first_section_array = []
 
     for (let i = 0; i < u32(o + 8); i++) {
         x[0].section_12 = in_ml(u32(o + 12) + (i * 96), g.hwvx_proto_world_12_array, im_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12);
     }
+
+    let check_value = u32(o + 156)
+    for (let i = 0; i < g.temp_check_first_section_array.length; i++) {
+        if (g.temp_check_first_section_array[0] === 0) {} else {
+            if (check_value < g.temp_check_first_section_array[i]) {
+                x[0].unordered_first_linked_section = "idk"
+                x[0].unordered_first_linked_section_index = i
+                i = g.temp_check_first_section_array.length + 1
+            }
+        }
+
+    }
+    if (x[0].unordered_first_linked_section === "settings") {
+        let temp = g.temp_check_first_section_array
+        temp.sort(function(a, b) {
+            return a - b;
+        });
+        let top_value = temp[temp.length - 1]
+
+        if (top_value < check_value) {
+            x[0].unordered_first_linked_section = "all idk"
+        }
+    }
+
     for (let ii = 0; ii < u32(o + 16); ii++) {
         x[0].unordered_hwvx_proto_world_20_20 = in_ml(u32(o + 20) + (ii * 20), g.hwvx_proto_world_20_array, im_hwvx_proto_world_20, g.unordered_ref.hwvx_proto_world_20);
     }
@@ -2071,6 +2077,11 @@ function im_hwvx_proto_world_12(o, i, x) {
         u32_80: u32(o + 80),
         u32_92: u32(o + 92),
     });
+
+    g.temp_check_first_section_array.push(u32(o + 64))
+    g.temp_check_first_section_array.push(u32(o + 68))
+    g.temp_check_first_section_array.push(u32(o + 72))
+    g.temp_check_first_section_array.push(u32(o + 76))
 
     x[i].unordered_hwvx_proto_world_idk_64 = in_ml(u32(o + 64), g.hwvx_proto_world_idk_array, im_hwvx_proto_world_idk, g.unordered_ref.hwvx_proto_world_idk);
     x[i].unordered_hwvx_proto_world_idk_68 = in_ml(u32(o + 68), g.hwvx_proto_world_idk_array, im_hwvx_proto_world_idk, g.unordered_ref.hwvx_proto_world_idk);
@@ -2251,8 +2262,11 @@ function im_hwvx_proto_world_36_48_16(o, i, x) {
         u32_56: u32(o + 56),
     });
 
+    g.hwvx_proto_world_36_48_16_array.push(o - g.m)
+    g.unordered_ref.hwvx_proto_world_36_48_16.push(x[i])
+
     x[i].unordered_hwvx_proto_strange_36 = in_ml(u32(o + 36), g.hwvx_proto_strange_array, im_hwvx_proto_strange, g.unordered_ref.hwvx_proto_strange);
-    return x[i].id
+
     // 64 bytes;
 
 }
@@ -2309,9 +2323,12 @@ function im_hwvx_proto_world_36_48_8(o, i, x) {
         u32_52: u32(o + 52),
     });
 
+    g.hwvx_proto_world_36_48_8_array.push(o - g.m)
+    g.unordered_ref.hwvx_proto_world_36_48_8.push(x[i])
+
     x[i].unordered_hwvx_proto_world_model_related_36 = in_ml(u32(o + 36), g.hwvx_proto_world_model_related_array, im_hwvx_proto_world_model_related, g.unordered_ref.hwvx_proto_world_model_related);
     // u32(o + 36) && im_hwvx_proto_world_model_related(u32(o + 36) + g.m,x[i].section_36); // offset? 
-    return x[i].id
+
     // 64 bytes;
 
 }
@@ -2337,7 +2354,9 @@ function im_hwvx_proto_world_36_48_24(o, i, x) {
         u32_52: u32(o + 52),
     });
 
-    return x[i].id
+    g.hwvx_proto_world_36_48_24_array.push(o - g.m)
+    g.unordered_ref.hwvx_proto_world_36_48_24.push(x[i])
+
     // 64 bytes;
 
 }
@@ -3176,15 +3195,15 @@ function im_hwvx_proto_collision_32(o, i, x) {
     if (u32(o + 68)) {
         if (u32(o + 64)) {
 
-        let length = (u32(o + 64) * 2)
-        let find_next_offset_i = u32(o + 68) + length
-        let after_padding = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i - 1)
+            let length = (u32(o + 64) * 2)
+            let find_next_offset_i = u32(o + 68) + length
+            let after_padding = get_next_value_in_array(log_array.p_offset.array, find_next_offset_i - 1)
 
-        if (find_next_offset_i !== after_padding) {
-            let end_buffer = after_padding + g.m
-            let start_buffer = find_next_offset_i + g.m
-            x[i].section_68_after_buffer = convert_arraybuffer_base64(buffer.slice(start_buffer, end_buffer))
-        }
+            if (find_next_offset_i !== after_padding) {
+                let end_buffer = after_padding + g.m
+                let start_buffer = find_next_offset_i + g.m
+                x[i].section_68_after_buffer = convert_arraybuffer_base64(buffer.slice(start_buffer, end_buffer))
+            }
 
             for (let ii = 0; ii < u32(o + 64); ii++) {
                 im_hwvx_proto_collision_32_68(u32(o + 68) + (ii * 2) + g.m, ii, x[i].section_68);
@@ -3360,6 +3379,12 @@ function im_hwvx_proto_triggers_and_actions(o, i, x) {
         u32_40: u32(o + 40),
     });
 
+    g.actions_end_length = u32(o + 8) * 4
+
+    if (o === 11544232) {
+        console.log(11544232)
+    }
+
     switch (u32(o + 8)) {
     case 1:
         u32(o + 4) && im_hwvx_proto_triggers_and_actions_4t1(u32(o + 4) + g.m, x[i].section_4);
@@ -3428,41 +3453,23 @@ function im_hwvx_proto_triggers_and_actions_4t5(o, x) {
         u32_16: u32(o + 16),
     });
 
-    if (u32(o + 4)) {
-        let check_val = u32(o + 4) + g.m
-        if (g.hwvx_proto_world_108_array.includes(check_val)) {
-            x[0].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_108_array, im_hwvx_proto_world_108, g.unordered_ref.hwvx_proto_world_108);
-            x[0].section_type = "hwvx_proto_world_108"
-        } else if (g.hwvx_proto_world_76_array.includes(check_val)) {
-            x[0].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_76_array, im_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76);
-            x[0].section_type = "hwvx_proto_world_76"
-        } else if (g.hwvx_proto_world_84_array.includes(check_val)) {
-            x[0].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_84_array, im_hwvx_proto_world_84, g.unordered_ref.hwvx_proto_world_84);
-            x[0].section_type = "hwvx_proto_world_84"
-        } else if (g.hwvx_proto_world_36_48_24_array.includes(check_val)) {
-            x[0].section_4 = in_ml(u32(o + 4), g.hwvx_proto_world_36_48_24_array, im_hwvx_proto_world_36_48_24, g.unordered_ref.hwvx_proto_world_36_48_24);
-            x[0].section_type = "hwvx_proto_world_36_48_24"
-        } else {
-            x[0].section_4 = u32(o + 4)
-        }
+    if (o === 7827648) {
+        console.log("?")
     }
 
+    let type_object = hwvx_proto_return_if_value_in_multilink(o + 4)
+    x[0].section_4 = type_object.section
+    x[0].section_4_type = type_object.type
+
     switch (u32(o + 16)) {
-    case 0:
-        let check_val = u32(o + 16) + g.m
-        if (g.hwvx_proto_world_12_array.includes(check_val)) {
-            x[0].section_12 = in_ml(u32(o + 12), g.hwvx_proto_world_12_array, im_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12);
-            x[0].section_12_type = "hwvx_proto_world_12"
-        } else if (g.hwvx_proto_world_36_48_24_array.includes(check_val)) {
-            x[0].section_12 = in_ml(u32(o + 12), g.hwvx_proto_world_36_48_24_array, im_hwvx_proto_world_36_48_24, g.unordered_ref.hwvx_proto_world_36_48_24);
-            x[0].section_12_type = "hwvx_proto_world_36_48_24"
-        } else {
-            x[0].section_12 = u32(o + 12)
-        }
-        break
     case 22:
-        x[0].section_12 = u32(o + 12)
+        x[0].section_12 = f32(o + 12)
+        x[0].section_12_type = "float"
         break
+    default:
+        type_object = hwvx_proto_return_if_value_in_multilink(o + 12)
+        x[0].section_12 = type_object.section
+        x[0].section_12_type = type_object.type
     }
 
     // 32 bytes;
@@ -3665,16 +3672,21 @@ function im_hwvx_proto_triggers_and_actions_4trest(o, x) {
         get_hwvx_proto_triggers_and_actions_4trest_1st(o + 4 + (i * 4), i, x[0].section_2)
     }
 
-    let _2nd_amnt = 0
-    let _2nd_length = 0
-    _2nd_amnt = u32(_1st_length)
-    _2nd_length = (_2nd_amnt * 4) + _1st_length + 4
+    let check_value = (_1st_amnt * 4) + 4
+    if (g.actions_end_length === check_value) {// skip 2nd section
+    } else {
 
-    o = _1st_length
-    for (let i = 0; i < _2nd_amnt; i++) {
-        get_hwvx_proto_triggers_and_actions_4trest_2nd(o + 4 + (i * 4), i, x[0].section_4)
+        let _2nd_amnt = 0
+        let _2nd_length = 0
+        _2nd_amnt = u32(_1st_length)
+        _2nd_length = (_2nd_amnt * 4) + _1st_length + 4
+
+        o = _1st_length
+        for (let i = 0; i < _2nd_amnt; i++) {
+            get_hwvx_proto_triggers_and_actions_4trest_2nd(o + 4 + (i * 4), i, x[0].section_4)
+        }
+        // 4 bytes;
     }
-    // 4 bytes;
 
 }
 function get_hwvx_proto_triggers_and_actions_4trest_1st(o, i, x) {
@@ -3741,7 +3753,7 @@ function im_hwvx_proto_triggers_and_actions_12_4(o, x) {
         x[0].section_12 = in_ml(u32(o + 12), g.hwvx_proto_world_12_array, im_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12);
         break;
     default:
-        x[0].section_12 = f32(o + 16)
+        x[0].section_12 = f32(o + 12)
     }
 
     // 4 bytes;
@@ -3763,6 +3775,10 @@ function im_hwvx_proto_triggers_and_actions_20(o, i, x) {
         u8_19: u8(o + 19),
         u32_20: u32(o + 20),
     });
+
+    if (o === 11553420) {
+        console.log("?")
+    }
 
     switch (u32(o)) {
     case 0:
@@ -3889,11 +3905,15 @@ function im_hwvx_proto_triggers_and_actions_20_4t0(o, x) {
     });
 
     let amt = u32(o + 4)
+    // for (let i = 0; i < amt; i++) {
+    //     x[0].section_2.push(in_ml(u32(o + 8 + (i * 4)), g.hwvx_proto_world_108_44t6_array, im_hwvx_proto_world_108_44t6, g.unordered_ref.hwvx_proto_world_108_44t6));
+    // }
     for (let i = 0; i < amt; i++) {
-        x[0].section_2.push(in_ml(u32(o + 8 + (i * 4)), g.hwvx_proto_world_108_44t6_array, im_hwvx_proto_world_108_44t6, g.unordered_ref.hwvx_proto_world_108_44t6));
+        get_hwvx_proto_triggers_and_actions_4trest_1st(o + 8 + (i * 4), i, x[0].section_2)
     }
 
 }
+
 function im_hwvx_proto_triggers_and_actions_20_4t1t12(o, x) {
     id_offset.push(o);
     x.push({
@@ -4134,7 +4154,7 @@ function im_hwvx_proto_triggers_and_actions_20_4t8(o, x) {
 
     });
     let type_object = hwvx_proto_return_if_value_in_multilink(o + 12)
-    x[0].section_8 = type_object.section
+    x[0].section_12 = type_object.section
     x[0].type = type_object.type
 
     // x[0].unordered_hwvx_proto_world_76_12 = in_ml(u32(o + 12), g.hwvx_proto_world_76_array, im_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76);
@@ -4264,7 +4284,7 @@ function im_hwvx_proto_triggers_and_actions_20_4t17(o, x) {
     let amt = u32(o + 4)
 
     for (let i = 0; i < amt; i++) {
-        x[0].section_2.push(in_ml(u32(o + 8 + (i * 4)), g.hwvx_proto_world_120_0_array, im_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0));
+        x[0].section_2.push(in_ml(u32(o + 8 + (i * 4)), g.hwvx_proto_world_12_array, im_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12));
     }
 
 }
@@ -4346,8 +4366,8 @@ function im_hwvx_proto_triggers_and_actions_20_4t26(o, x) {
     });
 
     let type_object = hwvx_proto_return_if_value_in_multilink(o + 8)
-    x[i].section_8 = type_object.section
-    x[i].type = type_object.type
+    x[0].section_8 = type_object.section
+    x[0].type = type_object.type
 
     // x[0].unordered_hwvx_proto_world_76_8 = in_ml(u32(o + 8), g.hwvx_proto_world_76_array, im_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76);
 
@@ -4623,9 +4643,9 @@ function im_hwvx_proto_model_8_8_12t0(o, x) {
         section_model_data: [],
     });
 
-    if (o === 907180) {
-        console.log("?")
-    }
+    // if (o === 907180) {
+    //     console.log("?")
+    // }
     // 72 bytes;
     im_hwvx_proto_model_8_8_12_modeldata(o + 72, 0, x[0].section_model_data)
 
@@ -4773,13 +4793,13 @@ function im_hwvx_proto_model_anims_1(o, i, x) {
     u32(o + 32) && im_hwvx_proto_model_anims_1_32(u32(o + 32) + g.m, x[i].section_32);
     u32(o + 36) && im_hwvx_proto_model_anims_1_36(u32(o + 36) + g.m, x[i].section_36);
 
-    if (u32(o + 36) === u32(o + 44) ) {
+    if (u32(o + 36) === u32(o + 44)) {
         // 44 is same
         if (u32(o + 44)) {
-        x[i].section_44_temp = true
+            x[i].section_44_temp = true
         }
-    }else{
-    u32(o + 44) && im_hwvx_proto_model_anims_1_44(u32(o + 44) + g.m, x[i].section_44);
+    } else {
+        u32(o + 44) && im_hwvx_proto_model_anims_1_44(u32(o + 44) + g.m, x[i].section_44);
     }
     // for (let ii = 0; ii < u32(o + 48); ii++) {
     //     im_hwvx_proto_model_anims_1_36(u32(o + 36) + (ii * 16) + g.m, ii, x[i].section_36);
@@ -5427,7 +5447,7 @@ function im_hwvx_proto_world_model_related(o, i, x) {
 
     switch (u8(o + 4)) {
     case 0:
-    x[i].section_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
+        x[i].section_0 = in_models(o + 0, g.hwvx_proto_models_array, im_hwvx_proto_models, g.ordered_ref.hwvx_proto_models);
         break;
     case 1:
         x[i].section_0 = in_ml(u32(o + 0), g.hwvx_proto_model_link_array, im_hwvx_proto_model_link, g.unordered_ref.hwvx_proto_model_link);
@@ -7083,9 +7103,9 @@ function im_hwvx_proto_interface(o, i, x) {
         im_hwvx_proto_interface_24(u32(o + 24) + (ii * 12) + g.m, ii, x[i].section_24);
     }
 
-    if (o === 3643216) {
-        console.log("?")
-    }
+    // if (o === 3643216) {
+    //     console.log("?")
+    // }
 
     u32(o + 28) && im_hwvx_proto_interface_28(u32(o + 28) + g.m, x[i].section_28);
     x[i].unordered_hwvx_proto_sound_controls_44 = in_ml(u32(o + 44), g.hwvx_proto_sound_controls_array, im_hwvx_proto_sound_controls, g.unordered_ref.hwvx_proto_sound_controls);
@@ -7169,7 +7189,7 @@ function im_hwvx_proto_interface_16(o, i, x) {
         u32(o + 20) && im_hwvx_proto_interface_16_20t10(u32(o + 20) + g.m, x[i].section_20);
         break;
     case 11:
-        u32(o + 20) && im_hwvx_proto_interface_16_20t10(u32(o + 20) + g.m, x[i].section_20);
+        u32(o + 20) && im_hwvx_proto_interface_16_20t11(u32(o + 20) + g.m, x[i].section_20);
         break;
     }
     u32(o + 60) && im_hwvx_proto_interface_16_60(u32(o + 60) + g.m, x[i].section_60);
@@ -7425,6 +7445,10 @@ function im_hwvx_proto_interface_16_20t11(o, x) {
         u32_4: u32(o + 4),
     });
 
+    if (o === 9631792) {
+        console.log("?")
+    }
+
     // 32 bytes;
 
 }
@@ -7607,6 +7631,10 @@ function im_hwvx_proto_interface_16_72(o, x) {
         //amount?
         section_8: [],
     });
+
+    if (o === 9632336) {
+        console.log("?")
+    }
 
     for (let i = 0; i < u32(o + 4); i++) {
         im_hwvx_proto_interface_16_72_8(u32(o + 8) + (i * 12) + g.m, i, x[0].section_8);
@@ -8648,7 +8676,7 @@ function im_hwvx_proto_unknown_4_4t8_24(o, i, x) {
     // 12 bytes;
 
 }
-function im_hwvx_proto_unknown_small_model_link(o, i,x) {
+function im_hwvx_proto_unknown_small_model_link(o, i, x) {
     id_offset.push(o);
     x.push({
         id: gen_id(),
@@ -11208,7 +11236,7 @@ function add_hwvx_proto_triggers_and_actions_20_4t3() {
     return {
         sec_id: "I^je",
         u32_0: 0,
-        u32_4: u32(o + 4),
+        u32_4: 0,
         //check this
         section_8: [],
         f32_12: 0,
@@ -11395,7 +11423,7 @@ function add_hwvx_proto_triggers_and_actions_20_4t31() {
 function add_hwvx_proto_triggers_and_actions_20_4t32() {
     return {
         sec_id: "P5tz",
-        u32_0: u32(o + 0),
+        u32_0: 0,
         //check this
         section_4: [],
     };
@@ -12548,7 +12576,7 @@ function add_hwvx_proto_car_related_48_0() {
         u32_52: 0,
         u32_64: 0,
         u32_68: 0,
-        u32_116: u32(o + 116),
+        u32_116: 0,
         //check this
     };
 
@@ -16096,7 +16124,7 @@ function info_hwvx_proto_triggers_and_actions_20_4t3() {
     return {
         sec_id: "I^je",
         u32_0: 0,
-        u32_4: u32(o + 4),
+        u32_4: 0,
         //check this
         section_8: {
             s: 0
@@ -16303,7 +16331,7 @@ function info_hwvx_proto_triggers_and_actions_20_4t31() {
 function info_hwvx_proto_triggers_and_actions_20_4t32() {
     return {
         sec_id: "P5tz",
-        u32_0: u32(o + 0),
+        u32_0: 0,
         //check this
         section_4: {
             s: 0
@@ -17489,7 +17517,7 @@ function info_hwvx_proto_car_related_48_0() {
         u32_52: 0,
         u32_64: 0,
         u32_68: 0,
-        u32_116: u32(o + 116),
+        u32_116: 0,
         //check this
     };
 
@@ -19827,8 +19855,8 @@ function ex_hwvx_proto_x(o, x) {
         model_patch_array: [],
         tex_anims_hold_offset: 0,
         triggers_and_actions_offset_hold: 0,
-        texture_offset_hold: 0,
         color_table_offset_hold: 0,
+        texture_offset_hold: 0,
         hwvx_proto_world_12_array: [],
         hwvx_proto_world_20_array: [],
         hwvx_proto_world_36_36_array: [],
@@ -19884,7 +19912,7 @@ function ex_hwvx_proto_x(o, x) {
         temp_hwvx_proto_world_offset_holder: [],
         hwvx_proto_car_sub_link_array: [],
         hwvx_proto_world_20_12_16_array: [],
-        hwvx_proto_unknown_small_model_link_array:[],
+        hwvx_proto_unknown_small_model_link_array: [],
     }
 
     let time_array = []
@@ -19917,14 +19945,27 @@ function ex_hwvx_proto_file_header(o, x) {
     let e = o + divisible(16, g.divisibility)
 
     globalThis.directory_length_array = []
+    globalThis.directory_offset_array = []
+
     let global = ((x.directory.length) * 24) + 16
     e = e + (x.directory.length * 24)
 
     let time_array = []
+    let total_offset = 0
+    let directory_temp = global - 16
     for (let i = 0; i < x.directory.length; i++) {
         let a = Date.now()
+        let temp = 16 + (i * 24)
+        temp+= 24
+        temp = temp - global
+        // directory_temp+= 24
+
+
+        globalThis.directory_offset_array.push(total_offset - temp)
 
         e = ex_hwvx_proto_directory(16 + (i * 24), e, x.directory[i], global)
+        total_offset+= e
+
         time_array.push(Date.now() - a)
 
     }
@@ -19946,9 +19987,10 @@ function ex_hwvx_proto_file_header(o, x) {
         su32(temp_offset + 4, x.directory[i].u32_4)
         su32(temp_offset + 8, x.directory[i].u32_8)
         su32(temp_offset + 12, x.directory[i].u32_12)
-        // su32(temp_offset + 16, globalThis.directory_length_array[i])
-        su32(temp_offset + 16, x.directory[i].u32_16)
-        su32(temp_offset + 20, x.directory[i].u32_20)
+        su32(temp_offset + 16, globalThis.directory_length_array[i])
+        su32(temp_offset + 20, globalThis.directory_offset_array[i])
+        // su32(temp_offset + 16, x.directory[i].u32_16)
+        // su32(temp_offset + 20, x.directory[i].u32_20)
         temp_offset += 24
     }
 
@@ -20043,7 +20085,6 @@ function ex_hwvx_proto_directory(o, e, x, global) {
 }
 
 function ex_hwvx_proto_datapack(o, x) {
-    g.datapack_offset = o
     let e = 120
     g.datapack_ref = x
 
@@ -20055,12 +20096,11 @@ function ex_hwvx_proto_datapack(o, x) {
     globalThis.ordered_buffer = new ArrayBuffer(ordered_list_buffer.byteLength + 10000000)
     dynamic_buffer = ordered_buffer
 
-    let new_e = ex_hwvx_proto_ordered(e, x.ordered[0])
-    if (new_e === NaN || new_e === 0) {
-        alert("?")
+    let ordered_length = ex_hwvx_proto_ordered(e, x.ordered[0])
+    if (ordered_length === NaN || ordered_length === 0) {
+        console.log("?")
     }
-    let new_buffer = ordered_buffer.slice(0, ordered_list_buffer.byteLength)
-
+    let new_buffer = ordered_buffer.slice(0, ordered_length)
     buffer_array.push(new_buffer)
     // dynamic_buffer = ordered_list_buffer
 
@@ -20072,15 +20112,14 @@ function ex_hwvx_proto_datapack(o, x) {
     let patch_list_buffer = convert_base64_arraybuffer(x.patch_buffer)
     globalThis.patch_buffer = new ArrayBuffer(patch_list_buffer.byteLength + 10000000)
     dynamic_buffer = patch_buffer
-    buffer_array.push(patch_list_buffer)
+    // buffer_array.push(patch_list_buffer)
 
-    // 
-    // new_e = ex_hwvx_proto_patch_list(x)
-    // if (new_e === NaN || new_e === 0) {
-    //     alert("?")
-    // }
-    // new_buffer = patch_list_buffer.slice(0, patch_list_buffer.byteLength)
-    // buffer_array.push(new_buffer)
+    let patch_list_length = ex_hwvx_proto_patch_list(x)
+    if (patch_list_length === NaN) {
+        alert("?")
+    }
+    new_buffer = patch_list_buffer.slice(0, patch_list_length)
+    buffer_array.push(new_buffer)
 
     /*
     end patch list
@@ -20088,79 +20127,93 @@ function ex_hwvx_proto_datapack(o, x) {
     */
 
     globalThis.datapack_buffer = new ArrayBuffer(100000000)
-
-    buffer_array.push(datapack_buffer)
     dynamic_buffer = datapack_buffer
+    buffer_array.push(datapack_buffer)
 
     // globalThis.datapack_buffer = new ArrayBuffer(100000000)
 
     // buffer_array.push(datapack_buffer)
     // dynamic_buffer = datapack_buffer
 
+    g.sound_section_length_start = 120
+    g.end_sound_impulse_tracker_section = 0
+    g.end_sound_offset_section = 0
+
     e = ex_hwvx_proto_sound_offset_list(e, x.section_audio[0])
     e = ex_hwvx_proto_impulse_tracker(e, x.section_72)
     e = ex_hwvx_proto_audio_data_2(e, x.section_76)
+    let datapack_length = e
 
-    // globalThis.ordered_buffer = new ArrayBuffer(ordered_length)
+    let audio_length = e - g.sound_section_length_start
+    let impulse_tracker_offset = 0
+    let audio_data_2_offset = 0
+    if (g.end_sound_offset_section !== 0 ) {
+    audio_data_2_offset =  audio_length - (g.end_sound_offset_section)
+    }
+    if (g.end_sound_impulse_tracker_section !== 0 ) {
+    impulse_tracker_offset =  audio_length - (g.end_sound_offset_section + g.end_sound_impulse_tracker_section)
+    }
 
-    // e = ex_s_offset(o + 0, e, ex_ordered_list, x.section_0, 'down');
-    // e = ex_s_offset(o + 4, e, ex_audio_section, x.section_4, 'down');
-    // e = ex_s_offset(o + 24, e, ex_hwvx_proto_texture, x.section_24, 'down');
-    // e = ex_s_offset(o + 44, e, ex_color_table, x.section_44, 'down');
-    // e = ex_s_offset(o + 60, e, ex_hwvx_proto_texture_anims, x.section_60, 'down');
-    // e = ex_s_offset(o + 68, e, ex_hwvx_proto_datapack_68, x.section_68, 'down');
-    // e = ex_s_offset(o + 72, e, ex_impulse_tracker, x.section_72, 'down');
-    // e = ex_string(o + 80, e, x.section_80)
-    // e = ex_string(o + 100, e, x.section_100)
+    let amount_sounds = 0
+    if (x?.section_audio[0]?.sound?.length) {
+        amount_sounds = x?.section_audio[0]?.sound?.length
+    }
+    let amount_color_tables = 0
 
-    su32(0, x.u32_0)
-    su32(4, x.u32_4)
-    su32(8, x.u32_8)
-    su32(12, x.u32_12)
-    su32(16, x.u32_16)
-    su32(20, x.u32_20)
-    su32(28, x.u32_28)
-    su32(32, x.u32_32)
-    su32(40, x.u32_40)
-    su32(48, x.u32_48)
-    su32(52, x.u32_52)
-    su32(56, x.u32_56)
-    su32(64, x.u32_64)
+    su32(0, ordered_length)
+    su32(4, audio_length)
+    su32(8, amount_sounds)
+    su32(12, g.oa.length)
+    su32(16, g.texture_patch_array.length)
+    su32(20, x.section_24.length)
+    su32(24, g.texture_offset_hold)
+    su32(28, g.sound_patch_array.length)
+    su32(32, amount_sounds)
+    su32(40, x.section_44.length)
+    su32(44, g.color_table_offset_hold)
+    su32(48, x.section_60.length)
+    su32(52, g.animation_patch_array.length)
+    su32(56, g.model_patch_array.length)
+    su32(60, g.tex_anims_hold_offset)
+    su32(64, x.section_68.length)
+    su32(68, g.triggers_and_actions_offset_hold)
+    su32(72, impulse_tracker_offset)
+    su32(76, audio_data_2_offset)
+    ex_string(80, 80, x.section_80, 1, 0)
     su32(92, x.u32_92)
+    ex_string(100, 100, x.section_100, 1, 0)
     su32(112, x.u32_112)
 
-    su32(24, x.u32_24)
-    su32(44, x.u32_44)
-    su32(60, x.u32_60)
-    su32(64, x.u32_64)
-    su32(68, x.u32_68)
-    su32(72, x.u32_72)
-    su32(76, x.u32_76)
-    ex_string(80, 80, x.section_80, 1, 0)
-    ex_string(100, 100, x.section_100, 1, 0)
+    buffer_array[buffer_array.length - 1] = datapack_buffer.slice(0, datapack_length)
+
+    // su32(24, x.u32_24)
+    // su32(44, x.u32_44)
+    // su32(60, x.u32_60)
+    // su32(64, x.u32_64)
+    // su32(68, x.u32_68)
+    // su32(72, x.u32_72)
+    // su32(76, x.u32_76)
 
     /*
     later
     su32(0, ordered_buffer.byteLength)
-    su32(24, g.texture_offset_hold)
-    su32(44, g.color_table_offset_hold)
-    su32(60, g.tex_anims_hold_offset)
-    su32(68, g.triggers_and_actions_offset_hold)
     */
 
-    let file_length = globalThis.ordered_buffer.byteLength + e + globalThis.patch_buffer.byteLength
+    let file_length = ordered_length + datapack_length + patch_list_length
     globalThis.directory_length_array.push(file_length)
 
-    buffer_array[buffer_array.length - 1] = datapack_buffer.slice(0, e)
-
     g.debug && ex_debug(o, x.sec_id);
-    return e
+    return file_length
 }
 
 function ex_hwvx_proto_patch_list(x) {
     let length = 0;
     length += (g.texture_patch_array.length + g.sound_patch_array.length + g.animation_patch_array.length + g.model_patch_array.length) * 8
     length += g.oa.length * 4
+
+    if (x?.u32_36) {
+        length += x?.u32_36
+    }
 
     let i = 0
     for (let t_i = 0; t_i < g.texture_patch_array.length; t_i++,
@@ -20245,14 +20298,13 @@ function ex_hwvx_proto_patch_list(x) {
             `)
             return
         }
-        su32(e + (i * 4), )
+        su32(e + (i * 4), g.oa[i])
     }
 
     return length
 }
 
 function ex_hwvx_proto_geo_datapack(o, x) {
-    g.datapack_offset = o
     let e = 84
 
     /*
@@ -20262,15 +20314,14 @@ function ex_hwvx_proto_geo_datapack(o, x) {
     g.datapack_ref = x
 
     let ordered_list_buffer = convert_base64_arraybuffer(x.ordered_buffer)
-    globalThis.ordered_buffer = new ArrayBuffer(ordered_list_buffer.byteLength + 10000000)
+    globalThis.ordered_buffer = new ArrayBuffer(ordered_list_buffer.byteLength + 100000000)
     dynamic_buffer = ordered_buffer
 
-    let new_e = ex_hwvx_proto_geo_basic(0, x.ordered[0])
-    if (new_e === NaN || new_e === 0) {
-        alert("?")
+    let ordered_length = ex_hwvx_proto_geo_basic(0, x.ordered[0])
+    if (ordered_length === NaN || ordered_length === 0) {
+        console.log("?")
     }
-    let new_buffer = ordered_buffer.slice(0, ordered_list_buffer.byteLength)
-
+    let new_buffer = ordered_buffer.slice(0, ordered_length)
     buffer_array.push(new_buffer)
 
     // let ordered_list_buffer = convert_base64_arraybuffer(x.ordered_buffer)
@@ -20285,15 +20336,17 @@ function ex_hwvx_proto_geo_datapack(o, x) {
     */
     let patch_list_buffer = convert_base64_arraybuffer(x.patch_buffer)
     globalThis.patch_buffer = new ArrayBuffer(patch_list_buffer.byteLength)
+    dynamic_buffer = patch_buffer
 
-    buffer_array.push(patch_list_buffer)
+    // buffer_array.push(patch_list_buffer)
 
-    new_e = ex_hwvx_proto_patch_list(x)
-    if (new_e === NaN || new_e === 0) {
-        alert("?")
+    let patch_list_length = ex_hwvx_proto_patch_list(x)
+    if (patch_list_length === NaN) {
+        console.log("?")
     }
 
-    dynamic_buffer = patch_list_buffer
+    new_buffer = patch_buffer.slice(0, patch_list_length)
+    buffer_array.push(new_buffer)
 
     /*
     end patch list
@@ -20305,20 +20358,20 @@ function ex_hwvx_proto_geo_datapack(o, x) {
     buffer_array.push(datapack_buffer)
     dynamic_buffer = datapack_buffer
 
-    su32(0, x.u32_0)
-    su32(4, x.u32_4)
-    su32(8, x.u32_8)
-    su32(28, x.u32_28)
+    su32(0, ordered_length)
+    su32(4, g.oa.length)
+    su32(8, g.texture_patch_array.length)
+    su32(28, g.animation_patch_array.length)
     su32(36, x.u32_36)
-    su32(40, x.u32_40)
+    su32(40, g.model_patch_array.length)
     ex_string(44, 44, x.section_44, 1, 0)
     su32(56, x.u32_56)
 
-    // e = ex_string(o + 55, e, x.section_44)
-    // e = ex_string(o + 56, e, x.section_56)
+    let file_length = ordered_length + globalThis.datapack_buffer.byteLength + patch_list_length
+    globalThis.directory_length_array.push(file_length)
 
     g.debug && ex_debug(o, x.sec_id);
-    return e
+    return file_length
 }
 
 function ex_hwvx_proto_sound_offset_list(o, x) {
@@ -20328,9 +20381,11 @@ function ex_hwvx_proto_sound_offset_list(o, x) {
     // e += XFA.length * 32
 
     let e = o + (sound_length * 4)
+    g.sound_section_length_start = e
     let base_offset = e
     e += sound_length * 32
     e += x.padding
+
 
     if (sound_length) {
         for (let i = 0; i < sound_length; i++) {
@@ -20368,7 +20423,7 @@ function ex_hwvx_proto_impulse_tracker(o, x) {
     if (x.length) {
         let buffer = convert_base64_arraybuffer(x[0].buffer)
         new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
-
+        g.end_sound_impulse_tracker_section = buffer.byteLength
         return o + buffer.byteLength
     }
     return o
@@ -20377,7 +20432,7 @@ function ex_hwvx_proto_audio_data_2(o, x) {
     if (x.length) {
         let buffer = convert_base64_arraybuffer(x[0].buffer)
         new Uint8Array(dynamic_buffer).set(new Uint8Array(buffer), o)
-
+        g.end_sound_offset_section = buffer.byteLength
         return o + buffer.byteLength
     }
     return o
@@ -20385,7 +20440,6 @@ function ex_hwvx_proto_audio_data_2(o, x) {
 
 function ex_hwvx_proto_ordered(o, x) {
 
-    let aftero = o
     let e = o
     o = 0
     g.m = o
@@ -20428,13 +20482,11 @@ function ex_hwvx_proto_ordered(o, x) {
     }
     g.hwvx_proto_texture_anims_old_offsets = []
 
-    if (g.file_dir_type === 'world texture') {
-        
-    }else{
-    let current_patch_list_divis = divisible(g.divisible_prev_value[0], g.divisible_prev_value[1])
-    let patch_list_divis = divisible(g.divisible_prev_value[0] + 1, 4)
-    e -= current_patch_list_divis
-    e += patch_list_divis
+    if (g.file_dir_type === 'world texture') {} else {
+        let current_patch_list_divis = divisible(g.divisible_prev_value[0], g.divisible_prev_value[1])
+        let patch_list_divis = divisible(g.divisible_prev_value[0], 4)
+        e -= current_patch_list_divis
+        e += patch_list_divis
     }
 
     ordered_buffer = ordered_buffer.slice(0, e)
@@ -20449,7 +20501,7 @@ function ex_hwvx_proto_ordered(o, x) {
     // buffer_array[buffer_index] = ordered_buffer
     // }
 
-    return e + aftero
+    return e
 }
 function ex_hwvx_proto_unordered(x) {
     generate_id_offset_array(g.hwvx_proto_world_12_array = [], x.hwvx_proto_world_12)
@@ -20511,10 +20563,11 @@ function ex_hwvx_proto_unordered(x) {
 }
 function ex_hwvx_proto_ordered_list_layout(o) {
     let e = o
+    g.triggers_and_actions_offset_hold = 0
     g.triggers_and_actions_hold_multilink = []
-    if (g.datapack_ref.section_68) {
+    if (g.datapack_ref.section_68.length) {
         g.triggers_and_actions_offset_hold = e
-        g.triggers_and_actions_offset_hold_data = e + (g.datapack_ref.section_68.length * 44)
+        g.triggers_and_actions_offset_hold_data = e + divisible(g.datapack_ref.section_68.length * 44, 16)
         e = ex_ma(g.datapack_ref.section_68, g.hwvx_proto_triggers_and_actions_array, ex_hwvx_proto_triggers_and_actions, e, g.m)
         e = g.triggers_and_actions_offset_hold_data
     }
@@ -20523,6 +20576,7 @@ function ex_hwvx_proto_ordered_list_layout(o) {
         e = ex_ma(g.ordered_ref.hwvx_proto_models, g.hwvx_proto_model_array, ex_hwvx_proto_models, e, g.m)
     }
 
+    g.tex_anims_hold_offset = 0
     if (g.datapack_ref.section_60.length) {
         g.tex_anims_hold_offset = e
         ex_ma(g.datapack_ref.section_60, g.hwvx_proto_texture_anims_array, ex_hwvx_proto_texture_anims, e, g.m)
@@ -20537,6 +20591,7 @@ function ex_hwvx_proto_ordered_list_layout(o) {
         e = ex_ma(g.unordered_ref.hwvx_proto_model_anims_2, g.hwvx_proto_model_anims_2_array, ex_hwvx_proto_model_anims_2, e, g.m)
     }
 
+    g.texture_offset_hold = 0
     if (g.datapack_ref.section_24.length) {
         g.texture_offset_hold = e
         g.textur_data_start = e + (g.datapack_ref.section_24.length * 16) + g.datapack_ref.section_24_padding
@@ -20544,6 +20599,7 @@ function ex_hwvx_proto_ordered_list_layout(o) {
         e = g.textur_data_start
     }
 
+    g.color_table_offset_hold = 0
     if (g.datapack_ref.section_44.length) {
         g.color_table_offset_hold = e
         // g.divisible_prev_value = [0,0]
@@ -20721,11 +20777,15 @@ function ex_hwvx_proto_world(o, x) {
     //amount?   su32(o +88, x.u32_88)
     //amount?   su32(o +96, x.u32_96)
     //amount?   su32(o +104, x.u32_104)
-    //amount?   su32(o +112, x.u32_112)
+    su32(o + 112, x.u32_112)
 
     e = ex_string(o + 124, e, x.section_124)
     e = ex_string(o + 140, e, x.section_140)
     e = ex_string(o + 132, e, x.section_132)
+
+    if (x.unordered_first_linked_section === "settings") {
+        g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_world_settings_156, g.hwvx_proto_world_settings_array, ex_hwvx_proto_world_settings, g.unordered_ref.hwvx_proto_world_settings, o + 156, e, 'none']);
+    }
 
     if (g.unordered_ref.hwvx_proto_world_12.length) {
         su32(o + 8, g.unordered_ref.hwvx_proto_world_12.length)
@@ -20737,15 +20797,23 @@ function ex_hwvx_proto_world(o, x) {
         e = g.temp_ma_offset_hold
     }
     // x.unordered_hwvx_proto_world_idk_76, g.hwvx_proto_world_idk_array, ex_hwvx_proto_world_idk, g.unordered_ref.hwvx_proto_world_idk, o + 76, e, 'down']);
+    if (x.unordered_first_linked_section === "idk") {
+        let temp_array = g.temp_hwvx_proto_world_offset_holder.slice(0, x.unordered_first_linked_section_index)
+        temp_array.push([x.unordered_hwvx_proto_world_settings_156, g.hwvx_proto_world_settings_array, ex_hwvx_proto_world_settings, g.unordered_ref.hwvx_proto_world_settings, o + 156, e, 'none']);
+        temp_array.push(...g.temp_hwvx_proto_world_offset_holder.slice(x.unordered_first_linked_section_index, g.temp_hwvx_proto_world_offset_holder.length))
+        g.temp_hwvx_proto_world_offset_holder = temp_array
+    }
 
-    g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_world_settings_156, g.hwvx_proto_world_settings_array, ex_hwvx_proto_world_settings, g.unordered_ref.hwvx_proto_world_settings, o + 156, e, 'none']);
+    if (x.unordered_first_linked_section === "all idk") {
+        g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_world_settings_156, g.hwvx_proto_world_settings_array, ex_hwvx_proto_world_settings, g.unordered_ref.hwvx_proto_world_settings, o + 156, e, 'none']);
+    }
 
     ;if (g.unordered_ref.hwvx_proto_world_20.length) {
         su32(o + 16, g.unordered_ref.hwvx_proto_world_20.length)
         su32(o + 20, e - g.m)
         g.oa.push(o + 20)
         let temp_offset = e
-        g.temp_ma_offset_hold = e + divisible(g.unordered_ref.hwvx_proto_world_20.length * 20,16)
+        g.temp_ma_offset_hold = e + divisible(g.unordered_ref.hwvx_proto_world_20.length * 20, 16)
         e = ex_ma(g.unordered_ref.hwvx_proto_world_20, g.hwvx_proto_world_20_array, ex_hwvx_proto_world_20, e, g.m);
         e = g.temp_ma_offset_hold
     }
@@ -20798,15 +20866,6 @@ function ex_hwvx_proto_world(o, x) {
         // }
         // ;
     }
-    ;if (g.unordered_ref.hwvx_proto_world_52.length) {
-        su32(o + 48, g.unordered_ref.hwvx_proto_world_52.length)
-        su32(o + 52, e - g.m)
-        g.oa.push(o + 52)
-        let temp_offset = e
-        g.temp_ma_offset_hold = e + (g.unordered_ref.hwvx_proto_world_52.length * 112)
-        e = ex_ma(g.unordered_ref.hwvx_proto_world_52, g.hwvx_proto_world_52_array, ex_hwvx_proto_world_52, e, g.m)
-        e = g.temp_ma_offset_hold;
-    }
     ;if (x.section_92.length) {
         su32(o + 88, x.section_92.length)
         su32(o + 92, e - g.m)
@@ -20817,6 +20876,16 @@ function ex_hwvx_proto_world(o, x) {
             e = ex_hwvx_proto_world_92(temp_offset + (i * 8), e, x.section_92[i])
         }
         ;
+    }
+
+    ;if (g.unordered_ref.hwvx_proto_world_52.length) {
+        su32(o + 48, g.unordered_ref.hwvx_proto_world_52.length)
+        su32(o + 52, e - g.m)
+        g.oa.push(o + 52)
+        let temp_offset = e
+        g.temp_ma_offset_hold = e + (g.unordered_ref.hwvx_proto_world_52.length * 112)
+        e = ex_ma(g.unordered_ref.hwvx_proto_world_52, g.hwvx_proto_world_52_array, ex_hwvx_proto_world_52, e, g.m)
+        e = g.temp_ma_offset_hold;
     }
     ;if (x.section_100.length) {
         su32(o + 96, x.section_100.length)
@@ -20852,7 +20921,6 @@ function ex_hwvx_proto_world(o, x) {
     e = ex_s_offset(o + 120, e, ex_hwvx_proto_world_120, x.section_120, 'up');
 
     e = ex_hwvx_proto_ordered_list_layout(e)
-
 
     e = ex_hwvx_proto_world_hold(e)
 
@@ -20985,12 +21053,13 @@ function ex_hwvx_proto_world_36(o, e, x) {
     su32(o + 0, x.u32_0)
     su32(o + 12, x.u32_12)
     //amount?   su32(o +24, x.u32_24)
-    //amount?   su32(o +32, x.u32_32)
+    su32(o + 32, x.u32_32);
+    e = ex_ml(x.unordered_hwvx_proto_world_36_36, g.hwvx_proto_world_36_36_array, ex_hwvx_proto_world_36_36, g.unordered_ref.hwvx_proto_world_36_36, o + 36, e, 'down');
 
     if (x.section_28.length) {
         su32(o + 24, x.section_28.length * 32)
         su32(o + 28, e - g.m)
-            g.oa.push(o + 28)
+        g.oa.push(o + 28)
         let temp_offset = e
         e += divisible(x.section_28.length * 32, 16)
         for (let i = 0; i < x.section_28.length; i++) {
@@ -20998,7 +21067,6 @@ function ex_hwvx_proto_world_36(o, e, x) {
         }
         ;
     }
-    ;e = ex_ml(x.unordered_hwvx_proto_world_36_36, g.hwvx_proto_world_36_36_array, ex_hwvx_proto_world_36_36, g.unordered_ref.hwvx_proto_world_36_36, o + 36, e, 'down');
     e = ex_ml(x.unordered_hwvx_proto_strange_world_36_48, g.hwvx_proto_world_36_48_array, ex_hwvx_proto_world_36_48, g.unordered_ref.hwvx_proto_world_36_48, o + 48, e, 'up');
 
     g.debug && ex_debug(o, x.sec_id);
@@ -21077,6 +21145,9 @@ function ex_hwvx_proto_world_36_48_16(o, e, x) {
     g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_strange_36, g.hwvx_proto_strange_array, ex_hwvx_proto_strange, g.unordered_ref.hwvx_proto_strange, o + 36, e, 'none']);
     g.oa.push(o + 36)
 
+    let index = g.hwvx_proto_world_36_48_16_array[0].a_ids.indexOf(x.id)
+    g.hwvx_proto_world_36_48_16_array[0].a_offsets[index] = o
+
     g.debug && ex_debug(o, x.sec_id);
     return e + 64
 }
@@ -21124,6 +21195,9 @@ function ex_hwvx_proto_world_36_48_8(o, e, x) {
 
     g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_world_model_related_36, g.hwvx_proto_world_model_related_array, ex_hwvx_proto_world_model_related, g.unordered_ref.hwvx_proto_world_model_related, o + 36, e, 'down']);
 
+    let index = g.hwvx_proto_world_36_48_8_array[0].a_ids.indexOf(x.id)
+    g.hwvx_proto_world_36_48_8_array[0].a_offsets[index] = o
+
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
@@ -21144,6 +21218,10 @@ function ex_hwvx_proto_world_36_48_24(o, e, x) {
     su32(o + 52, x.u32_52)
 
     g.debug && ex_debug(o, x.sec_id);
+
+    let index = g.hwvx_proto_world_36_48_24_array[0].a_ids.indexOf(x.id)
+    g.hwvx_proto_world_36_48_24_array[0].a_offsets[index] = o
+
     return o
 }
 function ex_hwvx_proto_world_44(o, e, x) {
@@ -21271,19 +21349,24 @@ function ex_hwvx_proto_world_108(o, x) {
 
     switch (x.u32_12) {
     case 1:
+        e = ex_s_offset(o + 40, e, ex_hwvx_proto_world_108_40, x.section_40, 'down');
         e = ex_s_offset(o + 44, e, ex_hwvx_proto_world_108_44t1, x.section_44, 'down');
         break;
     case 2:
+        e = ex_s_offset(o + 40, e, ex_hwvx_proto_world_108_40, x.section_40, 'down');
         e = ex_s_offset(o + 44, e, ex_hwvx_proto_world_108_44t2, x.section_44, 'down');
         break;
     case 3:
+        e = ex_s_offset(o + 40, e, ex_hwvx_proto_world_108_40, x.section_40, 'down');
         e = ex_s_offset(o + 44, e, ex_hwvx_proto_world_108_44t3, x.section_44, 'down');
         break;
     case 6:
         e = ex_ml(x.section_44, g.hwvx_proto_world_108_44t6_array, ex_hwvx_proto_world_108_44t6, g.unordered_ref.hwvx_proto_world_108_44t6, o + 44, e, 'down');
+        e = ex_s_offset(o + 40, e, ex_hwvx_proto_world_108_40, x.section_40, 'down');
         break;
+    default:
+        e = ex_s_offset(o + 40, e, ex_hwvx_proto_world_108_40, x.section_40, 'down');
     }
-    e = ex_s_offset(o + 40, e, ex_hwvx_proto_world_108_40, x.section_40, 'down');
 
     g.debug && ex_debug(o, x.sec_id);
 
@@ -21657,7 +21740,7 @@ function ex_hwvx_proto_world_4_16(o, e, x) {
         ;
     }
     ;if (x.section_12.length) {
-        su32(o + 12, x.section_12.length)
+        su32(o + 8, x.section_12.length)
         su32(o + 12, e - g.m)
         g.oa.push(o + 12)
         let temp_offset = e
@@ -21720,14 +21803,17 @@ function ex_hwvx_proto_world_120(o, x) {
     su8(o + 9, x.u8_9)
     su8(o + 10, x.u8_10)
     su8(o + 11, x.u8_11);
-    if (g.unordered_ref.hwvx_proto_world_120_0.length) {
-        su32(o + 4, g.unordered_ref.hwvx_proto_world_120_0.length)
-        su32(o + 0, e - g.m)
-        g.oa.push(o + 0)
-        let temp_offset = e
-        g.temp_ma_offset_hold = e + (g.unordered_ref.hwvx_proto_world_120_0.length * 112)
-        e = ex_ma(g.unordered_ref.hwvx_proto_world_120_0, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, e, g.m)
-        e = g.temp_ma_offset_hold
+    if (x.unordered_hwvx_proto_world_120_0_0 !== 0) {
+
+        if (g.unordered_ref.hwvx_proto_world_120_0.length) {
+            su32(o + 4, g.unordered_ref.hwvx_proto_world_120_0.length)
+            su32(o + 0, e - g.m)
+            g.oa.push(o + 0)
+            let temp_offset = e
+            g.temp_ma_offset_hold = e + (g.unordered_ref.hwvx_proto_world_120_0.length * 112)
+            e = ex_ma(g.unordered_ref.hwvx_proto_world_120_0, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, e, g.m)
+            e = g.temp_ma_offset_hold
+        }
     }
 
     g.debug && ex_debug(o, x.sec_id);
@@ -21934,7 +22020,7 @@ function ex_hwvx_proto_collision_32(o, e, x) {
         su32(o + 68, e - g.m)
         g.oa.push(o + 68)
         let temp_offset = e
-        e+= (x.section_68.length*2)
+        e += (x.section_68.length * 2)
 
         if (x.section_68_after_buffer !== 0) {
             let buffer = convert_base64_arraybuffer(x.section_68_after_buffer)
@@ -21946,10 +22032,10 @@ function ex_hwvx_proto_collision_32(o, e, x) {
         for (let i = 0; i < x.section_68.length; i++) {
             e = ex_hwvx_proto_collision_32_68(temp_offset + (i * 2), e, x.section_68[i])
         }
-    }else{
+    } else {
         if (typeof x.section_68 === "number") {
-        su32(o + 68, e - g.m)
-        g.oa.push(o + 68)
+            su32(o + 68, e - g.m)
+            g.oa.push(o + 68)
         }
     }
 
@@ -22079,6 +22165,12 @@ function ex_hwvx_proto_triggers_and_actions(o, x) {
     su32(o + 32, x.u32_32)
     su32(o + 40, x.u32_40)
 
+    if (o === 82044) {
+        console.log("?")
+    }
+
+    g.actions_end_length = x.u32_8 * 4
+
     switch (x.u32_8) {
     case 1:
         e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_4t1, x.section_4, 'down');
@@ -22147,8 +22239,19 @@ function ex_hwvx_proto_triggers_and_actions_4t5(o, x) {
     su32(o + 8, x.u32_8)
     su32(o + 16, x.u32_16)
 
+    if (o === 114912) {
+        console.log("?")
+    }
+
     triggers_and_actions_get_link(x.section_4, x.section_4_type, o + 4)
-    triggers_and_actions_get_link(x.section_12, x.section_12_type, o + 12)
+
+    switch (x.u32_16) {
+    case 22:
+        sf32(o + 12, x.section_12)
+        break
+    default:
+        triggers_and_actions_get_link(x.section_12, x.section_12_type, o + 12)
+    }
 
     // let section_type = 
     // let section = x.section_4
@@ -22206,13 +22309,20 @@ function ex_hwvx_proto_triggers_and_actions_4trest(o, x) {
     }
     if (x.section_4.length) {
         su32(o + i, x.section_4.length)
+        i += 4
         for (let ii = 0; ii < x.section_4.length; ii++,
         i += 4) {
             ex_hwvx_proto_triggers_and_actions_4trest_section(o + i, x.section_4[ii])
         }
     }
+    i += 1
+    if (g.actions_end_length < i) {
+        i = g.actions_end_length
+    }
+
     g.debug && ex_debug(o, x.sec_id);
     return e + divisible(i, 16)
+    // return e + g.actions_end_length
 }
 
 function ex_hwvx_proto_triggers_and_actions_4trest_section(o, x) {
@@ -22255,6 +22365,10 @@ function ex_hwvx_proto_triggers_and_actions_20(o, e, x) {
     su8(o + 18, x.u8_18)
     su8(o + 19, x.u8_19)
     su32(o + 20, x.u32_20)
+
+    if (o === 91232) {
+        console.log("?")
+    }
 
     switch (x.u32_0) {
     case 0:
@@ -22316,7 +22430,16 @@ function ex_hwvx_proto_triggers_and_actions_20(o, e, x) {
         e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t12, x.section_4, 'down');
         break
     case 15:
-        e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t15, x.section_4, 'down');
+        switch (x.u32_8) {
+        case 1:
+            e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t15t1, x.section_4, 'down');
+            break
+        case 5:
+            e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t15t5, x.section_4, 'down');
+            break
+        default:
+            console.log("?")
+        }
         break
     case 17:
         e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t17, x.section_4, 'down');
@@ -22367,9 +22490,11 @@ function ex_hwvx_proto_triggers_and_actions_20_4t0(o, x) {
         su32(o + 4, x.u32_4)
         for (let ii = 0; ii < x.section_2.length; ii++,
         i += 4) {
-            ex_hwvx_proto_triggers_and_actions_20_4t0_2(o + i, x.section_2[ii])
+            ex_hwvx_proto_triggers_and_actions_4trest_section(o + i, x.section_2[ii])
         }
     }
+    i += 1
+
     g.debug && ex_debug(o, x.sec_id);
     return e + divisible(i, 16)
 }
@@ -22492,6 +22617,8 @@ function ex_hwvx_proto_triggers_and_actions_20_4t2(o, x) {
             triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_36_48_8", o + i)
         }
     }
+    i += 1
+
     g.debug && ex_debug(o, x.sec_id);
     return e + divisible(i, 16)
 }
@@ -22507,6 +22634,8 @@ function ex_hwvx_proto_triggers_and_actions_20_4t3(o, x) {
             triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_36_48_16", o + i)
         }
     }
+    i += 1
+
     g.debug && ex_debug(o, x.sec_id);
     return e + divisible(i, 16)
 }
@@ -22529,6 +22658,8 @@ function ex_hwvx_proto_triggers_and_actions_20_4t5(o, x) {
             triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_36_48_24", o + i)
         }
     }
+    i += 1
+
     g.debug && ex_debug(o, x.sec_id);
     return e + divisible(i, 16)
 
@@ -22558,7 +22689,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t8(o, x) {
     su32(o + 4, x.u32_4)
     su32(o + 8, x.u32_8)
 
-    g.triggers_and_actions_hold_multilink.push([x.unordered_hwvx_proto_world_76_12, g.hwvx_proto_world_76_array, ex_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76, o + 12, e, 'down']);
+    triggers_and_actions_get_link(x.section_12, x.type, o + 12)
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -22615,12 +22746,24 @@ function ex_hwvx_proto_triggers_and_actions_20_4t12(o, x) {
             triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_120_0", o + i)
         }
     }
+    i++
     g.debug && ex_debug(o, x.sec_id);
     return e + divisible(i, 16)
 }
-function ex_hwvx_proto_triggers_and_actions_20_4t15(o, x) {
+function ex_hwvx_proto_triggers_and_actions_20_4t15t1(o, x) {
     let e = o + divisible(16, g.divisibility)
-    // su32(o + 0, x.u32_0)
+    su32(o + 0, x.u32_0)
+
+    triggers_and_actions_get_link(x.section_4, x.section_4_type, o + 4)
+
+    // g.debug && ex_debug(o, x.sec_id);
+    return e
+}
+function ex_hwvx_proto_triggers_and_actions_20_4t15t5(o, x) {
+    let e = o + divisible(32, g.divisibility)
+    su32(o + 0, x.u32_0)
+
+    triggers_and_actions_get_link(x.section_4, x.section_4_type, o + 4)
 
     // g.debug && ex_debug(o, x.sec_id);
     return e
@@ -22633,9 +22776,11 @@ function ex_hwvx_proto_triggers_and_actions_20_4t17(o, x) {
         su32(o + 4, x.u32_4)
         for (let ii = 0; ii < x.section_2.length; ii++,
         i += 4) {
-            triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_120_0", o + i)
+            triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_12", o + i)
         }
     }
+    i += 1
+
     g.debug && ex_debug(o, x.sec_id);
     return e + divisible(i, 16)
 }
@@ -22671,6 +22816,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t22(o, x) {
             triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_12", o + i)
         }
     }
+    i += 1
     g.debug && ex_debug(o, x.sec_id);
     return e + divisible(i, 16)
 }
@@ -22679,8 +22825,8 @@ function ex_hwvx_proto_triggers_and_actions_20_4t24(o, x) {
     su32(o + 0, x.u32_0)
     su32(o + 8, x.u32_8)
 
-    g.triggers_and_actions_hold_multilink.push([x.unordered_hwvx_proto_world_36_48_24_4, g.hwvx_proto_world_36_48_24_array, ex_hwvx_proto_world_36_48_24, g.unordered_ref.hwvx_proto_world_36_48_24, o + 4, e, 'down']);
-    g.triggers_and_actions_hold_multilink.push([x.unordered_hwvx_proto_world_12_12, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 12, e, 'down']);
+    g.triggers_and_actions_hold_multilink.push([x.unordered_hwvx_proto_triggers_and_actions_20_4t24t5_4_4, g.hwvx_proto_world_36_48_24_array, ex_hwvx_proto_world_36_48_24, g.unordered_ref.hwvx_proto_world_36_48_24, o + 4, e, 'down']);
+    g.triggers_and_actions_hold_multilink.push([x.unordered_hwvx_proto_triggers_and_actions_20_4t24t5_12_12, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 12, e, 'down']);
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -22690,7 +22836,8 @@ function ex_hwvx_proto_triggers_and_actions_20_4t26(o, x) {
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
 
-    g.triggers_and_actions_hold_multilink.push([x.unordered_hwvx_proto_world_76_8, g.hwvx_proto_world_76_array, ex_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76, o + 8, e, 'down']);
+    triggers_and_actions_get_link(x.section_8, x.type, o + 8)
+    // g.triggers_and_actions_hold_multilink.push([x.unordered_hwvx_proto_world_76_8, g.hwvx_proto_world_76_array, ex_hwvx_proto_world_76, g.unordered_ref.hwvx_proto_world_76, o + 8, e, 'down']);
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -22830,9 +22977,9 @@ function ex_hwvx_proto_model_8(o, e, x) {
     su8(o + 18, x.u8_18)
     su8(o + 19, x.u8_19)
 
-    if (o === 48976) {
-        console.log("?")
-    }
+    // if (o === 48976) {
+    //     console.log("?")
+    // }
 
     if (x.section_20_temp.length) {
         e = ex_s_offset(o + 20, e, ex_hwvx_proto_model_8_20, x.section_20_temp, 'down');
@@ -23043,7 +23190,6 @@ function ex_hwvx_proto_model_anims_1(o, x) {
     e = ex_s_offset(o + 44, e, ex_hwvx_proto_model_anims_1_44, x.section_44, 'down');
     e = ex_s_offset(o + 36, e, ex_hwvx_proto_model_anims_1_36, x.section_36, 'down');
 
-
     // if (x.section_36.length) {
     //     su32(o + 48, x.section_36.length)
     //     su32(o + 36, e - g.m)
@@ -23156,11 +23302,11 @@ function ex_hwvx_proto_texture(o, x) {
     su16(o + 2, x.u16_2)
     su16(o + 4, x.u16_4)
     su16(o + 6, x.u16_6)
-    su32(o + 8, x.u32_8)
     su32(o + 12, x.u32_12)
 
     if (x.texture_section.length) {
         g.oa.push(o + 8)
+        su32(o + 8, e - g.m)
     }
 
     for (let i = 0; i < x.texture_section.length; i++) {
@@ -23246,10 +23392,15 @@ function ex_hwvx_proto_world_text_link(o, x) {
     su8(o + 2, x.u8_2)
     su32(o + 8, x.u32_8)
 
-    e = ex_s_offset(o + 12, e, ex_hwvx_proto_world_small_section, x.section_12, 'down');
-    e = ex_s_offset(o + 16, e, ex_hwvx_proto_world_small_section, x.section_16, 'down');
-    e = ex_s_offset(o + 20, e, ex_hwvx_proto_text, x.section_20, 'down');
-    e = ex_s_offset(o + 24, e, ex_hwvx_proto_text, x.section_24, 'down');
+    e = ex_ml(x.unordered_hwvx_proto_world_small_section_12, g.hwvx_proto_world_small_section_array, ex_hwvx_proto_world_small_section, g.unordered_ref.hwvx_proto_world_small_section, o + 12, e, 'down');
+    e = ex_ml(x.unordered_hwvx_proto_world_small_section_16, g.hwvx_proto_world_small_section_array, ex_hwvx_proto_world_small_section, g.unordered_ref.hwvx_proto_world_small_section, o + 16, e, 'down');
+    e = ex_ml(x.unordered_hwvx_proto_text_20, g.hwvx_proto_text_array, ex_hwvx_proto_text, g.unordered_ref.hwvx_proto_text, o + 20, e, 'down');
+    e = ex_ml(x.unordered_hwvx_proto_text_24, g.hwvx_proto_text_array, ex_hwvx_proto_text, g.unordered_ref.hwvx_proto_text, o + 24, e, 'down');
+
+    // e = ex_s_offset(o + 12, e, ex_hwvx_proto_world_small_section, x.section_12, 'down');
+    // e = ex_s_offset(o + 16, e, ex_hwvx_proto_world_small_section, x.section_16, 'down');
+    // e = ex_s_offset(o + 20, e, ex_hwvx_proto_text, x.section_20, 'down');
+    // e = ex_s_offset(o + 24, e, ex_hwvx_proto_text, x.section_24, 'down');
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -24509,9 +24660,8 @@ function ex_hwvx_proto_mysterious_24t6(o, x) {
     ex_patch(o + 8, g.texture_patch_array, x.texture_8)
     //amount?   su32(o +12, x.u32_12)
     //amount?   su32(o +20, x.u32_20)
-    su32(o + 28, x.u32_28)
-
-    ;e = ex_s_offset(o + 36, e, ex_hwvx_proto_mysterious_24t6_36, x.section_36, 'down');
+    su32(o + 28, x.u32_28);
+    e = ex_s_offset(o + 36, e, ex_hwvx_proto_mysterious_24t6_36, x.section_36, 'down');
 
     if (x.section_16.length) {
         su32(o + 12, x.section_16.length)
@@ -24918,9 +25068,9 @@ function ex_hwvx_proto_interface(o, x) {
         }
         ;
     }
-    if (o === 3643216) {
-        console.log("?")
-    }
+    // if (o === 3643216) {
+    //     console.log("?")
+    // }
 
     ;e = ex_s_offset(o + 28, e, ex_hwvx_proto_interface_28, x.section_28, 'down');
     e = ex_ml(x.unordered_hwvx_proto_sound_controls_44, g.hwvx_proto_sound_controls_array, ex_hwvx_proto_sound_controls, g.unordered_ref.hwvx_proto_sound_controls, o + 44, e, 'down');
@@ -25000,7 +25150,7 @@ function ex_hwvx_proto_interface_16(o, e, x) {
         e = ex_s_offset(o + 20, e, ex_hwvx_proto_interface_16_20t10, x.section_20, 'down');
         break;
     case 11:
-        e = ex_s_offset(o + 20, e, ex_hwvx_proto_interface_16_20t10, x.section_20, 'down');
+        e = ex_s_offset(o + 20, e, ex_hwvx_proto_interface_16_20t11, x.section_20, 'down');
         break;
     }
     e = ex_s_offset(o + 60, e, ex_hwvx_proto_interface_16_60, x.section_60, 'down');
@@ -25133,9 +25283,9 @@ function ex_hwvx_proto_interface_16_20t2_4(o, e, x) {
     su32(o + 4, x.u32_4)
     su32(o + 8, x.u32_8)
 
-    if (o === 1938624) {
-        console.log("?")
-    }
+    // if (o === 1938624) {
+    //     console.log("?")
+    // }
     //amount?   su32(o +24, x.u32_24)
 
     e = ex_ml(x.unordered_hwvx_proto_interface_text_related_20, g.hwvx_proto_interface_text_related_array, ex_hwvx_proto_interface_text_related, g.unordered_ref.hwvx_proto_interface_text_related, o + 20, e, 'down');
@@ -25216,6 +25366,10 @@ function ex_hwvx_proto_interface_16_20t11(o, x) {
     let e = o + divisible(32, g.divisibility)
     su32(o + 0, x.u32_0)
     su32(o + 4, x.u32_4)
+
+    if (o === 1919616) {
+        console.log("?")
+    }
 
     g.debug && ex_debug(o, x.sec_id);
     return e
@@ -25598,6 +25752,10 @@ function ex_hwvx_proto_interface_16_104_8_12(o, e, x) {
     sf32(o + 4, x.f32_4)
     su32(o + 16, x.u32_16)
     sf32(o + 20, x.f32_20)
+
+    if (o === 1079424) {
+        console.log("?")
+    }
 
     g.debug && ex_debug(o, x.sec_id);
     return e

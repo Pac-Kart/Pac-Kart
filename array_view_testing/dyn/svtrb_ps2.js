@@ -3083,10 +3083,28 @@ function im_svtrb_ps2_get_offset_patch_list(o, patch_offset, x) {
 
     g.model_ref = x[0].model
 
+    let temp_model_list = []
+    for (let i = 0; i < g.model_ref.length; i++) {
+        if (g.model_ref[i][2] === 0) {
+            temp_model_list.push(u32(g.model_ref[i][0] + g.m))
+        }
+    }
+
     log_array.p_offset.offset = general_offset
     for (let i = 0; i < u32(g.datapack_offset + 12); i++) {
         log_array.p_offset.array.push(u32(general_offset + (i * 4)))
     }
+
+    let _2ndarray = []
+    for (let patchoffset of log_array.p_offset.array) {
+        _2ndarray.push(u32(patchoffset + g.m))
+    }
+    log_array.p_offset.pointers = _2ndarray.slice(0)
+    log_array.p_offset.pointers.push(...temp_model_list)
+    log_array.p_offset.array = log_array.p_offset.pointers
+    log_array.p_offset.array.push(u32(g.datapack_offset + 0))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 24))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 60))
 
     log_array.p_offset.array.sort(function(a, b) {
         return a - b;
@@ -21048,7 +21066,7 @@ function add_svtrb_ps2_texture_anims() {
 function add_svtrb_ps2_model() {
     return {
         sec_id: "Q:fO",
-        u8_0: u8(o + 0),
+        u8_0: 0,
         //check this
         u8_2: 0,
         section_4: ["Pac-Kart"],
@@ -25471,7 +25489,7 @@ function add_svtrb_ps2_link() {
         section_56: [],
         u32_60: 0,
         section_64: [],
-        u32_68: u32(o + 68),
+        u32_68: 0,
         //check this
     };
 
@@ -30972,7 +30990,7 @@ function info_svtrb_ps2_texture_anims() {
 function info_svtrb_ps2_model() {
     return {
         sec_id: "Q:fO",
-        u8_0: u8(o + 0),
+        u8_0: 0,
         //check this
         u8_2: 0,
         section_4: ["Pac-Kart"],
@@ -35541,7 +35559,7 @@ function info_svtrb_ps2_link() {
         section_56: ["Op0:"],
         u32_60: 0,
         section_64: ["P:f1"],
-        u32_68: u32(o + 68),
+        u32_68: 0,
         //check this
     };
 

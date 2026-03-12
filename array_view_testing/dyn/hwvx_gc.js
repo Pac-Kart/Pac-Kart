@@ -1596,10 +1596,29 @@ function im_hwvx_gc_get_offset_patch_list(o, patch_offset, x) {
 
     g.model_ref = x[0].model
 
+    let temp_model_list = []
+    for (let i = 0; i < g.model_ref.length; i++) {
+        if (g.model_ref[i][2] === 0) {
+            temp_model_list.push(u32(g.model_ref[i][0] + g.m))
+        }
+    }
+
     log_array.p_offset.offset = general_offset
     for (let i = 0; i < u32(g.datapack_offset + 12); i++) {
         log_array.p_offset.array.push(u32(general_offset + (i * 4)))
     }
+    let _2ndarray = []
+    for (let patchoffset of log_array.p_offset.array) {
+        _2ndarray.push(u32(patchoffset + g.m))
+    }
+    log_array.p_offset.pointers = _2ndarray.slice(0)
+    log_array.p_offset.pointers.push(...temp_model_list)
+    log_array.p_offset.array = log_array.p_offset.pointers
+
+    log_array.p_offset.array.push(u32(g.datapack_offset + 24))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 60))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 68))
+    log_array.p_offset.array.push(u32(g.datapack_offset + 0))
 
     log_array.p_offset.array.sort(function(a, b) {
         return a - b;
@@ -1690,10 +1709,26 @@ function im_hwvx_gc_geo_patch_list(o, patch_offset, x) {
     g.sound_patch_ref = x[0].sound
     g.model_ref = x[0].model
 
+    let temp_model_list = []
+    for (let i = 0; i < g.model_ref.length; i++) {
+        if (g.model_ref[i][2] === 0) {
+            temp_model_list.push(u32(g.model_ref[i][0] + g.m))
+        }
+    }
+
     log_array.p_offset.offset = general_offset
     for (let i = 0; i < u32(g.datapack_offset + 4); i++) {
         log_array.p_offset.array.push(u32(general_offset + (i * 4)))
     }
+    x[0].general_offset = log_array.p_offset.array
+    let _2ndarray = []
+    for (let patchoffset of log_array.p_offset.array) {
+        _2ndarray.push(u32(patchoffset + g.m))
+    }
+    log_array.p_offset.pointers = _2ndarray.slice(0)
+    log_array.p_offset.pointers.push(...temp_model_list)
+    log_array.p_offset.array = log_array.p_offset.pointers
+    log_array.p_offset.array.push(u32(g.datapack_offset + 0))
 
     log_array.p_offset.array.sort(function(a, b) {
         return a - b;
@@ -5186,8 +5221,8 @@ function im_hwvx_gc_texture(o, i, x) {
         for (let ii = 0; ii < x[i].u16_6 - 1; ii++) {
 
             if (u32(o + 8)) {
-             im_hwvx_gc_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
-               // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
+                im_hwvx_gc_Texture_8(start_08_texture, x[i].texture_section, end_08_texture)
+                // x[i].texture_section.push(convert_arraybuffer_base64(buffer.slice(start_08_texture, end_08_texture)))
             }
             start_08_texture += mipmap_offset
             mipmap_offset = Math.round(mipmap_offset / 4)
@@ -11238,7 +11273,7 @@ function add_hwvx_gc_triggers_and_actions() {
     return {
 
         sec_id: "Ow;Q",
-        u32_0: u32(o + 0),
+        u32_0: 0,
         //check this
         section_4: [],
         u32_8: 0,
@@ -11301,7 +11336,7 @@ function add_hwvx_gc_triggers_and_actions_4t6t20() {
         u32_4: 0,
         u32_8: 0,
         unordered_hwvx_gc_world_12_12: 0,
-        f32_20: f32(o + 20),
+        f32_20: 0,
         //check this
     };
 
@@ -11360,7 +11395,7 @@ function add_hwvx_gc_actions_4tCameraSetTargetst14() {
     return {
 
         sec_id: "E[LH",
-        u32_0: u32(o + 0),
+        u32_0: 0,
         //check this
         section_4: [],
         u32_8: 0,
@@ -11780,7 +11815,7 @@ function add_hwvx_gc_model() {
     return {
 
         sec_id: "7iX0",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         section_8: [],
@@ -12068,7 +12103,7 @@ function add_hwvx_gc_texture() {
     return {
 
         sec_id: "w_ld",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         u16_4: 0,
@@ -16145,7 +16180,7 @@ function info_hwvx_gc_world_routes_24() {
 function info_hwvx_gc_triggers_and_actions() {
     return {
         sec_id: "Ow;Q",
-        u32_0: u32(o + 0),
+        u32_0: 0,
         //check this
         section_4: {
             s: 0
@@ -16216,7 +16251,7 @@ function info_hwvx_gc_triggers_and_actions_4t6t20() {
         u32_4: 0,
         u32_8: 0,
         unordered_hwvx_gc_world_12_12: 0,
-        f32_20: f32(o + 20),
+        f32_20: 0,
         //check this
     };
 
@@ -16283,7 +16318,7 @@ function info_hwvx_gc_actions_4tCameraSetTargetst13() {
 function info_hwvx_gc_actions_4tCameraSetTargetst14() {
     return {
         sec_id: "E[LH",
-        u32_0: u32(o + 0),
+        u32_0: 0,
         //check this
         section_4: {
             s: 0
@@ -16732,7 +16767,7 @@ function info_hwvx_gc_share() {
 function info_hwvx_gc_model() {
     return {
         sec_id: "7iX0",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: {
             a: null
@@ -17020,7 +17055,7 @@ function info_hwvx_gc_model_anims_2_16() {
 function info_hwvx_gc_texture() {
     return {
         sec_id: "w_ld",
-        u16_0: u16(o + 0),
+        u16_0: 0,
         //check this
         u16_2: 0,
         u16_4: 0,
