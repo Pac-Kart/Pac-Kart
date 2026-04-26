@@ -12,6 +12,8 @@
 
 The goal is to have each game and version traversable, extractable and fully editable.
 
+Also check out: https://github.com/Duckxz/hwvx-gcn-decomp
+
 Pages
 ============
 
