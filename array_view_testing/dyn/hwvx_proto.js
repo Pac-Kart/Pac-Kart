@@ -1299,7 +1299,7 @@ function im_hwvx_proto_directory(o, i, x) {
     case 7:
         im_hwvx_proto_geo_datapack(next_offset + u32(o + 20), 0, x[i].section_datapack);
         break;
-        default:
+    default:
         console.log("?")
     }
     return x[i].id
@@ -19913,7 +19913,7 @@ function ex_hwvx_proto_x(o, x) {
         hwvx_proto_car_sub_link_array: [],
         hwvx_proto_world_20_12_16_array: [],
         hwvx_proto_unknown_small_model_link_array: [],
-        temp_hwvx_proto_world_offset_holder_models:[],
+        temp_hwvx_proto_world_offset_holder_models: [],
     }
 
     let time_array = []
@@ -19957,15 +19957,14 @@ function ex_hwvx_proto_file_header(o, x) {
     for (let i = 0; i < x.directory.length; i++) {
         let a = Date.now()
         let temp = 16 + (i * 24)
-        temp+= 24
+        temp += 24
         temp = temp - global
         // directory_temp+= 24
-
 
         globalThis.directory_offset_array.push(total_offset - temp)
 
         e = ex_hwvx_proto_directory(16 + (i * 24), e, x.directory[i], global)
-        total_offset+= e
+        total_offset += e
 
         time_array.push(Date.now() - a)
 
@@ -20149,11 +20148,11 @@ function ex_hwvx_proto_datapack(o, x) {
     let audio_length = e - g.sound_section_length_start
     let impulse_tracker_offset = 0
     let audio_data_2_offset = 0
-    if (g.end_sound_offset_section !== 0 ) {
-    audio_data_2_offset =  audio_length - (g.end_sound_offset_section)
+    if (g.end_sound_offset_section !== 0) {
+        audio_data_2_offset = audio_length - (g.end_sound_offset_section)
     }
-    if (g.end_sound_impulse_tracker_section !== 0 ) {
-    impulse_tracker_offset =  audio_length - (g.end_sound_offset_section + g.end_sound_impulse_tracker_section)
+    if (g.end_sound_impulse_tracker_section !== 0) {
+        impulse_tracker_offset = audio_length - (g.end_sound_offset_section + g.end_sound_impulse_tracker_section)
     }
 
     let amount_sounds = 0
@@ -20387,7 +20386,6 @@ function ex_hwvx_proto_sound_offset_list(o, x) {
     let base_offset = e
     e += sound_length * 32
     e += x.padding
-
 
     if (sound_length) {
         for (let i = 0; i < sound_length; i++) {
@@ -22666,7 +22664,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t4(o, x) {
 
     g.triggers_and_actions_hold_multilink.push([x.unordered_hwvx_proto_interface_0, g.hwvx_proto_interface_array, ex_hwvx_proto_interface, g.unordered_ref.hwvx_proto_interface, o + 0, e, 'none']);
     g.oa.push(o + 0)
-    
+
     g.debug && ex_debug(o, x.sec_id);
     return e
 }
@@ -22679,7 +22677,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t5(o, x) {
         for (let ii = 0; ii < x.section_2.length; ii++,
         i += 4) {
             triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_36_48_24", o + i)
-    g.oa.push(o + i)
+            g.oa.push(o + i)
         }
     }
     i += 1
@@ -22806,8 +22804,8 @@ function ex_hwvx_proto_triggers_and_actions_20_4t17(o, x) {
         for (let ii = 0; ii < x.section_2.length; ii++,
         i += 4) {
             triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_12", o + i)
-     g.oa.push(o + i)
-       }
+            g.oa.push(o + i)
+        }
     }
     i += 1
 
@@ -22844,7 +22842,7 @@ function ex_hwvx_proto_triggers_and_actions_20_4t22(o, x) {
         for (let ii = 0; ii < x.section_2.length; ii++,
         i += 4) {
             triggers_and_actions_get_link(x.section_2[ii], "hwvx_proto_world_12", o + i)
-    g.oa.push(o + i)
+            g.oa.push(o + i)
         }
     }
     i += 1
@@ -26650,6 +26648,7 @@ function ex_hwvx_proto_grand_section(o, x) {
     ;g.debug && ex_debug(o, x.sec_id);
     return e
 }
+
 function ex_hwvx_proto_unknown_thing(o, x) {
     let e = o + divisible(48, g.divisibility)
     su32(o + 0, x.u32_0)
@@ -26659,23 +26658,33 @@ function ex_hwvx_proto_unknown_thing(o, x) {
     su32(o + 20, x.u32_20)
     su32(o + 28, x.u32_28)
 
-    // if (x.section_4.length) {
-    //     g.oa.push(o + 4)
-    // }
+    if (x.section_4.length) {
+    switch (x.u32_0) {
+    case 0:
+        g.oa.push(o + 4)
+        break;
+    case 1:
+        break;
+    case 2:
+        g.oa.push(o + 4)
+        break;
+    }
+    }
 
-    // if (x.section_32.length) {
-    //     g.oa.push(o + 32)
+
+    if (x.section_32.length) {
+        g.oa.push(o + 32)
     }
 
     switch (x.u32_0) {
     case 0:
-        e = ex_s_offset(o + 4, e, ex_hwvx_proto_unknown_thing_4t0, x.section_4, 'down');
+        e = ex_s_offset(o + 4, e, ex_hwvx_proto_unknown_thing_4t0, x.section_4, 'none');
         break;
     case 1:
         e = ex_s_offset(o + 4, e, ex_hwvx_proto_unknown_thing_4t1, x.section_4, 'down');
         break;
     case 2:
-        e = ex_s_offset(o + 4, e, ex_hwvx_proto_unknown_thing_4t2, x.section_4, 'down');
+        e = ex_s_offset(o + 4, e, ex_hwvx_proto_unknown_thing_4t2, x.section_4, 'none');
         break;
     }
     if (x.section_24.length) {
