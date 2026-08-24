@@ -1628,9 +1628,9 @@ function im_hwvx_proto_get_combined_patch_list(o, patch_offset, x) {
     log_array.p_offset.array.push(u32(g.datapack_offset + 68))
     log_array.p_offset.array.push(u32(g.datapack_offset + 0))
 
-    log_array.p_offset.array.sort(function(a, b) {
-        return a - b;
-    });
+    // log_array.p_offset.array.sort(function(a, b) {
+    //     return a - b;
+    // });
 }
 
 function im_hwvx_proto_geo_patch_list(o, patch_offset, x) {
@@ -1684,9 +1684,9 @@ function im_hwvx_proto_geo_patch_list(o, patch_offset, x) {
     log_array.p_offset.array = log_array.p_offset.pointers
     log_array.p_offset.array.push(u32(g.datapack_offset + 0))
 
-    log_array.p_offset.array.sort(function(a, b) {
-        return a - b;
-    });
+    // log_array.p_offset.array.sort(function(a, b) {
+    //     return a - b;
+    // });
 }
 function im_hwvx_proto_ordered(o, x) {
 
@@ -5195,7 +5195,6 @@ function im_hwvx_proto_world_settings(o, i, x) {
         section_260: [],
     });
 
-    
     // let idk = log_array.p_offset.array.indexOf(u32(o + 156))
     if (globalThis.hwvx_proto_world_settings_156_index !== -1) {
         x[i].u32_156_is_offset = true
@@ -21270,7 +21269,7 @@ function ex_hwvx_proto_world_44(o, e, x) {
     sf32(o + 48, x.f32_48)
 
     if (x.unordered_hwvx_proto_sound_section_20) {
-    g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_sound_section_20, g.hwvx_proto_sound_section_array, ex_hwvx_proto_sound_section, g.unordered_ref.hwvx_proto_sound_section, o + 20, e, 'none']);
+        g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_sound_section_20, g.hwvx_proto_sound_section_array, ex_hwvx_proto_sound_section, g.unordered_ref.hwvx_proto_sound_section, o + 20, e, 'none']);
         g.oa.push(o + 20)
     }
 
@@ -21355,8 +21354,8 @@ function ex_hwvx_proto_world_52_88t1(o, x) {
 function ex_hwvx_proto_world_92(o, e, x) {
 
     if (x.unordered_hwvx_proto_world_text_link_4) {
-    g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_world_text_link_4, g.hwvx_proto_world_text_link_array, ex_hwvx_proto_world_text_link, g.unordered_ref.hwvx_proto_world_text_link, o + 4, e, 'none']);
-    g.oa.push(o + 4)
+        g.temp_hwvx_proto_world_offset_holder.push([x.unordered_hwvx_proto_world_text_link_4, g.hwvx_proto_world_text_link_array, ex_hwvx_proto_world_text_link, g.unordered_ref.hwvx_proto_world_text_link, o + 4, e, 'none']);
+        g.oa.push(o + 4)
     }
 
     g.debug && ex_debug(o, x.sec_id);
@@ -22425,7 +22424,7 @@ function ex_hwvx_proto_triggers_and_actions_20(o, e, x) {
             e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t1t12, x.section_4, 'up');
             break
         case 13:
-            e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t1t13, x.section_4, 'down');
+            e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t1t13, x.section_4, 'up');
             break
         case 16:
             e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t1t16, x.section_4, 'up');
@@ -22487,7 +22486,7 @@ function ex_hwvx_proto_triggers_and_actions_20(o, e, x) {
         }
         break
     case 17:
-        e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t17, x.section_4, 'down');
+        e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t17, x.section_4, 'up');
         break
     case 20:
         e = ex_s_offset(o + 4, e, ex_hwvx_proto_triggers_and_actions_20_4t20, x.section_4, 'up');
@@ -22562,26 +22561,32 @@ function ex_hwvx_proto_triggers_and_actions_20_4t1t12(o, x) {
     switch (x.u32_4) {
     case 1:
         if (x.section_8) {
-        g.triggers_and_actions_hold_multilink.push([x.section_8, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 8, e, 'none']);
-             g.oa.push(o + 8)
+            g.triggers_and_actions_hold_multilink.push([x.section_8, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 8, e, 'none']);
+            g.oa.push(o + 8)
         }
         break;
     case 6:
-        g.triggers_and_actions_hold_multilink.push([x.section_8, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0, o + 8, e, 'down']);
+        if (x.section_8) {
+            g.triggers_and_actions_hold_multilink.push([x.section_8, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0, o + 8, e, 'down']);
+            g.oa.push(o + 8)
+        }
         break;
     }
     switch (x.u32_24) {
     case 1:
-            if (x.section_28) {
-        g.triggers_and_actions_hold_multilink.push([x.section_28, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 28, e, 'none']);
-              g.oa.push(o + 28)
-           }
+        if (x.section_28) {
+            g.triggers_and_actions_hold_multilink.push([x.section_28, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 28, e, 'none']);
+            g.oa.push(o + 28)
+        }
         break;
     case 2:
         g.triggers_and_actions_hold_multilink.push([x.section_28, g.hwvx_proto_world_36_48_8_array, ex_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8, o + 28, e, 'down']);
         break;
     case 6:
-        g.triggers_and_actions_hold_multilink.push([x.section_28, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0, o + 28, e, 'down']);
+        if (x.section_28) {
+            g.triggers_and_actions_hold_multilink.push([x.section_28, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0, o + 28, e, 'down']);
+            g.oa.push(o + 28)
+        }
         break;
     }
     g.debug && ex_debug(o, x.sec_id);
@@ -22608,18 +22613,27 @@ function ex_hwvx_proto_triggers_and_actions_20_4t1t13(o, x) {
         g.triggers_and_actions_hold_multilink.push([x.section_12, g.hwvx_proto_world_36_48_8_array, ex_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8, o + 12, e, 'down']);
         break;
     case 6:
-        g.triggers_and_actions_hold_multilink.push([x.section_12, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0, o + 12, e, 'down']);
+        if (x.section_12) {
+            g.triggers_and_actions_hold_multilink.push([x.section_12, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0, o + 12, e, 'none']);
+            g.oa.push(o + 12)
+        }
         break;
     }
     switch (x.u32_28) {
     case 1:
-        g.triggers_and_actions_hold_multilink.push([x.section_32, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 32, e, 'down']);
+        if (x.section_32) {
+            g.triggers_and_actions_hold_multilink.push([x.section_32, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 32, e, 'none']);
+            g.oa.push(o + 32)
+        }
         break;
     case 2:
         g.triggers_and_actions_hold_multilink.push([x.section_32, g.hwvx_proto_world_36_48_8_array, ex_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8, o + 32, e, 'down']);
         break;
     case 6:
-        g.triggers_and_actions_hold_multilink.push([x.section_32, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0, o + 32, e, 'down']);
+        if (x.section_32) {
+            g.triggers_and_actions_hold_multilink.push([x.section_32, g.hwvx_proto_world_120_0_array, ex_hwvx_proto_world_120_0, g.unordered_ref.hwvx_proto_world_120_0, o + 32, e, 'down']);
+            g.oa.push(o + 32)
+        }
         break;
     }
     g.debug && ex_debug(o, x.sec_id);
@@ -22642,9 +22656,9 @@ function ex_hwvx_proto_triggers_and_actions_20_4t1t16(o, x) {
     switch (x.u32_20) {
     case 1:
         if (x.section_24) {
-        g.triggers_and_actions_hold_multilink.push([x.section_24, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 24, e, 'none']);
-             g.oa.push(o + 24)
-       }
+            g.triggers_and_actions_hold_multilink.push([x.section_24, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 24, e, 'none']);
+            g.oa.push(o + 24)
+        }
         break;
     case 2:
         g.triggers_and_actions_hold_multilink.push([x.section_24, g.hwvx_proto_world_36_48_8_array, ex_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8, o + 24, e, 'down']);
@@ -22653,9 +22667,9 @@ function ex_hwvx_proto_triggers_and_actions_20_4t1t16(o, x) {
     switch (x.u32_40) {
     case 1:
         if (x.section_44) {
-        g.triggers_and_actions_hold_multilink.push([x.section_44, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 44, e, 'none']);
-              g.oa.push(o + 44)
-       }
+            g.triggers_and_actions_hold_multilink.push([x.section_44, g.hwvx_proto_world_12_array, ex_hwvx_proto_world_12, g.unordered_ref.hwvx_proto_world_12, o + 44, e, 'none']);
+            g.oa.push(o + 44)
+        }
         break;
     case 2:
         g.triggers_and_actions_hold_multilink.push([x.section_44, g.hwvx_proto_world_36_48_8_array, ex_hwvx_proto_world_36_48_8, g.unordered_ref.hwvx_proto_world_36_48_8, o + 44, e, 'down']);
@@ -22820,8 +22834,8 @@ function ex_hwvx_proto_triggers_and_actions_20_4t15t1(o, x) {
     su32(o + 0, x.u32_0)
 
     if (x.section_4.length) {
-    triggers_and_actions_get_link(x.section_4, x.section_4_type, o + 4)
-    g.oa.push(o + 4)
+        triggers_and_actions_get_link(x.section_4, x.section_4_type, o + 4)
+        g.oa.push(o + 4)
     }
 
     // g.debug && ex_debug(o, x.sec_id);
